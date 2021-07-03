@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const uri = require('./config/keys_dev')
 const app = express();
 
-
+const port = process.env.PORT || 8080
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -18,7 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
@@ -35,7 +34,9 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-app.listen(3000)
+app.listen(port, () => {
+    console.log('Server running on port %d', port)
+})
 mongoose.connect(uri.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -43,6 +44,5 @@ mongoose.connect(uri.mongoURI, {
     .then(() => {
         console.log('Successfully connected to mongoDB!')
     })
-
 
 module.exports = app;
