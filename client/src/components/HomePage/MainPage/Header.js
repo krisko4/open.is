@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import {createStyles, makeStyles} from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import GoogleLogin from "react-google-login";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 
 const useStyles = makeStyles(() =>
@@ -21,11 +21,18 @@ const useStyles = makeStyles(() =>
             flexGrow: 1,
             color: 'white'
         },
+        testAppBar: {
+            transition: 'all .3s ease 0s',
+            backgroundColor: 'transparent'
+        },
         transparentAppBar: {
+            transition: 'all .3s ease 0s',
             backgroundColor: 'transparent',
+            paddingTop: 20
         },
         solidAppBar: {
             backgroundColor: 'primary',
+            transition: 'all .3s ease 0s',
         }
     }),
 );
@@ -44,10 +51,20 @@ const Header = () => {
     const appBarRef = useRef()
     appBarRef.current = appBar
     const handleScroll = () => {
-        const isSolid = window.scrollY > 980
-        const isElevated = window.scrollY > 200
-        isElevated ? setElevation(10) : setElevation(0)
-        isSolid ? setAppBar('solidAppBar') : setAppBar('transparentAppBar')
+        const isSolid = window.scrollY > 880
+        const isElevated = window.scrollY > 300
+        if (isSolid) {
+            setAppBar('solidAppBar')
+            return
+        }
+        if (isElevated) {
+            setElevation(10)
+            setAppBar('testAppBar')
+            return
+        }
+        setElevation(0)
+        setAppBar('transparentAppBar')
+
     }
 
     useEffect(() => {
@@ -65,7 +82,8 @@ const Header = () => {
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
                         </Typography>
-                        <Button size="large" onClick={() => history.push('/about')} variant="text" style={{marginRight: 10, color: 'white'}}>About us</Button>
+                        <Button size="large" onClick={() => history.push('/about')} variant="text"
+                                style={{marginRight: 10, color: 'white'}}>About us</Button>
                         <Button size="large" variant="text" style={{marginRight: 10, color: 'white'}}>Contact</Button>
                         <GoogleLogin
                             clientId="882076934469-3dhijrs8140lsll6eu7lh0tdhb9p1qju.apps.googleusercontent.com"

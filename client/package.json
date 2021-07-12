@@ -8,13 +8,20 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@material-ui/styles": "^4.11.4",
+    "@react-google-maps/api": "^2.2.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "autosuggest-highlight": "^3.1.1",
+    "axios": "^0.21.1",
+    "leaflet": "^1.7.1",
+    "leaflet-geosearch": "^3.3.2",
     "material-ui-image": "^3.3.2",
     "react": "^17.0.2",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
+    "react-leaflet": "^3.2.0",
     "react-parallax": "^3.3.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -34,16 +41,9 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }

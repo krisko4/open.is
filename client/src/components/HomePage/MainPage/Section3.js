@@ -9,24 +9,24 @@ const Section3 = ({image}) => {
         <Grid
             container
             style={{marginTop: 100}}
-            justify="center"
+            justify="space-between"
         >
 
             <Grid item lg={5}  align="center">
                 <CardMedia
                     className={image}
-                    image="https://aosmith.fr/app/uploads/2016/07/banner-quality.jpg"
+                    image="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80"
                 />
             </Grid>
-            <Grid item lg={5} xs={10} align="center" style = {{marginTop: 100}}>
-                <Typography variant="h5" color="primary">
-                    Reliability
+            <Grid item style={{marginTop: 50}} lg={5} xs={10}>
+                <Typography variant="h3" style={{fontWeight: 'bold'}}>
+                    <span style={{color: '#2196f3', textDecoration: 'underline'}}>Reliability</span> is our domain.
                 </Typography>
-                <Typography variant="body1" style={{ textTransform: 'uppercase', fontWeight: 'bold', marginTop: 5}}>
-                    You can count on us
-                </Typography>
-                <Grid item lg={6} xs={10}>
-                    <Typography variant="body1" style={{marginTop: 20}}>
+                {/*<Typography variant="body1" style={{ textTransform: 'uppercase', fontWeight: 'bold', marginTop: 5}}>*/}
+                {/*    You can count on us*/}
+                {/*</Typography>*/}
+                <Grid item lg={7} xs={10}>
+                    <Typography variant="h6" style={{marginTop: 20}}>
                         Our data comes directly from our customers, which gives Open.is an advantage,
                         compared to platforms based on rigid opening hours. With high degree of certainty
                         you can assume that the opening state of the place you wish to visit is going to be correct.

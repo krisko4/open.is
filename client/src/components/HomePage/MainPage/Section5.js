@@ -60,7 +60,7 @@ const Section5 = ({text, image}) => {
             justify="center"
         >
             <Grid item xs={12} align="center">
-                <Typography variant="h2">
+                <Typography variant="h2" style={{fontWeight: 'bold'}}>
                     Trusted by people
                 </Typography>
             </Grid>
