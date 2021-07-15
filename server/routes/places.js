@@ -17,6 +17,17 @@ router.get('/', function (req, res, next) {
         })
         return
     }
+    if (req.query.address) {
+        Place.find({address: new RegExp(req.query.address, 'i')}).exec().then((docs => {
+            res.json(docs)
+        })).catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: err
+            })
+        })
+        return
+    }
     Place.find().exec().then((docs => {
         res.json(docs)
     })).catch(err => {
@@ -60,7 +71,8 @@ router.post('/', (req, res, next) => {
         lat: req.body.lat,
         lng: req.body.lng,
         description: req.body.description,
-        status: req.body.status
+        status: req.body.status,
+        openingHours: req.body.openingHours
     })
 
     place.save().then((result) => {
@@ -69,7 +81,12 @@ router.post('/', (req, res, next) => {
             message: 'Handling POST request to /users',
             createdPlace: place
         })
-    }).catch(error => console.log(error))
+    }).catch(error => {
+        console.log(error)
+        res.status(400).json({
+            message: error
+        })
+    })
 })
 
 module.exports = router;

@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cookieSession = require("cookie-session");
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const placesRouter = require('./routes/places')
@@ -15,8 +16,6 @@ const corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200
 }
-
-
 app.use(cors(corsOptions));
 
 
@@ -24,6 +23,16 @@ const port = process.env.PORT || 8080
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(
+    cookieSession({
+        name: "__session",
+        keys: ["key1"],
+        maxAge: 24 * 60 * 60 * 100,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'none'
+    })
+);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -47,14 +56,15 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-app.listen(port, () => {
-    console.log('Server running on port %d', port)
-})
+
 mongoose.connect(uri.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
     console.log('Successfully connected to mongoDB!')
+    app.listen(port, () => {
+        console.log('Server running on port %d', port)
+    })
 })
 
 
