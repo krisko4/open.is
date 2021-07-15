@@ -1,6 +1,6 @@
 import React from "react";
 import {ThemeProvider} from "@material-ui/styles";
-import theme from './components/HomePage/Theme'
+import theme from './components/Theme'
 import HomePage from "./components/HomePage/MainPage/HomePage";
 import {Route, BrowserRouter as Router} from "react-router-dom";
 import About from "./components/HomePage/About";

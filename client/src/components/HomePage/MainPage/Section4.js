@@ -7,16 +7,13 @@ const Section4 = () => {
     return (
         <Grid
             container
-            style={{marginTop: 100, backgroundColor: 'black', background: 'radial-gradient(ellipse at center,#585858 0,#232323 100%)'}}
+            style={{marginTop: 100, backgroundColor: 'black', background: '#002244'}}
             justify="center"
         >
             <Grid item lg={5}  style = {{marginTop: 100, color: 'white'}}>
                 <Typography variant="h3" style={{fontWeight: 'bold'}}>
-                    Our goal is to make you <br/> <span style={{color: '#2196f3', textDecoration: 'underline'}}>satisfied.</span>
+                    Our goal is your <br/> <span style={{color: '#2196f3', textDecoration: 'underline'}}>satisfaction.</span>
                 </Typography>
-                {/*<Typography variant="body1" style={{ textTransform: 'uppercase',  fontWeight: 'bold', marginTop: 5}}>*/}
-                {/*    Our main goal is to make you satisfied*/}
-                {/*</Typography>*/}
                 <Grid item lg={7} xs={10} style={{marginTop: 20}}>
                     <Typography variant="h6" style={{color: 'lightgrey'}}>
                         We are proud of having such ability to assume that our clients are satisfied with our services.

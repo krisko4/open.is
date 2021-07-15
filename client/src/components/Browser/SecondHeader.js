@@ -7,13 +7,7 @@ import Searcher from "./Searcher";
 
 
 
-const SecondHeader = ({setInputValue, selectedPlaces, setChosenCriterias}) => {
-
-    //const [selectedPlaces, setSelectedPlaces] = useState([])
-
-    // useEffect(() => {
-    //     console.log(selectedPlaces)
-    // }, [selectedPlaces])
+const SecondHeader = () => {
 
 
     return (
@@ -25,7 +19,7 @@ const SecondHeader = ({setInputValue, selectedPlaces, setChosenCriterias}) => {
             <Toolbar>
                 <Grid container justify="center" style={{marginTop: 10, marginBottom: 10}}>
                     <Grid item xs={12} lg={5}>
-                        <Searcher setChosenCriterias={setChosenCriterias} selectedPlaces={selectedPlaces} setInputValue={setInputValue}/>
+                        <Searcher />
                     </Grid>
                 </Grid>
             </Toolbar>

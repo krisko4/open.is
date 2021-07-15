@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) =>
         logo: {
             width: 600,
             height: 400,
-            marginTop: 80,
+            marginTop: 40,
             [theme.breakpoints.only('xs')]: {
                 width: 300,
                 height: 300,
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) =>
         },
 
         banner: {
-            height: 1100,
+            height: 1000,
             flexGrow: 1,
             backgroundSize: 'cover',
        //     https://i.pinimg.com/originals/45/4d/d3/454dd33dd8a85d430f1e50dcc82cee2d.jpg
@@ -65,8 +65,8 @@ const Banner = () => {
 
     const classes = useStyles()
     return (
-        <Grid container>
-            <div className={classes.banner} style={{transform: `translateY(${transform * 0.5}px)`,}}>
+        <Grid container style={{transform: `translate3d(0px, ${transform/4}px, 0px)`}}>
+            <div className={classes.banner} >
                 <Grid item xs={12} align="center">
                     <CardMedia image="http://localhost:8080/images/Openis-logos_white.png"
                                className={classes.logo}>

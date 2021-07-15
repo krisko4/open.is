@@ -42,18 +42,18 @@ const Header = () => {
 
     const history = useHistory()
 
-    const responseGoogle = (response) => {
-        console.log(response);
-    }
 
     const [appBar, setAppBar] = useState('transparentAppBar')
     const [elevation, setElevation] = useState(0)
     const appBarRef = useRef()
+    const [buttonColor, setButtonColor] = useState('secondary')
     appBarRef.current = appBar
     const handleScroll = () => {
-        const isSolid = window.scrollY > 880
+        const isSolid = window.scrollY > 700
         const isElevated = window.scrollY > 300
+        setButtonColor('secondary')
         if (isSolid) {
+            setButtonColor('primary')
             setAppBar('solidAppBar')
             return
         }
@@ -85,13 +85,14 @@ const Header = () => {
                         <Button size="large" onClick={() => history.push('/about')} variant="text"
                                 style={{marginRight: 10, color: 'white'}}>About us</Button>
                         <Button size="large" variant="text" style={{marginRight: 10, color: 'white'}}>Contact</Button>
-                        <GoogleLogin
-                            clientId="882076934469-3dhijrs8140lsll6eu7lh0tdhb9p1qju.apps.googleusercontent.com"
-                            buttonText="Sign in"
-                            onSuccess={responseGoogle}
-                            onFailure={responseGoogle}
-                            cookiePolicy={'single_host_origin'}
-                        />,
+                        <Button variant="contained" size="large" color={buttonColor}>Sign in</Button>
+                        {/*<GoogleLogin*/}
+                        {/*    clientId="882076934469-3dhijrs8140lsll6eu7lh0tdhb9p1qju.apps.googleusercontent.com"*/}
+                        {/*    buttonText="Sign in"*/}
+                        {/*    onSuccess={responseGoogle}*/}
+                        {/*    onFailure={responseGoogle}*/}
+                        {/*    cookiePolicy={'single_host_origin'}*/}
+                        {/*/>,*/}
                     </Toolbar>
                 </Grid>
             </Grid>

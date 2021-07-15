@@ -1,0 +1,63 @@
+import myAxios from "../axios/axios";
+import {OpenStreetMapProvider} from "leaflet-geosearch";
+
+
+const provider = new OpenStreetMapProvider({});
+
+const findByAddress = (inputValue, setSelectedPlaces) => {
+    provider.search({query: inputValue}).then(function (result) {
+        if (result) {
+            const inputArray = inputValue.split(' ')
+            const upperCasedInputArray = inputArray.map((input) => {
+                return input.charAt(0).toUpperCase() + input.slice(1)
+            })
+            result.forEach((address) => {
+                const addressArray = address.label.split(', ')
+                const filteredAddressArray = addressArray.filter((address) => {
+                    return !upperCasedInputArray.includes(address)
+                })
+                const upperCasedInput = upperCasedInputArray.toString().replace(/,/gi, ' ')
+                filteredAddressArray.splice(0, 0, upperCasedInput)
+                address.name = filteredAddressArray.toString()
+                address.type = 'address'
+
+            })
+        }
+        console.log(result)
+        setSelectedPlaces(result)
+    });
+}
+
+
+export const getPlacesByName = (inputValue, chosenCriterias, setSelectedPlaces, isPlaceFoundByName) => {
+    myAxios.get('/places', {
+        params: {
+            name: inputValue
+        }
+    }).then((response) => {
+        if (response.data.length === 0) {
+            findByAddress(inputValue, setSelectedPlaces)
+            isPlaceFoundByName.current = false
+            return
+        }
+        isPlaceFoundByName.current = true
+        const selected = []
+        response.data.forEach((element) => {
+            const isAlreadySelected = chosenCriterias.some(place => {
+                return place._id === element._id
+            })
+            if (!isAlreadySelected) {
+                selected.push(element)
+            }
+        })
+        setSelectedPlaces(selected)
+    }).catch(err => console.error(err))
+}
+
+export const getPlacesByAddress = (address) => {
+    return myAxios.get('/places', {
+        params: {
+            address: address
+        }
+    })
+}

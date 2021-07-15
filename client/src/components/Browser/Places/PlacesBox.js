@@ -1,24 +1,19 @@
 import Grid from "@material-ui/core/Grid";
-import React, {useEffect, useRef, useState} from "react";
-import Card from "@material-ui/core/Card";
-import {CardContent} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import CardMedia from "@material-ui/core/CardMedia";
-import createStyles from "@material-ui/styles/createStyles";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import PlaceCard from "./PlaceCard";
-import List from "@material-ui/core/List";
 import {Scrollbars} from 'react-custom-scrollbars';
 import ListItem from "@material-ui/core/ListItem";
-import PlaceDetails from "./PlaceDetails";
+import PlaceDetails from "./PlaceDetails/PlaceDetails";
+import {SelectedPlacesContext} from "../../../contexts/SelectedPlacesContext";
 
 
 
 
-const PlacesBox = ({chosenCriterias, setMapCenter}) => {
+const PlacesBox = ({setMapCenter}) => {
 
 
     const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
+    const {chosenCriterias} = useContext(SelectedPlacesContext)
     const currentPlace = useRef(null)
 
     const openPlaceDetails = (place) => {
@@ -27,14 +22,16 @@ const PlacesBox = ({chosenCriterias, setMapCenter}) => {
         setMapCenter([place.lat, place.lng])
     }
 
+    useEffect(() => {
+        console.log(chosenCriterias)
+    }, [chosenCriterias])
+
 
     return (
-        <Grid item lg={6}
+        <Grid item container direction="column" lg={6}
               style={{
-                  borderRightStyle: 'solid',
-                  //background: '#2d004e',
                   background: '#202020',
-                  borderColor: 'black'}}>
+                  }}>
             {!isPlaceCardClicked &&
             <Scrollbars >
                 {chosenCriterias.map((place, index) => {
@@ -52,7 +49,7 @@ const PlacesBox = ({chosenCriterias, setMapCenter}) => {
             </Scrollbars>
             }
             {isPlaceCardClicked &&
-            <PlaceDetails place={currentPlace.current}/>
+            <PlaceDetails setPlaceCardClicked={setPlaceCardClicked} place={currentPlace.current}/>
             }
         </Grid>
     )

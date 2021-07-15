@@ -1,5 +1,5 @@
 import Grid from "@material-ui/core/Grid";
-import React, { useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import {CSSTransition} from "react-transition-group";
 import './styles.css'
 import Section1 from "./Section1";
+import Fade from "@material-ui/core/Fade";
 
 
 const useStyles = makeStyles((theme) =>
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme) =>
         media: {
             height: 400,
             width: 600,
-            [theme.breakpoints.only('xs')]:{
-                height:200,
+            [theme.breakpoints.only('xs')]: {
+                height: 200,
                 width: 200
             }
         },
@@ -44,8 +45,6 @@ const useStyles = makeStyles((theme) =>
         }
     }),
 );
-
-
 
 
 const Content = () => {
@@ -59,19 +58,19 @@ const Content = () => {
     const sections = [
         {
             in: isVisible1,
-            section:  <Section1 image={classes.media}/>
+            section: <Section1 image={classes.media}/>
         },
         {
             in: isVisible2,
-            section:  <Section2/>
+            section: <Section2 image={classes.media}/>
         },
         {
             in: isVisible3,
-            section:  <Section3 image={classes.media}/>
+            section: <Section3 image={classes.media}/>
         },
         {
             in: isVisible4,
-            section:  <Section4/>
+            section: <Section4 image={classes.media}/>
         }
     ]
 
@@ -91,7 +90,6 @@ const Content = () => {
     }, [])
 
 
-
     return (
         <Grid container className={classes.container} justify="center">
             <Grid item xs={12}>
@@ -101,25 +99,26 @@ const Content = () => {
                             <Typography variant="h5" className={classes.text}>
                                 Have you ever wanted to visit a place, but were not sure whether it was open?
                             </Typography>
-                            <Typography variant="h3">
-                                You have just found a right place!
+                            <Typography variant="h2" style={{fontWeight: 'bold'}}>
+                                You have just found a right place.
                             </Typography>
                         </Grid>
                     </Grid>
-                        {sections.map((section, index) => {
-                            return(
-                                <Grid container key={index} style={{minHeight: 600}}>
+
+                    {sections.map((section, index) => {
+                        return (
+                            <Grid container key={index} style={{height: 600}}>
                                 <CSSTransition
                                     in={section.in}
                                     timeout={300}
                                     classNames='alert'
                                     unmountOnExit
-                                    >
+                                >
                                     {section.section}
                                 </CSSTransition>
-                                </Grid>
-                            )
-                        })}
+                            </Grid>
+                        )
+                    })}
                     <Section5 text={classes.text} image={classes.image}/>
                 </Card>
             </Grid>

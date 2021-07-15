@@ -14,7 +14,8 @@ const useStyles = makeStyles(() =>
           //  backgroundColor: '#430075',
             backgroundColor: '#2C2C2C',
             borderRadius: 20,
-            width: '100%'
+            width: '100%',
+            height: '100%'
 
 
         },
@@ -34,7 +35,7 @@ const PlaceCard = ({place}) => {
         >
             <CardContent>
                 <Grid container direction="row" justify="space-between">
-                    <Grid item container lg={6}>
+                    <Grid item container lg={11}>
                         <Grid item>
                             <CardMedia className={classes.image}
                                        image="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"/>
@@ -51,7 +52,7 @@ const PlaceCard = ({place}) => {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container item lg={6} alignItems="center"  style={{color: 'white'}}>
+                    <Grid container item lg={1} alignItems="center"  style={{color: 'white'}}>
                         <Grid item lg={12} align="end">
                             STATUS:
                             <Typography variant="body1" style={{color: 'green', fontWeight: 'bold'}}>

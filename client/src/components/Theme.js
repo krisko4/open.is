@@ -18,6 +18,14 @@ const theme = createMuiTheme({
             main: 'transparent'
         }
     },
+    overrides: {
+        MuiButton: {
+           root: {
+               //fontSize: 20,
+
+           }
+        }
+    }
 });
 
 
