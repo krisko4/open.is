@@ -7,6 +7,9 @@ const cookieSession = require("cookie-session");
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const placesRouter = require('./routes/places')
+const registrationRouter = require('./routes/registration')
+const confirmationTokensRouter = require('./routes/confirmation_tokens')
+const confirmationRouter = require('./routes/confirmation')
 const mongoose = require('mongoose')
 const uri = require('./config/keys_dev')
 const cors = require('cors')
@@ -39,6 +42,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/places', placesRouter);
+app.use('/registration', registrationRouter)
+app.use('/confirmation_tokens', confirmationTokensRouter)
+app.use('/confirmation', confirmationRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
