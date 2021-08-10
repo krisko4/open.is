@@ -4,13 +4,14 @@ const uniqueValidator = require('mongoose-unique-validator');
 mongoose.set('useCreateIndex', true)
 
 
+
 const userSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     firstName: NameString,
     lastName: NameString,
     email: Email,
     password: Password,
-    isActive: DefaultBoolean
+    isActive: DefaultBoolean,
 })
 
 userSchema.plugin(uniqueValidator);

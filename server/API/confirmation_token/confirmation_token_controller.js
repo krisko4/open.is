@@ -2,14 +2,14 @@ const confirmationTokenService = require('./confirmation_token_service')
 
 const confirmationTokenController = {
 
-    // confirmToken: (req, res) => {
+    // confirmToken: async (req, res) => {
     //     const tokenValue = req.body.token
     //     try{
-    //         confirmationTokenService.confirmToken(tokenValue)
+    //         await confirmationTokenService.confirmToken(tokenValue)
     //     } catch(err) {
     //         res.status(404).json({error: err})
     //     }
-
+    //
     // },
     getTokens: (req, res) => {
         confirmationTokenService.getTokens()

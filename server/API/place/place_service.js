@@ -13,6 +13,10 @@ const placeService = {
             ...placeData
         })
         return place.save()
+    },
+
+    getPlacesBy: (address) => {
+        return Place.find(address).exec()
     }
 }
 

@@ -2,7 +2,9 @@ const { v4: uuidv4 } = require('uuid');
 const ConfirmationToken = require('./model/confirmation_token')
 const mongoose = require('mongoose')
 const {addMinutes} = require('date-fns')
+
 const confirmationTokenService = {
+
     createToken:  (userId) => {
         const createdAt = new Date()
         const expiresAt = addMinutes(createdAt, 10)
@@ -25,8 +27,6 @@ const confirmationTokenService = {
             throw 'Provided token has expired.'
         }
         return token.userId
-        //return ConfirmationToken.updateOne({_id: token._id}, {value: 'siemanko'})
-
     },
     getTokens: () => {
         return ConfirmationToken.find().exec()
@@ -34,10 +34,10 @@ const confirmationTokenService = {
     deleteTokens: () => {
         return ConfirmationToken.deleteMany()
     },
-    deleteToken: async (tokenValue) => {
-        const token = await ConfirmationToken.findOne({value: tokenValue}).exec()
-        return ConfirmationToken.deleteOne(token)
-    }
+    deleteAllTokensForUser: async (userId) => {
+        return ConfirmationToken.deleteMany({userId: userId})
+    },
+
 }
 
 module.exports = confirmationTokenService

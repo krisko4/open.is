@@ -3,8 +3,12 @@ const registrationController = require("../API/registration/registration_control
 const router = express.Router();
 
 
-router.post('/', (req, res) => {
-    registrationController.registerUser(req, res)
+router.post('/', async(req, res) => {
+    await registrationController.registerUser(req, res)
+})
+
+router.post('/resend-email', async(req,res) => {
+    await registrationController.resendConfirmationEmail(req, res)
 })
 
 module.exports = router

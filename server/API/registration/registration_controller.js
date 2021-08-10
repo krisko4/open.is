@@ -1,19 +1,28 @@
-const userService = require('../user/user_service')
-const confirmationTokenService = require('../confirmation_token/confirmation_token_service')
-
+const registrationService = require('./registration_service')
 const registrationController = {
 
     registerUser: async (req, res) => {
         const userData = req.body
+        console.log(userData)
         try {
-            const user = await userService.addUser(userData)
-            const token = await confirmationTokenService.createToken(user['_id'])
+            const token = await registrationService.registerUser(userData)
             res.json(token)
         } catch (err) {
+            console.log(err)
             res.status(400).json({error: err})
         }
+    },
 
-
+    resendConfirmationEmail: async (req, res) => {
+        const userEmail = req.body.email
+        console.log(userEmail)
+        try {
+            const token = await registrationService.resendConfirmationEmail(userEmail)
+            res.json(token)
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({error: err})
+        }
     }
 
 }

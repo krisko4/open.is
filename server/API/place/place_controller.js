@@ -3,7 +3,28 @@ const placeService = require('./place_service')
 
 const placeController = {
 
-    getPlaces: (req, res) => {
+    getPlaces: async (req, res) => {
+
+        const queryLength = Object.keys(req.query).length
+        if(queryLength > 1){
+            res.status(400).json( {
+                error: 'Invalid request'
+            })
+            return
+        }
+        if(queryLength === 1){
+            const param = Object.keys(req.query)[0]
+            let searchObj = {}
+            searchObj[param] =  new RegExp('^' + req.query[param], 'i')
+            try{
+                const places = await placeService.getPlacesBy(searchObj)
+                res.status(200).json(places)
+
+            } catch(err){
+                res.status(400).json({error: err})
+            }
+            return
+        }
         placeService.getPlaces()
             .then(places => res.status(200).json(places))
             .catch(err => res.json({error: err}))
@@ -28,7 +49,9 @@ const placeController = {
         placeService.addPlace(placeData)
             .then(place => res.status(201).json({message: 'New place added successfully.', place}))
             .catch(err => res.status(400).json({error: err}))
-    }
+    },
+
+
 }
 
 module.exports = placeController

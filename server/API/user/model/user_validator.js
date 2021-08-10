@@ -2,7 +2,7 @@
 const userValidator =  {
 
     validateName: (name) => {
-        const regExp = /^[A-Za-z]+$/
+        const regExp = /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/
         return regExp.test(name)
     },
     validatePassword: (password) => {
@@ -13,6 +13,7 @@ const userValidator =  {
         const regExp = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
         return regExp.test(email)
     }
+
 }
 
 module.exports = userValidator

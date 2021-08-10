@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../API/user/user_controller')
+const jwtController = require('../API/jwt/jwt_controller')
 
 
 
-
-router.get('/', function (req, res, next) {
+router.get('/', jwtController.authenticateAccessToken, (req, res) => {
     userController.getUsers(req, res)
 });
 
