@@ -9,7 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {SelectedPlacesContext} from "../../contexts/SelectedPlacesContext";
-import {getPlacesByAddress, getPlacesByName} from "../../requests/PlaceRequests";
+import {getPlacesByAddress, getPlaces} from "../../requests/PlaceRequests";
 
 
 const useStyles = makeStyles((theme) =>
@@ -83,12 +83,12 @@ const Searcher = () => {
                 setSelectedPlaces([])
                 return
             }
-            const findSelectedPlaces = () => {
-                getPlacesByName(inputValue, chosenCriterias, setSelectedPlaces, isPlaceFoundByName)
+            const findSelectedPlaces = async () => {
+                await getPlaces(inputValue, chosenCriterias, setSelectedPlaces, isPlaceFoundByName)
             }
 
-            const delaySearch = setTimeout(() => {
-                findSelectedPlaces()
+            const delaySearch = setTimeout(async () => {
+                await findSelectedPlaces()
             }, 500)
             return () => clearTimeout(delaySearch)
 

@@ -1,13 +1,18 @@
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from "@material-ui/core/Grid";
-import React from "react";
+import React, {useContext, useState} from "react";
 import Button from "@material-ui/core/Button";
+import {Link} from "react-router-dom";
+import {Auth} from "../Auth/Auth";
+import {AuthContext} from "../../contexts/AuthContext";
 
 const FirstHeader = () => {
+
+    const {loginOpen, setLoginOpen} = useContext(AuthContext)
+
     return (
         <AppBar style={{
-          //  background: 'indigo',
             background: '#2C2C2C',
             position: 'static',
             borderColor: '#383838',
@@ -18,15 +23,16 @@ const FirstHeader = () => {
             <Toolbar>
                 <Grid container alignItems="center">
                     <Grid item lg={6}>
-                        <h2>OPEN.IS</h2>
+                        <Link to="/">OPEN.IS</Link>
                     </Grid>
                     <Grid item lg={6} align="end">
-                        <Button color="secondary" size="large" variant="contained">
+                        <Button color="secondary" onClick={() =>setLoginOpen(true)} size="large" variant="contained">
                             Sign in
                         </Button>
                     </Grid>
                 </Grid>
             </Toolbar>
+            <Auth/>
         </AppBar>
     )
 }

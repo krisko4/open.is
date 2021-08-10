@@ -10,20 +10,20 @@ const OpeningHours = ({place}) => {
     const openingHours = place.openingHours
 
 
-
     useEffect(() => {
         console.log(place)
     }, [place])
 
     return (
-        <Grid container justify="center" style={{marginTop: 20}}>
-            <Grid item lg={6}>
-                <Card style={{height: 500}}>
+        <Grid container justify="center" style={{marginTop: 20, marginBottom: 20}}>
+            <Grid item lg={5}>
+                <Card style={{background: '#2C2C2C', borderRadius: 10}}>
                     <CardContent>
-                        <Typography style={{textAlign: 'center'}}>Opening hours</Typography>
-                        <Divider style={{marginTop: 10, marginBottom: 10}}/>
+                        <Typography style={{textAlign: 'center', color: 'white'}}>Opening hours</Typography>
+                        <Divider style={{marginTop: 10, background: '#2196f3', marginBottom: 10}}/>
                         <Grid container justify="center">
                             <Grid item lg={8}>
+                                <div style={{color: 'grey'}}>
                                 <Typography>Monday</Typography>
                                 <Typography>Tuesday</Typography>
                                 <Typography>Wednesday</Typography>
@@ -31,15 +31,18 @@ const OpeningHours = ({place}) => {
                                 <Typography>Friday</Typography>
                                 <Typography>Saturday</Typography>
                                 <Typography>Sunday</Typography>
+                                </div>
                             </Grid>
                             <Grid item lg={3}>
-                                <Typography>{openingHours.monday.startHour} - {openingHours.monday.endHour}</Typography>
-                                <Typography>{openingHours.tuesday.startHour} - {openingHours.tuesday.endHour}</Typography>
-                                <Typography>{openingHours.wednesday.startHour} - {openingHours.wednesday.endHour}</Typography>
-                                <Typography>{openingHours.thursday.startHour} - {openingHours.thursday.endHour}</Typography>
-                                <Typography>{openingHours.friday.startHour} - {openingHours.friday.endHour}</Typography>
-                                <Typography>{openingHours.saturday.startHour} - {openingHours.saturday.endHour}</Typography>
-                                <Typography>{openingHours.sunday.startHour} - {openingHours.sunday.endHour}</Typography>
+                                <div style={{color: 'white'}}>
+                                    <Typography>{openingHours.monday.startHour} - {openingHours.monday.endHour}</Typography>
+                                    <Typography>{openingHours.tuesday.startHour} - {openingHours.tuesday.endHour}</Typography>
+                                    <Typography>{openingHours.wednesday.startHour} - {openingHours.wednesday.endHour}</Typography>
+                                    <Typography>{openingHours.thursday.startHour} - {openingHours.thursday.endHour}</Typography>
+                                    <Typography>{openingHours.friday.startHour} - {openingHours.friday.endHour}</Typography>
+                                    <Typography>{openingHours.saturday.startHour} - {openingHours.saturday.endHour}</Typography>
+                                    <Typography>{openingHours.sunday.startHour} - {openingHours.sunday.endHour}</Typography>
+                                </div>
                             </Grid>
                         </Grid>
                     </CardContent>

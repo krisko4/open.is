@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import {createMuiTheme} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
     palette: {
@@ -10,8 +10,12 @@ const theme = createMuiTheme({
         },
         secondary: {
             light: '#ff7961',
-            main: '#ba000d',
+            main: '#ff5252',
             dark: '#A52A2A',
+            contrastText: '#fff',
+        },
+        jakisTam: {
+            main: '#6A5ACD',
             contrastText: '#fff',
         },
         transparent: {
@@ -20,10 +24,9 @@ const theme = createMuiTheme({
     },
     overrides: {
         MuiButton: {
-           root: {
-               //fontSize: 20,
-
-           }
+            root: {
+                fontWeight: 700
+            }
         }
     }
 });

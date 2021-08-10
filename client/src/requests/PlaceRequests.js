@@ -29,20 +29,17 @@ const findByAddress = (inputValue, setSelectedPlaces) => {
 }
 
 
-export const getPlacesByName = (inputValue, chosenCriterias, setSelectedPlaces, isPlaceFoundByName) => {
-    myAxios.get('/places', {
-        params: {
-            name: inputValue
-        }
-    }).then((response) => {
-        if (response.data.length === 0) {
+export const getPlaces = async (inputValue, chosenCriterias, setSelectedPlaces, isPlaceFoundByName) => {
+    try{
+        const places = await getPlacesByName(inputValue)
+        if(!places){
             findByAddress(inputValue, setSelectedPlaces)
             isPlaceFoundByName.current = false
             return
         }
         isPlaceFoundByName.current = true
         const selected = []
-        response.data.forEach((element) => {
+        places.forEach((element) => {
             const isAlreadySelected = chosenCriterias.some(place => {
                 return place._id === element._id
             })
@@ -51,7 +48,32 @@ export const getPlacesByName = (inputValue, chosenCriterias, setSelectedPlaces, 
             }
         })
         setSelectedPlaces(selected)
-    }).catch(err => console.error(err))
+    } catch(err) {
+        console.error(err)
+    }
+
+    // myAxios.get('/places', {
+    //     params: {
+    //         name: inputValue
+    //     }
+    // }).then((response) => {
+    //     if (response.data.length === 0) {
+    //         findByAddress(inputValue, setSelectedPlaces)
+    //         isPlaceFoundByName.current = false
+    //         return
+    //     }
+    //     isPlaceFoundByName.current = true
+    //     const selected = []
+    //     response.data.forEach((element) => {
+    //         const isAlreadySelected = chosenCriterias.some(place => {
+    //             return place._id === element._id
+    //         })
+    //         if (!isAlreadySelected) {
+    //             selected.push(element)
+    //         }
+    //     })
+    //     setSelectedPlaces(selected)
+    // }).catch(err => console.error(err))
 }
 
 export const getPlacesByAddress = (address) => {
@@ -60,4 +82,13 @@ export const getPlacesByAddress = (address) => {
             address: address
         }
     })
+}
+
+export const getPlacesByName = async (name) => {
+    const response = await myAxios.get('/places', {
+        params: {
+            name: name
+        }
+    })
+    return response.data
 }

@@ -61,7 +61,7 @@ const Section2 = ({image}) => {
                         <span>As a client:</span>
                         {clientBenefits.map((benefit, index) => {
                             return (
-                                <div style={{marginBottom: 10}}>
+                                <div style={{marginBottom: 10}} key={index}>
                                     <div style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -86,7 +86,7 @@ const Section2 = ({image}) => {
                         <span>As an owner:</span>
                         {ownerBenefits.map((benefit, index) => {
                             return (
-                                <div style={{marginBottom: 10}}>
+                                <div style={{marginBottom: 10}} key={index}>
                                     <div style={{
                                         display: 'flex',
                                         alignItems: 'center',

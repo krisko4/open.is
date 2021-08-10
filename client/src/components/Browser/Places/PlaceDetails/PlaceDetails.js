@@ -3,13 +3,15 @@ import {createStyles, Divider, makeStyles} from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Paper from "@material-ui/core/Paper";
-import React, {useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import IconButton from "@material-ui/core/IconButton";
 import {KeyboardReturn} from "@material-ui/icons";
 import withStyles from "@material-ui/core/styles/withStyles";
 import OpeningHours from "./OpeningHours";
 import MainContent from "./MainContent";
 import {Scrollbars} from 'react-custom-scrollbars';
+import {News} from "./News";
+import {MapContext} from "../../../../contexts/MapContext";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -30,6 +32,7 @@ const StyledTab = withStyles(() => ({
 
 const PlaceDetails = ({place, setPlaceCardClicked}) => {
 
+    const {setPopupOpen, setMapZoom} = useContext(MapContext)
     const classes = useStyles()
     const [value, setValue] = useState(0)
     const handleChange = (event, newValue) => {
@@ -37,22 +40,22 @@ const PlaceDetails = ({place, setPlaceCardClicked}) => {
     };
 
     const tabContents = [
-        <span>Hello 1</span>,
-        <OpeningHours place={place}/>,
-        <span>Hello 2</span>
+        <News/>,
+        <OpeningHours place={place}/>
     ]
 
 
 
     return (
-        <Grid container direction="column" style={{height: '100%'}}>
+        <Scrollbars>
+        <Grid container>
             <Grid item>
-                <IconButton  onClick={() => setPlaceCardClicked(false)} color="secondary">
+                <IconButton  onClick={() => {setPlaceCardClicked(false); setMapZoom(10); setPopupOpen(false)}} color="secondary">
                     <KeyboardReturn/>
                 </IconButton>
             </Grid>
            <MainContent place={place}/>
-            <Grid container item style={{marginTop: 10, width: '100%'}}>
+            <Grid container item lg={12} style={{marginTop: 10}}>
                 <Divider style={{width: '100%', backgroundColor: 'red'}}/>
                 <Paper square style={{width: '100%', background: 'inherit'}}>
                     <Tabs
@@ -65,7 +68,7 @@ const PlaceDetails = ({place, setPlaceCardClicked}) => {
                     >
                         <StyledTab label="News"/>
                         <StyledTab label="Opening hours"/>
-                        <StyledTab label="Offer"/>
+                        <StyledTab label="Opinions"/>
                     </Tabs>
                 </Paper>
                 <Grid container item>
@@ -73,6 +76,7 @@ const PlaceDetails = ({place, setPlaceCardClicked}) => {
                 </Grid>
             </Grid>
         </Grid>
+        </Scrollbars>
     )
 }
 

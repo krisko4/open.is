@@ -38,16 +38,16 @@ const PlaceCard = ({place}) => {
                     <Grid item container lg={11}>
                         <Grid item>
                             <CardMedia className={classes.image}
-                                       image="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"/>
+                                       image={`${process.env.REACT_APP_BASE_URL}/images/${place.img}`}/>
                         </Grid>
                         <Grid item>
                             <Typography variant="h6" style={{color: 'white', marginLeft: 10}}>
                                 {place.name}
                             </Typography>
-                            <Typography variant="body1" style={{color: 'white', marginLeft: 10}}>
-                                {place.description}
+                            <Typography variant="body1" style={{color: 'grey', marginLeft: 10}}>
+                                {place.subtitle}
                             </Typography>
-                            <Typography variant="body2" style={{color: 'white', marginLeft: 10}}>
+                            <Typography variant="body2" color="primary" style={{ marginLeft: 10}}>
                                 Address: {place.address}
                             </Typography>
                         </Grid>
