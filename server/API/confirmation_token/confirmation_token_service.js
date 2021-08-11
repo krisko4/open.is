@@ -1,9 +1,12 @@
 const { v4: uuidv4 } = require('uuid');
-const ConfirmationToken = require('./model/confirmation_token')
+const confirmationToken = require('./model/confirmation_token')
 const mongoose = require('mongoose')
 const {addMinutes} = require('date-fns')
 
+
+
 const confirmationTokenService = {
+
 
     createToken:  (userId) => {
         const createdAt = new Date()
@@ -17,6 +20,7 @@ const confirmationTokenService = {
         })
         return confirmationToken.save()
     },
+    
     confirmToken: async (tokenValue) => {
         const token = await ConfirmationToken.findOne({value: tokenValue}).exec()
         if(!token){
