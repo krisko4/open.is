@@ -17,9 +17,6 @@ const Section1 = ({image}) => {
                 <Typography variant="h3" style={{fontWeight: 'bold'}}>
                     We are <span style={{color: '#2196f3', textDecoration: 'underline'}}>growing.</span>
                 </Typography>
-                {/*<Typography variant="body1" style={{textTransform: 'uppercase', fontWeight: 'bold', marginTop: 5}}>*/}
-                {/*Widespread, dynamically growing base of places*/}
-                {/*</Typography>*/}
                 <Grid item lg={7} xs={10}>
                 <Typography variant="h6" style={{marginTop: 20}}>
                 With more than 1000 new businesses registered every day,

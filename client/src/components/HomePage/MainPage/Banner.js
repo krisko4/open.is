@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import {createStyles, makeStyles} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -46,27 +46,15 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-
 const Banner = () => {
 
     const history = useHistory()
-    const [transform, setTransform] = useState(0)
 
-
-    const handleScroll = () => {
-        setTransform(window.pageYOffset)
-    }
-
-    useEffect(() => {
-        document.addEventListener('scroll', handleScroll)
-        return () => {
-            document.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
+    
 
     const classes = useStyles()
     return (
-        <Grid container  className={classes.banner}>
+        <Grid container className={classes.banner}>
                 <Grid item xs={12} align="center">
                     <CardMedia
                         image={`${process.env.REACT_APP_BASE_URL}/images/Openis-logos_white.png`}

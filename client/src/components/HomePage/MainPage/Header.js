@@ -1,20 +1,20 @@
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import {createStyles, makeStyles} from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
-import {useHistory} from 'react-router-dom';
-import {Auth} from "../../Auth/Auth";
-import {AuthContext} from "../../../contexts/AuthContext";
-import {useSnackbar} from "notistack";
-import {authAxios} from "../../../axios/axios";
-import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../../store/actions/logout";
-import {login} from "../../../store/actions/login";
-import {setEmail} from "../../../store/actions/setEmail";
-import {PageContext} from "../../../contexts/PageContext";
+import { useHistory } from 'react-router-dom';
+import { Auth } from "../../Auth/Auth";
+import { AuthContext } from "../../../contexts/AuthContext";
+import { useSnackbar } from "notistack";
+import { authAxios } from "../../../axios/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../store/actions/logout";
+import { login } from "../../../store/actions/login";
+import { setEmail } from "../../../store/actions/setEmail";
+import { PageContext } from "../../../contexts/PageContext";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() =>
             paddingTop: 20
         },
         solidAppBar: {
-            backgroundColor: 'primary',
+            backgroundColor: 'white',
             // transition: 'all .5s ease 0s',
         }
     }),
@@ -47,15 +47,15 @@ const useStyles = makeStyles(() =>
 
 const Header = () => {
 
-    const {enqueueSnackbar} = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar()
     const history = useHistory()
 
     const [appBar, setAppBar] = useState('transparentAppBar')
     const [elevation, setElevation] = useState(0)
     const [buttonColor, setButtonColor] = useState('secondary')
 
-    const {setLoginOpen} = useContext(AuthContext)
-    const {setPanelOpen} = useContext(PageContext)
+    const { setLoginOpen } = useContext(AuthContext)
+    const { setPanelOpen } = useContext(PageContext)
 
     let isUserLoggedIn = useSelector(state => state['isUserLoggedIn'])
     const dispatch = useDispatch()
@@ -64,7 +64,7 @@ const Header = () => {
     appBarRef.current = appBar
 
     const signOut = async () => {
-        await authAxios.get('/logout', {withCredentials: true})
+        await authAxios.get('/logout', { withCredentials: true })
         dispatch(logout())
         dispatch(setEmail(''))
         enqueueSnackbar('You have signed out.', {
@@ -74,9 +74,17 @@ const Header = () => {
 
 
     useEffect(() => {
-        authAxios.get('/auth', {withCredentials: true})
-            .then(() => dispatch(login()))
-            .catch(() => dispatch(logout()))
+        const authenticate = async () => {
+            try {
+                await authAxios.get('/auth', { withCredentials: true })
+                dispatch(login())
+            } catch (err) {
+                await authAxios.get('/logout', { withCredentials: true })
+                dispatch(logout())
+                dispatch(setEmail(''))
+            }
+        }
+        authenticate()
     }, [])
 
     const handleScroll = () => {
@@ -112,19 +120,19 @@ const Header = () => {
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
                         </Typography>
-                        <Button size="large" onClick={() => history.push('/about')} variant="text"
-                                style={{marginRight: 10, color: 'white'}}>About us</Button>
-                        <Button size="large" variant="text" style={{marginRight: 10, color: 'white'}}>Contact</Button>
+                        <Button  onClick={() => history.push('/about')} variant="text"
+                            style={{ marginRight: 10 }}>About us</Button>
+                        <Button variant="text" style={{ marginRight: 10 }}>Contact</Button>
                         {isUserLoggedIn ? <div>
-                            <Button size="large" variant="contained" onClick={() => setPanelOpen(true)}
-                                    color={buttonColor} style={{marginRight: 10}}>My panel</Button>
-                            <Button variant="contained" size="large" onClick={() => signOut()} color={buttonColor}>Sign
+                            <Button variant="contained" onClick={() => setPanelOpen(true)}
+                                color={buttonColor} style={{ marginRight: 10 }}>My panel</Button>
+                            <Button variant="contained" onClick={() => signOut()} color={buttonColor}>Sign
                                 out</Button>
                         </div> : <div>
-                            <Button variant="contained" size="large" onClick={() => setLoginOpen(true)}
-                                    color={buttonColor}>Sign
+                            <Button variant="contained"  onClick={() => setLoginOpen(true)}
+                                color={buttonColor}>Sign
                                 in</Button>
-                            <Auth/>
+                            <Auth />
                         </div>
                         }
                     </Toolbar>

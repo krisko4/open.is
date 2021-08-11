@@ -1,12 +1,10 @@
 import React, {FC, useState} from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-
 import {Step1} from "./Step1/Step1";
-import {Grid} from "@material-ui/core";
+ import {Grid, Step, StepLabel} from "@material-ui/core";
 import {Step2} from "./Step2/Step2";
+import {Step3} from "./Step3/Step3"
 import {NewPlaceProps} from "../NewPlaceProps";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function getSteps() {
-    return ['Name your place', 'Place details', 'Address details'];
+    return ['Name your place', 'Place details', 'Contact details', 'Address details'];
 }
 
 function getStepContent(step: number, setActiveStep:  React.Dispatch<React.SetStateAction<number>>) {
@@ -30,9 +28,9 @@ function getStepContent(step: number, setActiveStep:  React.Dispatch<React.SetSt
         case 0:
             return <Step1 setActiveStep={setActiveStep}/>
         case 1:
-            return <Step2/>
+            return <Step2 setActiveStep={setActiveStep}/>
         case 2:
-            return 'This is the bit I really care about!';
+            return <Step3 setActiveStep={setActiveStep}/>
         default:
             return 'Unknown step';
     }
