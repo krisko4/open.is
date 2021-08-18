@@ -35,17 +35,15 @@ export const Dashboard: FC<Props> = ({setSelectedOption}) => {
                         <Card elevation={3} style={{borderRadius: 15, marginRight: 10}}>
                             <CardContent>
                                 <Typography style={{fontWeight: 'bold'}} variant="overline">Total visits</Typography>
-                                <Typography variant="body1" style={{marginTop: 5}}>
-                                    <Grid container>
+                                    <Grid container style={{marginTop: 5}}>
                                         <Grid container item lg={10} alignItems="center">
                                             <TrendingUpIcon style={{color: 'lightgreen'}}/>
                                             <span style={{marginLeft: 5}}>+10.5%</span>
                                         </Grid>
-                                        <Grid item lg={2} alignItems="center">
+                                        <Grid item lg={2} >
                                             <EqualizerIcon fontSize="large" color="primary"/>
                                         </Grid>
                                     </Grid>
-                                </Typography>
                                 <Typography variant="h3">
                                     18 000
                                 </Typography>
@@ -56,17 +54,15 @@ export const Dashboard: FC<Props> = ({setSelectedOption}) => {
                         <Card elevation={3} style={{borderRadius: 15, marginRight: 10}}>
                             <CardContent>
                                 <Typography style={{fontWeight: 'bold'}} variant="overline">Total opinions</Typography>
-                                <Typography variant="body1" style={{marginTop: 5}}>
-                                    <Grid container>
+                                    <Grid container style={{marginTop: 5}}>
                                         <Grid container item lg={10} alignItems="center">
                                             <TrendingUpIcon style={{color: 'lightgreen'}}/>
                                             <span style={{marginLeft: 5}}>+10.5%</span>
                                         </Grid>
-                                        <Grid item lg={2} alignItems="center">
+                                        <Grid item lg={2} >
                                             <EqualizerIcon fontSize="large" color="primary"/>
                                         </Grid>
                                     </Grid>
-                                </Typography>
                                 <Typography variant="h3">
                                     18 000
                                 </Typography>

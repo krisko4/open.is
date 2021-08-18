@@ -2,9 +2,10 @@ import * as React from 'react';
 import Grid from "@material-ui/core/Grid";
 import {CardContent} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
+import { FC } from 'react';
 
 
-export const BasicInformation = () => {
+export const BasicInformation : FC = () => {
     return (
         <Grid container direction="row" justify="center">
             <Grid item xs={6} style={{marginTop: 20}}>

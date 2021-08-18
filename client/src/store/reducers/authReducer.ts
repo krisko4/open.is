@@ -1,4 +1,6 @@
-export const authReducer = (state = false, action) => {
+import {PayloadAction} from '@reduxjs/toolkit'
+
+export const authReducer = (state = false, action : PayloadAction) => {
 
     switch(action.type){
         case 'SIGN_IN':

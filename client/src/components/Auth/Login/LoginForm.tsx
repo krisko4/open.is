@@ -1,26 +1,26 @@
-import {Field, Form, Formik} from "formik";
-import DialogContent from "@material-ui/core/DialogContent";
+import { Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
-import {Typography} from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
-import {GoogleLoginButton} from "../GoogleLoginButton";
-import {FacebookLoginButton} from "../FacebookLoginButton";
-import * as React from "react";
+import TextField from "@material-ui/core/TextField";
+import { Field, Form, Formik } from "formik";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import {useContext, useState} from "react";
-import {AuthContext} from "../../../contexts/AuthContext";
-import {LoadingButton} from "../../LoadingButton/LoadingButton";
-import {authAxios} from "../../../axios/axios";
-import {useSnackbar} from "notistack";
-import {useDispatch} from "react-redux";
-import {setEmail} from "../../../store/actions/setEmail";
-import {login} from "../../../store/actions/login";
+import { authAxios } from "../../../axios/axios";
+import { useAuthContext } from "../../../contexts/AuthContext";
+import { login } from "../../../store/actions/login";
+import { setEmail } from "../../../store/actions/setEmail";
+import { LoadingButton } from "../../LoadingButton/LoadingButton";
 
 
-
+interface UserData {
+    email: string,
+    password: string
+}
 
 const loginFields = {
     email: '',
@@ -28,7 +28,7 @@ const loginFields = {
 }
 
 const LoginSchema = Yup.object().shape({
-    email: Yup.string().required(),
+    email: Yup.string().email().required(),
     password: Yup.string()
         .required()
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/)
@@ -36,12 +36,14 @@ const LoginSchema = Yup.object().shape({
 export const LoginForm = () => {
 
 
-    const {setLoginOpen, setRegistrationOpen} = useContext(AuthContext)
+    const {setLoginOpen, setRegistrationOpen} = useAuthContext()
     const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const {enqueueSnackbar} = useSnackbar()
     const dispatch = useDispatch()
 
-    const signIn = async (userData) => {
+    const signIn = async (userData : UserData) => {
+        setErrorMessage('')
         setLoading(true)
         try{
             await authAxios.post('/login', {...userData}, {withCredentials: true})
@@ -53,6 +55,8 @@ export const LoginForm = () => {
             })
         } catch(err){
             console.log(err)
+            setErrorMessage('Invalid credentials')
+
         }finally {
             setLoading(false)
         }
@@ -73,17 +77,18 @@ export const LoginForm = () => {
                                     <Grid item lg={10} style={{marginBottom: 10}}>
                                         <Typography variant="h6" style={{fontWeight: 'bold'}}>Hello!</Typography>
                                         <Typography variant="body2" style={{color: 'grey'}}>Please sign in to continue</Typography>
+                                        {errorMessage && <Typography variant="body2" style={{textAlign: 'center', color: 'red', marginTop: 10}}>{errorMessage}</Typography>}
                                     </Grid>
-                                    <Grid item lg={10} align="center">
+                                    <Grid item lg={10} style={{textAlign: 'center'}}>
                                         <Field as={TextField} name="email" type="email" fullWidth={true}  style={{marginBottom: 10}}
                                                label="E-mail"/>
                                     </Grid>
-                                    <Grid item lg={10} align="center" style={{marginBottom: 10}}>
+                                    <Grid item lg={10}  style={{marginBottom: 10, textAlign: 'center'}}>
                                         <Field as={TextField} name="password" type="password" fullWidth={true}
                                                label="Password"/>
                                         <Link variant="caption">I forgot my password</Link>
                                     </Grid>
-                                    <Grid item lg={10} align="center">
+                                    <Grid item lg={10} style={{textAlign: 'center'}}>
                                         <LoadingButton
                                             loading={loading}
                                             fullWidth={true}
@@ -96,7 +101,7 @@ export const LoginForm = () => {
                                             Sign in
                                         </LoadingButton>
                                     </Grid>
-                                    <Grid item lg={10} align="center">
+                                    <Grid item lg={10} style={{textAlign: 'center'}}>
                                         <h4>OR</h4>
                                     </Grid>
                                     {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
@@ -105,7 +110,7 @@ export const LoginForm = () => {
                                     {/*<Grid item lg={10}>*/}
                                     {/*    <FacebookLoginButton/>*/}
                                     {/*</Grid>*/}
-                                    <Grid item lg={10} align="center">
+                                    <Grid item lg={10} style={{textAlign: 'center'}}>
                                         <Typography variant="caption">Don't have an account? <Link onClick={() => {
                                             setRegistrationOpen(true);
                                             setLoginOpen(false)

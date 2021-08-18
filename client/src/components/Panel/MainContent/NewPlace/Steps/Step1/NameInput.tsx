@@ -1,6 +1,7 @@
 import {InputAdornment, TextField} from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
-import React, {FC, useEffect, useRef, useState} from "react";
+import React, {FC, useContext, useEffect, useRef, useState} from "react";
+import { StepContext } from "../../../../../../contexts/StepContext";
 import {getPlacesByName} from "../../../../../../requests/PlaceRequests";
 
 
@@ -9,13 +10,15 @@ import {getPlacesByName} from "../../../../../../requests/PlaceRequests";
 interface Props {
     isNameCorrect :  boolean,
     setNameCorrect : React.Dispatch<React.SetStateAction<boolean>>,
-    setButtonLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setButtonLoading : React.Dispatch<React.SetStateAction<boolean>>,
+    placeName : string,
+    setPlaceName : React.Dispatch<React.SetStateAction<string>>
 }
 
 
-export const NameInput : FC<Props> = ({isNameCorrect, setNameCorrect, setButtonLoading}) => {
 
-    const [placeName, setPlaceName] = useState('')
+export const NameInput : FC<Props> = ({isNameCorrect, placeName, setPlaceName,setNameCorrect, setButtonLoading }) => {
+
     const firstRenderRef = useRef(true)
 
     const validatePlaceName = async(name : string) => {

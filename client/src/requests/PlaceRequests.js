@@ -4,7 +4,7 @@ import {OpenStreetMapProvider} from "leaflet-geosearch";
 
 const provider = new OpenStreetMapProvider({});
 
-const findByAddress = (inputValue, setSelectedPlaces) => {
+export const findByAddress = (inputValue, setSelectedPlaces) => {
     provider.search({query: inputValue}).then(function (result) {
         if (result) {
             const inputArray = inputValue.split(' ')

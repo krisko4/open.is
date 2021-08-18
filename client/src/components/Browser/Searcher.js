@@ -1,15 +1,15 @@
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import React, {useContext, useEffect, useRef, useState} from "react";
-import {createStyles, makeStyles} from "@material-ui/core/styles";
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Avatar from "@material-ui/core/Avatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import {SelectedPlacesContext} from "../../contexts/SelectedPlacesContext";
-import {getPlacesByAddress, getPlaces} from "../../requests/PlaceRequests";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import React, { useEffect, useRef, useState } from "react";
+import { useSelectedPlacesContext } from "../../contexts/SelectedPlacesContext";
+import { getPlaces, getPlacesByAddress } from "../../requests/PlaceRequests";
 
 
 const useStyles = makeStyles((theme) =>
@@ -67,7 +67,7 @@ const Searcher = () => {
 
     const classes = useStyles()
 
-    const {selectedPlaces, setSelectedPlaces, chosenCriterias, setChosenCriterias} = useContext(SelectedPlacesContext)
+    const {selectedPlaces, setSelectedPlaces, chosenCriterias, setChosenCriterias} = useSelectedPlacesContext() 
     const [inputValue, setInputValue] = useState('')
     const [open, setOpen] = useState(false)
     const loading = open && selectedPlaces.length === 0 && inputValue.length > 0

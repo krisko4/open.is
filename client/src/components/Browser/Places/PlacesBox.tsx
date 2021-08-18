@@ -1,24 +1,24 @@
 import Grid from "@material-ui/core/Grid";
-import React, {useContext, useEffect, useRef, useState} from "react";
-import PlaceCard from "./PlaceCard";
-import {Scrollbars} from 'react-custom-scrollbars';
 import ListItem from "@material-ui/core/ListItem";
-import PlaceDetails from "./PlaceDetails/PlaceDetails";
-import {SelectedPlacesContext} from "../../../contexts/SelectedPlacesContext";
-import {MapContext} from "../../../contexts/MapContext";
+import React, { FC, useRef, useState } from "react";
+import { Scrollbars } from 'react-custom-scrollbars';
+import { useMapContext } from "../../../contexts/MapContext/MapContext";
+import { useSelectedPlacesContext } from "../../../contexts/SelectedPlacesContext";
+import { PlaceCard } from "./PlaceCard";
+import { PlaceDetails } from "./PlaceDetails/PlaceDetails";
 
 
-const PlacesBox = () => {
+const PlacesBox : FC = () => {
 
 
-    const {setMapCenter, setMapZoom, setPopupOpen} = useContext(MapContext)
+    const {setMapCenter, setMapZoom, setPopupOpen} = useMapContext() 
 
 
     const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
-    const {chosenCriterias} = useContext(SelectedPlacesContext)
+    const {chosenCriterias} = useSelectedPlacesContext()
     const currentPlace = useRef(null)
 
-    const openPlaceDetails = (place) => {
+    const openPlaceDetails = (place : any) => {
         currentPlace.current = place
         setPlaceCardClicked(true)
         setMapCenter([place.lat, place.lng])

@@ -1,11 +1,11 @@
+import { CardContent } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
-import {CardContent} from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import React, {useState} from "react";
+import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import Typography from "@material-ui/core/Typography";
 import createStyles from "@material-ui/styles/createStyles";
+import React, { FC } from "react";
 
 
 const useStyles = makeStyles(() =>
@@ -26,8 +26,11 @@ const useStyles = makeStyles(() =>
     })
 )
 
+interface PlaceProps {
+    place: any
+}
 
-const PlaceCard = ({place}) => {
+export const PlaceCard : FC<PlaceProps> = ({place}) => {
     const classes = useStyles()
     return (
         <Card
@@ -53,7 +56,7 @@ const PlaceCard = ({place}) => {
                         </Grid>
                     </Grid>
                     <Grid container item lg={1} alignItems="center"  style={{color: 'white'}}>
-                        <Grid item lg={12} align="end">
+                        <Grid item lg={12} style={{textAlign: 'end'}}>
                             STATUS:
                             <Typography variant="body1" style={{color: 'green', fontWeight: 'bold'}}>
                                 {place.status.toUpperCase()}
@@ -67,4 +70,3 @@ const PlaceCard = ({place}) => {
     )
 }
 
-export default PlaceCard

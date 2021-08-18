@@ -1,13 +1,12 @@
+import { ThemeProvider } from "@material-ui/styles";
+import { SnackbarProvider } from "notistack";
 import React from "react";
-import {ThemeProvider} from "@material-ui/styles";
-import theme from './components/Theme'
-import HomePage from "./components/HomePage/MainPage/HomePage";
-import {Route, BrowserRouter as Router} from "react-router-dom";
-import About from "./components/HomePage/About";
-import Contact from "./components/HomePage/Contact";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Browser from "./components/Browser/Browser";
-import {SnackbarProvider} from "notistack";
-import {PageSelector} from "./components/PageSelector";
+import {About} from "./components/HomePage/About";
+import {Contact} from "./components/HomePage/Contact";
+import { PageSelector } from "./components/PageSelector";
+import theme from './components/Theme';
 import PageContextProvider from "./contexts/PageContext";
 
 

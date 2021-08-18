@@ -10,7 +10,7 @@ import {ChosenOptions, SelectedOptionProps} from "./MainContentProps";
 export const MainContent:FC<SelectedOptionProps> = ({selectedOption, setSelectedOption}) => {
 
     return (
-        <Grid container justify="center" direction="row"  item lg={10}>
+        <Grid container justify="center" direction="row" style={{background: '#F5F5F5'}}  item lg={10}>
           {selectedOption === ChosenOptions.DASHBOARD && <Dashboard setSelectedOption={setSelectedOption}/>}
           {selectedOption === ChosenOptions.NEW_PLACE && <NewPlace/>}
       </Grid>

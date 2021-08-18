@@ -1,5 +1,5 @@
 import Grid from "@material-ui/core/Grid";
-import React, {useContext, useEffect, useRef} from "react";
+import  { useContext, useEffect, useRef} from "react";
 import {MapContainer, Marker, Popup, TileLayer, useMap} from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -8,7 +8,7 @@ import L from 'leaflet';
 import Avatar from "@material-ui/core/Avatar";
 import {Typography} from "@material-ui/core";
 import {SelectedPlacesContext} from "../../contexts/SelectedPlacesContext";
-import {MapContext} from "../../contexts/MapContext";
+import {MapContext} from '../../contexts/MapContext/MapContext'
 
 
 let DefaultIcon = L.icon({
@@ -19,7 +19,7 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 
-const MapBox = () => {
+const MapBox  = ({tileLayer}) => {
 
     const {mapCenter, popupOpen, mapZoom} = useContext(MapContext)
     const {chosenCriterias} = useContext(SelectedPlacesContext)
@@ -35,6 +35,7 @@ const MapBox = () => {
 
     useEffect(() => {
         if(firstRender.current){
+            console.log(tileLayer)
             firstRender.current = false
             return
         }
@@ -46,13 +47,11 @@ const MapBox = () => {
     }, [popupOpen])
 
     return (
-        <Grid item lg={6}>
-            <MapContainer style={{height: "100%", flexGrow: 1}} center={mapCenter} zoom={mapZoom}
+            <MapContainer style={{height: '100%', flexGrow: 1}} center={mapCenter} zoom={mapZoom}
                           scrollWheelZoom={true}>
                 <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
+                    attribution={tileLayer.attribution}
+                    url={tileLayer.url}
                 />
                 {
                     chosenCriterias.map((criterium, index) => {
@@ -72,7 +71,6 @@ const MapBox = () => {
                 }
                 <SetViewOnClick coords={mapCenter} mapZoom={mapZoom}/>
             </MapContainer>
-        </Grid>
     )
 }
 

@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useContext} from "react";
 import {Card, CardContent, Typography} from "@material-ui/core";
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from "@material-ui/core/Grid";
@@ -7,22 +7,26 @@ import Divider from "@material-ui/core/Divider";
 import PhoneIcon from "@material-ui/icons/Phone";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LanguageIcon from "@material-ui/icons/Language";
+import { StepContext, useStepContext } from "../../../../contexts/StepContext";
+
 
 
 export const PlaceDetailsCard : FC = () => {
 
+    const {placeName, placeDetails, contactDetails} = useStepContext()
+
     const icons = [
         {
             icon: <PhoneIcon color="primary"/>,
-            text: '1212313312'
+            text: contactDetails.phoneNumber || 'Phone number'
         },
         {
             icon: <MailOutlineIcon color="primary"/>,
-            text: 'dodo@odod.com'
+            text: contactDetails.email || 'Contact e-mail'
         },
         {
             icon: <LanguageIcon color="primary"/>,
-            text: 'www.dodo.com'
+           text: contactDetails.website || 'Website address'
         },
     ]
 
@@ -42,20 +46,21 @@ export const PlaceDetailsCard : FC = () => {
                             style={{height: 200}}
                         />
                     </Grid>
-                    <Grid item lg={6} container justify="center" direction="column" style={{textAlign: 'center', alignItems: 'center'}}>
+                    <Grid item lg={6} container justify="center" direction="column" style={{textAlign: 'center', marginLeft: 10, alignItems: 'center'}}>
                         <Typography variant="h3" style={{ fontWeight: 'bold'}}>
-                            McDonald's Polska
+                           {placeName || 'Business name'} 
                         </Typography>
                         <Typography variant="h6" >
-                            Najlepsza jadłodajlnia w Polszy
+                            {placeDetails.subtitle || 'This is a short subtitle of my place'} 
                         </Typography>
                             <Rating
                                 name="simple-controlled"
                                 value={5}
                             />
-                            <Typography variant="body1" style={{fontStyle: 'italic'}}>Restauracja</Typography>
-                            <Typography variant="body1" style={{marginTop: 10}}>Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                across all continents except Antarctica</Typography>
+                            <Typography variant="body1" style={{fontStyle: 'italic'}}>{placeDetails.type || 'Business type'}</Typography>
+                            <Typography variant="body1" style={{marginTop: 10}}>
+                                {placeDetails.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
+                                </Typography>
                     </Grid>
                     <Grid item container lg={12} style={{marginTop: 10}} justify="center">
                         <Grid item lg={10}>

@@ -7,7 +7,7 @@ const Section4 = () => {
     return (
         <Grid
             container
-            style={{marginTop: 100, backgroundColor: 'black', background: '#002244'}}
+            style={{marginTop: 100, background: '#002244'}}
             justify="center"
         >
             <Grid item lg={5}  style = {{marginTop: 100, color: 'white'}}>

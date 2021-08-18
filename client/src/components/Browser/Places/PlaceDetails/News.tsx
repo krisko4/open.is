@@ -1,19 +1,17 @@
-import React from "react";
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import TimelineDot from "@material-ui/lab/TimelineDot";
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import Timeline from "@material-ui/lab/Timeline";
 import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import TimelineContent from "@material-ui/lab/TimelineContent";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+import TimelineDot from "@material-ui/lab/TimelineDot";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

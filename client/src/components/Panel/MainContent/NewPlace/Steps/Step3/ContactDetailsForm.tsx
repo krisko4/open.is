@@ -1,23 +1,16 @@
 import { Button, Grid, TextField, Typography } from "@material-ui/core";
 import { Field, Form, Formik } from "formik";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
+import { StepContext, useStepContext } from "../../../../../../contexts/StepContext";
 import { StepProps } from "../StepProps";
 
-interface ContactTypes {
-    phoneNumber: string,
-    website: string,
-    email: string
-}
-const contactDetails = {
-    phoneNumber: '',
-    website: '',
-    email: ''
-}
 
-export const ContactDetailsForm: FC<StepProps> = ({setActiveStep}) => {
+export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
 
-    const handleSubmit = (values : ContactTypes) => {
+    const { contactDetails, setContactDetails } = useStepContext()
+    const handleSubmit = (values: typeof contactDetails) => {
         console.log('hello')
+        console.log(values)
         setActiveStep(3)
     }
     return (
@@ -25,16 +18,22 @@ export const ContactDetailsForm: FC<StepProps> = ({setActiveStep}) => {
             initialValues={contactDetails}
             onSubmit={(values) => { handleSubmit(values) }}
         >
-            {({ dirty, isValid }) => (
+            {({ dirty, isValid, setFieldValue, values }) => (
                 <Form>
-                    <Grid item container lg={12} justify="space-evenly"> 
+                    <Grid item container lg={12} justify="space-evenly">
                         <Grid item lg={5} style={{ marginTop: 20 }}>
                             <Typography>
                                 Please provide a contact phone number
                             </Typography>
                         </Grid>
                         <Grid item lg={5}>
-                        <Field fullWidth={true} as={TextField} name="phoneNumber" label="Phone number" />
+                            <Field
+                                fullWidth={true}
+                                onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('phoneNumber', e.target.value); setContactDetails(values) }}
+                                as={TextField}
+                                name="phoneNumber"
+                                label="Phone number"
+                            />
                         </Grid>
                         <Grid item lg={5} style={{ marginTop: 20 }}>
                             <Typography>
@@ -42,17 +41,33 @@ export const ContactDetailsForm: FC<StepProps> = ({setActiveStep}) => {
                             </Typography>
                         </Grid>
                         <Grid item lg={5}>
-                            <Field as={TextField} label="example@mail.com" name="email" fullWidth={true}></Field>
+                            <Field
+                                as={TextField}
+                                label="example@mail.com"
+                                name="email"
+                                fullWidth={true}
+                                onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('email', e.target.value); setContactDetails(values) }}
+                            >
+
+                            </Field>
                         </Grid>
                         <Grid item lg={5} style={{ marginTop: 20 }}>
                             <Typography>
-                            Please provide your personal website
+                                Please provide your personal website address
                             </Typography>
                         </Grid>
                         <Grid item lg={5}>
-                            <Field as={TextField} label="http://example.com" name="website" fullWidth={true}></Field>
+                            <Field
+                                as={TextField}
+                                label="http://example.com"
+                                name="website"
+                                fullWidth={true}
+                                onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('website', e.target.value); setContactDetails(values) }}
+                            >
+
+                            </Field>
                         </Grid>
-                        <Grid item lg={10} style={{marginTop: 10}}>
+                        <Grid item lg={10} style={{ marginTop: 10 }}>
                             <Button
                                 fullWidth={true}
                                 variant="contained"

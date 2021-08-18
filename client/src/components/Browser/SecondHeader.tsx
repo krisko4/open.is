@@ -1,13 +1,13 @@
-import Toolbar from "@material-ui/core/Toolbar";
-import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
-import React, {useEffect, useState} from "react";
+import Grid from "@material-ui/core/Grid";
+import Toolbar from "@material-ui/core/Toolbar";
+import React, { FC } from "react";
 import Searcher from "./Searcher";
 
 
 
 
-const SecondHeader = () => {
+export const SecondHeader : FC = () => {
 
 
     return (
@@ -26,5 +26,3 @@ const SecondHeader = () => {
         </AppBar>
     )
 }
-
-export default SecondHeader

@@ -40,15 +40,15 @@ const createOpinions = ({image}) => {
                           src={opinion.image}
                           className={image}/>
                       <Grid item xs={6} style={{marginLeft: 10}}>
-                          <h2 style={{color: '#2196f3'}}>{opinion.name}</h2>
-                          <div style={{fontStyle: 'italic'}}>{opinion.content}</div>
+                          <h2 style={{color: 'white'}}>{opinion.name}</h2>
+                          <div style={{fontStyle: 'italic', color: 'lightgrey'}}>{opinion.content}</div>
                       </Grid>
                   </Grid>
         </Grid>)
     })
 }
 
-const Section5 = ({text, image}) => {
+const Section5 = ({image}) => {
 
 
     return (
@@ -60,12 +60,12 @@ const Section5 = ({text, image}) => {
             justify="center"
         >
             <Grid item xs={12} align="center">
-                <Typography variant="h2" style={{fontWeight: 'bold'}}>
+                <Typography variant="h2" style={{fontWeight: 'bold', color: 'white'}}>
                     Trusted by people
                 </Typography>
             </Grid>
             <Grid item xs={7} align="center">
-                <Typography variant="h5" style={{marginTop: 20}} className={text}>
+                <Typography variant="h5" style={{marginTop: 20, color: 'lightgray'}}>
                     We are extremely grateful for the feedback provided by our users. Your opinions are highly
                     appreciated.
                     Below you can find some of them:

@@ -1,7 +1,5 @@
 import React, {FC} from "react";
-import {Grid, MenuItem, Select, TextField, Typography} from "@material-ui/core";
-import {Field, Formik} from "formik";
-import {Autocomplete} from "@material-ui/lab";
+import {Grid, Typography} from "@material-ui/core";
 import {ContactDetailsForm} from "./ContactDetailsForm"
 import { StepProps } from "../StepProps";
 
