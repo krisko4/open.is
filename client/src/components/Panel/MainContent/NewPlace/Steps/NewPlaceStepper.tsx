@@ -1,43 +1,31 @@
-import React, { FC, useState } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import { Step1 } from "./Step1/Step1";
 import { Grid, Step, StepLabel } from "@material-ui/core";
+import Stepper from '@material-ui/core/Stepper';
+import React, { FC } from 'react';
+import { useStepContext } from "../../../../../contexts/StepContext";
+import { Step1 } from "./Step1/Step1";
 import { Step2 } from "./Step2/Step2";
-import { Step3 } from "./Step3/Step3"
-import { Step4 } from "./Step4/Step4"
-import { Step5 } from './Step5/Step5'
-import { NewPlaceProps } from "../NewPlaceProps";
-import {StepContextProvider} from '../../../../../contexts/StepContext'
+import { Step3 } from "./Step3/Step3";
+import { Step4 } from "./Step4/Step4";
+import { Step5 } from './Step5/Step5';
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        button: {
-            marginRight: theme.spacing(1),
-        },
 
-    }),
-);
 
 function getSteps() {
     return ['Name your place', 'Place details', 'Contact details', 'Address details', 'Representative image'];
 }
 
-function getStepContent(step: number, setActiveStep: React.Dispatch<React.SetStateAction<number>>) {
+function getStepContent(step: number) {
     switch (step) {
         case 0:
-            return <Step1 setActiveStep={setActiveStep} />
+            return <Step1 />
         case 1:
-            return <Step2 setActiveStep={setActiveStep} />
+            return <Step2 />
         case 2:
-            return <Step3 setActiveStep={setActiveStep} />
+            return <Step3 />
         case 3:
-            return <Step4 setActiveStep={setActiveStep} />
+            return <Step4 />
         case 4:
-            return <Step5 setActiveStep={setActiveStep} />
+            return <Step5 />
         default:
             return 'Unknown step';
     }
@@ -45,51 +33,10 @@ function getStepContent(step: number, setActiveStep: React.Dispatch<React.SetSta
 
 
 
-export const NewPlaceStepper: FC<NewPlaceProps> = ({ activeStep, setActiveStep }) => {
+export const NewPlaceStepper: FC = () => {
 
-    const classes = useStyles();
-
-    // const [skipped, setSkipped] = useState(new Set<number>());
     const steps = getSteps();
-
-    // const isStepOptional = (step: number) => {
-    //     return step === 1;
-    // };
-
-    // const isStepSkipped = (step: number) => {
-    //     return skipped.has(step);
-    // };
-
-    // const handleNext = () => {
-    //     let newSkipped = skipped;
-    //     if (isStepSkipped(activeStep)) {
-    //         newSkipped = new Set(newSkipped.values());
-    //         newSkipped.delete(activeStep);
-    //     }
-    //
-    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //     setSkipped(newSkipped);
-    // };
-    //
-    // const handleBack = () => {
-    //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    // };
-    //
-    // const handleSkip = () => {
-    //     if (!isStepOptional(activeStep)) {
-    //         // You probably want to guard against something like this,
-    //         // it should never occur unless someone's actively trying to break something.
-    //         throw new Error("You can't skip a step that isn't optional.");
-    //     }
-    //
-    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //     setSkipped((prevSkipped) => {
-    //         const newSkipped = new Set(prevSkipped.values());
-    //         newSkipped.add(activeStep);
-    //         return newSkipped;
-    //     });
-    // };
-
+    const { activeStep} = useStepContext()
 
     return (
         <Grid container>
@@ -107,35 +54,8 @@ export const NewPlaceStepper: FC<NewPlaceProps> = ({ activeStep, setActiveStep }
                 </Stepper>
             </Grid>
             <Grid item container justify="center" lg={12}>
-                    {getStepContent(activeStep, setActiveStep)}
+                {getStepContent(activeStep)}
             </Grid>
-
-            {/*<div>*/}
-            {/*    <Typography >{getStepContent(activeStep)}</Typography>*/}
-            {/*    <div>*/}
-            {/*        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>*/}
-            {/*            Back*/}
-            {/*        </Button>*/}
-            {/*        {isStepOptional(activeStep) && (*/}
-            {/*            <Button*/}
-            {/*                variant="contained"*/}
-            {/*                color="primary"*/}
-            {/*                onClick={handleSkip}*/}
-            {/*                className={classes.button}*/}
-            {/*            >*/}
-            {/*                Skip*/}
-            {/*            </Button>*/}
-            {/*        )}*/}
-            {/*        <Button*/}
-            {/*            variant="contained"*/}
-            {/*            color="primary"*/}
-            {/*            onClick={handleNext}*/}
-            {/*            className={classes.button}*/}
-            {/*        >*/}
-            {/*            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}*/}
-            {/*        </Button>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </Grid>
     );
 }

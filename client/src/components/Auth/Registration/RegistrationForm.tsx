@@ -11,7 +11,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import myAxios from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { LoadingButton } from "../../LoadingButton/LoadingButton";
+import { LoadingButton } from "../../reusable/LoadingButton";
 
 const registrationFields = {
     firstName: '',

@@ -14,7 +14,7 @@ import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { login } from "../../../store/actions/login";
 import { setEmail } from "../../../store/actions/setEmail";
-import { LoadingButton } from "../../LoadingButton/LoadingButton";
+import { LoadingButton } from "../../reusable/LoadingButton";
 
 
 interface UserData {

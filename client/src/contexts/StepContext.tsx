@@ -7,7 +7,7 @@ export const StepContext = createContext<StepContextData | null>(null)
 
 export const StepContextProvider: FC<ContextProps> = ({ children }) => {
     const value = useProviderSettings()
-    
+
     return (
         <StepContext.Provider value={value}>
             {children}
@@ -15,25 +15,22 @@ export const StepContextProvider: FC<ContextProps> = ({ children }) => {
     )
 }
 
+interface PlaceDetailsTypes {
+    type: string | null,
+    subtitle: string,
+    description: string
+}
+
 const useProviderSettings = () => {
     const [placeName, setPlaceName] = useState('')
-    const [placeDetails, setPlaceDetails] = useState({
-        type: null,
+    const [activeStep, setActiveStep] = useState(0)
+    const [placeDetails, setPlaceDetails] = useState<PlaceDetailsTypes>({
+        type: '',
         subtitle: '',
         description: '',
-        // phoneNumber: '',
-        // email: '',
-        // website: ''
     })
 
-    // const placeDetails = {
-    //     type: '',
-    //     subtitle: '',
-    //     description: '',
-    //     phoneNumber: '',
-    //     email: '',
-    //     website: ''
-    // }
+    const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
 
     const [contactDetails, setContactDetails] = useState({
         phoneNumber: '',
@@ -41,12 +38,17 @@ const useProviderSettings = () => {
         email: ''
     })
     return {
+        activeStep,
+        setActiveStep,
         placeName,
         setPlaceName,
         placeDetails,
         setPlaceDetails,
         contactDetails,
-        setContactDetails
+        setContactDetails,
+        uploadedImage,
+        setUploadedImage
+
     }
 }
 type StepContextData = ReturnType<typeof useProviderSettings>

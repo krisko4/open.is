@@ -1,6 +1,4 @@
-import * as React from 'react';
 import Button from "@material-ui/core/Button";
-import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import FacebookIcon from "@material-ui/icons/Facebook";
 

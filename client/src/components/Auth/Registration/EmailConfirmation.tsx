@@ -7,7 +7,7 @@ import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import myAxios from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { LoadingButton } from "../../LoadingButton/LoadingButton";
+import { LoadingButton } from "../../reusable/LoadingButton";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 

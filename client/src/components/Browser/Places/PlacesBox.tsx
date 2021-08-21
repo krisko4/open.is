@@ -11,6 +11,7 @@ import { PlaceDetails } from "./PlaceDetails/PlaceDetails";
 const PlacesBox : FC = () => {
 
 
+
     const {setMapCenter, setMapZoom, setPopupOpen} = useMapContext() 
 
 

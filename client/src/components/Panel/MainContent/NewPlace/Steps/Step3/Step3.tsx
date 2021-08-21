@@ -1,9 +1,9 @@
 import React, {FC} from "react";
 import {Grid, Typography} from "@material-ui/core";
 import {ContactDetailsForm} from "./ContactDetailsForm"
-import { StepProps } from "../StepProps";
 
-export const Step3: FC<StepProps> = ({ setActiveStep })  => {
+
+export const Step3: FC = ()  => {
 
     return (
         <Grid item lg={12} container justify="center">
@@ -13,7 +13,7 @@ export const Step3: FC<StepProps> = ({ setActiveStep })  => {
             <Grid item lg={12} style={{textAlign: 'center'}}>
                 <Typography variant="subtitle1">Contact details</Typography>
             </Grid>
-           <ContactDetailsForm setActiveStep={setActiveStep}/>
+           <ContactDetailsForm />
         </Grid>
     )
 }

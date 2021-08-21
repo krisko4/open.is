@@ -5,6 +5,7 @@ import React from "react";
 
 
 const Section1 = ({image}) => {
+    
     return (
         <Grid container justify="space-between" style={{marginTop: 100}}>
             <Grid item xs={8} lg={6} align="center">

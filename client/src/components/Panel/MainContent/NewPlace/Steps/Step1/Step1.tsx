@@ -1,23 +1,19 @@
-import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@material-ui/core";
+import React, { FC, useState } from "react";
+import { useStepContext } from "../../../../../../contexts/StepContext";
+import { LoadingButton } from "../../../../../reusable/LoadingButton";
 import { NameInput } from "./NameInput";
-import { LoadingButton } from "../../../../../LoadingButton/LoadingButton";
-import { StepContext, useStepContext } from "../../../../../../contexts/StepContext";
 
-interface Props {
-    setActiveStep: React.Dispatch<React.SetStateAction<number>>
-}
-interface StepContextProps {
-    placeName: string,
-    setPlaceName: React.Dispatch<React.SetStateAction<string>>
-}
 
-export const Step1: FC<Props> = ({ setActiveStep }) => {
+
+
+
+export const Step1: FC = () => {
 
     const [isNameCorrect, setNameCorrect] = useState(false)
     const [isButtonLoading, setButtonLoading] = useState(false)
-    const {placeName, setPlaceName} = useStepContext()
-    
+    const { placeName, setPlaceName, setActiveStep } = useStepContext()
+
 
     const submitName = () => {
         setActiveStep(1)
@@ -28,6 +24,7 @@ export const Step1: FC<Props> = ({ setActiveStep }) => {
             <Typography variant="h3">Step 1</Typography>
             <Typography variant="subtitle1">What is the name of your business?</Typography>
             <NameInput isNameCorrect={isNameCorrect} placeName={placeName} setPlaceName={setPlaceName} setButtonLoading={setButtonLoading} setNameCorrect={setNameCorrect} />
+
             <LoadingButton
                 loading={isButtonLoading}
                 disabled={!isNameCorrect}

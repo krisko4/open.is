@@ -19,7 +19,7 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 
-const MapBox  = ({tileLayer}) => {
+export const MapBox  = ({tileLayer}) => {
 
     const {mapCenter, popupOpen, mapZoom} = useContext(MapContext)
     const {chosenCriterias} = useContext(SelectedPlacesContext)
@@ -73,5 +73,3 @@ const MapBox  = ({tileLayer}) => {
             </MapContainer>
     )
 }
-
-export default MapBox

@@ -1,13 +1,22 @@
 import { Button, Grid, TextField, Typography } from "@material-ui/core";
-import { Field, Form, Formik } from "formik";
-import React, { FC, useContext } from "react";
-import { StepContext, useStepContext } from "../../../../../../contexts/StepContext";
-import { StepProps } from "../StepProps";
+import { FastField, Form, Formik } from "formik";
+import React, { FC } from "react";
+import * as Yup from 'yup';
+import { useStepContext } from "../../../../../../contexts/StepContext";
+
+const phoneRegExp = /^[0-9]*$/
 
 
-export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
 
-    const { contactDetails, setContactDetails } = useStepContext()
+const ContactDetailsSchema = Yup.object().shape({
+    phoneNumber: Yup.string().required().matches(phoneRegExp, 'Phone number is invalid'),
+    email: Yup.string().email().required(),
+    website: Yup.string().required()
+})
+
+export const ContactDetailsForm: FC = () => {
+
+    const {setActiveStep, contactDetails, setContactDetails } = useStepContext()
     const handleSubmit = (values: typeof contactDetails) => {
         console.log('hello')
         console.log(values)
@@ -16,6 +25,7 @@ export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
     return (
         <Formik
             initialValues={contactDetails}
+            validationSchema={ContactDetailsSchema}
             onSubmit={(values) => { handleSubmit(values) }}
         >
             {({ dirty, isValid, setFieldValue, values }) => (
@@ -27,11 +37,12 @@ export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
                             </Typography>
                         </Grid>
                         <Grid item lg={5}>
-                            <Field
+                            <FastField
                                 fullWidth={true}
                                 onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('phoneNumber', e.target.value); setContactDetails(values) }}
                                 as={TextField}
                                 name="phoneNumber"
+                                type="number"
                                 label="Phone number"
                             />
                         </Grid>
@@ -41,15 +52,16 @@ export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
                             </Typography>
                         </Grid>
                         <Grid item lg={5}>
-                            <Field
+                            <FastField
                                 as={TextField}
                                 label="example@mail.com"
                                 name="email"
+                                type="email"
                                 fullWidth={true}
                                 onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('email', e.target.value); setContactDetails(values) }}
                             >
 
-                            </Field>
+                            </FastField>
                         </Grid>
                         <Grid item lg={5} style={{ marginTop: 20 }}>
                             <Typography>
@@ -57,7 +69,7 @@ export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
                             </Typography>
                         </Grid>
                         <Grid item lg={5}>
-                            <Field
+                            <FastField
                                 as={TextField}
                                 label="http://example.com"
                                 name="website"
@@ -65,7 +77,7 @@ export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
                                 onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('website', e.target.value); setContactDetails(values) }}
                             >
 
-                            </Field>
+                            </FastField>
                         </Grid>
                         <Grid item lg={10} style={{ marginTop: 10 }}>
                             <Button
@@ -73,7 +85,8 @@ export const ContactDetailsForm: FC<StepProps> = ({ setActiveStep }) => {
                                 variant="contained"
                                 style={{ marginTop: 10 }}
                                 color="primary"
-                                type="submit"
+                                type="submit" 
+                                disabled={!(isValid && dirty)}
                             >
                                 Submit
                             </Button>

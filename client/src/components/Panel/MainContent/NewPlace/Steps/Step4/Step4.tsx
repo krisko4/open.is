@@ -1,22 +1,16 @@
+import { Grid, Typography } from "@material-ui/core";
 import React, { FC } from "react";
-import { Button, Grid, MenuItem, Select, TextField, Typography } from "@material-ui/core";
-import { AddressDetailsForm } from "./AddressDetailsForm";
-import MapBox from "../../../../../Browser/MapBox";
 import MapContextProvider from "../../../../../../contexts/MapContext/MapContext";
 import SelectedPlacesContextProvider from "../../../../../../contexts/SelectedPlacesContext";
 
-
-const tileLayer = {
-    attribution : '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-}
+import { AddressDetails } from "./AddressDetails";
 
 
 
-export const Step4 = ({setActiveStep}) => {
-    const submitAddress = () => {
-        setActiveStep(currentStep => currentStep + 1)
-    }
+
+
+export const Step4 : FC = () => {
+    
     return (
         <Grid item lg={12} container justify="center">
             <Grid item lg={12} style={{ textAlign: 'center' }}>
@@ -28,11 +22,7 @@ export const Step4 = ({setActiveStep}) => {
             </Grid>
             <MapContextProvider>
                 <SelectedPlacesContextProvider>
-                    <AddressDetailsForm />
-                    <Grid style={{ height: 400, marginTop: 20 }} item lg={12}>
-                        <MapBox tileLayer={tileLayer}/>
-                    </Grid>
-                    <Button variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{marginTop: 10}} color="primary">Submit</Button>
+                    <AddressDetails />
                 </SelectedPlacesContextProvider>
             </MapContextProvider>
         </Grid>
