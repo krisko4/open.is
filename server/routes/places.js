@@ -1,48 +1,50 @@
 const express = require('express');
+const jwtController = require('../API/jwt/jwt_controller');
 const router = express.Router();
 const placeController = require('../API/place/place_controller')
+const userService = require('../API/user/user_service')
+const multer = require('multer')
+const upload = multer({ dest: 'public/images/places/' })
 
+// router.use('/', (req,res, next) => {
+//     jwtController.authenticateAccessToken(req, res, next)
+// })
 
-router.get('/', function (req, res) {
+const isUserLoggedIn = async (req, res, next) => {
+    const { cookies } = req
+    const { uid } = cookies
+    if (uid) {
+        req.user = await userService.getUserById(uid)
+        next()
+        return
+    }
+    next()
 
-    placeController.getPlaces(req, res)
-    // const queryLength = Object.keys(req.query).length
-    // if(queryLength > 1){
-    //     res.status(400).json( {
-    //         error: 'Invalid request'
-    //     })
-    //     return
-    // }
-    // if(queryLength === 1){
-    //     const param = Object.keys(req.query)[0]
-    //     let searchObj = {}
-    //     searchObj[param] =  new RegExp('^' + req.query[param], 'i')
-    //     Place.find(searchObj).exec().then((docs => {
-    //         res.json(docs)
-    //         console.log(docs)
-    //     })).catch(err => {
-    //         console.log(err)
-    //         res.status(500).json({
-    //             error: err
-    //         })
-    //     })
-    //     return
-    // }
-    // Place.find().exec().then((docs => {
-    //     res.json(docs)
-    // })).catch(err => {
-    //     console.log(err)
-    //     res.status(500).json({
-    //         error: err
-    //     })
-    // })
+}
+
+router.get('/', isUserLoggedIn, async (req, res) => {
+    await placeController.getPlaces(req, res)
 });
 
-router.post('/', (req, res) => {
+router.post('/', upload.single('img'), (req, res) => {
     placeController.addPlace(req, res)
 })
 
+router.delete('/', (req, res) => {
+    placeController.deleteAll(req, res)
+})
 
+router.patch('/:id/visit-count', (req, res) => {
+    placeController.incrementVisitCount(req, res)
+})
+
+router.patch('/:id/status', (req, res) => {
+    placeController.setStatus(req, res)
+}),
+
+    router.patch('/:id/note', (req, res) => {
+        placeController.updateNote(req, res)
+    })
 
 // router.delete('/', (req, res) => {
 //     Place.deleteMany().exec().then(() => {
