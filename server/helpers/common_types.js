@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 
 const CommonTypes = {
 
@@ -13,6 +14,14 @@ const CommonTypes = {
 
     ReqObject: {
         type: Number,
+        required: true
+    },
+    ReqId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    ReqDate: {
+        type: Date,
         required: true
     }
 

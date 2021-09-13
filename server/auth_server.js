@@ -34,7 +34,7 @@ mongoose.connect(uri.mongoURI, {
     server.listen(port, () => {
         console.log('Server running on port %d', port)
     })
-})
+}).catch(err => console.log(err))
 
 
 module.exports = server;

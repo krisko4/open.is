@@ -13,23 +13,32 @@ const jwtController = {
                 // secure: true,
                 expires: addDays(new Date(), 30)
             })
-             return res.sendStatus(200)
+            //  return res.sendStatus(200)
+            next()
         } catch (err) {
-            return res.sendStatus(403)
+            res.sendStatus(403)
         }
     },
+
     async authenticateAccessToken(req, res, next) {
         const { cookies } = req
         let accessToken = cookies['access_token']
-        if (!accessToken) return res.sendStatus(401)   
+        if (!accessToken) return res.sendStatus(401)
         try {
-            jwtService.authenticateAccessToken(accessToken)
-            return res.sendStatus(200)
+            const smth = jwtService.authenticateAccessToken(accessToken)
+            console.log(smth)
+            // return res.sendStatus(200)
+            next()
         } catch (err) {
-            if (err.name === 'TokenExpiredError') return await this.refreshAccessToken(req, res, next)
-            return res.sendStatus(403)
+            if (err.name === 'TokenExpiredError') {
+                console.log('rpoblem')
+                await jwtController.refreshAccessToken(req, res, next)
+                return
+            }
+            res.sendStatus(403)
         }
     },
+
     getTokens: async (req, res) => {
         try {
             const tokens = await jwtService.getTokens()

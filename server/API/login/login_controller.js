@@ -6,7 +6,7 @@ const loginController = {
         const userData = req.body
         console.log(userData)
         try {
-            const { accessToken, refreshToken } = await loginService.login(userData)
+            const { accessToken, refreshToken, uid, fullName } = await loginService.login(userData)
             res.cookie('access_token', accessToken, {
                 httpOnly: true,
                 // secure: true,
@@ -22,24 +22,32 @@ const loginController = {
                 // secure: true,
                 expires: addDays(new Date(), 30)
             })
-            res.status(200).json('User logged in successfully.')
+            res.cookie('uid', uid, {
+                httpOnly: true,
+                expires: addDays(new Date(), 30)
+            })
+            res.status(200).json({
+                uid: uid,
+                fullName: fullName
+            })
         } catch (err) {
+            console.log(err)
             res.status(400).json(err)
         }
     },
     logout: async (req, res) => {
         const { cookies } = req
-        const email = cookies['email']
+        const uid = cookies['uid']
         res.clearCookie('access_token')
         res.clearCookie('refresh_token')
         res.clearCookie('email')
-        if (email) {
-            try {
-                await loginService.logout(email)
-                res.status(200).json('User logged out successfully.')
-            } catch (err) {
-                res.status(400).json({ error: err })
-            }
+        res.clearCookie('uid')
+        if (!uid) return res.status(400).json('uid not found in cookies.')
+        try {
+            await loginService.logout(uid)
+            res.status(200).json('User logged out successfully.')
+        } catch (err) {
+            res.status(400).json({ error: err })
         }
     }
 }

@@ -5,7 +5,7 @@ mongoose.set('useCreateIndex', true)
 
 
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     firstName: NameString,
     lastName: NameString,
@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     isActive: DefaultBoolean,
 })
 
-userSchema.plugin(uniqueValidator);
+UserSchema.plugin(uniqueValidator);
+const User = mongoose.model('User', UserSchema)
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = {
+    User,
+    UserSchema
+}

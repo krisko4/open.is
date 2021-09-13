@@ -9,10 +9,13 @@ const placesRouter = require('./routes/places')
 const registrationRouter = require('./routes/registration')
 const confirmationTokensRouter = require('./routes/confirmation_tokens')
 const confirmationRouter = require('./routes/confirmation')
+const opinionsRouter = require('./routes/opinions')
 const loginRouter = require('./routes/login')
+const newsRouter = require('./routes/news')
 const mongoose = require('mongoose')
 const uri = require('./config/keys_dev')
 const cors = require('cors')
+
 const server = express();
 server.use(cookieParser())
 const corsOptions = {
@@ -33,18 +36,20 @@ server.use('/places', placesRouter);
 server.use('/registration', registrationRouter)
 server.use('/confirmation_tokens', confirmationTokensRouter)
 server.use('/confirmation', confirmationRouter)
-
+server.use('/opinions', opinionsRouter)
+server.use('/news', newsRouter)
 
 
 mongoose.connect(uri.mongoURI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify : false
 }).then(() => {
     console.log('Successfully connected to mongoDB!')
     server.listen(port, () => {
         console.log('Server running on port %d', port)
     })
-})
+}).catch(err => console.log(err))
 
 
 module.exports = server;

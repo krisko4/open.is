@@ -1,4 +1,4 @@
-const User = require('./model/user')
+const {User} = require('./model/user')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const EMAIL_ERROR_MSG = 'E-mails are different.'
@@ -56,8 +56,9 @@ const userService = {
     },
     getUsers: () => User.find().exec(),
     getUserById: (id) => User.findById(id).exec(),
-    deleteAllUsers: () => User.deleteMany().exec(),
-    getUserByEmail: (email) => User.findOne({email: email}).exec()
+    deleteAll: () => User.deleteMany().exec(),
+    getUserByEmail: (email) => User.findOne({email: email}).exec(),
+    getFullNameById : (id) => User.findById(id, 'firstName lastName').exec()
 
 }
 

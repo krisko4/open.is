@@ -17,6 +17,10 @@ router.get('/:userId', (req, res, next) => {
     userController.getUserById(req, res)
 })
 
+router.get('/:userId/name', (req, res, next) => {
+    userController.getFullNameById(req, res)
+})
+
 router.post('/', (req, res) => {
     userController.addUser(req, res)
 })
