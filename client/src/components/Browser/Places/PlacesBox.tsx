@@ -1,6 +1,6 @@
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useMapContext } from "../../../contexts/MapContext/MapContext";
 import { useSelectedPlacesContext } from "../../../contexts/SelectedPlacesContext";
@@ -17,12 +17,13 @@ const PlacesBox : FC = () => {
 
     const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
     const {chosenCriterias} = useSelectedPlacesContext()
-    const currentPlace = useRef(null)
+    const [currentPlace, setCurrentPlace] = useState<any>()
+
 
     const openPlaceDetails = (place : any) => {
-        currentPlace.current = place
+        setCurrentPlace(place)
         setPlaceCardClicked(true)
-        setMapCenter([place.lat, place.lng])
+        setMapCenter({lat : place.lat, lng : place.lng})
         setMapZoom(18)
         setPopupOpen(true)
     }
@@ -38,7 +39,7 @@ const PlacesBox : FC = () => {
             }}>
             {!isPlaceCardClicked ?
             <Scrollbars>
-                {chosenCriterias.map((place, index) => {
+                {chosenCriterias.map((place: any, index: number) => {
                     return (
                         <ListItem
                             style={{marginTop: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8}}
@@ -51,7 +52,7 @@ const PlacesBox : FC = () => {
                     )
                 })}
             </Scrollbars>
-                : <PlaceDetails setPlaceCardClicked={setPlaceCardClicked} place={currentPlace.current}/>
+                : <PlaceDetails setPlaceCardClicked={setPlaceCardClicked} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace}/>
             }
 
         </Grid>

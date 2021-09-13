@@ -1,8 +1,9 @@
 import { Button, Grid, TextField, Typography } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import { FastField, Form, Formik } from "formik"
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import * as Yup from "yup"
+import { usePanelContext } from "../../../../../../contexts/PanelContext"
 import { useStepContext } from "../../../../../../contexts/StepContext"
 
 
@@ -10,116 +11,124 @@ const places: string[] = [
     'restaurant',
     'grocery store'
 ]
-const PlaceDetailsSchema = Yup.object().shape({
-    type: Yup.string().required(),
-    subtitle: Yup.string().required().max(50),
-    description: Yup.string().required().max(250)
-})
+// const PlaceDetailsSchema = Yup.object().shape({
+//     type: Yup.string().required(),
+//     subtitle: Yup.string().required().max(50),
+//     description: Yup.string().required().max(250)
+// })
 
 export const PlaceDetailsForm: FC = () => {
 
-    
-    let {setActiveStep, placeDetails, setPlaceDetails } = useStepContext()
 
-    const submitForm = (values: typeof placeDetails) => {
-        console.log('hello')
-        console.log(values)
-        setActiveStep(2)
+    const { setActiveStep } = useStepContext()
+    const { currentPlace, setCurrentPlace } = usePanelContext()
+
+
+    const [subtitle, setSubtitle] = useState(currentPlace.subtitle)
+    const [description, setDescription] = useState(currentPlace.description)
+    const [isDirty, setDirty] = useState(true)
+
+    useEffect(() => {
+        currentPlace.type && subtitle && description && subtitle.length < 51 && description.length < 251 ? setDirty(false) : setDirty(true)
+    }, [subtitle, description, currentPlace.type])
+
+
+    const submitAutocomplete = (value: string | null) => {
+        const newCurrentPlace = { ...currentPlace }
+        if (value) newCurrentPlace.type = value
+        setCurrentPlace(newCurrentPlace)
     }
 
-    const submitAutocomplete = (value: string | null, setFieldValue: any) => {
-        let values = { ...placeDetails }
-        values['type'] = value
-        setPlaceDetails(values)
-        setFieldValue('type', value)
-    }
+    useEffect(() => {
+        const delaySearch = setTimeout(() => {
+            const newCurrentPlace = { ...currentPlace }
+            newCurrentPlace.description = description
+            setCurrentPlace(newCurrentPlace)
+        }, 500)
+        return () => clearTimeout(delaySearch)
+    }, [description])
+
+    useEffect(() => {
+        const delaySearch = setTimeout(() => {
+            const newCurrentPlace = { ...currentPlace }
+            newCurrentPlace.subtitle = subtitle
+            setCurrentPlace(newCurrentPlace)
+        }, 500)
+        return () => clearTimeout(delaySearch)
+    }, [subtitle])
 
 
 
     return (
-        <Formik
-            initialValues={placeDetails}
-            onSubmit={values => submitForm(values)}
-            validationSchema={PlaceDetailsSchema}
-        >
-            {({ dirty, isValid, values, setFieldValue }) => {
-                return (
-                    <Form>
-                        <Grid item container lg={12} justify="space-evenly">
-                            <Grid item lg={5} style={{ marginTop: 20 }}>
-                                <Typography>
-                                    What is the type of your business?
-                                </Typography>
-                            </Grid>
-                            <Grid item lg={5}>
-                                <Autocomplete
-                                    options={places}
-                                    fullWidth={true}
-                                    onChange={(e, value) => submitAutocomplete(value, setFieldValue)}
+        <Grid item container lg={12} justify="space-evenly">
+            <Grid item lg={5} style={{ marginTop: 20 }}>
+                <Typography>
+                    What is the type of your business?
+                </Typography>
+            </Grid>
+            <Grid item lg={5}>
+                <Autocomplete
+                    options={places}
+                    fullWidth={true}
+                    value={currentPlace.type}
+                    onChange={(e, value) => submitAutocomplete(value)}
+                    renderInput={(params) => <TextField  {...params} label="Business type" />}
+                />
+            </Grid>
+            <Grid item lg={5} style={{ marginTop: 20 }}>
+                <Typography>
+                    Please enter a short subtitle
+                </Typography>
+            </Grid>
+            <Grid item lg={5}>
+                <TextField
+                    onChange={(e) => setSubtitle(e.target.value)}
+                    name="subtitle"
+                    value={subtitle}
+                    fullWidth={true}
+                    label='Subtitle'
+                    helperText={`${subtitle.length}/50`}
+                    inputProps={{
+                        maxLength: 50
 
-                                    renderInput={(params) => <TextField {...params} label="Business type" />}
-                                />
-                            </Grid>
-                            <Grid item lg={5} style={{ marginTop: 20 }}>
-                                <Typography>
-                                    Please enter a short subtitle
-                                </Typography>
-                            </Grid>
-                            <Grid item lg={5}>
-                                <FastField
-                                    as={TextField}
-                                    onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('subtitle', e.target.value); console.log(values); setPlaceDetails(values) }}
-                                    name="subtitle"
-                                    fullWidth={true}
-                                    label='Subtitle'
-                                    helperText={`${values.subtitle.length}/50`}
-                                    inputProps={{
-                                        maxLength: 50
-
-                                    }} />
-
-
-                            </Grid>
-                            <Grid item lg={10} style={{ marginTop: 20 }}>
-                                <Typography style={{ textAlign: 'center' }}>
-                                    How would you describe your business in few words?
-                                </Typography>
-                            </Grid>
-                            <Grid item lg={10} style={{marginTop: 10}}>
-                                <FastField as={TextField}
-                                    onKeyUp={(e: React.ChangeEvent<HTMLInputElement>) => { setFieldValue('description', e.target.value); setPlaceDetails(values) }}
-                                    fullWidth={true}
-                                    label="This is a description of my place!"
-                                    multiline
-                                    name="description"
-                                    rows={10}
-                                    variant="outlined"
-                                    rowsMax={10}
-                                    helperText={`${values.description.length}/250`}
-                                    inputProps={{
-                                        maxLength: 250
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item lg={10}>
-                                <Button
-                                    fullWidth={true}
-                                    variant="contained"
-                                    style={{ marginTop: 10 }}
-                                    color="primary"
-                                    type="submit"
-                                    disabled={!(isValid && dirty)}
-                                >
-                                    Submit
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Form>
-
-
-                )
-            }}
-
-        </Formik>
+                    }} />
+            </Grid>
+            <Grid item lg={10} style={{ marginTop: 20 }}>
+                <Typography style={{ textAlign: 'center' }}>
+                    How would you describe your business in few words?
+                </Typography>
+            </Grid>
+            <Grid item lg={10} style={{ marginTop: 10 }}>
+                <TextField
+                    onChange={(e) => setDescription(e.target.value)}
+                    fullWidth={true}
+                    value={description}
+                    label="This is a description of my place!"
+                    multiline
+                    name="description"
+                    rows={10}
+                    variant="outlined"
+                    rowsMax={10}
+                    helperText={`${description.length}/250`}
+                    inputProps={{
+                        maxLength: 250
+                    }}
+                />
+            </Grid>
+            <Grid item lg={10}>
+                <Button
+                    fullWidth={true}
+                    variant="contained"
+                    style={{ marginTop: 10 }}
+                    color="primary"
+                    type="submit"
+                    disabled={isDirty}
+                    onClick={() => setActiveStep(2)}
+                >
+                    Submit
+                </Button>
+            </Grid>
+        </Grid>
+      
     )
 }

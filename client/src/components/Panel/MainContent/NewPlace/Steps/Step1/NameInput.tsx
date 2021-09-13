@@ -1,6 +1,7 @@
 import { InputAdornment, TextField } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import { usePanelContext } from "../../../../../../contexts/PanelContext";
 
 
 
@@ -8,16 +9,18 @@ import React, { FC, useEffect, useRef } from "react";
 interface Props {
     isNameCorrect: boolean,
     setNameCorrect: React.Dispatch<React.SetStateAction<boolean>>,
-    setButtonLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    placeName: string,
-    setPlaceName: React.Dispatch<React.SetStateAction<string>>
+    setButtonLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
 
-export const NameInput: FC<Props> = ({ isNameCorrect, placeName, setPlaceName, setNameCorrect, setButtonLoading }) => {
+export const NameInput: FC<Props> = ({ isNameCorrect, setNameCorrect, setButtonLoading }) => {
 
+    const { currentPlace, setCurrentPlace } = usePanelContext()
     const firstRenderRef = useRef(true)
+    const [input, setInput] = useState(currentPlace.name)
+
+
 
     // const validatePlaceName = async(name : string) => {
     //     try{
@@ -34,29 +37,35 @@ export const NameInput: FC<Props> = ({ isNameCorrect, placeName, setPlaceName, s
     // }
 
 
+
     useEffect(() => {
         if (firstRenderRef.current) {
+            input ? setNameCorrect(true) : setNameCorrect(false)
             firstRenderRef.current = false
             return
         }
         setNameCorrect(false)
         setButtonLoading(true)
-        console.log(placeName)
         const delaySearch = setTimeout(() => {
             //    await validatePlaceName(placeName)
+            input ? setNameCorrect(true) : setNameCorrect(false)
+            const newCurrentPlace = { ...currentPlace }
+            console.log(newCurrentPlace)
+            newCurrentPlace.name = input
+            setCurrentPlace(newCurrentPlace)
             setButtonLoading(false)
-            placeName ? setNameCorrect(true) : setNameCorrect(false)
+
         }, 500)
         return () => clearTimeout(delaySearch)
-    }, [placeName])
+    },  [input])
 
     return (
         <TextField
             style={{ marginTop: 10 }}
             label="Enter the name of your place"
             fullWidth={true}
-            value={placeName}
-            onChange={(e) => setPlaceName(e.target.value)}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             InputProps={{
                 endAdornment:
                     <div>
@@ -71,3 +80,4 @@ export const NameInput: FC<Props> = ({ isNameCorrect, placeName, setPlaceName, s
         </TextField>
     )
 }
+

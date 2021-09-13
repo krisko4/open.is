@@ -11,10 +11,11 @@ import React, { FC, useState } from 'react';
 
 
 interface PlaceTypes {
-    place: any
+    place: any,
+   
 }
 
-const MainContent: FC<PlaceTypes> = ({ place }) => {
+const MainContent: FC<PlaceTypes> = ({ place}) => {
 
 
     const icons = [
@@ -33,13 +34,13 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
     ]
 
     const currentColor = place.status === 'open' ? 'green' : 'red'
-    const [value, setValue] = useState<number | null>(3)
+
 
     return (
         <Grid container style={{ marginTop: 10 }} justify="space-evenly">
             <Grid item lg={5} style={{ textAlign: 'center' }}>
                 <img style={{ width: '100%', marginTop: 10 }} alt="place img"
-                    src={`${process.env.REACT_APP_BASE_URL}/images/${place.img}`} />
+                    src={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} />
                 <Typography variant="h6" style={{ color: 'white' }}>
                     This place is now <span style={{ color: currentColor, fontWeight: 'bold' }}>{place.status.toUpperCase()}</span>
                 </Typography>
@@ -52,12 +53,10 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                     {place.subtitle}
                 </Typography>
                 <Rating
-                    style={{marginTop: 20}}
+                    style={{ marginTop: 20 }}
                     name="simple-controlled"
-                    value={value}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
-                    }}
+                    readOnly
+                    value={place.averageNote.average}
                 />
                 <Typography variant="body1" style={{ color: 'white', fontStyle: 'italic' }}>{place.type}</Typography>
                 <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 30 }}>{place.description}</Typography>

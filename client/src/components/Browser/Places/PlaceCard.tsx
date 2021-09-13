@@ -11,7 +11,7 @@ import React, { FC } from "react";
 const useStyles = makeStyles(() =>
     createStyles({
         card: {
-          //  backgroundColor: '#430075',
+            //  backgroundColor: '#430075',
             backgroundColor: '#2C2C2C',
             borderRadius: 20,
             width: '100%',
@@ -30,7 +30,7 @@ interface PlaceProps {
     place: any
 }
 
-export const PlaceCard : FC<PlaceProps> = ({place}) => {
+export const PlaceCard: FC<PlaceProps> = ({ place }) => {
     const classes = useStyles()
     return (
         <Card
@@ -41,26 +41,32 @@ export const PlaceCard : FC<PlaceProps> = ({place}) => {
                     <Grid item container lg={11}>
                         <Grid item>
                             <CardMedia className={classes.image}
-                                       image={`${process.env.REACT_APP_BASE_URL}/images/${place.img}`}/>
+                                image={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} />
                         </Grid>
                         <Grid item>
-                            <Typography variant="h6" style={{color: 'white', marginLeft: 10}}>
+                            <Typography variant="h6" style={{ color: 'white', marginLeft: 10 }}>
                                 {place.name}
                             </Typography>
-                            <Typography variant="body1" style={{color: 'grey', marginLeft: 10}}>
+                            <Typography variant="body1" style={{ color: 'grey', marginLeft: 10 }}>
                                 {place.subtitle}
                             </Typography>
-                            <Typography variant="body2" color="primary" style={{ marginLeft: 10}}>
+                            <Typography variant="body2" color="primary" style={{ marginLeft: 10 }}>
                                 Address: {place.address}
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container item lg={1} alignItems="center"  style={{color: 'white'}}>
-                        <Grid item lg={12} style={{textAlign: 'end'}}>
+                    <Grid container item lg={1} alignItems="center" style={{ color: 'white' }}>
+                        <Grid item lg={12} style={{ textAlign: 'end' }}>
                             STATUS:
-                            <Typography variant="body1" style={{color: 'green', fontWeight: 'bold'}}>
-                                {place.status.toUpperCase()}
-                            </Typography>
+                            {place.status === 'open' ?
+                                <Typography variant="body1" style={{ color: 'green', fontWeight: 'bold' }}>
+                                    {place.status?.toUpperCase()}
+                                </Typography>
+                                :
+                                <Typography variant="body1" style={{ color: 'red', fontWeight: 'bold' }}>
+                                    {place.status?.toUpperCase()}
+                                </Typography>
+                            }
                         </Grid>
                     </Grid>
                 </Grid>

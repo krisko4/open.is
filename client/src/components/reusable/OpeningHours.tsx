@@ -15,60 +15,41 @@ const OpeningHours: FC<Props> = ({ place, classes }) => {
 
     const openingHours = place && place.openingHours
 
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    const hours = ['10 - 17', '8 - 18', '10 - 17', '10 - 17', '7 - 18', '10 - 17', '10 - 17']
+   
 
     useEffect(() => {
         console.log(place)
     }, [place])
 
     return (
-        <Grid container justify="center" style={{ marginTop: 20, marginBottom: 20 }}>
+        <Grid container justify="center" alignItems="center" style={{ marginTop: 20, marginBottom: 20, height: 500 }}>
             <Grid item lg={5}>
                 <Card className={classes.container} elevation={10}>
                     <CardContent>
-                        <Typography className={classes.title}>Opening hours</Typography>
+                        <Typography variant="h5" className={classes.title}>Opening hours</Typography>
                         <Divider className={classes.divider} />
                         <Grid container justify="center">
                             <Grid item className={classes.days} lg={8}>
-                                <Typography>Monday</Typography>
-                                <Typography>Tuesday</Typography>
-                                <Typography>Wednesday</Typography>
-                                <Typography>Thursday</Typography>
-                                <Typography>Friday</Typography>
-                                <Typography>Saturday</Typography>
-                                <Typography>Sunday</Typography>
+                                {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
                             </Grid>
                             <Grid item lg={3} className={classes.hours}>
-                                {openingHours ?
-                                    <div>
-                                        <Typography>{openingHours.monday.startHour} - {openingHours.monday.endHour}</Typography>
-                                        <Typography>{openingHours.tuesday.startHour} - {openingHours.tuesday.endHour}</Typography>
-                                        <Typography>{openingHours.wednesday.startHour} - {openingHours.wednesday.endHour}</Typography>
-                                        <Typography>{openingHours.thursday.startHour} - {openingHours.thursday.endHour}</Typography>
-                                        <Typography>{openingHours.friday.startHour} - {openingHours.friday.endHour}</Typography>
-                                        <Typography>{openingHours.saturday.startHour} - {openingHours.saturday.endHour}</Typography>
-                                        <Typography>{openingHours.sunday.startHour} - {openingHours.sunday.endHour}</Typography>
-                                    </div>
-                                    : <div>
-                                        <Typography>10 - 16</Typography>
-                                        <Typography>10 - 16</Typography>
-                                        <Typography>10 - 16</Typography>
-                                        <Typography>10 - 16</Typography>
-                                        <Typography>10 - 16</Typography>
-                                        <Typography>10 - 16</Typography>
-                                        <Typography>10 - 16</Typography>
-                                    </div>
+                                {openingHours ? Object.keys(openingHours).map((key, index) => <Typography key={index} variant="h6">{openingHours[key].startHour} - {openingHours[key].endHour}</Typography>)
+                                    
+                            :  hours.map((hour, index) => <Typography key={index} variant="h6">{hour}</Typography>)
                                 }
-                            </Grid>
                         </Grid>
-                    </CardContent>
-                </Card>
-            </Grid>
-            {!openingHours &&
-                <Grid item lg={10} style={{marginTop: 10}}>
-                    <Typography variant="caption" style={{fontStyle: 'italic'}}><span style={{color: 'red'}}>*</span> After your place is accepted, you will be able to specify its' opening hours. This is just an example.</Typography>
+                    </Grid>
+                </CardContent>
+            </Card>
+            {!openingHours && !place.isUserOwner && 
+                <Grid container style={{ marginTop: 10, textAlign: 'center' }}>
+                    <Typography variant="caption" style={{ fontStyle: 'italic' }}><span style={{ color: 'red' }}>*</span> After your place is accepted, you will be able to specify its' opening hours. This is just an example.</Typography>
                 </Grid>
             }
         </Grid>
+        </Grid >
 
     );
 };

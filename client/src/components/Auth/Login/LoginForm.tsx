@@ -46,7 +46,9 @@ export const LoginForm = () => {
         setErrorMessage('')
         setLoading(true)
         try{
-            await authAxios.post('/login', {...userData}, {withCredentials: true})
+            const response = await authAxios.post('/login', {...userData}, {withCredentials: true})
+            localStorage.setItem('uid', response.data.uid)
+            localStorage.setItem('fullName', response.data.fullName)
             setLoginOpen(false)
             dispatch(setEmail(userData.email))
             dispatch(login())

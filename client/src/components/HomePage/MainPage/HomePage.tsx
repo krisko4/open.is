@@ -1,5 +1,5 @@
 import Grid from "@material-ui/core/Grid";
-import {Banner} from "./Banner";
+import { Banner } from "./Banner";
 import Header from "./Header";
 import Content from "./Content";
 import Footer from "./Footer";
@@ -19,7 +19,7 @@ const HomePage: FC = () => {
             </AuthContextProvider>
             <Banner />
             <Content />
-            <Footer />
+            <Footer backgroundColor='#280000' />
         </Grid>
     )
 }

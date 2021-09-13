@@ -110,6 +110,7 @@ const Searcher = () => {
 
     const selectPlace = async(placesArray) => {
         const criterias = []
+        console.log(placesArray)
         for (const place of placesArray) {
             if (place.type === 'address') {
                await fetchByAddress(place, criterias)
@@ -166,7 +167,7 @@ const Searcher = () => {
                         <Grid container>
                             <Grid item>
                                 <Avatar style={{marginRight: 5}}
-                                        src="https://d-art.ppstatic.pl/kadry/k/r/1/53/86/5ca4afec59405_o_medium.jpg"/>
+                                        src={`${process.env.REACT_APP_BASE_URL}/images/places/${option.img}`}/>
                             </Grid>
                             <Grid item>
                                 {parts.map((part, index) => (

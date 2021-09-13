@@ -24,11 +24,16 @@ interface PlaceDetailsTypes {
 const useProviderSettings = () => {
     const [placeName, setPlaceName] = useState('')
     const [activeStep, setActiveStep] = useState(0)
-    const [placeDetails, setPlaceDetails] = useState<PlaceDetailsTypes>({
-        type: '',
-        subtitle: '',
-        description: '',
-    })
+    const [address, setAddress] = useState<any>(null)
+    const [imageFile, setImageFile] = useState<File | null>(null)
+    const [subtitle, setSubtitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [type, setType] = useState('')
+    // const [placeDetails, setPlaceDetails] = useState<PlaceDetailsTypes>({
+    //     type: '',
+    //     subtitle: '',
+    //     description: '',
+    // })
 
     const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
 
@@ -42,12 +47,22 @@ const useProviderSettings = () => {
         setActiveStep,
         placeName,
         setPlaceName,
-        placeDetails,
-        setPlaceDetails,
+        // placeDetails,
+        // setPlaceDetails,
+        subtitle,
+        setSubtitle,
+        type,
+        setType,
+        description,
+        setDescription,
         contactDetails,
         setContactDetails,
         uploadedImage,
-        setUploadedImage
+        setUploadedImage,
+        address,
+        setAddress,
+        imageFile,
+        setImageFile
 
     }
 }

@@ -1,3 +1,4 @@
+import { Fade, Slide } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
@@ -77,17 +78,22 @@ export const Banner: FC = () => {
             <Grid item container justify="center">
                 <CardMedia
                     image={`${process.env.REACT_APP_BASE_URL}/images/Openis-logos_white.png`}
-                    className={classes.logo}>
-                </CardMedia>
+                    className={classes.logo} />
             </Grid>
             <Grid item container justify="center">
                 <Grid item xs={4} style={{ textAlign: 'center' }}>
-                    <Typography variant="h3"
-                        style={{ color: 'white', fontWeight: 200 }}>
-                        An easy way to track open destinations all over the world
-                    </Typography>
-                    <Button className={classes.button} color="secondary" onClick={() => history.push('/search')}
-                        variant="contained">Get started</Button>
+                    <Slide direction="right" in={true} timeout={2000}>
+                        <Typography variant="h3"
+                            style={{ color: 'white', fontWeight: 200 }}>
+                            An easy way to track open destinations all over the world
+                        </Typography>
+
+                    </Slide>
+                    <Fade in={true} timeout={2000}>
+                        <Button className={classes.button} color="secondary" onClick={() => history.push('/search')}
+                            variant="contained">Get started</Button>
+
+                    </Fade>
 
                 </Grid>
             </Grid>

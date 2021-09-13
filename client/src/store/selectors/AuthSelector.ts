@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
 
 interface RootState {
-    isUserLoggedIn : boolean
+    isUserLoggedIn: boolean
 }
 
-export const UseAuthSelector = () => useSelector((state : RootState) => state.isUserLoggedIn)
+export const useAuthSelector = () => {
+    return useSelector((state: RootState) => state.isUserLoggedIn)
+}

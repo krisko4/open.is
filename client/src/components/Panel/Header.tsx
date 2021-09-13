@@ -1,13 +1,13 @@
-import React, {FC, useContext} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Grid from "@material-ui/core/Grid";
+import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import HomeIcon from '@material-ui/icons/Home';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Grid from "@material-ui/core/Grid";
-import {PageContext} from "../../contexts/PageContext";
+import HomeIcon from '@material-ui/icons/Home';
+import React, { FC } from 'react';
+import { usePageContext } from "../../contexts/PageContext";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const Header:FC = () => {
 
     const classes = useStyles();
-    const {setPanelOpen} = useContext(PageContext)
+    const {setPanelOpen} = usePageContext()
 
     return (
         <div>

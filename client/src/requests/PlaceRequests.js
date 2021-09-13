@@ -78,6 +78,7 @@ export const getPlaces = async (inputValue, chosenCriterias, setSelectedPlaces, 
 
 export const getPlacesByAddress = (address) => {
     return myAxios.get('/places', {
+        withCredentials : true,
         params: {
             address: address
         }
@@ -86,6 +87,7 @@ export const getPlacesByAddress = (address) => {
 
 export const getPlacesByName = async (name) => {
     const response = await myAxios.get('/places', {
+        withCredentials: true,
         params: {
             name: name
         }

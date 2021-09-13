@@ -9,6 +9,7 @@ import { findByAddress } from "../../../../../../requests/PlaceRequests";
 import { MapBox } from "../../../../../Browser/MapBox";
 import { Button } from "@material-ui/core";
 import { useStepContext } from "../../../../../../contexts/StepContext";
+import { usePanelContext } from "../../../../../../contexts/PanelContext";
 
 const tileLayer = {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -20,7 +21,8 @@ export const AddressDetails = () => {
     const [inputValue, setInputValue] = useState('')
     const [open, setOpen] = useState(false)
     const { setMapZoom, setMapCenter } = useMapContext()
-    const {selectedPlaces, setSelectedPlaces, chosenAddress, setChosenAddress } = useSelectedPlacesContext()
+    const {selectedPlaces, setSelectedPlaces } = useSelectedPlacesContext()
+    const {currentPlace, setCurrentPlace} = usePanelContext()
     const {setActiveStep} = useStepContext()
     const loading = open && selectedPlaces.length === 0 && inputValue.length > 0
     const isFirstFind = useRef(true)
@@ -30,7 +32,9 @@ export const AddressDetails = () => {
     }
 
     const selectPlace = (place) => {
-        setChosenAddress(place)
+        const newCurrentPlace = {...currentPlace}
+        newCurrentPlace.address = place
+        setCurrentPlace(newCurrentPlace)
         if (place) {
             console.log(place)
             setMapZoom(20)
@@ -58,6 +62,7 @@ export const AddressDetails = () => {
         <Grid item container lg={12} justify="space-evenly">
             <Grid item lg={8}>
                 <Autocomplete
+                    value={currentPlace.address}
                     open={open}
                     onOpen={() => {
                         setOpen(true);
@@ -106,7 +111,7 @@ export const AddressDetails = () => {
             <Grid style={{ height: 400, marginTop: 20 }} item lg={12}>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <Button disabled={!chosenAddress || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
+            <Button disabled={!currentPlace.address || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
         </Grid>
     )
 }

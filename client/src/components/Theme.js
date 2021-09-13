@@ -27,13 +27,6 @@ const theme = createMuiTheme({
             main: '#ff5252',
             dark: '#A52A2A',
             contrastText: '#fff',
-        },
-        jakisTam: {
-            main: '#6A5ACD',
-            contrastText: '#fff',
-        },
-        transparent: {
-            main: 'transparent'
         }
     },
     overrides: {

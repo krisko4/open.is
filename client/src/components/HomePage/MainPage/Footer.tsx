@@ -12,16 +12,21 @@ const useStyles = makeStyles(() =>
     createStyles({
         text: {
             color: 'white',
-            marginBottom: 10
-        }
+            marginBottom: 10,
+            fontStyle: 'italic'
+        },
+
     })
 )
-
-const Footer : FC= () => {
+interface Props{
+    backgroundColor: string
+}
+const Footer : FC<Props>= ({backgroundColor}) => {
 
     const classes = useStyles()
+   
     return (
-        <Grid container style={{backgroundColor: '#2196f3'}} justify="center">
+        <Grid container style={{backgroundColor: backgroundColor}} justify="center">
             <Grid item xs={6} style={{marginTop: 10, textAlign: 'center', marginBottom: 10}}>
                 <Button style={{color:'white'}}>Contact</Button>
                 <Button style={{color:'white'}}>About us</Button>

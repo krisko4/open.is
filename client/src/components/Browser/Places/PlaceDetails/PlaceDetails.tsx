@@ -5,11 +5,13 @@ import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import { KeyboardReturn } from "@material-ui/icons";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
+import myAxios from "../../../../axios/axios";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { News } from "../../../reusable/News";
 import OpeningHours from "../../../reusable/OpeningHours";
+import { Opinions } from "../../../reusable/Opinions";
 import MainContent from "./MainContent";
 
 const useStyles = makeStyles(() =>
@@ -37,10 +39,54 @@ const useNewsStyles = makeStyles({
         color: 'grey'
     },
     dialog: {
-        background: '#2C2C2C'
+        background: '#2C2C2C',
+        '& .dialogTitle': {
+            color: '#2196f3'
+        },
+        '& .dialogContentText': {
+            color: 'white'
+        },
+        '& .opinionArea': {
+            background: '#404040',
+            borderRadius: 5
+        },
+        '& .input': {
+            color: 'white'
+        }
     }
 
 });
+
+const useOpinionsStyles = makeStyles({
+    opinionCard: {
+        background: '#2C2C2C',
+    },
+    author: {
+        color: '#2196f3'
+    },
+    date: {
+        color: 'lightgrey'
+    },
+    content: {
+        color: 'white'
+    },
+    dialog: {
+        background: '#2C2C2C',
+        '& .dialogTitle': {
+            color: '#2196f3'
+        },
+        '& .dialogContentText': {
+            color: 'white'
+        },
+        '& .opinionArea': {
+            background: '#404040',
+            borderRadius: 5
+        },
+        '& .input': {
+            color: 'white'
+        }
+    }
+})
 
 const useOpeningHoursStyles = makeStyles({
     container: {
@@ -57,7 +103,8 @@ const useOpeningHoursStyles = makeStyles({
         marginBottom: 10
     },
     days: {
-        color: 'white'
+        color: 'white',
+        
     },
     hours: {
         color: 'white'
@@ -66,49 +113,59 @@ const useOpeningHoursStyles = makeStyles({
 
 })
 
-const news = [
-    {
-        title: 'newsTitle',
-        date: 'date',
-        content: 'contentcontentcontent contentcontentcontentcontentcontentcontentcontentcontentcontentcontent'
-    },
-    {
-        title: 'newsTitle',
-        date: 'date',
-        content: 'content'
-    },
-    {
-        title: 'newsTitle',
-        date: 'date',
-        content: 'content'
-    },
-    {
-        title: 'newsTitle',
-        date: 'date',
-        content: 'content'
-    },
-    {
-        title: 'newsTitle',
-        date: 'date',
-        content: 'content'
-    },
-    {
-        title: 'newsTitle',
-        date: 'date',
-        content: 'content'
-    },
-]
 interface Props {
-    place: any,
-    setPlaceCardClicked: React.Dispatch<React.SetStateAction<boolean>>
+    currentPlace: any,
+    setPlaceCardClicked: React.Dispatch<React.SetStateAction<boolean>>,
+    setCurrentPlace: React.Dispatch<any>
+}
+interface NewsProps {
+    title: string,
+    date: string,
+    content: string
 }
 
-export const PlaceDetails: FC<Props> = ({ place, setPlaceCardClicked }) => {
+interface OpinionProps {
+    author: string,
+    date: string,
+    content: string,
+    note: number,
+    averageNote: number
+}
+
+
+export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlaceCardClicked }) => {
 
     const { setPopupOpen, setMapZoom } = useMapContext()
+    const [news, setNews] = useState<NewsProps[]>([])
+
+    const [opinionCount, setOpinionCount] = useState(0)
+    const [opinions, setOpinions] = useState<OpinionProps[]>([])
+
+    useEffect(() => {
+        console.log(currentPlace._id)
+        myAxios.get('/news', {
+            params: {
+                placeId: currentPlace._id
+            }
+        }).then(res => {
+            console.log(res)
+            setNews(res.data)
+        }).catch(err => console.log(err))
+        myAxios.get('/opinions', {
+            params: {
+                placeId: currentPlace._id
+            }
+        }).then(res => {
+            setOpinions(res.data)
+            setOpinionCount(res.data.length)
+        }).catch(err => console.log(err))
+
+    }, [])
+
 
     const classes = useStyles()
     const newsClasses = useNewsStyles()
+    const opinionsClasses = useOpinionsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
 
     const [value, setValue] = useState(0)
@@ -117,8 +174,17 @@ export const PlaceDetails: FC<Props> = ({ place, setPlaceCardClicked }) => {
     };
 
     const tabContents = [
-        <News news={news} classes={newsClasses} />,
-        <OpeningHours classes={openingHoursClasses} place={place} />
+        <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
+        <OpeningHours classes={openingHoursClasses} place={currentPlace} />,
+        <Opinions
+            currentPlace={currentPlace}
+            setCurrentPlace={setCurrentPlace}
+            opinions={opinions}
+            setOpinions={setOpinions}
+            opinionCount={opinionCount}
+            setOpinionCount={setOpinionCount}
+            classes={opinionsClasses}
+        />
     ]
 
     const MyTab = (props: any) => {
@@ -129,13 +195,11 @@ export const PlaceDetails: FC<Props> = ({ place, setPlaceCardClicked }) => {
     return (
         <Scrollbars>
             <Grid container>
-                <Grid item>
-                    <IconButton onClick={() => { setPlaceCardClicked(false); setMapZoom(10); setPopupOpen(false) }} color="secondary">
-                        <KeyboardReturn />
-                    </IconButton>
-                </Grid>
-                <MainContent place={place} />
-                <Grid container item lg={12} style={{ marginTop: 10 }}>
+                <IconButton onClick={() => { setPlaceCardClicked(false); setMapZoom(10); setPopupOpen(false) }} color="secondary">
+                    <KeyboardReturn />
+                </IconButton>
+                <MainContent place={currentPlace} />
+                <Grid container style={{ marginTop: 10 }}>
                     <Divider style={{ width: '100%', backgroundColor: 'red' }} />
                     <Paper square style={{ width: '100%', background: 'inherit' }}>
                         <Tabs

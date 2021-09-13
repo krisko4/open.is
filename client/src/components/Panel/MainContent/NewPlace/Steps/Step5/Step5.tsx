@@ -1,8 +1,8 @@
-import { Button, Card, CardMedia, Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
-import BackupIcon from '@material-ui/icons/Backup';
-import React, { FC, useRef } from "react";
+import { Card, CardMedia, Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
+import ClearIcon from '@material-ui/icons/Clear';
+import React, { FC, useRef, useState } from "react";
+import { usePanelContext } from "../../../../../../contexts/PanelContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-
 
 const useStyles = makeStyles({
     imageContainer: {
@@ -10,29 +10,41 @@ const useStyles = makeStyles({
         '&:hover .uploader': {
             display: 'flex'
         },
-        '& .uploader' : {
+        '& .uploader': {
             display: 'none',
             height: '100%'
         }
     },
 })
 
+
 export const Step5: FC = () => {
-    
+
 
     const classes = useStyles()
 
     const uploadRef = useRef<HTMLInputElement>(null)
+    const [elevation, setElevation] = useState(3)
+    const { setImageFile, currentPlace, setCurrentPlace } = usePanelContext()
 
-    const {setActiveStep, uploadedImage, setUploadedImage} = useStepContext()
+    const clearImage = () => {
+        const newCurrentPlace = { ...currentPlace }
+        newCurrentPlace.img = null 
+        setCurrentPlace(newCurrentPlace)
+    }
 
     const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const image = event.target.files[0]
+            setImageFile(image)
             const fileReader = new FileReader()
             fileReader.readAsDataURL(image)
             fileReader.onload = e => {
-                if (e.target) setUploadedImage(e.target.result)
+                if (e.target) {
+                    const newCurrentPlace = { ...currentPlace }
+                    newCurrentPlace.img = e.target.result
+                    setCurrentPlace(newCurrentPlace)
+                }
             }
         }
 
@@ -53,28 +65,26 @@ export const Step5: FC = () => {
             </Grid>
             <Grid item container justify="center" style={{ marginTop: 20 }} lg={12}>
                 <Grid item lg={7}>
-                    {/* <CardMedia style={{height: 200}} image="https://twojspozywczy.pl/wp-content/uploads/2020/04/lidl-sklep.jpg" ></CardMedia> */}
-                    <Card style={{ height: 300 }}>
-                        <CardMedia className={classes.imageContainer} image={uploadedImage ? `${uploadedImage}` : `https://icons-for-free.com/iconfiles/png/512/cloud+upload+file+storage+upload+icon-1320190558968694328.png`} >
-                            <Grid container className="uploader" justify="center" alignItems="center">
-                                <IconButton onClick={startUploading}>
-                                    <BackupIcon fontSize="large" color="primary" />
+                    <Card onMouseEnter={() => setElevation(12)} onMouseLeave={() => setElevation(3)} onClick={startUploading} elevation={elevation} style={{ height: 300 }}>
+                        <CardMedia className={classes.imageContainer} image={currentPlace.img ? `${currentPlace.img}` : `https://icons-for-free.com/iconfiles/png/512/cloud+upload+file+storage+upload+icon-1320190558968694328.png`} >
+                            {currentPlace.img && <Grid container justify="flex-end">
+                                <IconButton onClick={() => clearImage()} className="uploader" >
+                                    <ClearIcon color="secondary" />
                                 </IconButton>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    ref={uploadRef}
-                                    style={{ display: 'none' }}
-                                    onChange={e => uploadImage(e)}
-                                >
-
-                                </input>
-                            </Grid>
-
+                            </Grid>}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                ref={uploadRef}
+                                style={{ display: 'none' }}
+                                onChange={e => uploadImage(e)}
+                            >
+                            </input>
                         </CardMedia>
-
                     </Card>
-                    <Button variant="contained" onClick={() => setActiveStep(currentStep => currentStep + 1)} disabled={!uploadedImage} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
+                    <Grid item lg={12} style={{ textAlign: 'center' }}>
+                        <Typography variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

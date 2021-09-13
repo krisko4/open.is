@@ -1,51 +1,83 @@
+import { Divider, ListItemIcon, ListSubheader, makeStyles } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
-import React, {FC} from "react";
-import {Divider, ListSubheader, makeStyles} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
-
-
-
+import AddIcon from '@material-ui/icons/Add';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import SettingsIcon from '@material-ui/icons/Settings';
+import React, { FC, useEffect, useRef } from "react";
+import { ChosenOptions, usePanelContext } from "../../contexts/PanelContext";
 const useStyles = makeStyles(() =>
-    ({
-        navigation: {
-            background: 'white',
-            borderRightStyle: 'solid',
-            borderWidth: 1,
-            borderColor: 'lightgrey'
-        }
-    })
+({
+    navigation: {
+        background: 'white',
+        borderRightStyle: 'solid',
+        borderWidth: 1,
+        borderColor: 'lightgrey'
+    }
+})
 )
 
 
 export const LeftNavigation: FC = () => {
 
     const classes = useStyles()
+    const {places, setSelectedOption, currentPlace, setCurrentPlace} = usePanelContext()
+
+
+    const choosePlace = (place : any) => {
+        setCurrentPlace(place)
+        setSelectedOption(ChosenOptions.PLACE_MANAGEMENT)
+    }
 
     return (
         <Grid item className={classes.navigation} lg={2}>
             <List>
                 <ListItem>
                     <ListItemAvatar>
-                        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
+                        <Avatar alt={`${localStorage.getItem('fullName')}`} src="/static/images/avatar/1.jpg" />
                     </ListItemAvatar>
                     <ListItemText
-                        primary="Roman Pietrkowski"
-                        secondary="fajny ziomal"
+                        primary={`${localStorage.getItem('fullName')}`}
+                        secondary="Standard user"
                     />
                 </ListItem>
-                <Divider style={{width: '100%'}}/>
-                <ListSubheader>
+                <Divider style={{ flexGrow: 1 }} />
+                <ListSubheader disableSticky>
                     My places
                 </ListSubheader>
-                <ListItem button>
-                    Item 1
+                {places.map((place: any, index: number) =>
+                    <ListItem key={index} button onClick={() => choosePlace(place)}>
+                        <ListItemAvatar>
+                            <Avatar alt={place.name} src={`${place.img}`} />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={place.name}
+                            secondary={place.subtitle}
+                        />
+                    </ListItem>
+                )}
+                <ListItem button onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)}>
+                    <ListItemIcon>
+                        <AddIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText secondary="New place" />
                 </ListItem>
-                <ListItem>
-                    Item 2
+                <ListSubheader disableSticky>Settings</ListSubheader>
+                <ListItem button onClick={() => places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD)}>
+                    <ListItemIcon>
+                        <DashboardIcon color="primary"/>
+                    </ListItemIcon>
+                    <ListItemText secondary="Dashboard"/>
+                </ListItem>
+                <ListItem button>
+                    <ListItemIcon>
+                        <SettingsIcon color="primary"/>
+                    </ListItemIcon>
+                    <ListItemText secondary="My account"/>
                 </ListItem>
             </List>
         </Grid>

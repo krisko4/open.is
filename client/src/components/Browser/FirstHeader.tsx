@@ -3,13 +3,18 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import { FC } from "react";
-import { Link } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { useAuthSelector } from "../../store/selectors/AuthSelector";
 import { Auth } from "../Auth/Auth";
+import HomeIcon from '@material-ui/icons/Home';
+import { IconButton } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { SignOutButton } from "../reusable/SignOutButton";
+const FirstHeader: FC = () => {
 
-const FirstHeader : FC = () => {
-
-    const {setLoginOpen} = useAuthContext() 
+    const { setLoginOpen } = useAuthContext()
+    const isUserLoggedIn = useAuthSelector()
+    const history = useHistory()
 
     return (
         <AppBar style={{
@@ -22,17 +27,19 @@ const FirstHeader : FC = () => {
         >
             <Toolbar>
                 <Grid container alignItems="center">
-                    <Grid item lg={6}>
-                        <Link to="/">OPEN.IS</Link>
+                    <Grid item style={{ flexGrow: 1, textAlign: 'center' }}>
+                        <IconButton onClick={() => history.push('/')} color="inherit">
+                            <HomeIcon />
+                        </IconButton>
                     </Grid>
-                    <Grid item lg={6} style={{textAlign: 'end'}}>
-                        <Button color="secondary" onClick={() =>setLoginOpen(true)} variant="contained">
+                    <Grid item style={{ textAlign: 'end' }}>
+                        {!isUserLoggedIn ? <Button color="secondary" onClick={() => setLoginOpen(true)} variant="contained">
                             Sign in
-                        </Button>
+                        </Button> : <SignOutButton color="secondary" variant="contained">Sign out</SignOutButton>}
                     </Grid>
                 </Grid>
             </Toolbar>
-            <Auth/>
+            <Auth />
         </AppBar>
     )
 }
