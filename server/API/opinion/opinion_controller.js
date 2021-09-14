@@ -42,12 +42,12 @@ const opinionController = {
 
     },
     addNewOpinion: async (req, res) => {
-        const { date, content, authorId, note, placeId } = req.body
-        if (!date || !content || !authorId || !placeId || !note || note > 5 || note < 1) return res.status(400).json({ error: 'Invalid request' })
+        const { date, authorId, note, placeId } = req.body
+        if (!date || !authorId || !placeId || !note || note > 5 || note < 1) return res.status(400).json({ error: 'Invalid request' })
         try {
             const opinion = opinionDto(await opinionService.addNewOpinion(req.body))
             const updatedPlace = await placeService.updateNote(note, placeId)
-            return res.status(200).json({ message: 'New opinion added successfully!', opinion, averageNote: updatedPlace.averageNote.average })
+            return res.status(200).json({ message: 'New opinion added successfully!', opinion, averageNote: updatedPlace.averageNote})
         } catch (err) {
             console.log(err)
             return res.status(400).json(err)

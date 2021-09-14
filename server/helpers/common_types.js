@@ -7,6 +7,11 @@ const CommonTypes = {
         required: true
     },
 
+    ReqBoolean: {
+        type: Boolean,
+        required: true
+    },
+
     ReqNumber: {
         type: Number,
         required: true

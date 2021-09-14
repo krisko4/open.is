@@ -5,9 +5,40 @@ const placeDto = require('./model/place_dto')
 const placeController = {
 
 
-    getPlaces: async (req, res) => {
+    getActivePlaces: async (req, res) => {
         const queryLength = Object.keys(req.query).length
-        console.log(req.user)
+        switch (queryLength) {
+            case 1:
+                const param = Object.keys(req.query)[0]
+                let searchObj = {}
+                searchObj[param] = new RegExp(req.query[param], 'i')
+                console.log(searchObj)
+                try {
+                    let places
+                    if (param === 'uid') {
+                        places = await placeService.getActivePlacesByUserId(req.query['uid'])
+                    } else {
+                        places = await placeService.getActivePlacesBy(searchObj)
+                    }
+                    return res.status(200).json(places.map(place => placeDto(place, req.user)))
+                } catch (err) {
+                    console.log(err)
+                    return res.status(400).json({ error: 'Invalid request' })
+                }    
+            case 0:
+                return placeService.getActivePlaces()
+                    .then(places => res.status(200).json(places.map(place => placeDto(place, req.user))))
+                    .catch(err => res.json({ error: err }))
+                    
+            default:
+                return res.status(400).json({
+                    error: 'Invalid request'
+                })
+        }
+    },
+
+    getPlaces : async (req, res) => {
+        const queryLength = Object.keys(req.query).length
         switch (queryLength) {
             case 1:
                 const param = Object.keys(req.query)[0]
@@ -25,17 +56,20 @@ const placeController = {
                 } catch (err) {
                     console.log(err)
                     return res.status(400).json({ error: 'Invalid request' })
-                }
+                }    
             case 0:
                 return placeService.getPlaces()
                     .then(places => res.status(200).json(places.map(place => placeDto(place, req.user))))
                     .catch(err => res.json({ error: err }))
+                    
             default:
                 return res.status(400).json({
                     error: 'Invalid request'
                 })
         }
     },
+
+
 
     addPlace: async (req, res) => {
         const { cookies } = req
@@ -90,9 +124,22 @@ const placeController = {
             const { id } = req.params
             const status = req.body.status
             console.log(status)
-            if (status !== 'open' && status !== 'closed') return res.status(400).json({ error: 'Invalid request' })
+           // if (status !== 'open' && status !== 'closed') return res.status(400).json({ error: 'Invalid request' })
             await placeService.setStatus(id, status)
             res.sendStatus(200)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json(err)
+        }
+    },
+
+    setOpeningHours: async (req, res) => {
+        const {id} = req.params
+        console.log(req.body)
+        if(Object.keys(req.body).length === 0) return res.status(400).json('Request body is missing')
+        try {
+            const place = await placeService.setOpeningHours(id, req.body)
+            return res.status(200).json(place)
         } catch (err) {
             console.log(err)
             res.status(500).json(err)

@@ -10,6 +10,9 @@ const placeService = {
     getPlaces: () => {
         return Place.find().exec()
     },
+    getActivePlaces: () => {
+        return Place.find({isActive: true}).exec()
+    },
 
     addPlace: (placeData) => {
         return new Place({
@@ -18,19 +21,25 @@ const placeService = {
         }).save()
     },
 
+    activatePlace: (id) => Place.findByIdAndUpdate(id, {'isActive' : true}, {new: true}).exec(),
+
     getPlaceById : (id) => Place.findById(id).exec(),
 
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
 
-    getPlacesBy: (param) => Place.find(param).exec(),
+    getPlacesBy: (param) => Place.find({...param}).exec(),
+    getActivePlacesBy: (param) => Place.find({...param, isActive: true}).exec(),
 
     getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).exec(),
+    getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true}).exec(),
 
     deleteAll: () => Place.deleteMany().exec(),
 
     incrementVisitCount: (id) => Place.findByIdAndUpdate(id, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
 
-    setStatus: (id, status) => Place.findByIdAndUpdate(id, { 'status': status }, { new: true }).exec(),
+    setStatus: (id, status) => Place.findByIdAndUpdate(id, { 'status': status }, { new: true, runValidators: true }).exec(),
+
+    setOpeningHours: (id, hours) => Place.findByIdAndUpdate(id, {'openingHours' : hours, 'isActive' : true}, {new: true, runValidators: true}).exec(), 
 
     updateNote: async (note, placeId) => {
         const doc = await Place.findById(placeId, 'averageNote').exec()
