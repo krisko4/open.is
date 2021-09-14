@@ -36,13 +36,16 @@ interface PlaceProps {
         fours: number,
         fives: number,
         average: number
-    }
+    },
+    openingHours? : any,
+    isActive: boolean
 }
 interface NewsProps {
     title: string,
     date: string,
     content: string
 }
+
 
 interface OpinionProps {
     author: string,
@@ -90,8 +93,8 @@ export const clearPlace = {
         fours: 0,
         fives: 0,
         average: 0
-
-    }
+    },
+    isActive: false
 }
 
 const useProviderSettings = () => {

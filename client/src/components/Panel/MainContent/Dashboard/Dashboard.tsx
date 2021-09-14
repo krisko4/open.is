@@ -6,7 +6,7 @@ import AddIcon from "@material-ui/icons/Add";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import React, { FC } from "react";
-import { usePanelContext } from "../../../../contexts/PanelContext";
+import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContext";
 import { StatisticChart } from "./StatisticChart";
 
 
@@ -24,7 +24,7 @@ export const Dashboard: FC = () => {
                     </Grid>
                     <Grid item container justify="flex-end" lg={2} >
                         <Grid item style={{ marginRight: 5 }}>
-                            <Button onClick={() => setSelectedOption(1)} startIcon={<AddIcon />} variant="contained" color="primary">
+                            <Button onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)} startIcon={<AddIcon />} variant="contained" color="primary">
                                 New place
                             </Button>
                         </Grid>

@@ -63,8 +63,9 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
             firstRender.current = false
             return
         }
-        console.log(chosenCriterias)
-        popupOpen && placeMarker ? placeMarker.current.openPopup() : placeMarker && placeMarker?.current.closePopup()
+        if (placeMarker.current) {
+            popupOpen ? placeMarker.current.openPopup() : placeMarker?.current.closePopup()
+        }
     }, [popupOpen])
 
     return (
@@ -82,7 +83,7 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
                         iconSize: [50, 50],
                         // iconAnchor: [10, 0],
                         shadowUrl: iconShadow,
-                        popupAnchor : [0, -30]
+                        popupAnchor: [0, -30]
 
                     });
 

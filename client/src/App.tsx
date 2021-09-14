@@ -1,3 +1,4 @@
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { ThemeProvider } from "@material-ui/styles";
 import { SnackbarProvider } from "notistack";
 import React, { useEffect } from "react";
@@ -13,6 +14,7 @@ import { PageContextProvider } from "./contexts/PageContext";
 import { login } from "./store/actions/login";
 import { logout } from "./store/actions/logout";
 import { setEmail } from "./store/actions/setEmail";
+import DateFnsUtils from '@date-io/date-fns';
 
 
 
@@ -40,6 +42,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <SnackbarProvider maxSnack={3}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Router>
         <div className="App">
             <PageContextProvider>
@@ -50,6 +53,7 @@ function App() {
             <Route path="/search" component={Browser}/>
         </div>
             </Router>
+            </MuiPickersUtilsProvider>
             </SnackbarProvider>
         </ThemeProvider>
 

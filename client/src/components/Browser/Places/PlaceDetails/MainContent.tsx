@@ -6,16 +6,17 @@ import Grid from "@material-ui/core/Grid";
 import LanguageIcon from '@material-ui/icons/Language';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/Phone';
+import { Alert } from "@material-ui/lab";
 import Rating from "@material-ui/lab/Rating";
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 
 interface PlaceTypes {
     place: any,
-   
+
 }
 
-const MainContent: FC<PlaceTypes> = ({ place}) => {
+const MainContent: FC<PlaceTypes> = ({ place }) => {
 
 
     const icons = [
@@ -33,7 +34,6 @@ const MainContent: FC<PlaceTypes> = ({ place}) => {
         },
     ]
 
-    const currentColor = place.status === 'open' ? 'green' : 'red'
 
 
     return (
@@ -41,9 +41,6 @@ const MainContent: FC<PlaceTypes> = ({ place}) => {
             <Grid item lg={5} style={{ textAlign: 'center' }}>
                 <img style={{ width: '100%', marginTop: 10 }} alt="place img"
                     src={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} />
-                <Typography variant="h6" style={{ color: 'white' }}>
-                    This place is now <span style={{ color: currentColor, fontWeight: 'bold' }}>{place.status.toUpperCase()}</span>
-                </Typography>
             </Grid>
             <Grid item lg={5} container direction="column" style={{ textAlign: 'center', marginLeft: 10, alignItems: 'center' }}>
                 <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
@@ -52,18 +49,26 @@ const MainContent: FC<PlaceTypes> = ({ place}) => {
                 <Typography variant="h6" style={{ color: 'white' }}>
                     {place.subtitle}
                 </Typography>
+                {place.status === 'open' ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
+                    This place is now {place.status.toUpperCase()}
+                </Alert>
+                    : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
+                        This place is now {place.status.toUpperCase()}
+                    </Alert>
+
+                }
                 <Rating
                     style={{ marginTop: 20 }}
                     name="simple-controlled"
-                    readOnly
                     value={place.averageNote.average}
+                    readOnly
                 />
                 <Typography variant="body1" style={{ color: 'white', fontStyle: 'italic' }}>{place.type}</Typography>
                 <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 30 }}>{place.description}</Typography>
 
             </Grid>
-            <Grid item container lg={12} style={{ marginTop: 10 }} justify="center">
-                <Grid item lg={10}>
+            <Grid item container lg={12} justify="center">
+                <Grid item lg={10} style={{ marginTop: 20 }}>
                     <Divider style={{ width: '100%', background: 'red' }}></Divider>
                 </Grid>
             </Grid>

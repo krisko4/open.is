@@ -30,7 +30,7 @@ interface NewsProps {
 }
 
 interface Props {
-    classes: ClassNameMap<"paper" | "content" | "title" | "dialog">,
+    classes: ClassNameMap<"paper" | "content" | "title" | "dialog" | "date">,
     news?: NewsProps[],
     setNews: React.Dispatch<React.SetStateAction<NewsProps[]>>,
     currentPlace: any,
@@ -127,7 +127,7 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
                                         <Typography variant="h6" className={classes.title}>
                                             {item.title}
                                         </Typography>
-                                        <Typography variant="caption" className={classes.content}>
+                                        <Typography variant="caption" className={classes.date}>
                                             {format(new Date(item.date), 'yyyy-MM-dd hh:mm:ss')}
                                         </Typography>
                                         <Typography variant="body2" style={{ marginTop: 10 }} className={classes.content}>
@@ -178,7 +178,7 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
 
                 </>
                 : <Grid justify="center" direction="column" alignItems="center" container style={{ height: 400 }}>
-                    <Typography variant="h6" className={classes.title}>This company has not provided any news yet.</Typography>
+                    <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
                     {isUserLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
                         <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} style={{ marginTop: 10 }} variant="contained" color="primary">Add news</Button>

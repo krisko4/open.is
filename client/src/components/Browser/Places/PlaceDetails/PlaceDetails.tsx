@@ -9,6 +9,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import myAxios from "../../../../axios/axios";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
+import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 import { News } from "../../../reusable/News";
 import OpeningHours from "../../../reusable/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
@@ -33,7 +34,7 @@ const useNewsStyles = makeStyles({
         color: 'white'
     },
     content: {
-        color: 'grey'
+        color: 'lightgrey'
     },
     date: {
         color: 'grey'
@@ -93,6 +94,20 @@ const useOpeningHoursStyles = makeStyles({
         background: '#2C2C2C',
         borderRadius: 10
     },
+    content: {
+        color: 'grey'
+    },
+    hourPicker: {
+        color: 'white'
+    },
+    calendarIcon: {
+        '& .MuiIconButton-root': {
+            color: '#2196f3'
+        }
+    },
+    inputLabel: {
+        color: 'white'
+    },
     title: {
         textAlign: 'center',
         color: 'white'
@@ -104,10 +119,26 @@ const useOpeningHoursStyles = makeStyles({
     },
     days: {
         color: 'white',
-        
+
     },
     hours: {
         color: 'white'
+    },
+    dialog: {
+        background: '#2C2C2C',
+        '& .dialogTitle': {
+            color: '#2196f3'
+        },
+        '& .dialogContentText': {
+            color: 'white'
+        },
+        '& .opinionArea': {
+            background: '#404040',
+            borderRadius: 5
+        },
+        '& .input': {
+            color: 'white'
+        }
     }
 
 
@@ -137,6 +168,8 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlac
 
     const { setPopupOpen, setMapZoom } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
+
+
 
     const [opinionCount, setOpinionCount] = useState(0)
     const [opinions, setOpinions] = useState<OpinionProps[]>([])
@@ -175,7 +208,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlac
 
     const tabContents = [
         <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
-        <OpeningHours classes={openingHoursClasses} place={currentPlace} />,
+        <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}

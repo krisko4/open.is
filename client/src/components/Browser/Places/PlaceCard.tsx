@@ -43,11 +43,11 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
                             <CardMedia className={classes.image}
                                 image={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} />
                         </Grid>
-                        <Grid item>
+                        <Grid item lg={10}>
                             <Typography variant="h6" style={{ color: 'white', marginLeft: 10 }}>
                                 {place.name}
                             </Typography>
-                            <Typography variant="body1" style={{ color: 'grey', marginLeft: 10 }}>
+                            <Typography variant="body1" style={{ color: '#A0A0A0', marginLeft: 10 }}>
                                 {place.subtitle}
                             </Typography>
                             <Typography variant="body2" color="primary" style={{ marginLeft: 10 }}>

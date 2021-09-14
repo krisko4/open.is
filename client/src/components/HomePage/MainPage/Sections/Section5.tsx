@@ -1,7 +1,8 @@
+import { Grow } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import React from "react";
+import React, { FC } from "react";
 
 
 const opinions = [
@@ -18,7 +19,7 @@ const opinions = [
         content: 'I\'m an owner of a club in Białystok. I find it important to\n' +
             '                        keep my clients informed regularly about upcoming events in my place. Open.is\n' +
             '                        is a great platform with user-friendly interface, which allows me to do it. What\'s more -\n' +
-            '                        the more popular platform gets, the more potential clients I can have!',
+            '                        the more popular platform gets, the more potential clients I can gain!',
         image: 'https://www.incimages.com/uploaded_files/image/1920x1080/getty_481292845_77896.jpg'
     },
     {
@@ -32,23 +33,8 @@ const opinions = [
     }
 ]
 
-const createOpinions = ({image}) => {
-    return opinions.map((opinion, i) => {
-        return (<Grid item xs={3} key={i}>
-            <Grid container direction="row" justify="center">
-                      <Avatar
-                          src={opinion.image}
-                          className={image}/>
-                      <Grid item xs={6} style={{marginLeft: 10}}>
-                          <h2 style={{color: 'white'}}>{opinion.name}</h2>
-                          <div style={{fontStyle: 'italic', color: 'lightgrey'}}>{opinion.content}</div>
-                      </Grid>
-                  </Grid>
-        </Grid>)
-    })
-}
 
-const Section5 = ({image}) => {
+const Section5: FC = () => {
 
 
     return (
@@ -56,23 +42,35 @@ const Section5 = ({image}) => {
 
         <Grid
             container
-            style={{marginTop: 100, marginBottom: 100}}
+            style={{ marginTop: 100, marginBottom: 100 }}
             justify="center"
         >
-            <Grid item xs={12} align="center">
-                <Typography variant="h2" style={{fontWeight: 'bold', color: 'white'}}>
-                    Trusted by people
-                </Typography>
+            <Grid item xs={12} style={{textAlign: 'center'}}>
+                <Grow in={true}>
+                    <Typography variant="h2" style={{ fontWeight: 'bold', color: 'white' }}>
+                        Trusted by people
+                    </Typography>
+                </Grow>
             </Grid>
-            <Grid item xs={7} align="center">
-                <Typography variant="h5" style={{marginTop: 20, color: 'lightgray'}}>
+            <Grid item xs={7} style={{textAlign: 'center'}}>
+                <Typography variant="h5" style={{ marginTop: 20, color: 'lightgray' }}>
                     We are extremely grateful for the feedback provided by our users. Your opinions are highly
                     appreciated.
                     Below you can find some of them:
                 </Typography>
             </Grid>
-            <Grid container style={{marginTop: 100}} justify="space-around">
-                {createOpinions({image})}
+            <Grid container style={{ marginTop: 100 }} justify="space-around">
+                {opinions.map((opinion, i) => <Grid item xs={3} key={i}>
+                    <Grid container direction="row" justify="center">
+                        <Avatar
+                            src={opinion.image}
+                            style={{height: 100, width: 100, objectFit: 'cover'}} />
+                        <Grid item xs={6} style={{ marginLeft: 10 }}>
+                            <h2 style={{ color: '#2196f3' }}>{opinion.name}</h2>
+                            <div style={{ fontStyle: 'italic', color: 'lightgrey' }}>{opinion.content}</div>
+                        </Grid>
+                    </Grid>
+                </Grid>)}
             </Grid>
         </Grid>
     )

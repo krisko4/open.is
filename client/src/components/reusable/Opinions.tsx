@@ -14,8 +14,8 @@ import Picker, { IEmojiData } from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
+const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface OpinionProps {
     author: string,
@@ -32,7 +32,7 @@ interface Props {
     opinions: OpinionProps[],
     setOpinions: React.Dispatch<React.SetStateAction<OpinionProps[]>>,
     opinionCount: number,
-    setOpinionCount?: React.Dispatch<React.SetStateAction<number>>
+    setOpinionCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 
@@ -75,6 +75,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
                     ]
 
                 })
+                setOpinionCount(opinionCount => opinionCount + 1)
                 const updatedPlace = { ...currentPlace }
                 updatedPlace.averageNote = res.data.averageNote
                 console.log(updatedPlace)

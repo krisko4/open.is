@@ -1,19 +1,23 @@
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
-import React from "react";
+import React, { FC } from "react";
+import { Slide } from "@material-ui/core";
 
-const Section4 = () => {
+const Section4 : FC = () => {
     return (
+        
         <Grid
             container
             style={{marginTop: 100, background: '#002244'}}
             justify="center"
         >
             <Grid item lg={5}  style = {{marginTop: 100, color: 'white'}}>
+                <Slide direction="left" in={true}>
                 <Typography variant="h3" style={{fontWeight: 'bold'}}>
                     Our goal is your <br/> <span style={{color: '#2196f3', textDecoration: 'underline'}}>satisfaction.</span>
                 </Typography>
+                </Slide>
                 <Grid item lg={7} xs={10} style={{marginTop: 20}}>
                     <Typography variant="h6" style={{color: 'lightgrey'}}>
                         We are proud of having such ability to assume that our clients are satisfied with our services.
@@ -22,7 +26,7 @@ const Section4 = () => {
                 </Grid>
 
             </Grid>
-            <Grid item lg={5} xs={5} style={{marginTop:50, marginBottom: 50}} align="center">
+            <Grid item lg={5} style={{marginTop:50, marginBottom: 50}}>
                 <CardMedia
                     style={{width: 400, height: 400}}
                     image="https://paryskie-perfumy.pl/wp-content/uploads/2020/01/satisfaction.png"

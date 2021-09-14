@@ -1,27 +1,26 @@
 import { Button, Card, CardContent, Grid, Typography } from "@material-ui/core";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import StarIcon from '@material-ui/icons/Star';
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import Alert from '@material-ui/lab/Alert';
-import { format } from "date-fns";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import myAxios from "../../../../axios/axios";
 import { Status, usePanelContext } from "../../../../contexts/PanelContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
-import StarIcon from '@material-ui/icons/Star';
 
 
 const defaultNews = [
     {
         title: 'This will be my first news!',
-        date: format(new Date(), 'dd.MM.yyyy hh:mm'),
+        date: new Date().toString(),
         content: 'This is just an example of what your news will look like. It will disappear after your first news is created.'
     },
     {
         title: 'This will be my second news!',
-        date: format(new Date(), 'dd.MM.yyyy hh:mm'),
+        date: new Date().toString(),
         content: 'It is going to be fun!'
 
     }
@@ -44,7 +43,8 @@ export const PlaceManagement: FC = () => {
             }
         }).then(res => {
             console.log(res)
-            res.data.length > 0 ? setNews(res.data) : setNews(defaultNews)
+            // res.data.length > 0 ? setNews(res.data) : setNews(defaultNews)
+            setNews(res.data)
         }).catch(err => console.log(err))
         myAxios.get('/opinions', {
             params: {
@@ -54,7 +54,6 @@ export const PlaceManagement: FC = () => {
             setOpinions(res.data)
             setOpinionCount(res.data.length)
         }).catch(err => console.log(err))
-
     }, [currentPlace])
 
     const setPlaceStatus = async (status: Status) => {
@@ -83,7 +82,6 @@ export const PlaceManagement: FC = () => {
         } finally {
             setLoading(false)
         }
-
     }
 
 
@@ -92,7 +90,11 @@ export const PlaceManagement: FC = () => {
             <Grid container style={{ marginTop: 40, marginBottom: 40 }} spacing={2} item lg={11} justify="space-around">
                 <Grid item lg={12}>
                     {currentPlace.status === Status.CLOSED && <Alert severity="error">Your place is now closed.</Alert>}
-                    <Alert severity="warning" style={{ marginTop: 10 }}>Your place is not visible in the browser. You have to set opening hours of your business first.</Alert>
+                    {!currentPlace.openingHours ?
+                        <Alert severity="warning" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
+                        :
+                        <Alert severity="success" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
+                    }
                 </Grid>
                 <Grid item lg={4}>
                     <Card elevation={3} style={{ borderRadius: 15 }}>
@@ -142,7 +144,7 @@ export const PlaceManagement: FC = () => {
                                     <span style={{ marginLeft: 5 }}>+10.5%</span>
                                 </Grid>
                                 <Grid item lg={2} >
-                                    <StarIcon fontSize="large" style={{color: '#ffb400'}} />
+                                    <StarIcon fontSize="large" style={{ color: '#ffb400' }} />
                                 </Grid>
                             </Grid>
                             <Typography variant="h3">
@@ -188,17 +190,7 @@ export const PlaceManagement: FC = () => {
                             </CardContent>
                         </Card>
                         <Grid container style={{ marginTop: 10 }} spacing={2}>
-                            <Grid item lg={6}>
-                                <Card style={{ flexGrow: 1, borderRadius: 15 }} elevation={3}>
-                                    <CardContent>
-                                        <Typography variant="overline" style={{ fontWeight: 'bold' }}>Set opening hours</Typography>
-                                        <Grid container justify="center">
-                                            <Button color="primary" size="large" startIcon={<MeetingRoomIcon style={{ color: 'green' }} />}>Open</Button>
-                                        </Grid>
-                                    </CardContent>
-                                </Card>
 
-                            </Grid>
                             <Grid item lg={6}>
                                 <Card style={{ flexGrow: 1, borderRadius: 15 }} elevation={3}>
                                     <CardContent>
@@ -220,7 +212,7 @@ export const PlaceManagement: FC = () => {
                     </Grid>
                     <Grid item lg={7}>
                         <PlaceDetailsCard
-                          />
+                        />
                     </Grid>
                 </Grid>
 

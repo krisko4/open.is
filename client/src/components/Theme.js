@@ -1,4 +1,5 @@
-import {createMuiTheme} from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import lightBlue from "@material-ui/core/colors/lightBlue";
 
 const theme = createMuiTheme({
     typography: {
@@ -13,7 +14,7 @@ const theme = createMuiTheme({
             '"Apple Color Emoji"',
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"',
-          ].join(','), 
+        ].join(','),
     },
     palette: {
         primary: {
@@ -34,9 +35,9 @@ const theme = createMuiTheme({
             root: {
                 fontWeight: 200
             }
-        }
-    }
-});
+        },
+    
+}});
 
 
 export default theme

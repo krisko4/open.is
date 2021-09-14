@@ -1,20 +1,21 @@
 import { Card, CardContent, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
-import CardMedia from '@material-ui/core/CardMedia';
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import LanguageIcon from "@material-ui/icons/Language";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import PhoneIcon from "@material-ui/icons/Phone";
+import { Alert } from "@material-ui/lab";
 import Rating from "@material-ui/lab/Rating";
-import { format } from 'date-fns';
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Status, usePanelContext } from "../../../../contexts/PanelContext";
 import { News } from "../../../reusable/News";
 import OpeningHours from "../../../reusable/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
 
 
+
 const useNewsStyles = makeStyles({
+    date: {},
     paper: {
         padding: '6px 16px',
         borderRadius: 10,
@@ -50,14 +51,40 @@ const useOpeningHoursStyles = makeStyles({
         background: 'inherit',
         borderRadius: 10,
     },
+    // hourPicker: {
+    //     color: 'green'
+    // },
+    calendarIcon: {
+        // '& .MuiIconButton-root' : {
+        //     color: 'red'
+        // }
+    },
     title: {
         textAlign: 'center',
-
+    },
+    content: {
+        color: 'grey'
     },
     divider: {
         marginTop: 10,
         background: '#2196f3',
         marginBottom: 10
+    },
+    dialog: {
+        background: 'white',
+        '& .dialogTitle': {
+            color: '#2196f3'
+        },
+        '& .dialogContentText': {
+            color: 'black'
+        },
+        '& .opinionArea': {
+            background: 'white',
+            borderRadius: 5
+        },
+        '& .input': {
+            color: 'black'
+        }
     },
     days: {},
     hours: {}
@@ -97,8 +124,9 @@ const useOpinionsStyles = makeStyles({
 
 export const PlaceDetailsCard: FC = () => {
 
-    const { currentPlace, setCurrentPlace, news, setNews, opinions, setOpinions, opinionCount, setOpinionCount } = usePanelContext()
+    const { currentPlace, setPlaces, places, setCurrentPlace, news, setNews, opinions, setOpinions, opinionCount, setOpinionCount } = usePanelContext()
 
+    const isFirstRender = useRef(true)
     const newsClasses = useNewsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
     const opinionClasses = useOpinionsStyles()
@@ -121,9 +149,19 @@ export const PlaceDetailsCard: FC = () => {
         },
     ]
 
+    useEffect(() => {
+        if(isFirstRender.current){
+            isFirstRender.current = false
+            return
+        }
+        const newPlaces = places.map((place : any) => place._id === currentPlace._id ? currentPlace : place)
+
+        setPlaces(newPlaces)
+    }, [currentPlace])
+
     const tabContents = [
         <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
-        <OpeningHours classes={openingHoursClasses} />,
+        <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
@@ -133,6 +171,7 @@ export const PlaceDetailsCard: FC = () => {
             opinionCount={opinionCount}
             setOpinionCount={setOpinionCount}
         />
+
     ]
 
     const MyTab = (props: any) => {
@@ -152,13 +191,8 @@ export const PlaceDetailsCard: FC = () => {
                     <Grid container style={{ marginTop: 10 }} justify="space-evenly">
                         <Grid item lg={5} style={{ textAlign: 'center' }}>
                             <img style={{ width: '100%', marginTop: 10 }} alt="place img"
-                                src={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`}/>
-                            <Typography variant="h5" style={{ marginTop: 20 }}>This place is now
-                                {currentPlace.status === Status.OPEN ?
-                                    <span style={{ color: 'green', fontWeight: 'bold' }}> {currentPlace.status.toUpperCase()}</span>
-                                    : <span style={{ color: 'red', fontWeight: 'bold' }}> {currentPlace.status.toUpperCase()}</span>
-                                }
-                            </Typography>
+                                src={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
+
                         </Grid>
                         <Grid item lg={5} container direction="column" alignItems="center" style={{ textAlign: 'center', marginLeft: 10 }}>
                             <Typography variant="h3" style={{ fontWeight: 'bold' }}>
@@ -167,10 +201,19 @@ export const PlaceDetailsCard: FC = () => {
                             <Typography variant="h6" >
                                 {currentPlace.subtitle || 'This is a short subtitle of my place'}
                             </Typography>
+                            {currentPlace.status === Status.OPEN ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
+                                This place is now {currentPlace.status.toUpperCase()}
+                            </Alert>
+                                : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
+                                    This place is now {currentPlace.status.toUpperCase()}
+                                </Alert>
+
+                            }
                             <Rating
                                 name="simple-controlled"
                                 readOnly
                                 value={currentPlace.averageNote.average}
+                                style={{ marginTop: 10 }}
                             />
                             <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>
                             <Typography variant="body1" style={{ marginTop: 10 }}>

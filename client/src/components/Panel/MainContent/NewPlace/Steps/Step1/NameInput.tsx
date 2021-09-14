@@ -1,7 +1,7 @@
 import { InputAdornment, TextField } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
-import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import { clearPlace, usePanelContext } from "../../../../../../contexts/PanelContext";
 
 
 
@@ -18,9 +18,13 @@ export const NameInput: FC<Props> = ({ isNameCorrect, setNameCorrect, setButtonL
 
     const { currentPlace, setCurrentPlace } = usePanelContext()
     const firstRenderRef = useRef(true)
-    const [input, setInput] = useState(currentPlace.name)
+    const [input, setInput] = useState('')
 
+    useEffect(() => {
+        setInput(currentPlace.name)
+    }, [currentPlace])
 
+    
 
     // const validatePlaceName = async(name : string) => {
     //     try{
@@ -36,6 +40,8 @@ export const NameInput: FC<Props> = ({ isNameCorrect, setNameCorrect, setButtonL
 
     // }
 
+    
+
 
 
     useEffect(() => {
@@ -50,7 +56,7 @@ export const NameInput: FC<Props> = ({ isNameCorrect, setNameCorrect, setButtonL
             //    await validatePlaceName(placeName)
             input ? setNameCorrect(true) : setNameCorrect(false)
             const newCurrentPlace = { ...currentPlace }
-            console.log(newCurrentPlace)
+            //console.log(newCurrentPlace)
             newCurrentPlace.name = input
             setCurrentPlace(newCurrentPlace)
             setButtonLoading(false)

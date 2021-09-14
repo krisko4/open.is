@@ -16,10 +16,10 @@ const HomePage: FC = () => {
             <AuthContextProvider>
                 <Header />
                 <Auth />
+                <Banner />
+                <Content />
+                <Footer backgroundColor='#280000' />
             </AuthContextProvider>
-            <Banner />
-            <Content />
-            <Footer backgroundColor='#280000' />
         </Grid>
     )
 }

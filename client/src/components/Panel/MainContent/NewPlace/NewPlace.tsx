@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import myAxios from "../../../../axios/axios";
-import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContext";
+import { ChosenOptions, clearPlace, usePanelContext } from "../../../../contexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
@@ -16,12 +16,12 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 const defaultNews = [
     {
         title: 'This will be my first news!',
-        date: format(new Date(), 'dd.MM.yyyy hh:mm'),
+        date: new Date().toString(),
         content: 'This is just an example of what your news will look like. It will disappear after your first news is created.'
     },
     {
         title: 'This will be my second news!',
-        date: format(new Date(), 'dd.MM.yyyy hh:mm'),
+        date: new Date().toString(),
         content: 'It is going to be fun!'
 
     }
@@ -38,7 +38,7 @@ const defaultOpinions = [
     },
     {
         date: new Date().toString(),
-        author: 'Random user',
+        author: 'Happy client',
         content: 'This is a lovely place!',
         note: 5,
         averageNote: 0
@@ -48,14 +48,15 @@ const defaultOpinions = [
 
 export const NewPlace: FC = () => {
 
-    const {activeStep, setActiveStep} = useStepContext()
-    const {currentPlace, setOpinionCount, setNews, setOpinions, imageFile} = usePanelContext()
+    const { activeStep, setActiveStep } = useStepContext()
+    const { currentPlace, setOpinionCount, setNews, setOpinions, setCurrentPlace, imageFile } = usePanelContext()
     const { setSelectedOption, setPlaces, places } = usePanelContext()
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
+        setCurrentPlace(clearPlace)
         setNews(defaultNews)
         setOpinions(defaultOpinions)
         setOpinionCount(defaultOpinions.length)
@@ -63,15 +64,14 @@ export const NewPlace: FC = () => {
 
     const registerPlace = () => {
         setLoading(true)
-        const place = {...currentPlace}
+        const place = { ...currentPlace }
         place.address = currentPlace.address.label
-        place.lat = currentPlace.address.x
-        place.lng = currentPlace.address.y
+        place.lng = currentPlace.address.x
+        place.lat = currentPlace.address.y
         place.img = imageFile
         const formData = new FormData()
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
-        console.log(place)
         myAxios.post('/places', formData, {
             withCredentials: true,
             headers: {
@@ -148,8 +148,8 @@ export const NewPlace: FC = () => {
                 </Slide>
             </Grid>
             {activeStep > 0 &&
-                <Grid item lg={5}>
-                    <PlaceDetailsCard/>
+                <Grid item lg={6}>
+                    <PlaceDetailsCard />
                 </Grid>
             }
         </Grid>

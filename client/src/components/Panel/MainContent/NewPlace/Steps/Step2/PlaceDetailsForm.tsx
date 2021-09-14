@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from "react"
 import * as Yup from "yup"
 import { usePanelContext } from "../../../../../../contexts/PanelContext"
 import { useStepContext } from "../../../../../../contexts/StepContext"
+import { LoadingButton } from "../../../../../reusable/LoadingButton"
 
 
 const places: string[] = [
@@ -22,7 +23,7 @@ export const PlaceDetailsForm: FC = () => {
 
     const { setActiveStep } = useStepContext()
     const { currentPlace, setCurrentPlace } = usePanelContext()
-
+    const [loading, setLoading] = useState(false)
 
     const [subtitle, setSubtitle] = useState(currentPlace.subtitle)
     const [description, setDescription] = useState(currentPlace.description)
@@ -40,19 +41,23 @@ export const PlaceDetailsForm: FC = () => {
     }
 
     useEffect(() => {
+        setLoading(true)
         const delaySearch = setTimeout(() => {
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.description = description
             setCurrentPlace(newCurrentPlace)
+            setLoading(false)
         }, 500)
         return () => clearTimeout(delaySearch)
     }, [description])
 
     useEffect(() => {
+        setLoading(true)
         const delaySearch = setTimeout(() => {
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.subtitle = subtitle
             setCurrentPlace(newCurrentPlace)
+            setLoading(false)
         }, 500)
         return () => clearTimeout(delaySearch)
     }, [subtitle])
@@ -116,17 +121,18 @@ export const PlaceDetailsForm: FC = () => {
                 />
             </Grid>
             <Grid item lg={10}>
-                <Button
+                <LoadingButton
+                    loading={loading}
                     fullWidth={true}
                     variant="contained"
                     style={{ marginTop: 10 }}
                     color="primary"
                     type="submit"
-                    disabled={isDirty}
+                    disabled={isDirty || loading}
                     onClick={() => setActiveStep(2)}
                 >
                     Submit
-                </Button>
+                </LoadingButton>
             </Grid>
         </Grid>
       
