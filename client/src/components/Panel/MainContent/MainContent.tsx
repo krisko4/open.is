@@ -1,5 +1,7 @@
+import { Fade } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { ChosenOptions, usePanelContext } from "../../../contexts/PanelContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import { Dashboard } from "./Dashboard/Dashboard";
@@ -12,7 +14,7 @@ export const MainContent: FC = () => {
   const {selectedOption} = usePanelContext()
 
   return (
-    <Grid container justify="center" direction="row" style={{ background: '#F5F5F5' }} item lg={10}>
+    <Grid container  direction="row"  item lg={10}>
       {selectedOption === ChosenOptions.DASHBOARD && <Dashboard />}
       {selectedOption === ChosenOptions.NEW_PLACE &&
         <StepContextProvider>
@@ -24,3 +26,4 @@ export const MainContent: FC = () => {
 
   )
 }
+

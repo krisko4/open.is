@@ -123,7 +123,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
                                                 />
 
                                             </Grid>
-                                            <Typography variant="caption" className={classes.date}>{format(new Date(opinion.date), 'yyyy-MM-dd hh:mm:ss')}</Typography>
+                                            <Typography variant="caption" className={classes.date}>{format(new Date(opinion.date), 'yyyy-MM-dd HH:mm:ss')}</Typography>
                                             <Typography variant="subtitle1" className={classes.content}>{opinion.content}</Typography>
                                         </CardContent>
                                     </Card>

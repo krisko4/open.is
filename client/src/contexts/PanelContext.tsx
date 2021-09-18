@@ -13,7 +13,7 @@ export enum Status {
     CLOSED = 'closed'
 }
 
-interface PlaceProps {
+export interface PlaceProps {
     status: Status,
     visitCount: number,
     _id: string,
@@ -28,6 +28,8 @@ interface PlaceProps {
     img: string | ArrayBuffer | null | File,
     email: string,
     website: string,
+    instagram: string,
+    facebook: string,
     userId: string,
     averageNote: {
         ones: number,
@@ -86,6 +88,8 @@ export const clearPlace = {
     email: '',
     website: '',
     userId: '',
+    instagram: '',
+    facebook: '',
     averageNote: {
         ones: 0,
         twos: 0,
@@ -101,7 +105,7 @@ const useProviderSettings = () => {
 
     const [selectedOption, setSelectedOption] = useState<ChosenOptions | null>(null)
     const [currentPlace, setCurrentPlace] = useState<PlaceProps>(clearPlace)
-
+    const [placeIndex, setPlaceIndex] = useState(0)
     const [news, setNews] = useState<NewsProps[]>([])
     const [opinions, setOpinions] = useState<OpinionProps[]>([])
     const [places, setPlaces] = useState<any>([])
@@ -124,7 +128,9 @@ const useProviderSettings = () => {
         setOpinionCount,
         // uploadedImage,
         imageFile,
-        setImageFile
+        setImageFile,
+        placeIndex,
+        setPlaceIndex
         // setUploadedImage
     }
 }

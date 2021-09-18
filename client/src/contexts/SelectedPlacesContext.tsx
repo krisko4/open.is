@@ -14,7 +14,7 @@ const SelectedPlacesContextProvider :FC<ContextProps> = ({children}) => {
 }
 
 const useProviderSettings = () => {
-    const [selectedPlaces, setSelectedPlaces] = useState([])
+    const [selectedPlaces, setSelectedPlaces] = useState<any>([])
     const [chosenCriterias, setChosenCriterias] = useState<any>([])
     return {
         selectedPlaces,

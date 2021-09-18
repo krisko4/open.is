@@ -24,13 +24,16 @@ const useProviderSettings = () => {
        )
     const [mapZoom, setMapZoom] = useState(10)
     const [popupOpen, setPopupOpen] = useState(false)
+    const [popupIndex, setPopupIndex] = useState(0)
     return {
         mapCenter,
         setMapCenter,
         mapZoom,
         setMapZoom,
         popupOpen,
-        setPopupOpen
+        setPopupOpen,
+        popupIndex,
+        setPopupIndex
     }
 }
 

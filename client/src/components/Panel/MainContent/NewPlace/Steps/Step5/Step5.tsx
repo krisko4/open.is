@@ -2,7 +2,6 @@ import { Card, CardMedia, Grid, IconButton, makeStyles, Typography } from "@mate
 import ClearIcon from '@material-ui/icons/Clear';
 import React, { FC, useRef, useState } from "react";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
-import { useStepContext } from "../../../../../../contexts/StepContext";
 
 const useStyles = makeStyles({
     imageContainer: {

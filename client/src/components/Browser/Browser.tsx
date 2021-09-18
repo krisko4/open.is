@@ -4,9 +4,9 @@ import { AuthContextProvider } from "../../contexts/AuthContext";
 import MapContextProvider from "../../contexts/MapContext/MapContext";
 import SelectedPlacesContextProvider from "../../contexts/SelectedPlacesContext";
 import FirstHeader from "./FirstHeader";
-import {MapBox} from "./MapBox";
+import { MapBox } from "./Places/MapBox/MapBox";
 import PlacesBox from "./Places/PlacesBox";
-import {SecondHeader} from "./SecondHeader";
+import { SecondHeader } from "./SecondHeader";
 
 
 

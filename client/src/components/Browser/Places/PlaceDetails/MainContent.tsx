@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
@@ -9,8 +9,7 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import { Alert } from "@material-ui/lab";
 import Rating from "@material-ui/lab/Rating";
 import React, { FC } from 'react';
-
-
+import { SocialIcon } from 'react-social-icons';
 interface PlaceTypes {
     place: any,
 
@@ -64,7 +63,11 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                     readOnly
                 />
                 <Typography variant="body1" style={{ color: 'white', fontStyle: 'italic' }}>{place.type}</Typography>
-                <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 30 }}>{place.description}</Typography>
+                <div>
+                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{width: 35, height: 35, display: 'table-cell'}} url="http://facebook.com"/></IconButton>
+                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{width: 35, height: 35, display: 'table-cell'}} url="http://instagram.com"/></IconButton>
+                </div>
+                <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 20 }}>{place.description}</Typography>
 
             </Grid>
             <Grid item container lg={12} justify="center">

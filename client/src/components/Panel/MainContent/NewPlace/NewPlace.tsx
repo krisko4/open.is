@@ -72,6 +72,7 @@ export const NewPlace: FC = () => {
         const formData = new FormData()
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
+       
         myAxios.post('/places', formData, {
             withCredentials: true,
             headers: {
@@ -100,10 +101,11 @@ export const NewPlace: FC = () => {
 
     return (
 
-        <Grid item container style={{ marginTop: 40, marginBottom: 40 }} justify="space-evenly">
+        <Grid container lg={activeStep > 0 ? 12 : 10} item style={{ marginTop: -80, marginBottom: 40,  }} justify="space-evenly">
+        
             <Grid item lg={5}>
                 <Slide in={true}>
-                    <Card>
+                    <Card style={{boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',borderRadius: 15}}>
                         <CardContent>
                             <Typography variant="h5" >
                                 Business management

@@ -51,7 +51,7 @@ export const Panel: FC = () => {
                     <MainContent/>
                 </Grid>
             </Grid>
-            <Footer backgroundColor='#2196f3' />
+            {/* <Footer backgroundColor='#2196f3' /> */}
         </div>
     )
 }

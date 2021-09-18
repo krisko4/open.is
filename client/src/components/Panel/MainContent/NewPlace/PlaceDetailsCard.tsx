@@ -1,4 +1,4 @@
-import { Card, CardContent, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
+import { Card, CardContent, IconButton, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -7,6 +7,7 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import { Alert } from "@material-ui/lab";
 import Rating from "@material-ui/lab/Rating";
 import React, { FC, useEffect, useRef, useState } from "react";
+import { SocialIcon } from "react-social-icons";
 import { Status, usePanelContext } from "../../../../contexts/PanelContext";
 import { News } from "../../../reusable/News";
 import OpeningHours from "../../../reusable/OpeningHours";
@@ -150,12 +151,11 @@ export const PlaceDetailsCard: FC = () => {
     ]
 
     useEffect(() => {
-        if(isFirstRender.current){
+        if (isFirstRender.current) {
             isFirstRender.current = false
             return
         }
-        const newPlaces = places.map((place : any) => place._id === currentPlace._id ? currentPlace : place)
-
+        const newPlaces = places.map((place: any) => place._id === currentPlace._id ? currentPlace : place)
         setPlaces(newPlaces)
     }, [currentPlace])
 
@@ -180,7 +180,8 @@ export const PlaceDetailsCard: FC = () => {
     }
     return (
         <Slide in={true}>
-            <Card elevation={3}>
+            <Card elevation={3} style={{boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15}}>
+        
                 <CardContent>
                     <Typography variant="h5">
                         Place card
@@ -216,6 +217,10 @@ export const PlaceDetailsCard: FC = () => {
                                 style={{ marginTop: 10 }}
                             />
                             <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>
+                            <div>
+                                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.facebook ? currentPlace.facebook : "http://facebook.com"} /></IconButton>
+                                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.instagram ? currentPlace.instagram : "http://instagram.com"} /></IconButton>
+                            </div>
                             <Typography variant="body1" style={{ marginTop: 10 }}>
                                 {currentPlace.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
                             </Typography>

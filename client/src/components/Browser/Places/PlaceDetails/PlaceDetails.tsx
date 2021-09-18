@@ -226,32 +226,31 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlac
     }
 
     return (
-        <Scrollbars>
-            <Grid container>
-                <IconButton onClick={() => { setPlaceCardClicked(false); setMapZoom(10); setPopupOpen(false) }} color="secondary">
-                    <KeyboardReturn />
-                </IconButton>
-                <MainContent place={currentPlace} />
-                <Grid container style={{ marginTop: 10 }}>
-                    <Divider style={{ width: '100%', backgroundColor: 'red' }} />
-                    <Paper square style={{ width: '100%', background: 'inherit' }}>
-                        <Tabs
-                            value={value}
-                            variant="fullWidth"
-                            indicatorColor="secondary"
-                            textColor="secondary"
-                            onChange={handleChange}
-                        >
-                            <MyTab label="News" />
-                            <MyTab label="Opening hours" />
-                            <MyTab label="Opinions" />
-                        </Tabs>
-                    </Paper>
-                    <Grid container item>
-                        {tabContents[value]}
-                    </Grid>
+
+        <Grid container>
+            <IconButton onClick={() => { setPlaceCardClicked(false); setMapZoom(10); setPopupOpen(false) }} color="secondary">
+                <KeyboardReturn />
+            </IconButton>
+            <MainContent place={currentPlace} />
+            <Grid container style={{ marginTop: 10 }}>
+                <Divider style={{ width: '100%', backgroundColor: 'red' }} />
+                <Paper square style={{ width: '100%', background: 'inherit' }}>
+                    <Tabs
+                        value={value}
+                        variant="fullWidth"
+                        indicatorColor="secondary"
+                        textColor="secondary"
+                        onChange={handleChange}
+                    >
+                        <MyTab label="News" />
+                        <MyTab label="Opening hours" />
+                        <MyTab label="Opinions" />
+                    </Tabs>
+                </Paper>
+                <Grid container item>
+                    {tabContents[value]}
                 </Grid>
             </Grid>
-        </Scrollbars>
+        </Grid>
     )
 }

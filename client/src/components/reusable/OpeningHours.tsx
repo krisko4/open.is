@@ -201,7 +201,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
                                         <Grid item className={classes.days} lg={6}>
                                             {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
                                         </Grid>
-                                        <Grid item lg={5} style={{ textAlign: 'center' }} direction="column" className={classes.hours}>
+                                        <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
                                             {Object.keys(openingHours).map((key, index) => <div key={index}>
                                                 {!openingHours[key].isOpen ?
                                                     <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>

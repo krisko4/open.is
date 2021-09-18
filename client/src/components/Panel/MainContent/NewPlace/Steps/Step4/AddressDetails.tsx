@@ -1,45 +1,49 @@
-import { CircularProgress, Grid, TextField } from "@material-ui/core";
+import { Button, CircularProgress, Fade, Grid, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
-import { useSelectedPlacesContext } from "../../../../../../contexts/SelectedPlacesContext";
-import { findByAddress } from "../../../../../../requests/PlaceRequests";
-import { MapBox } from "../../../../../Browser/MapBox";
-import { Button } from "@material-ui/core";
-import { useStepContext } from "../../../../../../contexts/StepContext";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import { useSelectedPlacesContext } from "../../../../../../contexts/SelectedPlacesContext";
+import { useStepContext } from "../../../../../../contexts/StepContext";
+import { findByAddress } from "../../../../../../requests/PlaceRequests";
+import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
 
 const tileLayer = {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 }
 
-export const AddressDetails = () => {
+export const AddressDetails: FC = () => {
 
     const [inputValue, setInputValue] = useState('')
     const [open, setOpen] = useState(false)
     const { setMapZoom, setMapCenter } = useMapContext()
-    const {selectedPlaces, setSelectedPlaces } = useSelectedPlacesContext()
-    const {currentPlace, setCurrentPlace} = usePanelContext()
-    const {setActiveStep} = useStepContext()
-    const loading = open && selectedPlaces.length === 0 && inputValue.length > 0
+    const { selectedPlaces, setSelectedPlaces } = useSelectedPlacesContext()
+    const { currentPlace, setCurrentPlace } = usePanelContext()
+    const [selectedAddress, setSelectedAddress] = useState<any>(null)
+    const { setActiveStep } = useStepContext()
     const isFirstFind = useRef(true)
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const submitAddress = () => {
-        setActiveStep(currentStep => currentStep + 1)
+        if (selectedAddress.raw.address.house_number === undefined) {
+            setErrorMessage('This is not a valid address. Please provide a street number.')
+            return
+        }         
+         const newCurrentPlace = {...currentPlace}
+         newCurrentPlace.address = selectedAddress
+         setCurrentPlace(newCurrentPlace)
+         setActiveStep(currentStep => currentStep + 1)
     }
 
-    const selectPlace = (place) => {
-        const newCurrentPlace = {...currentPlace}
-        newCurrentPlace.address = place
-        setCurrentPlace(newCurrentPlace)
+    const selectPlace = (place: any) => {
+        setSelectedAddress(place)
         if (place) {
-            console.log(place)
             setMapZoom(20)
-            setMapCenter([place.y, place.x])
-            setSelectedPlaces([])
+            setMapCenter({ lat: place.y, lng: place.x })
         }
     }
 
@@ -48,20 +52,36 @@ export const AddressDetails = () => {
             isFirstFind.current = false
             return
         }
+        console.log(inputValue)
+        setErrorMessage('')
+        setSelectedAddress(null)
+        setLoading(true)
         if (inputValue === '') {
+            setLoading(false)
             setSelectedPlaces([])
             return
         }
-        const delaySearch = setTimeout(() => {
-            findByAddress(inputValue, setSelectedPlaces)
+        const delaySearch = setTimeout(async () => {
+            const addresses = await findByAddress(inputValue)
+            setSelectedPlaces(addresses)
+            setLoading(false)
         }, 500)
         return () => clearTimeout(delaySearch)
     }, [inputValue])
 
     return (
-        <Grid item container lg={12} justify="space-evenly">
+        <Grid container justify="center" style={{ marginTop: 10 }}>
+            <Fade in={errorMessage !== ''}>
+                <Grid item lg={8} style={{ textAlign: 'center' }}>
+                    <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
+                </Grid>
+            </Fade>
             <Grid item lg={8}>
                 <Autocomplete
+
+                    freeSolo
+                    loading={loading}
+
                     value={currentPlace.address}
                     open={open}
                     onOpen={() => {
@@ -72,7 +92,7 @@ export const AddressDetails = () => {
                     }}
                     options={selectedPlaces}
                     onChange={(event, value) => selectPlace(value)}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option && option.name}
                     noOptionsText="No options"
                     renderOption={(option, { inputValue }) => {
                         const label = option.label
@@ -111,7 +131,7 @@ export const AddressDetails = () => {
             <Grid style={{ height: 400, marginTop: 20 }} item lg={12}>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <Button disabled={!currentPlace.address || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
+            <Button disabled={!selectedAddress || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
         </Grid>
     )
 }
