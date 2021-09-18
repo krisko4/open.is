@@ -1,6 +1,7 @@
 const Place = require('./model/place')
 const mongoose = require('mongoose')
 const opinionService = require('../opinion/opinion_service')
+const userValidator = require('../user/model/user_validator')
 
 
 
@@ -13,6 +14,20 @@ const placeService = {
     getActivePlaces: () => {
         return Place.find({isActive: true}).exec()
     },
+
+    getPlaceNames: (name) => {
+        return Place.find({name: name}, 'name').exec()
+    },
+
+    getPlaceByIdAndUserId: (id, userId) => Place.findById(id, {userId: mongoose.Types.ObjectId(userId)}).exec(),
+
+    getTop20PlacesSortedBy: (param) => Place.find().sort(param).limit(20).exec(),
+
+    // getRecentlyAddedPlaces: () => Place.find().sort({createdAt: -1}).limit(20).exec(),
+
+    // getPopularPlaces: () =>  Place.find().sort({visitCount: -1}).limit(20).exec(),
+
+    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({name: names, address: addresses}).exec(),
 
     addPlace: (placeData) => {
         return new Place({

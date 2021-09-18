@@ -77,7 +77,6 @@ const PlaceSchema = new mongoose.Schema({
     name: ReqString,
     address: {
         type: String,
-        unique: true,
         required: true
     },
     phone: ReqString,
@@ -87,6 +86,10 @@ const PlaceSchema = new mongoose.Schema({
     lng: ReqString,
     img: ReqString,
     description: ReqString,
+    createdAt: {
+        type: Date,
+        default: new Date()
+    },
     subtitle: String,
     status: {
         type: String,

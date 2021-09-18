@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "commonjs",
+        "paths": {
+            "@/API/*": ["./API/*"],
+            "@/routes/*" : ["./routes/*"]
+        }
+    }
+}

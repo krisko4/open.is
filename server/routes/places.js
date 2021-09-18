@@ -1,5 +1,4 @@
 const express = require('express');
-const jwtController = require('../API/jwt/jwt_controller');
 const router = express.Router();
 const placeController = require('../API/place/place_controller')
 const userService = require('../API/user/user_service')
@@ -7,25 +6,43 @@ const multer = require('multer')
 const upload = multer({ dest: 'public/images/places/' })
 
 
+// // Check if user is logged in - if so, pass 
+// const isUserLoggedIn = async (req, res, next) => {
+//     const { cookies } = req
+//     const { uid } = cookies
+//     try {
+//         if (uid) req.user = await userService.getUserById(uid)
+//         next()
+//     } catch (err) {
+//         return res.status(400).json('Invalid uid')
+//     }
 
-const isUserLoggedIn = async (req, res, next) => {
-    const { cookies } = req
-    const { uid } = cookies
-    if (uid) {
-        req.user = await userService.getUserById(uid)
-        next()
-        return
-    }
-    next()
+// }
 
-}
+router.get('/active/name', (req, res) => {
+    placeController.findPlaceNames(req, res)
+})
+
 router.get('/active', async (req, res) => {
     await placeController.getActivePlaces(req, res)
 })
 
-router.get('/', isUserLoggedIn, async (req, res) => {
-    await placeController.getPlaces(req, res)
-});
+router.get('/active/popular', (req, res) => {
+    placeController.getPopularPlaces(req, res)
+}),
+
+
+    router.get('/active/top', (req, res) => {
+        placeController.getTopRatedPlaces(req, res)
+    }),
+
+    router.get('/active/new', (req, res) => {
+        placeController.getRecentlyAddedPlaces(req, res)
+    }),
+
+    router.get('/', async (req, res) => {
+        await placeController.getPlaces(req, res)
+    });
 
 router.post('/', upload.single('img'), (req, res) => {
     placeController.addPlace(req, res)

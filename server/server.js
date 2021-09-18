@@ -10,6 +10,7 @@ const registrationRouter = require('./routes/registration')
 const confirmationTokensRouter = require('./routes/confirmation_tokens')
 const confirmationRouter = require('./routes/confirmation')
 const opinionsRouter = require('./routes/opinions')
+const visitsRouter = require('./routes/visits')
 const loginRouter = require('./routes/login')
 const newsRouter = require('./routes/news')
 const mongoose = require('mongoose')
@@ -38,6 +39,7 @@ server.use('/confirmation_tokens', confirmationTokensRouter)
 server.use('/confirmation', confirmationRouter)
 server.use('/opinions', opinionsRouter)
 server.use('/news', newsRouter)
+server.use('/visits', visitsRouter)
 
 
 mongoose.connect(uri.mongoURI, {
