@@ -2,6 +2,7 @@ const Place = require('./model/place')
 const mongoose = require('mongoose')
 const opinionService = require('../opinion/opinion_service')
 const userValidator = require('../user/model/user_validator')
+const ApiError = require('../../errors/ApiError')
 
 
 
@@ -9,6 +10,7 @@ const userValidator = require('../user/model/user_validator')
 const placeService = {
 
     getPlaces: () => {
+       
         return Place.find().exec()
     },
     getActivePlaces: () => {
@@ -36,9 +38,15 @@ const placeService = {
         }).save()
     },
 
+    test: (message) => {
+        if (!message) throw new ApiError(400, 'message is required')
+    },
+
     activatePlace: (id) => Place.findByIdAndUpdate(id, {'isActive' : true}, {new: true}).exec(),
 
     getPlaceById : (id) => Place.findById(id).exec(),
+
+    getPlaceByLatLng: (lat, lng) => Place.findOne({lat: lat, lng: lng}).exec(),
 
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
 

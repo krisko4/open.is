@@ -14,6 +14,7 @@ const visitsRouter = require('./routes/visits')
 const loginRouter = require('./routes/login')
 const newsRouter = require('./routes/news')
 const mongoose = require('mongoose')
+const apiErrorHandler = require('./errors/api_error_handler')
 const uri = require('./config/keys_dev')
 const cors = require('cors')
 
@@ -40,6 +41,8 @@ server.use('/confirmation', confirmationRouter)
 server.use('/opinions', opinionsRouter)
 server.use('/news', newsRouter)
 server.use('/visits', visitsRouter)
+
+server.use(apiErrorHandler)
 
 
 mongoose.connect(uri.mongoURI, {

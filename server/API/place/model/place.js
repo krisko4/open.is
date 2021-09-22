@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { ReqString, ReqDate, ReqBoolean, ReqId } = require('../../../helpers/common_types')
+const { ReqString, ReqDate, ReqBoolean, ReqId, ReqNumber } = require('../../../helpers/common_types')
 mongoose.set('useCreateIndex', true)
 
 
@@ -75,15 +75,12 @@ const OpeningHoursSchema = new mongoose.Schema({
 const PlaceSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: ReqString,
-    address: {
-        type: String,
-        required: true
-    },
+    address: String,
     phone: ReqString,
-    email: ReqString,
+    email: String,
     type: ReqString,
-    lat: ReqString,
-    lng: ReqString,
+    lat: ReqNumber,
+    lng: ReqNumber,
     img: ReqString,
     description: ReqString,
     createdAt: {
