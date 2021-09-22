@@ -1,3 +1,4 @@
+import { makeStyles } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import React, { FC, useEffect } from "react";
 import myAxios from "../../axios/axios";
@@ -7,12 +8,21 @@ import Header from "./Header";
 import { LeftNavigation } from "./LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 
-
+const useStyles = makeStyles({
+    footer: {
+        background: 'linear-gradient(180deg, rgba(245,245,245,1) 0%, rgba(24,131,217,1) 47%);'
+    },
+    text: {
+        color: 'white',
+        marginBottom: 10,
+        fontStyle: 'italic'
+    }, })
 
 export const Panel: FC = () => {
 
+    const classes = useStyles()
 
-    const {setPlaces, setSelectedOption} = usePanelContext()
+    const { setPlaces, setSelectedOption } = usePanelContext()
 
     useEffect(() => {
         (async function () {
@@ -30,7 +40,7 @@ export const Panel: FC = () => {
                 }
                 setSelectedOption(ChosenOptions.DASHBOARD)
                 console.log(response.data)
-                    response.data.map((place : any) => {
+                response.data.map((place: any) => {
                     place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`
                     return place
                 })
@@ -47,11 +57,11 @@ export const Panel: FC = () => {
             <Grid container direction="column" style={{ minHeight: '100vh', background: '#F5F5F5' }}>
                 <Header />
                 <Grid container direction="row" style={{ flex: '1 1 auto' }}>
-                    <LeftNavigation/>
-                    <MainContent/>
+                    <LeftNavigation />
+                    <MainContent />
                 </Grid>
             </Grid>
-            {/* <Footer backgroundColor='#2196f3' /> */}
+            <Footer classes={classes} />
         </div>
     )
 }

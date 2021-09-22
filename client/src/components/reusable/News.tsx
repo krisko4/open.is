@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { useSnackbar } from "notistack";
 import React, { FC, useRef, useState } from "react";
+import Scrollbars from "react-custom-scrollbars";
 
 import myAxios from "../../axios/axios";
 import { useAuthSelector } from "../../store/selectors/AuthSelector";
@@ -65,7 +66,6 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
         }, {
             withCredentials: true
         }).then(res => {
-            console.log(res.data)
             setNews(news => {
                 return [
                     res.data,
@@ -103,165 +103,164 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
         emojiSource.current === 'title' ? setNewsTitle(title => title + emoji.emoji) : setNewsContent(content => content + emoji.emoji)
     }
     return (
-        <Grid container>
-            {news && news.length > 0 ?
-                <>
-                    {
-                        isUserLoggedIn && currentPlace.isUserOwner && <Grid container item lg={12} style={{ marginTop: 20 }} justify="center">
-                            <Grid item lg={11} style={{ textAlign: 'end' }}>
-                                <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} color="primary">Add news</Button>
+        <Grid container >
+                {news && news.length > 0 ?
+                    <>
+                        {
+                            isUserLoggedIn && currentPlace.isUserOwner && <Grid container item lg={12} style={{ marginTop: 20 }} justify="center">
+                                <Grid item lg={11} style={{ textAlign: 'end' }}>
+                                    <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} color="primary">Add news</Button>
+                                </Grid>
                             </Grid>
+                        }
+                        <Timeline align="alternate">
+                            {news.map((item, index) => <TimelineItem key={index}>
+                                <TimelineSeparator>
+                                    <TimelineDot>
+                                        <AnnouncementIcon />
+                                    </TimelineDot>
+                                    <TimelineConnector />
+                                </TimelineSeparator>
+                                <TimelineContent>
+                                    <Card  className={classes.paper}>
+                                        <CardContent>
+                                            <Typography variant="h6" className={classes.title}>
+                                                {item.title}
+                                            </Typography>
+                                            <Typography variant="caption" className={classes.date}>
+                                                {format(new Date(item.date), 'yyyy-MM-dd hh:mm:ss')}
+                                            </Typography>
+                                            <Typography variant="body2" style={{ marginTop: 10 }} className={classes.content}>
+                                                {item.content.length < 100 ? item.content : `${item.content.substring(0, 100)}...`}
+                                            </Typography>
+                                        </CardContent>
+                                        {item.content.length > 50 &&
+                                            <CardActions>
+                                                <Button size="small" onClick={() => setOpenNews({ isOpen: true, newsIndex: index })} color="primary">
+                                                    Learn More
+                                                </Button>
+                                            </CardActions>
+                                        }
+                                    </Card>
+                                </TimelineContent>
+                            </TimelineItem>
+                            )}
+                        </Timeline>
+                        <Dialog
+                            open={openNews.isOpen}
+                            onClose={() => setOpenNews({ isOpen: false, newsIndex: 0 })}
+                            TransitionComponent={Transition}
+                            PaperProps={{
+                                classes: { root: classes.dialog }
+                            }}
+                        >
+                            <DialogTitle>
+                                <Grid container direction="column">
+                                    <Typography variant="h6" className={classes.title}>
+                                        {news[openNews.newsIndex].title}
+                                    </Typography>
+                                    <Typography variant="caption" className={classes.content}>
+                                        {format(new Date(news[openNews.newsIndex].date), 'yyyy-MM-dd hh:mm:ss')}
+                                    </Typography>
+                                </Grid>
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} className={classes.content}>
+                                        {news[openNews.newsIndex].content}
+                                    </Typography>
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => setOpenNews({ isOpen: false, newsIndex: 0 })} color="primary">Okay</Button>
+                            </DialogActions>
+                        </Dialog>
+
+                    </>
+                    : <Grid justify="center" style={{height: 500}} direction="column" alignItems="center" container >
+                        <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
+                        {isUserLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
+                            <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>
+                            <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} style={{ marginTop: 10 }} variant="contained" color="primary">Add news</Button>
                         </Grid>
-                    }
-                    <Timeline align="alternate">
-                        {news.map((item, index) => <TimelineItem key={index}>
-                            <TimelineSeparator>
-                                <TimelineDot>
-                                    <AnnouncementIcon />
-                                </TimelineDot>
-                                <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                <Card elevation={3} className={classes.paper}>
-                                    <CardContent>
-                                        <Typography variant="h6" className={classes.title}>
-                                            {item.title}
-                                        </Typography>
-                                        <Typography variant="caption" className={classes.date}>
-                                            {format(new Date(item.date), 'yyyy-MM-dd hh:mm:ss')}
-                                        </Typography>
-                                        <Typography variant="body2" style={{ marginTop: 10 }} className={classes.content}>
-                                            {item.content.length < 100 ? item.content : `${item.content.substring(0, 100)}...`}
-                                        </Typography>
-                                    </CardContent>
-                                    {item.content.length > 50 &&
-                                        <CardActions>
-                                            <Button size="small" onClick={() => setOpenNews({ isOpen: true, newsIndex: index })} color="primary">
-                                                Learn More
-                                            </Button>
-                                        </CardActions>
-                                    }
-                                </Card>
-                            </TimelineContent>
-                        </TimelineItem>
-                        )}
-                    </Timeline>
+                        }
+                    </Grid>
+                }
+                {isUserLoggedIn &&
                     <Dialog
-                        open={openNews.isOpen}
-                        onClose={() => setOpenNews({ isOpen: false, newsIndex: 0 })}
+                        open={dialogOpen}
                         TransitionComponent={Transition}
-                        PaperProps={{
-                            classes: { root: classes.dialog }
-                        }}
+                        onClose={() => setDialogOpen(false)}
+                        PaperProps={
+                            {
+                                classes: { root: classes.dialog }
+                            }
+                        }
+
                     >
-                        <DialogTitle>
-                            <Grid container direction="column">
-                                <Typography variant="h6" className={classes.title}>
-                                    {news[openNews.newsIndex].title}
-                                </Typography>
-                                <Typography variant="caption" className={classes.content}>
-                                    {format(new Date(news[openNews.newsIndex].date), 'yyyy-MM-dd hh:mm:ss')}
-                                </Typography>
-                            </Grid>
-                        </DialogTitle>
+                        <DialogTitle className="dialogTitle">Add news</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>
-                                <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} className={classes.content}>
-                                    {news[openNews.newsIndex].content}
-                                </Typography>
+                            <DialogContentText className="dialogContentText" style={{ textAlign: 'center' }}>
+                                Inform your visitors about new events regarding your company. Adding news regularly
+                                is an efficient way to gain new clients and make them visit your place more frequently.
                             </DialogContentText>
+                            <Grid container style={{ marginTop: 20 }}>
+                                <TextField
+                                    fullWidth={true}
+                                    label="This is a title of my news"
+                                    value={newsTitle}
+                                    onChange={(e) => setNewsTitle(e.target.value)}
+                                    InputProps={{
+                                        className: 'input',
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'title' }}>
+                                                    <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
+                                                </IconButton>
+                                            </InputAdornment>
+                                    }}
+                                    InputLabelProps={{
+                                        className: 'input'
+                                    }}
+                                />
+                            </Grid>
+                            <Grid container style={{ marginTop: 20 }}>
+                                <TextField
+                                    value={newsContent}
+                                    onChange={(e) => setNewsContent(e.target.value)}
+                                    fullWidth={true}
+                                    label="This is a content of my news"
+                                    multiline
+                                    rows={10}
+                                    variant="outlined"
+                                    rowsMax={10}
+                                    className="opinionArea"
+                                    InputProps={{
+                                        className: 'input',
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'content' }}>
+                                                    <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
+                                                </IconButton>
+                                            </InputAdornment>
+                                    }}
+                                    InputLabelProps={{
+                                        className: 'input'
+                                    }}
+
+                                >
+                                </TextField>
+                            </Grid>
+                            <Dialog open={isEmojiPickerOpen} onClose={() => setEmojiPickerOpen(false)}>
+                                <Picker onEmojiClick={(event, emoji) => handleEmoji(emoji)} />
+                            </Dialog>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={() => setOpenNews({ isOpen: false, newsIndex: 0 })} color="primary">Okay</Button>
+                            <LoadingButton loading={loading} onClick={submitNews} disabled={loading} variant="contained" color="primary">Submit</LoadingButton>
                         </DialogActions>
                     </Dialog>
-
-                </>
-                : <Grid justify="center" direction="column" alignItems="center" container style={{ height: 400 }}>
-                    <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
-                    {isUserLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
-                        <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>
-                        <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} style={{ marginTop: 10 }} variant="contained" color="primary">Add news</Button>
-                    </Grid>
-                    }
-                </Grid>
-            }
-            {isUserLoggedIn &&
-                <Dialog
-                    open={dialogOpen}
-                    TransitionComponent={Transition}
-                    onClose={() => setDialogOpen(false)}
-                    PaperProps={
-                        {
-                            classes: { root: classes.dialog }
-                        }
-                    }
-
-                >
-                    <DialogTitle className="dialogTitle">Add news</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText className="dialogContentText" style={{ textAlign: 'center' }}>
-                            Inform your visitors about new events regarding your company. Adding news regularly
-                            is an efficient way to gain new clients and make them visit your place more frequently.
-                        </DialogContentText>
-                        <Grid container style={{ marginTop: 20 }}>
-                            <TextField
-                                fullWidth={true}
-                                label="This is a title of my news"
-                                value={newsTitle}
-                                onChange={(e) => setNewsTitle(e.target.value)}
-                                InputProps={{
-                                    className: 'input',
-                                    endAdornment:
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'title' }}>
-                                                <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
-                                            </IconButton>
-                                        </InputAdornment>
-                                }}
-                                InputLabelProps={{
-                                    className: 'input'
-                                }}
-                            />
-                        </Grid>
-                        <Grid container style={{ marginTop: 20 }}>
-                            <TextField
-                                value={newsContent}
-                                onChange={(e) => setNewsContent(e.target.value)}
-                                fullWidth={true}
-                                label="This is a content of my news"
-                                multiline
-                                rows={10}
-                                variant="outlined"
-                                rowsMax={10}
-                                className="opinionArea"
-                                InputProps={{
-                                    className: 'input',
-                                    endAdornment:
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'content' }}>
-                                                <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
-                                            </IconButton>
-                                        </InputAdornment>
-                                }}
-                                InputLabelProps={{
-                                    className: 'input'
-                                }}
-
-                            >
-                            </TextField>
-                        </Grid>
-                        <Dialog open={isEmojiPickerOpen} onClose={() => setEmojiPickerOpen(false)}>
-                            <Picker onEmojiClick={(event, emoji) => handleEmoji(emoji)} />
-                        </Dialog>
-                    </DialogContent>
-                    <DialogActions>
-                        <LoadingButton loading={loading} onClick={submitNews} disabled={loading} variant="contained" color="primary">Submit</LoadingButton>
-                    </DialogActions>
-                </Dialog>
-            }
-        </Grid>
-
+                }
+          </Grid>
     )
 
 

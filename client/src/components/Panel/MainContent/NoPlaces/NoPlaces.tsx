@@ -10,8 +10,8 @@ export const NoPlaces: FC = () => {
 
     return (
         <Grow in={true} timeout={1000}>
-            <Grid container style={{ height: '100%' }} alignItems="center">
-                <Grid item container lg={12} direction="column" spacing={4} alignItems="center">
+            <Grid container item lg={10} style={{ height: '100%', marginTop: -100 }} alignItems="center">
+                <Grid item container direction="column" spacing={4} alignItems="center">
                     <Typography variant="h2">Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
                     <Grid item lg={6}>
                         <Typography variant="h6" style={{ textAlign: 'center' }}>

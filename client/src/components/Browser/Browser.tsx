@@ -22,7 +22,7 @@ const Browser : FC = () => {
 
 
     return (
-       <SelectedPlacesContextProvider>
+       <SelectedPlacesContextProvider isEditionMode={false}>
            <Grid container direction="column" style={{height: '100vh'}}>
                <AuthContextProvider>
                <FirstHeader/>

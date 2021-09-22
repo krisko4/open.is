@@ -1,7 +1,10 @@
-import { Card, CardContent, Fade, Grid, makeStyles, Paper, Slide, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, Fade, Grid, makeStyles, Paper, Slide, Typography } from "@material-ui/core";
+import { PlaceSettings } from "./PlaceSettings"
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import StarIcon from '@material-ui/icons/Star';
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import MeetingRoomIcon from "@material-ui/icons/MeetingRoom"
+import SettingsIcon from "@material-ui/icons/Settings"
 import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
 import { format, isSameDay } from "date-fns";
@@ -11,6 +14,8 @@ import myAxios from "../../../../axios/axios";
 import { PlaceProps, Status, usePanelContext } from "../../../../contexts/PanelContext";
 import { StatisticChart } from "../Dashboard/StatisticChart";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
+import { LoadingButton } from "../../../reusable/LoadingButton";
+import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
 
 interface VisitProps {
     date: string,
@@ -26,19 +31,50 @@ interface Props {
 const useStyles = makeStyles({
     shadowCard: {
         boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-    //    boxShadow:  'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px',
-        borderRadius: 15
+        //    boxShadow:  'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px',
+        borderRadius: 15,
+        flexGrow: 1
     }
 })
 
 export const PlaceData: FC<Props> = ({ index, visits }) => {
 
-
-
+    const { enqueueSnackbar } = useSnackbar()
+    const [loading, setLoading] = useState(false)
     const classes = useStyles()
-    const { currentPlace, placeIndex, opinions } = usePanelContext()
+    const { currentPlace, placeIndex, setCurrentPlace, places, opinions } = usePanelContext()
+    const [settingsOpen, setSettingsOpen] = useState(false)
     const { ones, twos, threes, fours, fives } = currentPlace.averageNote
 
+
+
+    const setPlaceStatus = async (status: Status) => {
+        setLoading(true)
+        try {
+            await myAxios.patch(`places/${currentPlace._id}/status`, {
+                status: status
+            })
+            if (currentPlace) {
+                const updatedPlace = { ...currentPlace }
+                updatedPlace.status = status
+                places[places.indexOf(currentPlace)] = updatedPlace
+                setCurrentPlace(updatedPlace)
+            }
+            if (status === Status.OPEN) {
+                enqueueSnackbar('Your place is now open', {
+                    variant: 'success'
+                })
+                return
+            }
+            enqueueSnackbar('Your place is now closed', {
+                variant: 'success'
+            })
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
+    }
     const totalVisitsSeries = [
 
         {
@@ -247,82 +283,112 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
             {index === placeIndex &&
                 <Grid container style={{ height: '100%', marginTop: -130 }} justify="center">
                     <Grid container style={{ marginTop: 40, marginBottom: 40, marginRight: 40 }} spacing={2} item justify="space-around">
-                        {/* <Card style={{ flexGrow: 1 }}> */}
-                            {/* <CardContent> */}
-                                <Grid container justify="space-around" spacing={2}>
-                                    <Grid item lg={4}>
-                                        <Card className={classes.shadowCard}>
-                                            <CardContent>
-                                                <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
-                                                <Grid container style={{ marginTop: 5 }}>
-                                                    <Grid container item alignItems="center" justify="space-between">
-                                                        <Grid item style={{ flexGrow: 1 }}>
-                                                            <Grid container item alignItems="center">
-                                                                <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                                                <span style={{ marginLeft: 5 }}>+10.5%</span>
-                                                            </Grid>
-                                                            <Typography variant="h3">{visits.reduce((a, b) => a + b.visitCount, 0)}</Typography>
-                                                        </Grid>
-                                                        <StatisticChart height={100} width={150} type="area" options={totalVisitsOptions} setOptions={setTotalVisitsOptions} series={totalVisitsSeries} />
-                                                    </Grid>
-                                                </Grid>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item lg={4}>
-                                        <Card elevation={3} className={classes.shadowCard}>
-                                            <CardContent>
-                                                <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
-                                                <Grid container style={{ marginTop: 5 }}>
-                                                    <Grid container item lg={10} alignItems="center">
+                        <Grid container justify="space-around" spacing={2}>
+                            <Grid item lg={4}>
+                                <Card className={classes.shadowCard}>
+                                    <CardContent>
+                                        <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
+                                        <Grid container style={{ marginTop: 5 }}>
+                                            <Grid container item alignItems="center" justify="space-between">
+                                                <Grid item style={{ flexGrow: 1 }}>
+                                                    <Grid container item alignItems="center">
                                                         <TrendingUpIcon style={{ color: 'lightgreen' }} />
                                                         <span style={{ marginLeft: 5 }}>+10.5%</span>
                                                     </Grid>
-                                                    <Grid item lg={2} >
-                                                        <EqualizerIcon fontSize="large" color="primary" />
-                                                    </Grid>
+                                                    <Typography variant="h3">{visits.reduce((a, b) => a + b.visitCount, 0)}</Typography>
                                                 </Grid>
-                                                <Typography variant="h3">
-                                                    {visits.find(visit => isSameDay(new Date(visit.date), new Date()))?.visitCount || 0}
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item lg={4}>
-                                        <Card elevation={3} className={classes.shadowCard}>
-                                            <CardContent>
-                                                <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
-                                                <Grid container style={{ marginTop: 5 }}>
-                                                    <Grid container item alignItems="center" justify="space-between">
-                                                        <Grid item style={{ flexGrow: 1 }}>
-                                                            <Grid container item alignItems="center">
-                                                                <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                                                <span style={{ marginLeft: 5 }}>+10.5%</span>
-                                                            </Grid>
-                                                            <Typography variant="h3">{visits.reduce((a, b) => a + b.visitCount, 0)}</Typography>
-                                                        </Grid>
-                                                        <StatisticChart height={100} width={150} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
+                                                <StatisticChart height={100} width={150} type="area" options={totalVisitsOptions} setOptions={setTotalVisitsOptions} series={totalVisitsSeries} />
+                                            </Grid>
+                                        </Grid>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item lg={4}>
+                                <Card elevation={3} className={classes.shadowCard}>
+                                    <CardContent>
+                                        <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
+                                        <Grid container style={{ marginTop: 5 }}>
+                                            <Grid container item lg={10} alignItems="center">
+                                                <TrendingUpIcon style={{ color: 'lightgreen' }} />
+                                                <span style={{ marginLeft: 5 }}>+10.5%</span>
+                                            </Grid>
+                                            <Grid item lg={2} >
+                                                <EqualizerIcon fontSize="large" color="primary" />
+                                            </Grid>
+                                        </Grid>
+                                        <Typography variant="h3">
+                                            {visits.find(visit => isSameDay(new Date(visit.date), new Date()))?.visitCount || 0}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item lg={4}>
+                                <Card elevation={3} className={classes.shadowCard}>
+                                    <CardContent>
+                                        <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
+                                        <Grid container style={{ marginTop: 5 }}>
+                                            <Grid container item alignItems="center" justify="space-between">
+                                                <Grid item style={{ flexGrow: 1 }}>
+                                                    <Grid container item alignItems="center">
+                                                        <TrendingUpIcon style={{ color: 'lightgreen' }} />
+                                                        <span style={{ marginLeft: 5 }}>+10.5%</span>
                                                     </Grid>
+                                                    <Typography variant="h3">{opinions.length}</Typography>
                                                 </Grid>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item lg={12}>
-                                        {currentPlace.status === Status.CLOSED && <Alert variant="filled" severity="error">Your place is now closed.</Alert>}
-                                        {!currentPlace.openingHours ?
-                                            <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
-                                            :
-                                            <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
-                                        }
-                                    </Grid>
-                                </Grid>
-                            {/* </CardContent> */}
-                        {/* </Card> */}
+                                                <StatisticChart height={100} width={150} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
+                                            </Grid>
+                                        </Grid>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item lg={12}>
+                                {currentPlace.status === Status.CLOSED && <Alert variant="filled" severity="error">Your place is now closed.</Alert>}
+                                {!currentPlace.openingHours ?
+                                    <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
+                                    :
+                                    <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
+                                }
+                            </Grid>
+                        </Grid>
                         <Grid container style={{ marginTop: 20 }}>
                             <Grid item container direction="column" lg={5} style={{ paddingRight: 10 }}>
                                 <Grid container spacing={2}>
+                                    <Grid item lg={6}>
+                                        <Card className={classes.shadowCard} style={{ background: '#2196f3' }}>
+                                            <CardContent>
+                                                <Typography variant="subtitle2" style={{ color: 'white' }}>
+                                                    Press the button below to <span>{currentPlace.status === Status.OPEN ? 'close' : 'open'}</span> your business
+                                                </Typography>
+                                                <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
+                                                    {currentPlace.status === Status.OPEN ? <>
+                                                        <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.CLOSED)} style={{ color: 'white', borderColor: 'white' }}>Close</LoadingButton>
+                                                        <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
+                                                    </>
+                                                        : <>
+                                                            <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.OPEN)} style={{ color: 'white', borderColor: 'white' }}>Open</LoadingButton>
+                                                            <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
+                                                        </>
+                                                    }
+                                                </Grid>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                    <Grid item lg={6}>
+                                        <Card className={classes.shadowCard} style={{ background: '#2196f3' }}>
+                                            <CardContent>
+                                                <Typography variant="subtitle2" style={{ color: 'white' }}>
+                                                    Press the button below to manage your business
+                                                </Typography>
+                                                <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
+                                                    <Button onClick={() => setSettingsOpen(true)} variant="outlined" style={{ color: 'white', borderColor: 'white' }}>Settings</Button>
+                                                    <SettingsIcon style={{ color: 'white', width: 60, height: 60 }} />
+                                                </Grid>
+                                                <PlaceSettings open={settingsOpen} setOpen={setSettingsOpen} />
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
                                     <Grid item container>
-                                        <Card style={{ flexGrow: 1}} className={classes.shadowCard} elevation={3}>
+                                        <Card className={classes.shadowCard} elevation={3}>
                                             <CardContent>
                                                 <Typography variant="h5">
                                                     Rating
@@ -345,7 +411,7 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
                                         </Card>
                                     </Grid>
                                     <Grid item container>
-                                        <Card style={{ flexGrow: 1}} className={classes.shadowCard} elevation={3}>
+                                        <Card className={classes.shadowCard} elevation={3}>
                                             <CardContent>
                                                 <Typography variant="h5">
                                                     Activity

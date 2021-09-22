@@ -248,7 +248,9 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlac
                     </Tabs>
                 </Paper>
                 <Grid container item>
-                    {tabContents[value]}
+                    <Grid container style={{ height: 400 }}>
+                        {tabContents[value]}
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

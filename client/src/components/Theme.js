@@ -31,11 +31,11 @@ const theme = createMuiTheme({
         }
     },
     overrides: {
-        MuiButton: {
-            root: {
-                fontWeight: 200
-            }
-        },
+        // MuiButton: {
+        //     root: {
+        //         fontWeight: 200
+        //     }
+        // },
     
 }});
 

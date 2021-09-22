@@ -14,7 +14,7 @@ function getSteps() {
     return ['Name your place', 'Place details', 'Contact details', 'Address details', 'Representative image'];
 }
 
-function getStepContent(step: number) {
+function getStepContent(step: number, isEditionMode: boolean) {
     switch (step) {
         case 0:
             return <Step1 />
@@ -23,7 +23,7 @@ function getStepContent(step: number) {
         case 2:
             return <Step3 />
         case 3:
-            return <Step4 />
+            return <Step4 isEditionMode={isEditionMode}/>
         case 4:
             return <Step5 />
         default:
@@ -31,12 +31,16 @@ function getStepContent(step: number) {
     }
 }
 
+interface Props{
+    isEditionMode: boolean
+}
 
-
-export const NewPlaceStepper: FC = () => {
+export const NewPlaceStepper: FC<Props> = ({isEditionMode}) => {
 
     const steps = getSteps();
     const { activeStep} = useStepContext()
+
+
 
     return (
         <Grid container>
@@ -54,7 +58,7 @@ export const NewPlaceStepper: FC = () => {
                 </Stepper>
             </Grid>
             <Grid item container justify="center" lg={12}>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, isEditionMode)}
             </Grid>
         </Grid>
     );

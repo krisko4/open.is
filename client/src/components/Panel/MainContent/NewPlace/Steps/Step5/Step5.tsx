@@ -1,7 +1,8 @@
-import { Card, CardMedia, Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Button, Card, CardMedia, Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
 import ClearIcon from '@material-ui/icons/Clear';
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import UploadIcon from "@material-ui/icons/CloudUpload"
 
 const useStyles = makeStyles({
     imageContainer: {
@@ -28,9 +29,14 @@ export const Step5: FC = () => {
 
     const clearImage = () => {
         const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.img = null 
+        newCurrentPlace.img = null
         setCurrentPlace(newCurrentPlace)
     }
+
+    useEffect(() => {
+        console.log(currentPlace)
+    }, [])
+    
 
     const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -50,22 +56,25 @@ export const Step5: FC = () => {
     }
 
 
-    const startUploading = () => {
-        if (uploadRef.current) uploadRef.current.click()
-    }
-
     return (
-        <Grid item lg={12} container >
+        <Grid item lg={12} container justify="center" >
             <Grid item lg={12} style={{ textAlign: 'center' }}>
                 <Typography variant="h3">Step 5</Typography>
             </Grid>
             <Grid item lg={12} style={{ textAlign: 'center' }}>
                 <Typography variant="subtitle1">Representative image</Typography>
+
+            </Grid>
+            <Grid item lg={9}>
+                <Typography style={{ marginTop: 20, textAlign: 'center' }} variant="subtitle1">
+                    In order for your place to stand out, please upload an image related to your business.
+                    Uploading a logo of your brand might be the best idea.
+                </Typography>
             </Grid>
             <Grid item container justify="center" style={{ marginTop: 20 }} lg={12}>
                 <Grid item lg={7}>
-                    <Card onMouseEnter={() => setElevation(12)} onMouseLeave={() => setElevation(3)} onClick={startUploading} elevation={elevation} style={{ height: 300 }}>
-                        <CardMedia className={classes.imageContainer} image={currentPlace.img ? `${currentPlace.img}` : `https://icons-for-free.com/iconfiles/png/512/cloud+upload+file+storage+upload+icon-1320190558968694328.png`} >
+                    <Card variant="outlined"    style={{ height: 360 }}>
+                        <CardMedia className={classes.imageContainer} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
                             {currentPlace.img && <Grid container justify="flex-end">
                                 <IconButton onClick={() => clearImage()} className="uploader" >
                                     <ClearIcon color="secondary" />
@@ -81,8 +90,9 @@ export const Step5: FC = () => {
                             </input>
                         </CardMedia>
                     </Card>
-                    <Grid item lg={12} style={{ textAlign: 'center' }}>
-                        <Typography variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
+                    <Grid item container direction="column" style={{ textAlign: 'center', marginTop: 10, marginBottom: 20 }}>
+                        <Button startIcon={<UploadIcon />} variant="contained" onClick={() => uploadRef.current && uploadRef.current.click()} color="primary">Upload</Button>
+                        <Typography style={{marginTop: 10}} variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
                     </Grid>
                 </Grid>
             </Grid>

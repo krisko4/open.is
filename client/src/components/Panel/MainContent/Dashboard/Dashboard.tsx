@@ -26,7 +26,7 @@ export const Dashboard: FC = () => {
 
     return (
         <Grid item lg={11} style={{ marginTop: -130 }}>
-            <Typography variant="h3">
+            <Typography variant="h3" style={{color: 'white'}}>
                 <Grid container>
                     <Grid item lg={10}>
                         Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
@@ -40,7 +40,7 @@ export const Dashboard: FC = () => {
                     </Grid>
                 </Grid>
             </Typography>
-            <Typography variant="body1">welcome to your personal dashboard</Typography>
+            <Typography variant="body1" style={{color: 'white'}}>welcome to your personal dashboard</Typography>
             <Grid container style={{ marginTop: 20 }} spacing={2} justify="space-between">
                 <Grid item lg={6}>
                     <Card elevation={3} className={classes.shadowCard}>

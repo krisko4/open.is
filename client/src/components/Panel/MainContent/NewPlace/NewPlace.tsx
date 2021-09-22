@@ -24,6 +24,12 @@ const defaultNews = [
         date: new Date().toString(),
         content: 'It is going to be fun!'
 
+    },
+    {
+        title: 'Thank your for using our services 💌',
+        date: new Date().toString(),
+        content: 'We appreciate you.'
+
     }
 
 ]
@@ -42,7 +48,15 @@ const defaultOpinions = [
         content: 'This is a lovely place!',
         note: 5,
         averageNote: 0
-    }
+    },
+    {
+        date: new Date().toString(),
+        author: 'Administration',
+        content: 'Thank you for using our services💌',
+        note: 5,
+        averageNote: 0
+    },
+
 
 ]
 
@@ -64,11 +78,9 @@ export const NewPlace: FC = () => {
 
     const registerPlace = () => {
         setLoading(true)
-        const place = { ...currentPlace }
-        place.address = currentPlace.address.label
-        place.lng = currentPlace.address.x
-        place.lat = currentPlace.address.y
+        const place = { ...currentPlace } 
         place.img = imageFile
+        console.log(place)
         const formData = new FormData()
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
@@ -101,7 +113,7 @@ export const NewPlace: FC = () => {
 
     return (
 
-        <Grid container lg={activeStep > 0 ? 12 : 10} item style={{ marginTop: -80, marginBottom: 40,  }} justify="space-evenly">
+        <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2}  item style={{ marginTop: -80, marginBottom: 40,  }} justify="space-evenly">
         
             <Grid item lg={5}>
                 <Slide in={true}>
@@ -113,7 +125,7 @@ export const NewPlace: FC = () => {
                             <Typography variant="subtitle2">
                                 Add new place to your place assembly
                             </Typography>
-                            <NewPlaceStepper />
+                            <NewPlaceStepper isEditionMode={true} />
                         </CardContent>
                         {activeStep > 0 &&
                             <CardActions>
@@ -150,7 +162,7 @@ export const NewPlace: FC = () => {
                 </Slide>
             </Grid>
             {activeStep > 0 &&
-                <Grid item lg={6}>
+                <Grid item lg={7} >
                     <PlaceDetailsCard />
                 </Grid>
             }

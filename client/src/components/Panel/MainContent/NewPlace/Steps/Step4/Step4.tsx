@@ -7,9 +7,11 @@ import { AddressDetails } from "./AddressDetails";
 
 
 
+interface Props{
+    isEditionMode: boolean
+}
 
-
-export const Step4 : FC = () => {
+export const Step4 : FC<Props> = ({isEditionMode}) => {
     
     return (
         <Grid item lg={12} container justify="center">
@@ -23,7 +25,7 @@ export const Step4 : FC = () => {
                  </Typography>
             </Grid>
             <MapContextProvider>
-                <SelectedPlacesContextProvider>
+                <SelectedPlacesContextProvider isEditionMode={isEditionMode}>
                     <AddressDetails />
                 </SelectedPlacesContextProvider>
             </MapContextProvider>

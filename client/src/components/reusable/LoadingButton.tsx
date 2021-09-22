@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 
-export const LoadingButton = (props) => {
+export const LoadingButton : FC<any> = (props) => {
     const {
         children,
         loading,

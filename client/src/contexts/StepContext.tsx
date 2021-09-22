@@ -1,9 +1,10 @@
-import { createContext, FC, useContext, useState } from "react";
+import { createContext, FC, ReactNode, useContext, useState } from "react";
 import { ContextProps } from "./ContextProps";
 
 
 
 export const StepContext = createContext<StepContextData | null>(null)
+
 
 export const StepContextProvider: FC<ContextProps> = ({ children }) => {
     const value = useProviderSettings()

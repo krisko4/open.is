@@ -3,12 +3,12 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useMapContext } from '../../../../contexts/MapContext/MapContext';
 import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 import { PlaceMarker } from "./PlaceMarker";
-
+import { SetViewOnClick } from "./SetViewOnClick"
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
@@ -21,40 +21,25 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const useStyles = makeStyles({
     popup: {
         '& .leaflet-popup-content': {
-            width: 150
+            width: 160
         }
     }
 })
 
-interface ViewProps {
-    mapZoom: number,
-    coords: {
-        lat: number,
-        lng: number
-    }
-}
 
 interface Props {
     tileLayer: any
 }
 
 
-const SetViewOnClick: FC<ViewProps> = ({ coords, mapZoom }) => {
-    const map = useMap();
-    map.options.minZoom = 5
-    map.setView(coords, mapZoom);
-    return null;
-}
 
 
 export const MapBox: FC<Props> = ({ tileLayer }) => {
 
-    const { mapCenter, popupOpen, mapZoom } = useMapContext()
+    const { mapCenter, mapZoom } = useMapContext()
     const { chosenCriterias } = useSelectedPlacesContext()
-  //  const firstRender = useRef(true)
     const classes = useStyles()
-
-
+   
     return (
         <MapContainer style={{ height: '100%', flexGrow: 1 }} center={mapCenter} zoom={mapZoom}
             scrollWheelZoom={true}>
@@ -62,7 +47,7 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
                 attribution={tileLayer.attribution}
                 url={tileLayer.url}
             />
-            {chosenCriterias.map((criterium: any, index: number)  => <PlaceMarker key={index} index={index} criterium={criterium} classes={classes} />)}
+            {chosenCriterias.map((criterium: any, index: number) => <PlaceMarker key={index} index={index} criterium={criterium} classes={classes} />)}
             <SetViewOnClick coords={mapCenter} mapZoom={mapZoom} />
         </MapContainer>
     )

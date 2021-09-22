@@ -8,26 +8,15 @@ import React, { FC } from "react";
 
 
 
-const useStyles = makeStyles(() =>
-    createStyles({
-        text: {
-            color: 'white',
-            marginBottom: 10,
-            fontStyle: 'italic'
-        },
-
-    })
-)
 interface Props{
-    backgroundColor: string
+    classes: any
 }
-const Footer : FC<Props>= ({backgroundColor}) => {
+const Footer : FC<Props>= ({classes}) => {
 
-    const classes = useStyles()
    
     return (
-        <Grid container style={{backgroundColor: backgroundColor}} justify="center">
-            <Grid item xs={6} style={{marginTop: 10, textAlign: 'center', marginBottom: 10}}>
+        <Grid container className={classes.footer} justify="center">
+            <Grid item xs={6} style={{marginTop: 30, textAlign: 'center', marginBottom: 10}}>
                 <Button style={{color:'white'}}>Contact</Button>
                 <Button style={{color:'white'}}>About us</Button>
             </Grid>

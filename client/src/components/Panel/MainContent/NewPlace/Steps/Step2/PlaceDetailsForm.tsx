@@ -1,7 +1,7 @@
 import { Button, Grid, TextField, Typography } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import { FastField, Form, Formik } from "formik"
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 import * as Yup from "yup"
 import { usePanelContext } from "../../../../../../contexts/PanelContext"
 import { useStepContext } from "../../../../../../contexts/StepContext"
@@ -28,6 +28,8 @@ export const PlaceDetailsForm: FC = () => {
     const [subtitle, setSubtitle] = useState(currentPlace.subtitle)
     const [description, setDescription] = useState(currentPlace.description)
     const [isDirty, setDirty] = useState(true)
+    const isFirstDescriptionRender = useRef(true)
+    const isFirstSubtitleRender = useRef(true)
 
     useEffect(() => {
         currentPlace.type && subtitle && description && subtitle.length < 51 && description.length < 251 ? setDirty(false) : setDirty(true)
@@ -41,6 +43,10 @@ export const PlaceDetailsForm: FC = () => {
     }
 
     useEffect(() => {
+        if(isFirstDescriptionRender.current){
+            isFirstDescriptionRender.current = false
+            return
+        }
         setLoading(true)
         const delaySearch = setTimeout(() => {
             const newCurrentPlace = { ...currentPlace }
@@ -52,6 +58,10 @@ export const PlaceDetailsForm: FC = () => {
     }, [description])
 
     useEffect(() => {
+        if(isFirstSubtitleRender.current){
+            isFirstSubtitleRender.current = false
+            return
+        }
         setLoading(true)
         const delaySearch = setTimeout(() => {
             const newCurrentPlace = { ...currentPlace }

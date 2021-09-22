@@ -16,8 +16,8 @@ const instagramRegExp = /^\s*(https?:\/\/)instagram\.com\/[a-z\d-_]{1,255}\s*$/i
 
 const ContactDetailsSchema = Yup.object().shape({
     phone: Yup.string().required().matches(phoneRegExp, 'Phone number is invalid'),
-    email: Yup.string().email().required(),
-    website: Yup.string().url().required(),
+    email: Yup.string().email(),
+    website: Yup.string().url(),
     facebook: Yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
     instagram: Yup.string().matches(instagramRegExp, 'This is not a valid instagram URL')
 })
@@ -77,7 +77,7 @@ export const ContactDetailsForm: FC = () => {
                             </Grid>
                             <Grid item lg={5} style={{ marginTop: 20 }}>
                                 <Typography variant="overline">
-                                    E-mail address <span style={{ color: 'red' }}>*</span>
+                                    E-mail address (optional) 
                                 </Typography>
                             </Grid>
                             <Grid item lg={5}>
@@ -99,7 +99,7 @@ export const ContactDetailsForm: FC = () => {
                             </Grid>
                             <Grid item lg={5} style={{ marginTop: 20 }}>
                                 <Typography variant="overline">
-                                    Personal website address <span style={{ color: 'red' }}>*</span>
+                                    Personal website address (optional) 
                                 </Typography>
                             </Grid>
                             <Grid item lg={5}>

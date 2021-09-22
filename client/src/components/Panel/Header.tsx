@@ -31,13 +31,13 @@ const Header: FC = () => {
 
 
     return (
-        <Grid container style={{ background: '#2196f3' }}>
-            <Grid item lg={2} style={{ marginBottom: 10 }}>
+        <Grid container style={{ background: 'linear-gradient(0deg, rgba(245,245,245,1) 0%, rgba(24,131,217,1) 47%)' }}>
+            <Grid item lg={2} style={{ marginBottom: 0 }}>
                 <CardMedia
                     image={`${process.env.REACT_APP_BASE_URL}/images/Openis-logos_white.png`}
                     style={{ height: 220 }}
                 />
-                <ListItem>
+                <ListItem style={{marginBottom: 20}}>
                     <ListItemAvatar>
                         <Avatar alt={`${localStorage.getItem('fullName')}`} src="/static/images/avatar/1.jpg" />
                     </ListItemAvatar>

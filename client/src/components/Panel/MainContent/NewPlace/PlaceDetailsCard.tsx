@@ -7,6 +7,7 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import { Alert } from "@material-ui/lab";
 import Rating from "@material-ui/lab/Rating";
 import React, { FC, useEffect, useRef, useState } from "react";
+import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
 import { Status, usePanelContext } from "../../../../contexts/PanelContext";
 import { News } from "../../../reusable/News";
@@ -19,7 +20,9 @@ const useNewsStyles = makeStyles({
     date: {},
     paper: {
         padding: '6px 16px',
-        borderRadius: 10,
+        borderRadius: 15,
+        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
+
     },
     title: {
         color: 'black'
@@ -51,6 +54,8 @@ const useOpeningHoursStyles = makeStyles({
     container: {
         background: 'inherit',
         borderRadius: 10,
+        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
+        
     },
     // hourPicker: {
     //     color: 'green'
@@ -95,6 +100,8 @@ const useOpeningHoursStyles = makeStyles({
 const useOpinionsStyles = makeStyles({
     opinionCard: {
         background: 'inherit',
+        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
+        
     },
     author: {
         color: '#2196f3'
@@ -180,8 +187,7 @@ export const PlaceDetailsCard: FC = () => {
     }
     return (
         <Slide in={true}>
-            <Card elevation={3} style={{boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15}}>
-        
+            <Card elevation={3} style={{ boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15 }}>
                 <CardContent>
                     <Typography variant="h5">
                         Place card
@@ -252,7 +258,8 @@ export const PlaceDetailsCard: FC = () => {
                         </Grid>
                     </Grid>
                 </CardContent>
-                <Grid container item lg={12} style={{ marginTop: 10 }}>
+
+                <Grid container item lg={12} style={{ marginTop: 10, }}>
                     <Divider style={{ width: '100%', backgroundColor: '#2196f3' }} />
                     <Paper square style={{ width: '100%', background: 'inherit' }}>
                         <Tabs
@@ -267,9 +274,15 @@ export const PlaceDetailsCard: FC = () => {
                             <MyTab label="Opinions" />
                         </Tabs>
                     </Paper>
-                    {tabContents[value]}
+                    <Grid container style={{ height: 545 }}>
+                        <Scrollbars>
+                            {tabContents[value]}
+                        </Scrollbars>
+                    </Grid>
                 </Grid>
+
             </Card>
-        </Slide>
+
+        </Slide >
     )
 }

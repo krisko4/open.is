@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from 'react';
+import Scrollbars from "react-custom-scrollbars";
 import myAxios from "../../axios/axios";
 import { useAuthSelector } from '../../store/selectors/AuthSelector';
 import { LoadingButton } from './LoadingButton';
@@ -19,7 +20,7 @@ import { LoadingButton } from './LoadingButton';
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-const hours = ['10 - 17', '8 - 18', '10 - 17', '10 - 17', '7 - 18', '10 - 17', '10 - 17']
+const hours = ['10:00 - 17:00', 'closed', '10:00 - 17:00', '12:00 - 15:00', '7:30 - 18:50', 'closed', 'closed']
 
 
 const HourPicker: FC<any> = ({ field, form, label, classes, disabled, ...other }) => {
@@ -31,9 +32,9 @@ const HourPicker: FC<any> = ({ field, form, label, classes, disabled, ...other }
             disabled={disabled}
             name={field.name}
             value={field.value}
-            InputLabelProps={{className: classes.inputLabel}}
-            InputProps={{className: classes.hourPicker}}
-            InputAdornmentProps={{className : classes.calendarIcon}}
+            InputLabelProps={{ className: classes.inputLabel }}
+            InputProps={{ className: classes.hourPicker }}
+            InputAdornmentProps={{ className: classes.calendarIcon }}
             onChange={date => form.setFieldValue(field.name, date, false)}
         />
     )
@@ -184,16 +185,18 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
     return (
         <Grid container justify="center">
-            {currentPlace.isUserOwner && isUserLoggedIn && openingHours &&
-                <Grid item lg={11} style={{ textAlign: 'end', marginTop: 20 }}>
-                    <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
-                </Grid>
-            }
-            <Grid container justify="center" alignItems="center" style={{ height: 500 }}>
+            <Grid container justify="center" style={{height: 500}}>
+                {currentPlace.isUserOwner && isUserLoggedIn && openingHours &&
+                    <Grid container justify="flex-end" >
+                        <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
+                            <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
+                        </Grid>
+                    </Grid>
+                }
                 {
                     openingHours ?
-                        <Grid item lg={5} md={8}>
-                            <Card className={classes.container} elevation={10}>
+                        <Grid item container alignItems="center" style={{marginTop: 10, marginBottom: 10}} lg={5} md={8}>
+                            <Card className={classes.container} style={{flexGrow: 1}} elevation={10}>
                                 <CardContent>
                                     <Typography variant="h5" className={classes.title}>Opening hours</Typography>
                                     <Divider className={classes.divider} />
@@ -219,30 +222,38 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
                         : <>
                             {currentPlace.isUserOwner ?
-                                <Grid justify="center" direction="column" alignItems="center" container style={{ height: 400 }}>
+                                <Grid justify="center" direction="column" alignItems="center" container>
                                     <Typography variant="h6">This place has not set opening hours yet.</Typography>
                                     <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
                                     <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                                 </Grid>
 
                                 :
-                                <Grid item lg={5} md={8}>
-                                    <Card className={classes.container} elevation={10}>
-                                        <CardContent>
-                                            <Typography variant="h5" className={classes.title}>Opening hours</Typography>
-                                            <Divider className={classes.divider} />
-                                            <Grid container justify="center">
-                                                <Grid item className={classes.days} lg={8}>
-                                                    {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
+                                <Grid item lg={5} md={8} container alignItems="center">
+                                    <Grid item>
+                                        <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
+                                            <CardContent>
+                                                <Typography variant="h5" className={classes.title}>Opening hours</Typography>
+                                                <Divider className={classes.divider} />
+                                                <Grid container justify="center">
+                                                    <Grid item className={classes.days} lg={6}>
+                                                        {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
+                                                    </Grid>
+                                                    <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
+                                                        {hours.map((hour, index) => <div key={index}>
+                                                            {hour === 'closed' ?
+                                                                <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>
+                                                                :
+                                                                <Typography variant="h6">{hour}</Typography>
+                                                            }
+                                                        </div>
+                                                        )}
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid item lg={3} className={classes.hours}>
-                                                    {hours.map((hour, index) => <Typography key={index} variant="h6">{hour}</Typography>)}
-
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
-                                    <Typography variant="caption"><span style={{color: 'red'}}>*</span>You will be able to specify the opening state of your place once it is registered. This is just an example.</Typography>
+                                            </CardContent>
+                                        </Card>
+                                        <Typography variant="caption"><span style={{ color: 'red' }}>*</span>You will be able to specify the opening state of your place once it is registered. This is just an example.</Typography>
+                                    </Grid>
                                 </Grid>
                             }
                         </>
@@ -250,6 +261,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
 
                 }
+
             </Grid >
             {isUserLoggedIn && currentPlace.isUserOwner &&
                 <Dialog
@@ -310,7 +322,6 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
                 </Dialog>
             }
         </Grid >
-
     );
 };
 

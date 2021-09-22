@@ -1,11 +1,15 @@
-import {createContext, useContext, FC, useState} from "react";
-import { ContextProps } from "./ContextProps";
+import { createContext, FC, ReactNode, useContext, useState } from "react";
 
 
 export const SelectedPlacesContext = createContext<SelectedPlacesContextData | null>(null)
+interface Props {
+    children: ReactNode,
+    isEditionMode: boolean
+    
+}
 
-const SelectedPlacesContextProvider :FC<ContextProps> = ({children}) => {
-    const state = useProviderSettings()
+const SelectedPlacesContextProvider : FC<Props> = ({isEditionMode, children}) => {
+    const state = useProviderSettings(isEditionMode)
     return(
         <SelectedPlacesContext.Provider value={state}>
             {children}
@@ -13,14 +17,33 @@ const SelectedPlacesContextProvider :FC<ContextProps> = ({children}) => {
     )
 }
 
-const useProviderSettings = () => {
+interface SelectedAddressProps {
+    label: string,
+    lat: number, 
+    lng: number,
+    postcode: string
+}
+
+const useProviderSettings = (isEdition: boolean) => {
     const [selectedPlaces, setSelectedPlaces] = useState<any>([])
     const [chosenCriterias, setChosenCriterias] = useState<any>([])
+    const [isEditionMode, setEditionMode] = useState(isEdition)
+    
+    const [selectedAddress, setSelectedAddress] = useState<SelectedAddressProps>({
+        label: '',
+        lat: 0,
+        lng: 0,
+        postcode: 'default'
+    })
     return {
         selectedPlaces,
         setSelectedPlaces,
         chosenCriterias,
         setChosenCriterias,
+        isEditionMode,
+        setEditionMode,
+        selectedAddress,
+        setSelectedAddress
     }
 }
 
