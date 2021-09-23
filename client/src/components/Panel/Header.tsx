@@ -37,7 +37,7 @@ const Header: FC = () => {
                     image={`${process.env.REACT_APP_BASE_URL}/images/Openis-logos_white.png`}
                     style={{ height: 220 }}
                 />
-                <ListItem style={{marginBottom: 20}}>
+                <ListItem style={{marginBottom: 20,}}>
                     <ListItemAvatar>
                         <Avatar alt={`${localStorage.getItem('fullName')}`} src="/static/images/avatar/1.jpg" />
                     </ListItemAvatar>

@@ -21,13 +21,13 @@ interface Props {
 export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
     const { currentPlace, setCurrentPlace } = usePanelContext()
-    const [currentPlaceCopy, setCurrentPlaceCopy] = useState(currentPlace)
+    const [initialPlaceData, setInitialPlaceData] = useState(currentPlace)
     const { enqueueSnackbar } = useSnackbar()
 
 
 
     const closeSettings = () => {
-        setCurrentPlace(currentPlaceCopy)
+        setCurrentPlace(initialPlaceData)
         enqueueSnackbar('Your changes have not been saved', {
             variant: 'warning'
         })
@@ -53,7 +53,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
                 </Toolbar>
             </AppBar>
             <StepContextProvider>
-                <EditPlace />
+                <EditPlace setDialogOpen={setOpen} initialPlaceData={initialPlaceData} />
             </StepContextProvider>
         </Dialog>
     )

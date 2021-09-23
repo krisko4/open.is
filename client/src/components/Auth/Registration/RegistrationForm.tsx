@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import TextField from "@material-ui/core/TextField";
 import { Field, Form, Formik } from "formik";
+import { useSnackbar } from "notistack";
 import * as React from "react";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -58,6 +59,7 @@ export const RegistrationForm = () => {
 
     const { setLoginOpen, setRegistrationOpen, setConfirmationOpen, setEmail } = useAuthContext()
     const [errorMessage, setErrorMessage] = useState('')
+    const {enqueueSnackbar} = useSnackbar()
     const [loading, setLoading] = useState(false)
 
     const signUp = async (userData: typeof registrationFields) => {
@@ -65,19 +67,20 @@ export const RegistrationForm = () => {
         setErrorMessage('')
         console.log(userData)
         try {
-            await myAxios.get('/users', {
-                params: {
-                    email: userData['email']
-                }
-            })
             await myAxios.post('/registration', { ...userData })
             setEmail(userData['email'])
             setRegistrationOpen(false)
             setConfirmationOpen(true)
+            enqueueSnackbar('You have successfully registered', {
+                variant: 'success'
+            })
 
         } catch (err) {
             console.error(err)
-            // setErrorMessage(err.response.data.error)
+            enqueueSnackbar('Registration failed', {
+                variant: 'error'
+            })
+           //  setErrorMessage(err.response.data.error)
         } finally {
             setLoading(false)
         }

@@ -40,10 +40,7 @@ export const Panel: FC = () => {
                 }
                 setSelectedOption(ChosenOptions.DASHBOARD)
                 console.log(response.data)
-                response.data.map((place: any) => {
-                    place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`
-                    return place
-                })
+                response.data.forEach((place: any) => place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`)
                 setPlaces(response.data)
             }
             catch (err) {

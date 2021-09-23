@@ -162,7 +162,7 @@ export const AddressDetails: FC = () => {
             <Grid style={{ height: 400, marginTop: 20 }} item lg={12}>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <Button disabled={!selectedAddress || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
+            <Button disabled={!selectedAddress.label || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
         </Grid>
     )
 }

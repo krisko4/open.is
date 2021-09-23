@@ -14,7 +14,7 @@ const useStyles = makeStyles(() =>
 ({
     navigation: {
         background: 'white',
-        paddingLeft: 15
+        paddingLeft: 15,
         // borderWidth: 1,
 
 
@@ -58,7 +58,7 @@ export const LeftNavigation: FC = () => {
                 {places.map((place: any, index: number) =>
                     <ListItem key={index} button onClick={() => choosePlace(place, index)}>
                         <ListItemAvatar>
-                            <Avatar alt={place.name} src={`${place.img}`} />
+                            <Avatar alt={place.name} src={place.img} />
                         </ListItemAvatar>
                         <ListItemText
                             primary={place.name}

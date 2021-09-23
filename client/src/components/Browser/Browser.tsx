@@ -12,32 +12,32 @@ import { SecondHeader } from "./SecondHeader";
 
 
 
-const Browser : FC = () => {
+const Browser: FC = () => {
 
 
     const tileLayer = {
-        attribution : 'copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        attribution: 'copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
     }
 
 
     return (
-       <SelectedPlacesContextProvider isEditionMode={false}>
-           <Grid container direction="column" style={{height: '100vh'}}>
-               <AuthContextProvider>
-               <FirstHeader/>
-               </AuthContextProvider>
-               <SecondHeader />
-               <Grid container direction="row" style={{flex: '1 1 auto'}}>
-                   <MapContextProvider>
-                   <PlacesBox/>
-                   <Grid item lg={6} style={{height: '100%'}}>
-                   <MapBox tileLayer={tileLayer}/>
-                   </Grid>
-                   </MapContextProvider>
-               </Grid>
-           </Grid>
-       </SelectedPlacesContextProvider>
+        <SelectedPlacesContextProvider isEditionMode={false}>
+            <Grid container direction="column" style={{ height: '100vh' }}>
+                <AuthContextProvider>
+                    <FirstHeader />
+                </AuthContextProvider>
+                <SecondHeader />
+                <Grid container direction="row" style={{ flex: '1 1 auto' }}>
+                    <MapContextProvider>
+                        <PlacesBox />
+                        <Grid item lg={6} style={{ height: '100%' }}>
+                            <MapBox tileLayer={tileLayer} />
+                        </Grid>
+                    </MapContextProvider>
+                </Grid>
+            </Grid>
+        </SelectedPlacesContextProvider>
 
 
     )

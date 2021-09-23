@@ -78,13 +78,13 @@ export const NewPlace: FC = () => {
 
     const registerPlace = () => {
         setLoading(true)
-        const place = { ...currentPlace } 
+        const place = { ...currentPlace }
         place.img = imageFile
         console.log(place)
         const formData = new FormData()
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
-       
+
         myAxios.post('/places', formData, {
             withCredentials: true,
             headers: {
@@ -92,6 +92,7 @@ export const NewPlace: FC = () => {
             }
         }).then(res => {
             console.log(res.data)
+            res.data.place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
             const currentPlaces: any = [...places]
             currentPlaces.push(res.data.place)
             setPlaces(currentPlaces)
@@ -113,11 +114,11 @@ export const NewPlace: FC = () => {
 
     return (
 
-        <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2}  item style={{ marginTop: -80, marginBottom: 40,  }} justify="space-evenly">
-        
+        <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2} item style={{ marginTop: -80, marginBottom: 40, }} justify="space-evenly">
+
             <Grid item lg={5}>
                 <Slide in={true}>
-                    <Card style={{boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',borderRadius: 15}}>
+                    <Card style={{ boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15 }}>
                         <CardContent>
                             <Typography variant="h5" >
                                 Business management

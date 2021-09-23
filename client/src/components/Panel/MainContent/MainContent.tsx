@@ -14,7 +14,7 @@ export const MainContent: FC = () => {
   const {selectedOption} = usePanelContext()
 
   return (
-    <Grid container  direction="row"  item lg={10}>
+    <Grid container  direction="row" item lg={10}>
       {selectedOption === ChosenOptions.DASHBOARD && <Dashboard />}
       {selectedOption === ChosenOptions.NEW_PLACE &&
         <StepContextProvider>

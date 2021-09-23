@@ -2,7 +2,7 @@ import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogCo
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import myAxios from "../../../../axios/axios";
-import { usePanelContext } from "../../../../contexts/PanelContext";
+import { PlaceProps, usePanelContext } from "../../../../contexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
@@ -11,20 +11,47 @@ import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export const EditPlace: FC = () => {
+interface Props {
+    initialPlaceData: PlaceProps,
+    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen}) => {
 
     const { activeStep, setActiveStep } = useStepContext()
-    const { currentPlace} = usePanelContext()
-    const [isOpen, setOpen] = useState(false)
+    const { currentPlace, imageFile, setCurrentPlace, places, setPlaces } = usePanelContext()
     const [isLoading, setLoading] = useState(false)
+    const [isOpen, setOpen] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
 
     const submitChanges = async () => {
+
+        // let changedFields : any = {}
+        // let key : keyof typeof currentPlace
+        // for(key in currentPlace) if(currentPlace[key] !== initialPlaceData[key]) changedFields[key] = currentPlace[key]
+        // console.log(changedFields)
+        
+        const formData = new FormData()
+        currentPlace.img = imageFile
+        let key: keyof typeof currentPlace
+        for (key in currentPlace) formData.append(key, currentPlace[key])
         try {
-            await myAxios.put('/places', currentPlace)
+            const res = await myAxios.put('/places', formData, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            console.log(res.data)
+            res.data.place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
+            const currentPlaces: any = [...places]
+            currentPlaces.push(res.data.place)
+            setCurrentPlace(res.data.place)
+            setPlaces(currentPlaces)
             enqueueSnackbar('You have successfully modified your place', {
                 variant: 'success'
             })
+            setDialogOpen(false)
 
         } catch (err) {
             console.log(err)
@@ -70,7 +97,7 @@ export const EditPlace: FC = () => {
                                                     <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
                                                         Cancel
                                                     </Button>
-                                                    <LoadingButton color="primary" onClick={() => submitChanges} loading={isLoading} disabled={isLoading}>Yes, I am sure</LoadingButton>
+                                                    <LoadingButton color="primary" onClick={() => submitChanges()} loading={isLoading} disabled={isLoading}>Yes, I am sure</LoadingButton>
                                                 </DialogActions>
                                             </Dialog>
 
