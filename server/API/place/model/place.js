@@ -78,6 +78,8 @@ const PlaceSchema = new mongoose.Schema({
     address: String,
     phone: ReqString,
     email: String,
+    facebook: String,
+    instagram: String,
     type: ReqString,
     lat: ReqNumber,
     lng: ReqNumber,

@@ -1,11 +1,11 @@
 const jwtService = require('./jwt_service')
 const { addDays } = require('date-fns')
+const ApiError = require('../../errors/ApiError')
 const jwtController = {
 
     async refreshAccessToken(req, res, next) {
         const { cookies } = req
-        const refreshToken = cookies['refresh_token']
-        if (!refreshToken) return res.sendStatus(401)
+        const { refreshToken } = cookies
         try {
             const accessToken = await jwtService.refreshAccessToken(refreshToken)
             res.cookie('access_token', accessToken, {
@@ -20,22 +20,31 @@ const jwtController = {
         }
     },
 
-    async authenticateAccessToken(req, res, next) {
+    authenticateAccessToken : async (req, res, next) => {
         const { cookies } = req
-        let accessToken = cookies['access_token']
-        if (!accessToken) return res.sendStatus(401)
+        const accessToken = cookies['access_token']
+        const refreshToken = cookies['refresh_token']
+        if (!accessToken || !refreshToken) return next(ApiError.forbidden('accessToken and refreshToken are required'))
         try {
-            const smth = jwtService.authenticateAccessToken(accessToken)
-            console.log(smth)
-            // return res.sendStatus(200)
-            next()
+            jwtService.authenticateAccessToken(accessToken)
+            return next()
         } catch (err) {
             if (err.name === 'TokenExpiredError') {
-                console.log('rpoblem')
-                await jwtController.refreshAccessToken(req, res, next)
-                return
+                try {
+                    const newAccessToken = await jwtService.refreshAccessToken(refreshToken)
+                    res.cookie('access_token', newAccessToken, {
+                        httpOnly: true,
+                        // secure: true,
+                        expires: addDays(new Date(), 30)
+                    })
+                    return next()
+
+                } catch (err) {
+                    return next(ApiError.forbidden(err))
+                }
             }
-            res.sendStatus(403)
+            
+            return next(err)
         }
     },
 

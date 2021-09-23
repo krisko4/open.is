@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const placeController = require('../API/place/place_controller')
 const userService = require('../API/user/user_service')
-const multer = require('multer');
 const validatePlace = require('../API/place/validation/place_validator');
 const { body, validationResult, cookie, sanitizeBody } = require('express-validator');
-const validatePlaceAddress = require('../API/place/validation/place_validator');
 const ApiError = require('../errors/ApiError')
-const fileUpload = require('express-fileupload')
-const path = require('path')
+const fileUpload = require('express-fileupload');
+const placeValidator = require('../API/place/validation/place_validator');
+const jwtController = require('../API/jwt/jwt_controller')
+
 
 
 router.get('/active/name', (req, res, next) => {
@@ -37,15 +37,6 @@ router.get('/', (req, res, next) => {
 });
 
 
-const validateUploadedImage = (req, res, next) => {
-    console.log(req.files)
-    if (Object.keys(req.files).length !== 1) return next(ApiError.badRequest('One image file is required and only one is allowed.'))
-    if (!req.files.img) return next(ApiError.badRequest('Image file not found in uploaded form.'))
-    const image = req.files.img
-    console.log(image.mimetype)
-    if (image.mimetype !== 'image/jpeg' && image.mimetype !== 'image/png') return next(ApiError.badRequest((`Invalid file type. Accepted file types: png, jpg, jpeg`)))
-    next()
-}
 
 
 router.post('/',
@@ -54,7 +45,9 @@ router.post('/',
         limits: { fileSize: 500000 },
         abortOnLimit: true
     }),
-    validateUploadedImage,
+    jwtController.authenticateAccessToken,
+    placeValidator.validatePlaceAddress,
+    placeValidator.validateUploadedImage,
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 30 }),
     body('subtitle').isString().isLength({ min: 1, max: 50 }),
@@ -67,17 +60,46 @@ router.post('/',
     body('lat').isFloat().notEmpty(),
     body('lng').isFloat().notEmpty(),
     (req, res, next) => {
-        console.log(req.files)
-        console.log(req.body)
         const errors = validationResult(req)
-        console.log(errors)
-        if (!errors.isEmpty()) return next(ApiError.badRequest(errors.array())) 
+        if (!errors.isEmpty()) return res.status(400).json(errors.array())
         placeController.addPlace(req, res, next)
     }
 )
+
+
 router.delete('/', (req, res, next) => {
     placeController.deleteAll(req, res, next)
 })
+
+
+router.put('/',
+    fileUpload({
+        safeFileNames: true,
+        limits: { fileSize: 500000 },
+        abortOnLimit: true
+    }),
+    jwtController.authenticateAccessToken,
+    body('address').isString().notEmpty(),
+    placeValidator.validatePlaceAddress,
+    placeValidator.validateImageOnEdit,
+    cookie('uid').notEmpty().isMongoId(),
+    body('name').isString().isLength({ min: 2, max: 30 }),
+    body('subtitle').isString().isLength({ min: 1, max: 50 }),
+    body('description').isString().isLength({ min: 1, max: 250 }),
+    body('phone').isMobilePhone().notEmpty(),
+    body('email').isEmail(),
+    body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
+    body('facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
+    body('instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
+    body('lat').isFloat().notEmpty(),
+    body('lng').isFloat().notEmpty(),
+    (req, res, next) => {
+        const errors = validationResult(req)
+        console.log(errors.array())
+        if (!errors.isEmpty()) return res.status(400).json(errors.array())
+        placeController.editPlace(req, res, next)
+    }
+)
 
 router.patch('/:id/visit-count', (req, res, next) => {
     placeController.incrementVisitCount(req, res, next)

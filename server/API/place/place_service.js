@@ -3,35 +3,52 @@ const mongoose = require('mongoose')
 const opinionService = require('../opinion/opinion_service')
 const userValidator = require('../user/model/user_validator')
 const ApiError = require('../../errors/ApiError')
+const fs = require('fs')
 
 
 
 
 const placeService = {
 
-    getPlaces: () => {
-       
-        return Place.find().exec()
+    getPlaces: () => Place.find().exec(),
+    getActivePlaces: () => Place.find({ isActive: true }).exec(),
+    getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
+    getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: mongoose.Types.ObjectId(userId) }).exec(),
+    getTop20PlacesSortedBy: (param) => Place.find({isActive: true}).sort(param).limit(20).exec(),
+    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).exec(),
+    editPlace: async (placeData, user) => {
+        const { lat, lng, img} = placeData
+        const place = await placeService.getPlaceById(placeData._id)
+        if(!place) throw new Error('Invalid placeId')
+        if(!user._id.equals(place.userId)) throw new Error('This user is not allowed to edit this place')
+        if(typeof img === 'string' && place.img !== placeData.img) throw ApiError.internal('Invalid image URL')
+        const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
+        if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
+        const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
+        fs.unlink(imagePath, err => {
+            if(err) throw new Error(err)
+        })
+        const uniqueFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg'
+        placeData.img = uniqueFilename
+        const uploadPath = process.cwd() + `\\public\\images\\places\\` + uniqueFilename
+        img.mv(uploadPath, err => {
+            if (err) throw new Error(err)
+        }
+        )
+        return Place.findByIdAndUpdate(placeData._id, placeData, {new: true}).exec()
     },
-    getActivePlaces: () => {
-        return Place.find({isActive: true}).exec()
-    },
 
-    getPlaceNames: (name) => {
-        return Place.find({name: name}, 'name').exec()
-    },
-
-    getPlaceByIdAndUserId: (id, userId) => Place.findById(id, {userId: mongoose.Types.ObjectId(userId)}).exec(),
-
-    getTop20PlacesSortedBy: (param) => Place.find().sort(param).limit(20).exec(),
-
-    // getRecentlyAddedPlaces: () => Place.find().sort({createdAt: -1}).limit(20).exec(),
-
-    // getPopularPlaces: () =>  Place.find().sort({visitCount: -1}).limit(20).exec(),
-
-    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({name: names, address: addresses}).exec(),
-
-    addPlace: (placeData) => {
+    addPlace: async (placeData) => {
+        const { lat, lng, img } = placeData
+        const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
+        if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
+        const uniqueFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg'
+        placeData.img = uniqueFilename
+        const uploadPath = process.cwd() + `\\public\\images\\places\\` + uniqueFilename
+        img.mv(uploadPath, err => {
+            if (err) throw new Error(err)
+        }
+        )
         return new Place({
             _id: new mongoose.Types.ObjectId,
             ...placeData
@@ -42,31 +59,22 @@ const placeService = {
         if (!message) throw new ApiError(400, 'message is required')
     },
 
-    activatePlace: (id) => Place.findByIdAndUpdate(id, {'isActive' : true}, {new: true}).exec(),
-
-    getPlaceById : (id) => Place.findById(id).exec(),
-
-    getPlaceByLatLng: (lat, lng) => Place.findOne({lat: lat, lng: lng}).exec(),
-
+    activatePlace: (id) => Place.findByIdAndUpdate(id, { 'isActive': true }, { new: true }).exec(),
+    getPlaceById: (id) => Place.findById(id).exec(),
+    getPlaceByLatLng: (lat, lng) => Place.findOne({ lat: lat, lng: lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
-
-    getPlacesBy: (param) => Place.find({...param}).exec(),
-    getActivePlacesBy: (param) => Place.find({...param, isActive: true}).exec(),
-
+    getPlacesBy: (param) => Place.find({ ...param }).exec(),
+    getActivePlacesBy: (param) => Place.find({ ...param, isActive: true }).exec(),
     getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).exec(),
-    getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true}).exec(),
-
+    getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true }).exec(),
     deleteAll: () => Place.deleteMany().exec(),
-
     incrementVisitCount: (id) => Place.findByIdAndUpdate(id, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
-
     setStatus: (id, status) => Place.findByIdAndUpdate(id, { 'status': status }, { new: true, runValidators: true }).exec(),
-
-    setOpeningHours: (id, hours) => Place.findByIdAndUpdate(id, {'openingHours' : hours, 'isActive' : true}, {new: true, runValidators: true}).exec(), 
+    setOpeningHours: (id, hours) => Place.findByIdAndUpdate(id, { 'openingHours': hours, 'isActive': true }, { new: true, runValidators: true }).exec(),
 
     updateNote: async (note, placeId) => {
         const doc = await Place.findById(placeId, 'averageNote').exec()
-        const averageNote = JSON.parse(JSON.stringify(doc.averageNote)) 
+        const averageNote = JSON.parse(JSON.stringify(doc.averageNote))
         delete averageNote['average']
         const id = averageNote['_id']
         delete averageNote['_id']
@@ -89,7 +97,7 @@ const placeService = {
             default: throw new Error('Invalid note value')
         }
         const valueArray = Object.values(averageNote)
-        averageNote['average'] = valueArray.reduce((a, b, index) => a+b*(index + 1)) / valueArray.reduce((a,b) => a+b)
+        averageNote['average'] = valueArray.reduce((a, b, index) => a + b * (index + 1)) / valueArray.reduce((a, b) => a + b)
         averageNote['_id'] = id
         return Place.findByIdAndUpdate(placeId, { 'averageNote': averageNote }, { new: true }).exec()
     }

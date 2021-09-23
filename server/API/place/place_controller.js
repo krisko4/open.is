@@ -106,6 +106,43 @@ const placeController = {
 
 
 
+    editPlace: async (req, res, next) => {
+        const { cookies } = req
+        const { uid } = cookies
+        const reqBody = req.body
+        try {
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('User with provided uid not found')
+            let img = req.files.img
+            if(!img) img = req.body.img
+            const placeData = {
+                _id: reqBody._id,
+                name: reqBody.name,
+                address: reqBody.address,
+                type: reqBody.type,
+                lat: reqBody.lat,
+                lng: reqBody.lng,
+                description: reqBody.description,
+                subtitle: reqBody.subtitle,
+                phone: reqBody.phone,
+                img: img,
+                email: reqBody.email,
+                website: reqBody.website,
+                userId: user._id,
+                facebook: reqBody.facebook,
+                instagram: reqBody.instagram
+
+            }
+            const place = await placeService.editPlace(placeData, user)
+            return res.status(200).json({ message: 'Place updated successfully.', place })
+        }
+        catch (err) {
+            return next(err)
+        }
+
+
+    },
+
     addPlace: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
@@ -113,8 +150,6 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            const duplicateAddress = await placeService.getPlaceByLatLng(reqBody.lat, reqBody.lng)
-            if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
             const { img } = req.files
             const placeData = {
                 name: reqBody.name,
@@ -125,21 +160,18 @@ const placeController = {
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
                 phone: reqBody.phone,
-                img: img.name,
+                img: img,
                 email: reqBody.email,
                 website: reqBody.website,
                 userId: user._id,
                 facebook: reqBody.facebook,
                 instagram: reqBody.instagram
             }
-            const uploadPath = __dirname + '/public/images/places' + img.name
-            img.mv(uploadPath, err => {
-                if (err) throw ApiError.internal('Image upload failed')
-            })
             const place = await placeService.addPlace(placeData)
             return res.status(201).json({ message: 'New place added successfully.', place })
         }
         catch (err) {
+            console.log('zlapany blad')
             return next(err)
         }
 
@@ -217,7 +249,7 @@ const placeController = {
     setOpeningHours: async (req, res, next) => {
         const { id } = req.params
         try {
-            if (Object.keys(req.body).length === 0) throw ApiError.badRequest('Request body is missing') 
+            if (Object.keys(req.body).length === 0) throw ApiError.badRequest('Request body is missing')
             const place = await placeService.setOpeningHours(id, reqBody)
             return res.status(200).json(place)
         } catch (err) {

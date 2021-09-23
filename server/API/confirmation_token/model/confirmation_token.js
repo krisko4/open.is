@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const confirmationTokenSchema = new mongoose.Schema({
+
+const ConfirmationTokenSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     value: String,
     expiresAt: Date,
@@ -7,4 +8,4 @@ const confirmationTokenSchema = new mongoose.Schema({
     userId : mongoose.Schema.Types.ObjectId,
 })
 
-module.exports = mongoose.model('ConfirmationToken', confirmationTokenSchema)
+module.exports = mongoose.model('ConfirmationToken', ConfirmationTokenSchema)

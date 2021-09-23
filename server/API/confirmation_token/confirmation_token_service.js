@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const confirmationToken = require('./model/confirmation_token')
 const mongoose = require('mongoose')
 const {addMinutes} = require('date-fns')
-
+const ConfirmationToken = require('./model/confirmation_token')
 
 
 const confirmationTokenService = {
@@ -11,14 +11,14 @@ const confirmationTokenService = {
     createToken:  (userId) => {
         const createdAt = new Date()
         const expiresAt = addMinutes(createdAt, 10)
-        const confirmationToken = new ConfirmationToken({
+        return new ConfirmationToken({
             _id: new mongoose.Types.ObjectId,
             value: uuidv4(),
             createdAt: createdAt,
             expiresAt: expiresAt,
             userId: userId
-        })
-        return confirmationToken.save()
+        }).save()
+        
     },
     
     confirmToken: async (tokenValue) => {
