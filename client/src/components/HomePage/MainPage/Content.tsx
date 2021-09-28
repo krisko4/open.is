@@ -18,10 +18,10 @@ const Content = () => {
     const [isVisible6, setVisible6] = useState(false)
 
     const handleScroll = () => {
-        window.scrollY > 300 ? setVisible1(true) : setVisible1(false)
-        window.scrollY > 500 ? setVisible2(true) : setVisible2(false)
-        window.scrollY > 1900 ? setVisible3(true) : setVisible3(false)
-        window.scrollY > 3000 ? setVisible6(true) : setVisible6(false)
+        window.scrollY > 700 && setVisible1(true)
+        window.scrollY > 500 && setVisible2(true)
+        window.scrollY > 1500 && setVisible3(true)
+        window.scrollY > 2400 && setVisible6(true)
 
     }
 
@@ -34,13 +34,16 @@ const Content = () => {
 
 
     return (
-        <Grid container justify="center" style={{ background: '#480000' }}>
+        <Grid container justify="center" style={{ background: 'black' }}>
             <Section1 isVisible1={isVisible1} />
-            <Section2 />
+            {/* <Section2 /> */}
             <Section3 isVisible3={isVisible3} />
             <Section6 isVisible6={isVisible6} />
             <Section4 />
-            <Section5 />
+            <Section2 />
+            <Section5 /> 
+            
+
         </Grid >
     )
 }

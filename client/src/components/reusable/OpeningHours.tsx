@@ -195,7 +195,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
                 }
                 {
                     openingHours ?
-                        <Grid item container alignItems="center" style={{marginTop: 10, marginBottom: 10}} lg={5} md={8}>
+                        <Grid item container alignItems="center" style={{ marginBottom: 10}} lg={5} md={8}>
                             <Card className={classes.container} style={{flexGrow: 1}} elevation={10}>
                                 <CardContent>
                                     <Typography variant="h5" className={classes.title}>Opening hours</Typography>

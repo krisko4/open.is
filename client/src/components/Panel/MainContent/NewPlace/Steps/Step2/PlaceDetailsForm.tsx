@@ -10,7 +10,12 @@ import { LoadingButton } from "../../../../../reusable/LoadingButton"
 
 const places: string[] = [
     'restaurant',
-    'grocery store'
+    'grocery store',
+    'biuro prawnicze',
+    'komputery, RTV, serwis',
+    'usługi transportowe',
+    'giełda kryptowalut',
+    'usługi IT'
 ]
 // const PlaceDetailsSchema = Yup.object().shape({
 //     type: Yup.string().required(),
@@ -32,7 +37,7 @@ export const PlaceDetailsForm: FC = () => {
     const isFirstSubtitleRender = useRef(true)
 
     useEffect(() => {
-        currentPlace.type && subtitle && description && subtitle.length < 51 && description.length < 251 ? setDirty(false) : setDirty(true)
+        currentPlace.type && subtitle && description && subtitle.length < 101 && description.length < 401 ? setDirty(false) : setDirty(true)
     }, [subtitle, description, currentPlace.type])
 
 
@@ -102,9 +107,9 @@ export const PlaceDetailsForm: FC = () => {
                     value={subtitle}
                     fullWidth={true}
                     label='Subtitle'
-                    helperText={`${subtitle.length}/50`}
+                    helperText={`${subtitle.length}/100`}
                     inputProps={{
-                        maxLength: 50
+                        maxLength: 100
 
                     }} />
             </Grid>
@@ -124,9 +129,9 @@ export const PlaceDetailsForm: FC = () => {
                     rows={10}
                     variant="outlined"
                     rowsMax={10}
-                    helperText={`${description.length}/250`}
+                    helperText={`${description.length}/400`}
                     inputProps={{
-                        maxLength: 250
+                        maxLength: 400
                     }}
                 />
             </Grid>

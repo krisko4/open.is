@@ -10,24 +10,23 @@ import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
 
 
-
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const defaultNews = [
     {
         title: 'This will be my first news!',
-        date: new Date().toString(),
+        date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         content: 'This is just an example of what your news will look like. It will disappear after your first news is created.'
     },
     {
         title: 'This will be my second news!',
-        date: new Date().toString(),
+        date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         content: 'It is going to be fun!'
 
     },
     {
         title: 'Thank your for using our services 💌',
-        date: new Date().toString(),
+        date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         content: 'We appreciate you.'
 
     }
@@ -36,21 +35,21 @@ const defaultNews = [
 
 const defaultOpinions = [
     {
-        date: new Date().toString(),
+        date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         author: 'Administration',
         content: 'This is just an example of what opinions will look like in the browser once your place is created.',
         note: 5,
         averageNote: 0
     },
     {
-        date: new Date().toString(),
+        date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         author: 'Happy client',
         content: 'This is a lovely place!',
         note: 5,
         averageNote: 0
     },
     {
-        date: new Date().toString(),
+        date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         author: 'Administration',
         content: 'Thank you for using our services💌',
         note: 5,
@@ -62,8 +61,8 @@ const defaultOpinions = [
 
 export const NewPlace: FC = () => {
 
-    const { activeStep, setActiveStep } = useStepContext()
-    const { currentPlace, setOpinionCount, setNews, setOpinions, setCurrentPlace, imageFile } = usePanelContext()
+    const { activeStep, setActiveStep, imageFile } = useStepContext()
+    const { currentPlace, setOpinionCount, setNews, setOpinions, setCurrentPlace } = usePanelContext()
     const { setSelectedOption, setPlaces, places } = usePanelContext()
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
@@ -92,9 +91,13 @@ export const NewPlace: FC = () => {
             }
         }).then(res => {
             console.log(res.data)
-            res.data.place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
+            const newPlace = res.data.place
+            newPlace.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
+            newPlace.visits = []
+            newPlace.opinions = []
+            newPlace.news = []
             const currentPlaces: any = [...places]
-            currentPlaces.push(res.data.place)
+            currentPlaces.push(newPlace)
             setPlaces(currentPlaces)
             enqueueSnackbar('You have successfully registered new place', {
                 variant: 'success'
@@ -114,7 +117,7 @@ export const NewPlace: FC = () => {
 
     return (
 
-        <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2} item style={{ marginTop: -80, marginBottom: 40, }} justify="space-evenly">
+        <Grid container lg={12} spacing={2} item style={{marginBottom: 40, paddingLeft: 10 }} justify="space-evenly">
 
             <Grid item lg={5}>
                 <Slide in={true}>

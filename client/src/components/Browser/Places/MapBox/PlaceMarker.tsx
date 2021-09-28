@@ -14,14 +14,6 @@ import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesCon
 
 
 
-const myIcon = L.icon({
-    iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
-    iconSize: [50, 50],
-    // iconAnchor: [10, 0],
-    shadowUrl: iconShadow,
-    popupAnchor: [0, -30]
-
-});
 
 
 
@@ -29,15 +21,27 @@ const myIcon = L.icon({
 export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const { popupOpen, popupIndex, setMapCenter} = useMapContext()
+    const { popupOpen, popupIndex, setMapCenter } = useMapContext()
     const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useSelectedPlacesContext()
     const firstRender = useRef(true)
+
+    const myIcon = L.icon({
+       // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
+        iconUrl: `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}`,
+        iconSize: [50, 50],
+        
+        // iconAnchor: [10, 0],
+        shadowUrl: iconShadow,
+        popupAnchor: [0, -30],
+        className: classes.icon
+
+    });
 
     useEffect(() => {
         if (firstRender.current) {
             firstRender.current = false
             return
-        }  
+        }
         if (placeMarker.current && popupIndex === index) {
             popupOpen ? placeMarker.current.openPopup() : placeMarker.current.closePopup()
         }
@@ -51,12 +55,12 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
                 dragend: async () => {
                     criterium.lat = placeMarker.current._latlng.lat
                     criterium.lng = placeMarker.current._latlng.lng
-                    const lat : number = criterium.lat
-                    const lng : number = criterium.lng
+                    const lat: number = criterium.lat
+                    const lng: number = criterium.lng
                     const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
                     const criterias = [criterium]
                     setChosenCriterias(criterias)
-                    setMapCenter({lat, lng})
+                    setMapCenter({ lat, lng })
                     const address = res.data
                     console.log(address)
                     setSelectedAddress({
@@ -65,7 +69,7 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
                         lng: lng,
                         postcode: address.address.postcode
                     })
-                
+
                 }
             }}
             position={[criterium.lat, criterium.lng]}
@@ -73,13 +77,10 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
         >
             <Popup className={classes.popup}>
                 <Grid container justify="center" alignItems="center">
-                    <Avatar style={{width: 60, height: 60}} src={isEditionMode ? criterium.img : `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}`} />
-                    <Grid container item xs={8} alignItems="center" direction="column">
+                    <Avatar style={{ width: 60, height: 60 }} src={isEditionMode ? criterium.img : `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}`} />
+                    <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
                         <Typography variant="h6">
                             {criterium.name}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            {criterium.subtitle}
                         </Typography>
                     </Grid>
                     <Rating

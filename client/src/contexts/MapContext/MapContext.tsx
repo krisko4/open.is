@@ -22,6 +22,11 @@ const useProviderSettings = () => {
             lng: 23.16433
         }
        )
+    const [placeCoords, setPlaceCoords] = useState({
+        mapZoom: 10,
+        lat: 53.13333,
+        lng: 23.16433
+    })
     const [mapZoom, setMapZoom] = useState(10)
     const [popupOpen, setPopupOpen] = useState(false)
     const [popupIndex, setPopupIndex] = useState(0)
@@ -33,7 +38,9 @@ const useProviderSettings = () => {
         popupOpen,
         setPopupOpen,
         popupIndex,
-        setPopupIndex
+        setPopupIndex,
+        placeCoords,
+        setPlaceCoords
     }
 }
 

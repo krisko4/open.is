@@ -166,7 +166,7 @@ interface OpinionProps {
 
 export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlaceCardClicked }) => {
 
-    const { setPopupOpen, setMapZoom } = useMapContext()
+    const { setPopupOpen, setMapZoom, setPlaceCoords } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
 
 
@@ -220,6 +220,14 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlac
         />
     ]
 
+    const closePlaceDetails = () => {
+        setPlaceCardClicked(false)
+        setPopupOpen(false)
+        setPlaceCoords(currentCoords => {
+            return { ...currentCoords, mapZoom: 10 }
+        })
+    }
+
     const MyTab = (props: any) => {
         const { label, ...rest } = props
         return <Tab {...rest} label={label} disableRipple className={classes.root} />
@@ -228,7 +236,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlac
     return (
 
         <Grid container>
-            <IconButton onClick={() => { setPlaceCardClicked(false); setMapZoom(10); setPopupOpen(false) }} color="secondary">
+            <IconButton onClick={() => closePlaceDetails()} color="secondary">
                 <KeyboardReturn />
             </IconButton>
             <MainContent place={currentPlace} />

@@ -16,7 +16,8 @@ const useStyles = makeStyles({
         color: 'white',
         marginBottom: 10,
         fontStyle: 'italic'
-    }, })
+    },
+})
 
 export const Panel: FC = () => {
 
@@ -34,7 +35,6 @@ export const Panel: FC = () => {
                     }
                 })
                 if (response.data.length === 0) {
-                    console.log('no places found')
                     setSelectedOption(ChosenOptions.NO_PLACES)
                     return
                 }
@@ -51,14 +51,13 @@ export const Panel: FC = () => {
 
     return (
         <div>
-            <Grid container direction="column" style={{ minHeight: '100vh', background: '#F5F5F5' }}>
-                <Header />
+            <Grid container direction="column" style={{ height: '100vh', background: 'linear-gradient(45deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)'}}>
                 <Grid container direction="row" style={{ flex: '1 1 auto' }}>
                     <LeftNavigation />
                     <MainContent />
                 </Grid>
             </Grid>
-            <Footer classes={classes} />
+            {/* <Footer classes={classes} /> */}
         </div>
     )
 }

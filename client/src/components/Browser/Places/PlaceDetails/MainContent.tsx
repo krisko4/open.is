@@ -1,4 +1,4 @@
-import { IconButton, Typography } from "@material-ui/core";
+import { CardMedia, IconButton, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
@@ -21,15 +21,15 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
     const icons = [
         {
             icon: <PhoneIcon color="primary" />,
-            text: place.phone
+            text: place.phone || 'Phone number'
         },
         {
             icon: <MailOutlineIcon color="primary" />,
-            text: place.email
+            text: place.email || 'E-mail address'
         },
         {
             icon: <LanguageIcon color="primary" />,
-            text: place.website
+            text: place.website || 'Website'
         },
     ]
 
@@ -38,14 +38,15 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
     return (
         <Grid container style={{ marginTop: 10 }} justify="space-evenly">
             <Grid item lg={5} style={{ textAlign: 'center' }}>
-                <img style={{ width: '100%', marginTop: 10 }} alt="place img"
-                    src={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} />
+                <CardMedia style={{ height: 345, marginTop: 10 }} image={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} />
+                {/* <img style={{ width: '100%', marginTop: 10 }} alt="place img"
+                    src={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} /> */}
             </Grid>
             <Grid item lg={5} container direction="column" style={{ textAlign: 'center', marginLeft: 10, alignItems: 'center' }}>
                 <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
                     {place.name}
                 </Typography>
-                <Typography variant="h6" style={{ color: 'white' }}>
+                <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
                     {place.subtitle}
                 </Typography>
                 {place.status === 'open' ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
@@ -64,13 +65,15 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                 />
                 <Typography variant="body1" style={{ color: 'white', fontStyle: 'italic' }}>{place.type}</Typography>
                 <div>
-                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{width: 35, height: 35, display: 'table-cell'}} url="http://facebook.com"/></IconButton>
-                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{width: 35, height: 35, display: 'table-cell'}} url="http://instagram.com"/></IconButton>
+                    <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
+                    <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
                 </div>
-                <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 20 }}>{place.description}</Typography>
 
             </Grid>
             <Grid item container lg={12} justify="center">
+                <Grid style={{ textAlign: 'center' }} item lg={10}>
+                    <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 20 }}>{place.description}</Typography>
+                </Grid>
                 <Grid item lg={10} style={{ marginTop: 20 }}>
                     <Divider style={{ width: '100%', background: 'red' }}></Divider>
                 </Grid>

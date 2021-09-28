@@ -50,6 +50,9 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
                             <Typography variant="body1" style={{ color: '#A0A0A0', marginLeft: 10 }}>
                                 {place.subtitle}
                             </Typography>
+                            <Typography variant="overline" style={{ color: '#32de84', marginLeft: 10 }}>
+                                {place.type}
+                            </Typography>
                             <Typography variant="body2" color="primary" style={{ marginLeft: 10 }}>
                                 Address: {place.address}
                             </Typography>

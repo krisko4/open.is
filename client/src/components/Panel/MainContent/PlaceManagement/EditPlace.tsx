@@ -16,23 +16,18 @@ interface Props {
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen}) => {
+export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
 
-    const { activeStep, setActiveStep } = useStepContext()
-    const { currentPlace, imageFile, setCurrentPlace, places, setPlaces } = usePanelContext()
+    const { activeStep, setActiveStep, imageFile } = useStepContext()
+    const { currentPlace, setCurrentPlace, places, setPlaces } = usePanelContext()
     const [isLoading, setLoading] = useState(false)
     const [isOpen, setOpen] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
 
     const submitChanges = async () => {
-
-        // let changedFields : any = {}
-        // let key : keyof typeof currentPlace
-        // for(key in currentPlace) if(currentPlace[key] !== initialPlaceData[key]) changedFields[key] = currentPlace[key]
-        // console.log(changedFields)
-        
+        setLoading(true)
         const formData = new FormData()
-        currentPlace.img = imageFile
+        if (imageFile) currentPlace.img = imageFile
         let key: keyof typeof currentPlace
         for (key in currentPlace) formData.append(key, currentPlace[key])
         try {
@@ -58,6 +53,8 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen}) => {
             enqueueSnackbar('Oops, something went wrong', {
                 variant: 'error'
             })
+        } finally {
+            setLoading(false)
         }
     }
 

@@ -1,4 +1,4 @@
-import { Grow } from "@material-ui/core";
+import { Grow, Paper } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -42,35 +42,42 @@ const Section5: FC = () => {
 
         <Grid
             container
-            style={{ marginTop: 100, marginBottom: 100 }}
+            style={{ background: 'white' }}
             justify="center"
+
         >
-            <Grid item xs={12} style={{textAlign: 'center'}}>
-                <Grow in={true}>
-                    <Typography variant="h2" style={{ fontWeight: 'bold', color: 'white' }}>
-                        Trusted by people
+            <Grid container justify="center" style={{ marginTop: 100, marginBottom: 100 }}>
+                <Grid item xs={12} style={{ textAlign: 'center' }}>
+                    <Grow in={true}>
+                        <Typography variant="h3" style={{color: '#3c4858'}} >
+                            Trusted by people
+                        </Typography>
+                    </Grow>
+                </Grid>
+                <Grid item xs={7} style={{ textAlign: 'center' }}>
+                    <Typography variant="subtitle1" style={{ marginTop: 20, color: 'grey' }}>
+                        We are extremely grateful for the feedback provided by our users. Your opinions are highly
+                        appreciated.
+                        Below you can find some of them:
                     </Typography>
-                </Grow>
-            </Grid>
-            <Grid item xs={7} style={{textAlign: 'center'}}>
-                <Typography variant="h5" style={{ marginTop: 20, color: 'lightgray' }}>
-                    We are extremely grateful for the feedback provided by our users. Your opinions are highly
-                    appreciated.
-                    Below you can find some of them:
-                </Typography>
-            </Grid>
-            <Grid container style={{ marginTop: 100 }} justify="space-around">
-                {opinions.map((opinion, i) => <Grid item xs={3} key={i}>
-                    <Grid container direction="row" justify="center">
-                        <Avatar
-                            src={opinion.image}
-                            style={{height: 100, width: 100, objectFit: 'cover'}} />
-                        <Grid item xs={6} style={{ marginLeft: 10 }}>
-                            <h2 style={{ color: '#2196f3' }}>{opinion.name}</h2>
-                            <div style={{ fontStyle: 'italic', color: 'lightgrey' }}>{opinion.content}</div>
-                        </Grid>
+                </Grid>
+               
+                    <Grid container style={{ marginTop: 100 }} justify="space-around">
+
+                        {opinions.map((opinion, i) => <Grid item xs={3} key={i}>
+                            <Grid container direction="row" justify="center">
+                                <Avatar
+                                    src={opinion.image}
+                                    style={{ height: 100, width: 100, objectFit: 'cover', boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px' }} />
+                                <Grid item xs={6} style={{ marginLeft: 10 }}>
+                                    <h2 style={{color: '#3c4858'}}>{opinion.name}</h2>
+                                    <div style={{ fontStyle: 'italic', color: 'grey' }}>{opinion.content}</div>
+                                </Grid>
+                            </Grid>
+                        </Grid>)}
+
                     </Grid>
-                </Grid>)}
+               
             </Grid>
         </Grid>
     )

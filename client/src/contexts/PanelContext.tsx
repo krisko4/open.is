@@ -29,8 +29,11 @@ export interface PlaceProps {
     email: string,
     website: string,
     instagram: string,
+    news : NewsProps[],
+    opinions : OpinionProps[],
     facebook: string,
     userId: string,
+    visits: VisitProps[],
     averageNote: {
         ones: number,
         twos: number,
@@ -42,6 +45,7 @@ export interface PlaceProps {
     openingHours? : any,
     isActive: boolean
 }
+
 interface NewsProps {
     title: string,
     date: string,
@@ -98,7 +102,15 @@ export const clearPlace = {
         fives: 0,
         average: 0
     },
-    isActive: false
+    isActive: false,
+    opinions: [],
+    visits: [],
+    news: []
+}
+interface VisitProps {
+    date: string,
+    placeId: string,
+    visitCount: number
 }
 
 const useProviderSettings = () => {
@@ -108,10 +120,10 @@ const useProviderSettings = () => {
     const [placeIndex, setPlaceIndex] = useState(0)
     const [news, setNews] = useState<NewsProps[]>([])
     const [opinions, setOpinions] = useState<OpinionProps[]>([])
-    const [places, setPlaces] = useState<any>([])
+    const [visits, setVisits] = useState<VisitProps[]>([])
+    const [places, setPlaces] = useState<PlaceProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
     // const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
-    const [imageFile, setImageFile] = useState<File | null>(null)
 
     return {
         places,
@@ -126,12 +138,10 @@ const useProviderSettings = () => {
         setOpinions,
         opinionCount,
         setOpinionCount,
-        // uploadedImage,
-        imageFile,
-        setImageFile,
         placeIndex,
-        setPlaceIndex
-        // setUploadedImage
+        setPlaceIndex,
+        visits,
+        setVisits
     }
 }
 

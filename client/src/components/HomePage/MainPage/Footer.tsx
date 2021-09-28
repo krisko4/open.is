@@ -1,34 +1,40 @@
 
+import { IconButton } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import React, { FC } from "react";
+import { SocialIcon } from "react-social-icons";
 
 
 
 
-interface Props{
+interface Props {
     classes: any
 }
-const Footer : FC<Props>= ({classes}) => {
+const Footer: FC<Props> = ({ classes }) => {
 
-   
+
     return (
-        <Grid container className={classes.footer} justify="center">
-            <Grid item xs={6} style={{marginTop: 30, textAlign: 'center', marginBottom: 10}}>
-                <Button style={{color:'white'}}>Contact</Button>
-                <Button style={{color:'white'}}>About us</Button>
-            </Grid>
-            <Grid item xs={12}  style={{marginBottom: 20, textAlign: 'center'}}>
-                <Typography variant="body1" className={classes.text}>
-                    This is a simple project created in educational purposes, designed with Material UI.
-                </Typography>
-                <Typography className={classes.text}>
-                    {new Date().getFullYear()} - <strong>Krzysztof Wyszyński</strong>
-                </Typography>
-            </Grid>
+        <Grid container className={classes.footer} style={{ paddingTop: 50, paddingBottom: 50 }} alignItems="center" direction="column">
+            <div>
+                <Button style={{ color: 'white' }}>Contact</Button>
+                <Button style={{ color: 'white' }}>About us</Button>
+            </div>
+            <Typography variant="body1" className={classes.text}>
+                This is a simple project created in educational purposes, designed with Material UI.
+            </Typography>
+            <div>
+                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
+                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
+                <IconButton><SocialIcon bgColor={"grey"} target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://github.com" /></IconButton>
+                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://linkedin.com" /></IconButton>
+            </div>
+            <Typography className={classes.text}>
+                {new Date().getFullYear()} - <strong>Krzysztof Wyszyński</strong>
+            </Typography>
         </Grid>
+
     )
 }
 

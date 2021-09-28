@@ -62,12 +62,12 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
             const opinion = {
                 authorId: localStorage.getItem('uid'),
                 placeId: currentPlace._id,
-                date: new Date(),
                 content: opinionText,
                 note: noteValue
             }
             try {
                 const res = await myAxios.post('/opinions', opinion)
+                console.log(res.data)
 
                 setOpinions(opinions => {
                     return [
@@ -79,6 +79,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
                 setOpinionCount(opinionCount => opinionCount + 1)
                 const updatedPlace = { ...currentPlace }
                 updatedPlace.averageNote = res.data.averageNote
+                updatedPlace.opinions = [res.data.opinion, ...opinions]
                 console.log(updatedPlace)
                 setCurrentPlace(updatedPlace)
                 setDialogOpen(false)
@@ -107,7 +108,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
                         {opinions.length > 0 ?
                             <div>
                                 <Grid container justify="space-between" >
-                                    <Alert severity="info" variant="filled">{opinionCount} {opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
+                                    <Alert severity="info" variant="filled">{opinions.length} {opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
                                     {isUserLoggedIn && currentPlace.isUserOwner &&
                                         <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                                     }
@@ -125,7 +126,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
                                                         />
 
                                                     </Grid>
-                                                    <Typography variant="caption" className={classes.date}>{format(new Date(opinion.date), 'yyyy-MM-dd HH:mm:ss')}</Typography>
+                                                    <Typography variant="caption" className={classes.date}>{opinion.date}</Typography>
                                                     <Typography variant="subtitle1" className={classes.content}>{opinion.content}</Typography>
                                                 </CardContent>
                                             </Card>

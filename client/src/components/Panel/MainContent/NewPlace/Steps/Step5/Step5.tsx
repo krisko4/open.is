@@ -3,6 +3,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import React, { FC, useEffect, useRef, useState } from "react";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
 import UploadIcon from "@material-ui/icons/CloudUpload"
+import { useStepContext } from "../../../../../../contexts/StepContext";
 
 const useStyles = makeStyles({
     imageContainer: {
@@ -25,7 +26,8 @@ export const Step5: FC = () => {
 
     const uploadRef = useRef<HTMLInputElement>(null)
     const [elevation, setElevation] = useState(3)
-    const { setImageFile, currentPlace, setCurrentPlace } = usePanelContext()
+    const {currentPlace, setCurrentPlace } = usePanelContext()
+    const {setImageFile} = useStepContext()
 
     const clearImage = () => {
         const newCurrentPlace = { ...currentPlace }

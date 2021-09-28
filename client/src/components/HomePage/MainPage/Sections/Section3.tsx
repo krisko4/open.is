@@ -8,18 +8,18 @@ interface Props {
     isVisible3: boolean
 }
 
-const Section3 : FC<Props> = ({isVisible3}) => {
+const Section3: FC<Props> = ({ isVisible3 }) => {
     return (
-        <Grid item xs={12} justify="center" container style={{ background: '#300000', paddingBottom: 70 }}>
-            <Grid item container xs={8} justify="space-evenly" style={{ marginTop: 70 }}>
+        <Grid item xs={10} justify="center" container style={{ paddingBottom: 200 }}>
+            <Grid item container justify="center">
                 <Zoom
                     in={isVisible3}
-                    timeout={500}
+                    timeout={2000}
                 >
-                    <Grid item xs={5}>
+                    <Grid item xs={6}>
                         <CardMedia
-                            image={`${process.env.REACT_APP_BASE_URL}/images/bolcik.png`}
-                            style={{ height: 300 }}
+                            image={`https://cdn.dribbble.com/users/568/screenshots/2937224/browserpreview_tmp.gif`}
+                            style={{ height: 600 }}
                         >
                         </CardMedia>
                     </Grid>
@@ -28,20 +28,25 @@ const Section3 : FC<Props> = ({isVisible3}) => {
                 <Grid item container xs={5} alignItems="center" >
                     <Grow
                         in={isVisible3}
-                        {...(isVisible3 ? { timeout: 1500 } : {})}
+                        {...(isVisible3 ? { timeout: 3000 } : {})}
                     >
                         <div>
-                            <Typography variant="h5" style={{ color: 'white' }}>Find your desired place by address or name</Typography>
+                            <Typography variant="h5" style={{ color: 'white' }}>Locate your desired place by address or name</Typography>
                             <Typography variant="subtitle1" style={{ color: 'lightgrey', marginTop: 10 }}>
                                 Access the information about most recent news from places you'd like to visit.
                                 Find out about upcoming events, bargains or parties. Order food from your favourite
                                 restaurant via UberEats or book a visit to a hairdresser.
                             </Typography>
+                            <Grid container style={{ marginTop: 20 }} justify="space-evenly">
+                                <CardMedia style={{ height: 150, width: 150 }} image="https://pngpress.com/wp-content/uploads/2020/03/Uber-Eats-Transparent.png" />
+                                <CardMedia style={{ height: 150, width: 150 }} image="https://www.telepolis.pl/images/miniatury/bolt-min.jpg" />
+                                <CardMedia style={{ height: 150, width: 150 }} image="https://assets.moment.pl/assets/meta/moment-logo-7becc470e9a40800d632021627b0e25787e4b082018c09ba262bf22031f6d2fa.png" />
+                            </Grid>
+
                         </div>
                     </Grow>
                 </Grid>
-
-                <Grow
+                {/* <Grow
                     in={isVisible3}
                     {...(isVisible3 ? { timeout: 1500 } : {})}
                 >
@@ -63,12 +68,12 @@ const Section3 : FC<Props> = ({isVisible3}) => {
                 >
                     <Grid item xs={5} style={{ marginTop: 20 }}>
                         <CardMedia
-                            image={`${process.env.REACT_APP_BASE_URL}/images/bolcik.png`}
+                            image={`https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif`}
                             style={{ height: 300 }}
                         >
                         </CardMedia>
                     </Grid>
-                </Zoom>
+                </Zoom> */}
 
 
             </Grid>

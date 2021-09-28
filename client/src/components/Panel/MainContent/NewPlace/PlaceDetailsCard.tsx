@@ -1,4 +1,4 @@
-import { Card, CardContent, IconButton, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
+import { Card, CardMedia, CardContent, IconButton, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -55,7 +55,7 @@ const useOpeningHoursStyles = makeStyles({
         background: 'inherit',
         borderRadius: 10,
         boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-        
+
     },
     // hourPicker: {
     //     color: 'green'
@@ -101,7 +101,7 @@ const useOpinionsStyles = makeStyles({
     opinionCard: {
         background: 'inherit',
         boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-        
+
     },
     author: {
         color: '#2196f3'
@@ -195,10 +195,11 @@ export const PlaceDetailsCard: FC = () => {
                     <Typography variant="subtitle2">
                         Your place profile will look similar to this template in a browser
                     </Typography>
-                    <Grid container style={{ marginTop: 10 }} justify="space-evenly">
+                    <Grid container style={{ marginTop: 10 }} alignItems="center" justify="space-evenly">
                         <Grid item lg={5} style={{ textAlign: 'center' }}>
-                            <img style={{ width: '100%', marginTop: 10 }} alt="place img"
-                                src={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
+                            {/* <img style={{ width: '100%', marginTop: 10, height: 321 }} alt="place img"
+                                src={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} /> */}
+                            <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
 
                         </Grid>
                         <Grid item lg={5} container direction="column" alignItems="center" style={{ textAlign: 'center', marginLeft: 10 }}>
@@ -227,12 +228,14 @@ export const PlaceDetailsCard: FC = () => {
                                 <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.facebook ? currentPlace.facebook : "http://facebook.com"} /></IconButton>
                                 <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.instagram ? currentPlace.instagram : "http://instagram.com"} /></IconButton>
                             </div>
-                            <Typography variant="body1" style={{ marginTop: 10 }}>
-                                {currentPlace.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
-                            </Typography>
                         </Grid>
                         <Grid item container lg={12} style={{ marginTop: 20 }} justify="center">
-                            <Grid item lg={10}>
+                            <Grid item lg={10} style={{textAlign: 'center'}}>
+                                <Typography variant="body1">
+                                    {currentPlace.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
+                                </Typography>
+                            </Grid>
+                            <Grid item lg={10} style={{marginTop: 10}}>
                                 <Divider style={{ width: '100%', background: '#2196f3' }} />
                             </Grid>
                         </Grid>
@@ -274,7 +277,7 @@ export const PlaceDetailsCard: FC = () => {
                             <MyTab label="Opinions" />
                         </Tabs>
                     </Paper>
-                    <Grid container style={{ height: 545 }}>
+                    <Grid container style={{ height: 495 }}>
                         <Scrollbars>
                             {tabContents[value]}
                         </Scrollbars>

@@ -1,31 +1,23 @@
-import { Button, Card, CardContent, Fade, Grid, makeStyles, Paper, Slide, Typography } from "@material-ui/core";
-import { PlaceSettings } from "./PlaceSettings"
-import EqualizerIcon from "@material-ui/icons/Equalizer";
-import StarIcon from '@material-ui/icons/Star';
+import { Button, Card, CardContent, CardMedia, Grid, makeStyles, Typography } from "@material-ui/core";
+import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
+import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import MeetingRoomIcon from "@material-ui/icons/MeetingRoom"
-import SettingsIcon from "@material-ui/icons/Settings"
 import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
-import { format, isSameDay } from "date-fns";
+import { isSameDay } from "date-fns";
 import { useSnackbar } from "notistack";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import myAxios from "../../../../axios/axios";
-import { PlaceProps, Status, usePanelContext } from "../../../../contexts/PanelContext";
+import { Status, usePanelContext } from "../../../../contexts/PanelContext";
+import { LoadingButton } from "../../../reusable/LoadingButton";
 import { StatisticChart } from "../Dashboard/StatisticChart";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
-import { LoadingButton } from "../../../reusable/LoadingButton";
-import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
+import { PlaceSettings } from "./PlaceSettings";
 
-interface VisitProps {
-    date: string,
-    placeId: string,
-    visitCount: number
 
-}
 interface Props {
     index: number,
-    visits: VisitProps[]
 }
 
 const useStyles = makeStyles({
@@ -37,12 +29,12 @@ const useStyles = makeStyles({
     }
 })
 
-export const PlaceData: FC<Props> = ({ index, visits }) => {
+export const PlaceData: FC<Props> = ({ index}) => {
 
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
     const classes = useStyles()
-    const { currentPlace, placeIndex, setCurrentPlace, places, opinions } = usePanelContext()
+    const { currentPlace, placeIndex, setCurrentPlace, places, opinions, visits } = usePanelContext()
     const [settingsOpen, setSettingsOpen] = useState(false)
     const { ones, twos, threes, fours, fives } = currentPlace.averageNote
 
@@ -92,6 +84,10 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
 
     const [totalOpinionsOptions, setTotalOpinionsOptions] = useState({
         chart: {
+            toolbar: {
+                show: false
+            },
+            height: 100,
             type: 'bar',
             animations: {
                 enabled: true,
@@ -108,17 +104,31 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
             },
             sparkline: {
                 enabled: true
-            }
-        },
+            },
 
+        },
+        plotOptions: {
+            // bar: {
+            //     distributed: true
+            // }
+        },
+        legend: {
+            show: false
+        },
         xaxis: {
-            //    categories: ['One', 'Two', 'Three', 'Four', 'Five'],
+            categories: [
+                ['One'], ['Two'], ['Three'], ['Four'], ['Five']],
             crosshairs: {
                 width: 1
+            },
+            min: 0
+        },
+        yaxis: {
+            labels: {
+                show: false
             }
         },
         tooltip: {
-
             y: {
                 title: {
                     formatter: function (seriesName: string) {
@@ -148,6 +158,7 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
         tooltip: {
             enabled: false
         },
+
         plotOptions: {
             dataLabels: {
                 show: false
@@ -203,7 +214,7 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
                 endAngle: 270
             }
         },
-        labels: ['One', 'Two', 'Three', 'Four', 'Five'],
+        labels: ['⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'],
         fill: {
             type: 'gradient',
         },
@@ -281,22 +292,24 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
     return (
         <>
             {index === placeIndex &&
-                <Grid container style={{ height: '100%', marginTop: -130 }} justify="center">
-                    <Grid container style={{ marginTop: 40, marginBottom: 40, marginRight: 40 }} spacing={2} item justify="space-around">
+                <Grid container style={{ height: '100%', paddingTop:40, paddingLeft: 40, paddingRight: 40}} justify="center">
+                    <Grid container spacing={2} item justify="space-around">
                         <Grid container justify="space-around" spacing={2}>
                             <Grid item lg={4}>
                                 <Card className={classes.shadowCard}>
                                     <CardContent>
                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
                                         <Grid container style={{ marginTop: 5 }}>
-                                            <Grid container item alignItems="center" justify="space-between">
-                                                <Grid item style={{ flexGrow: 1 }}>
-                                                    <Grid container item alignItems="center">
-                                                        <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                                        <span style={{ marginLeft: 5 }}>+10.5%</span>
-                                                    </Grid>
-                                                    <Typography variant="h3">{visits.reduce((a, b) => a + b.visitCount, 0)}</Typography>
+                                            <Grid item lg={6} container justify="center" direction="column">
+                                                <Grid container alignItems="center">
+                                                    <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                    <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
                                                 </Grid>
+                                                <Typography variant="h3">
+                                                    {visits.reduce((a, b) => a + b.visitCount, 0 )}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item lg={6} container justify="center">
                                                 <StatisticChart height={100} width={150} type="area" options={totalVisitsOptions} setOptions={setTotalVisitsOptions} series={totalVisitsSeries} />
                                             </Grid>
                                         </Grid>
@@ -304,38 +317,41 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
                                 </Card>
                             </Grid>
                             <Grid item lg={4}>
-                                <Card elevation={3} className={classes.shadowCard}>
+                                <Card className={classes.shadowCard}>
                                     <CardContent>
                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
                                         <Grid container style={{ marginTop: 5 }}>
-                                            <Grid container item lg={10} alignItems="center">
-                                                <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                                <span style={{ marginLeft: 5 }}>+10.5%</span>
+                                            <Grid item lg={6} container justify="center" direction="column">
+                                                <Grid container alignItems="center">
+                                                    <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                    <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
+                                                </Grid>
+                                                <Typography variant="h3">
+                                                    {visits.filter(visit => isSameDay(new Date(visit.date), new Date())).reduce((a, b) => a + b.visitCount, 0)}
+                                                    {/* {visits.find(visit => isSameDay(new Date(visit.date), new Date()))?.visitCount || 0} */}
+                                                </Typography>
                                             </Grid>
-                                            <Grid item lg={2} >
-                                                <EqualizerIcon fontSize="large" color="primary" />
+                                            <Grid item lg={6} container justify="center">
+                                                <CardMedia style={{ height: 100, width: 120 }} image="https://s38357.pcdn.co/wp-content/uploads/2020/04/Site-visit-Icon.png" />
                                             </Grid>
                                         </Grid>
-                                        <Typography variant="h3">
-                                            {visits.find(visit => isSameDay(new Date(visit.date), new Date()))?.visitCount || 0}
-                                        </Typography>
                                     </CardContent>
                                 </Card>
                             </Grid>
                             <Grid item lg={4}>
-                                <Card elevation={3} className={classes.shadowCard}>
+                                <Card className={classes.shadowCard}>
                                     <CardContent>
                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                                         <Grid container style={{ marginTop: 5 }}>
                                             <Grid container item alignItems="center" justify="space-between">
                                                 <Grid item style={{ flexGrow: 1 }}>
                                                     <Grid container item alignItems="center">
-                                                        <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                                        <span style={{ marginLeft: 5 }}>+10.5%</span>
+                                                        <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                        <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
                                                     </Grid>
                                                     <Typography variant="h3">{opinions.length}</Typography>
                                                 </Grid>
-                                                <StatisticChart height={100} width={150} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
+                                                <StatisticChart height={100} width={200} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -426,7 +442,7 @@ export const PlaceData: FC<Props> = ({ index, visits }) => {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item lg={7}>
+                            <Grid style={{marginBottom: 20}} item lg={7}>
                                 <PlaceDetailsCard />
                             </Grid>
                         </Grid>

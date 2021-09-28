@@ -12,7 +12,11 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
     footer: {
-        background: 'linear-gradient(180deg, rgba(245,245,245,1) 0%, rgba(24,131,217,1) 47%);'
+     //   background: 'linear-gradient(180deg, rgba(245,245,245,1) 0%, rgba(24,131,217,1) 47%);'
+     background: 'linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.3)), url(https://villamiproperties.com/wp-content/uploads/2017/10/footer-background-2.jpg)',
+     backgroundPosition: 'center',
+     backgroundSize: 'cover'
+
     },
     text: {
         color: 'white',

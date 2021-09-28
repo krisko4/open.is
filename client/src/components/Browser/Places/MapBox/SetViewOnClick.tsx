@@ -1,5 +1,6 @@
 import { FC, useEffect } from "react";
 import { useMap } from "react-leaflet";
+import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 
 interface ViewProps {
     mapZoom: number,
@@ -8,12 +9,12 @@ interface ViewProps {
         lng: number
     }
 }
-export const SetViewOnClick: FC<ViewProps> = ({ coords, mapZoom }) => {
+export const SetViewOnClick: FC = () => {
+    const {placeCoords} = useMapContext()
     const map = useMap();
     map.options.minZoom = 5
     useEffect(() => {
-        console.log('hejs')
-        map.setView(coords, mapZoom);
-    }, [coords, mapZoom])
+        map.setView({lat: placeCoords.lat, lng: placeCoords.lng}, placeCoords.mapZoom);
+    }, [placeCoords])
     return null;
 }

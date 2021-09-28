@@ -30,11 +30,6 @@ const useProviderSettings = () => {
     const [subtitle, setSubtitle] = useState('')
     const [description, setDescription] = useState('')
     const [type, setType] = useState('')
-    // const [placeDetails, setPlaceDetails] = useState<PlaceDetailsTypes>({
-    //     type: '',
-    //     subtitle: '',
-    //     description: '',
-    // })
 
     const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
 
@@ -48,8 +43,6 @@ const useProviderSettings = () => {
         setActiveStep,
         placeName,
         setPlaceName,
-        // placeDetails,
-        // setPlaceDetails,
         subtitle,
         setSubtitle,
         type,

@@ -20,7 +20,7 @@ const PlacesBox: FC = () => {
 
 
 
-    const { setMapCenter, setMapZoom, setPopupOpen, setPopupIndex } = useMapContext()
+    const { setMapCenter, setMapZoom, setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
     const [tabIndex, setTabIndex] = useState(0)
     const isFirstRender = useRef(true)
 
@@ -51,25 +51,28 @@ const PlacesBox: FC = () => {
     const { chosenCriterias, setChosenCriterias } = useSelectedPlacesContext()
     const [currentPlace, setCurrentPlace] = useState<any>()
 
-    const addVisit = async (place : any) => {
+    const addVisit = async (place: any) => {
         try {
             const response = await myAxios.post('/visits', {
                 date: new Date(),
                 placeId: place._id
             })
             return response.data
-        }catch(err){
+        } catch (err) {
             console.log(err)
         }
-    
+
     }
 
     const openPlaceDetails = async (place: any, index: number) => {
         addVisit(place)
         setCurrentPlace(place)
         setPlaceCardClicked(true)
-        setMapCenter({ lat: place.lat, lng: place.lng })
-        setMapZoom(18)
+        setPlaceCoords({
+            lat: place.lat,
+            lng: place.lng,
+            mapZoom: 18
+        })
         setPopupIndex(index)
         setPopupOpen(true)
     }

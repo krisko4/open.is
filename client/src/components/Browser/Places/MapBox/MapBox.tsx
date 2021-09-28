@@ -23,6 +23,10 @@ const useStyles = makeStyles({
         '& .leaflet-popup-content': {
             width: 160
         }
+    },
+    icon: {
+        borderRadius: 15,
+        objectFit: 'cover'
     }
 })
 
@@ -36,19 +40,19 @@ interface Props {
 
 export const MapBox: FC<Props> = ({ tileLayer }) => {
 
-    const { mapCenter, mapZoom } = useMapContext()
+    const {placeCoords, setPlaceCoords } = useMapContext()
     const { chosenCriterias } = useSelectedPlacesContext()
     const classes = useStyles()
    
     return (
-        <MapContainer style={{ height: '100%', flexGrow: 1 }} center={mapCenter} zoom={mapZoom}
+        <MapContainer style={{ height: '100%', flexGrow: 1 }} center={{lat: placeCoords.lat, lng: placeCoords.lng}} zoom={placeCoords.mapZoom}
             scrollWheelZoom={true}>
             <TileLayer
                 attribution={tileLayer.attribution}
                 url={tileLayer.url}
             />
             {chosenCriterias.map((criterium: any, index: number) => <PlaceMarker key={index} index={index} criterium={criterium} classes={classes} />)}
-            <SetViewOnClick coords={mapCenter} mapZoom={mapZoom} />
+            <SetViewOnClick />
         </MapContainer>
     )
 }
