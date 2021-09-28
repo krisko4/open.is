@@ -49,9 +49,9 @@ router.post('/',
     placeValidator.validatePlaceAddress,
     placeValidator.validateUploadedImage,
     cookie('uid').notEmpty().isMongoId(),
-    body('name').isString().isLength({ min: 2, max: 30 }),
-    body('subtitle').isString().isLength({ min: 1, max: 50 }),
-    body('description').isString().isLength({ min: 1, max: 250 }),
+    body('name').isString().isLength({ min: 2, max: 50 }),
+    body('subtitle').isString().isLength({ min: 1, max: 100 }),
+    body('description').isString().isLength({ min: 1, max: 400 }),
     body('phone').isMobilePhone().notEmpty(),
     body('email').isEmail(),
     body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
@@ -71,6 +71,10 @@ router.delete('/', (req, res, next) => {
     placeController.deleteAll(req, res, next)
 })
 
+router.delete('/:placeId', (req, res, next) => {
+    placeController.deletePlace(req, res, next)
+})
+
 
 router.put('/',
     fileUpload({
@@ -83,9 +87,9 @@ router.put('/',
     placeValidator.validatePlaceAddress,
     placeValidator.validateImageOnEdit,
     cookie('uid').notEmpty().isMongoId(),
-    body('name').isString().isLength({ min: 2, max: 30 }),
-    body('subtitle').isString().isLength({ min: 1, max: 50 }),
-    body('description').isString().isLength({ min: 1, max: 250 }),
+    body('name').isString().isLength({ min: 2, max: 51 }),
+    body('subtitle').isString().isLength({ min: 1, max: 101 }),
+    body('description').isString().isLength({ min: 1, max: 401 }),
     body('phone').isMobilePhone().notEmpty(),
     body('email').isEmail(),
     body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),

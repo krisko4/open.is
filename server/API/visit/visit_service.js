@@ -1,13 +1,12 @@
 const Visit = require('./model/visit')
 const mongoose = require('mongoose')
 const placeService = require('../place/place_service')
-const {startOfDay, endOfDay} = require('date-fns')
+const {startOfMinute, endOfMinute, format} = require('date-fns')
 const visitService = {
 
     addVisit: async (placeId) => {
-        const existingVisits = await Visit.find({ date: {$gte: startOfDay(new Date()), $lte: endOfDay(new Date())}, placeId: mongoose.Types.ObjectId(placeId)}).exec()
-        console.log(existingVisits)
-        if (existingVisits.length > 0) return Visit.findByIdAndUpdate(existingVisits[0]._id, { $inc: { visitCount: 1 } }, { new: true })
+        const existingVisit = await Visit.findOne({ date: {$gte: startOfMinute(new Date()), $lte: endOfMinute(new Date())}, placeId: mongoose.Types.ObjectId(placeId)}).exec()
+        if (existingVisit) return Visit.findByIdAndUpdate(existingVisit._id, { $inc: { visitCount: 1 } }, { new: true })
         return new Visit({
             _id: new mongoose.Types.ObjectId,
             date: new Date(),

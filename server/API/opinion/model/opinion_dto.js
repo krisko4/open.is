@@ -1,9 +1,9 @@
 const userDto = require("../../user/model/user_dto")
-
+const {format} = require('date-fns')
 const opinionDto = (opinion) => {
     const user = userDto(opinion.author)
     return {
-        date: opinion.date,
+        date: format(opinion.date, 'yyyy-MM-dd HH:mm:ss'),
         note: opinion.note,
         content: opinion.content,
         author: `${user.firstName} ${user.lastName}`,

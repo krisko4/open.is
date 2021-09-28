@@ -2,6 +2,12 @@ const placeService = require('./place_service')
 const userService = require('../user/user_service')
 const placeDto = require('./model/place_dto')
 const ApiError = require('../../errors/ApiError')
+const visitService = require('../visit/visit_service')
+const visitDto = require('../visit/model/visit_dto')
+const opinionService = require('../opinion/opinion_service')
+const opinionDto = require('../opinion/model/opinion_dto')
+const newsService = require('../news/news_service')
+const newsDto = require('../news/model/news_dto')
 
 const placeController = {
 
@@ -87,16 +93,29 @@ const placeController = {
                     let places
                     if (param === 'uid') {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
+                        const objPlaces = await Promise.all(places.map(async (place) => {
+                            const placeObject = { ...place._doc }
+                            const visits = await visitService.getVisitsByPlaceId(placeObject._id)
+                            placeObject.visits = visits.map(visit => visitDto(visit))
+                            const opinions = await opinionService.getOpinionsBy({ placeId: placeObject._id })
+                            placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
+                            const news = await newsService.getNewsBy({ placeId: placeObject._id })
+                            placeObject.news = news.map(news => newsDto(news))
+                            return placeObject
+                        }))
+                        places = objPlaces
+                        console.log(places)
+                        return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
+                        return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
                     }
-                    return res.status(200).json(places.map(place => placeDto(place, uid)))
                 } catch (err) {
                     return next(err)
                 }
             case 0:
                 return placeService.getPlaces()
-                    .then(places => res.status(200).json(places.map(place => placeDto(place, uid))))
+                    .then(places => res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid))))
                     .catch(err => next(err))
 
             default:
@@ -113,8 +132,8 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            let img = req.files.img
-            if(!img) img = req.body.img
+            let img = req.files && req.files.img
+            if (!img) img = req.body.img
             const placeData = {
                 _id: reqBody._id,
                 name: reqBody.name,
@@ -134,13 +153,25 @@ const placeController = {
 
             }
             const place = await placeService.editPlace(placeData, user)
-            return res.status(200).json({ message: 'Place updated successfully.', place })
+            const placeObject = { ...place._doc }
+            const visits = await visitService.getVisitsByPlaceId(placeObject._id)
+            placeObject.visits = visits.map(visit => visitDto(visit))
+            const opinions = await opinionService.getOpinionsBy({ placeId: placeObject._id })
+            placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
+            const news = await newsService.getNewsBy({ placeId: placeObject._id })
+            placeObject.news = news.map(news => newsDto(news))
+            return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(placeObject, uid) })
         }
         catch (err) {
             return next(err)
         }
 
 
+    },
+
+    deletePlace: async (req, res, next) => {
+        const {placeId} = req.params
+        
     },
 
     addPlace: async (req, res, next) => {
@@ -168,7 +199,7 @@ const placeController = {
                 instagram: reqBody.instagram
             }
             const place = await placeService.addPlace(placeData)
-            return res.status(201).json({ message: 'New place added successfully.', place })
+            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({...place._doc}, uid) })
         }
         catch (err) {
             console.log('zlapany blad')
@@ -204,7 +235,7 @@ const placeController = {
         const { uid } = cookies
         try {
             const places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
+            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
         } catch (err) {
             next(err)
         }
@@ -217,7 +248,7 @@ const placeController = {
         const { uid } = cookies
         try {
             const places = await placeService.getTop20PlacesSortedBy({ 'averageNote.average': -1 })
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
+            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
         } catch (err) {
             next(err)
         }
@@ -229,7 +260,7 @@ const placeController = {
         const { uid } = cookies
         try {
             const places = await placeService.getTop20PlacesSortedBy({ visitCount: -1 })
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
+            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
         } catch (err) {
             next(err)
         }
@@ -250,7 +281,7 @@ const placeController = {
         const { id } = req.params
         try {
             if (Object.keys(req.body).length === 0) throw ApiError.badRequest('Request body is missing')
-            const place = await placeService.setOpeningHours(id, reqBody)
+            const place = await placeService.setOpeningHours(id, req.body)
             return res.status(200).json(place)
         } catch (err) {
             next(err)

@@ -1,15 +1,15 @@
 const confirmationService = require('./confirmation_service')
+const ApiError = require('../../errors/ApiError')
 
 const confirmationController = {
 
-    confirmRegistration: async (req, res) => {
+    confirmRegistration: async (req, res, next) => {
         const tokenValue = req.params['tokenValue']
         try{
             await confirmationService.confirmRegistration(tokenValue)
             res.status(200).json('Registration confirmed successfully.')
         } catch(err) {
-            console.log(err)
-            res.status(400).json({error: err})
+            next(err)
         }
     },
 

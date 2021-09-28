@@ -1,6 +1,6 @@
 
 const placeDto = (place, uid) => {
-    const placeDto = {...place._doc}
+    const placeDto = {...place}
     delete placeDto['userId']
     delete placeDto['createdAt']
     if(placeDto['openingHours']) {

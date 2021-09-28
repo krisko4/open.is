@@ -1,25 +1,25 @@
 const newsService = require('./news_service')
 const mongoose = require('mongoose')
 const newsDto = require('./model/news_dto')
-
+const ApiError = require('../../errors/ApiError')
 const newsController = {
-    addNews: async (req, res) => {
+   
+    addNews: async (req, res, next) => {
         try {
             const {cookies} = req
             const {uid} = cookies
-            if(!uid) return res.status(400).json('uid not found in cookies.')
+            if(!uid) return next(ApiError.badRequest('uid is required'))
             const news = {
                 ...req.body,
                 userId : uid
             }
-            const newPlace = await newsService.addNews(news)
-            return res.status(200).json(newPlace)
+            const returnedNews = await newsService.addNews(news)
+            return res.status(200).json(newsDto(returnedNews))
         } catch (err) {
-            console.log(err)
-            return res.status(400).json(err)
+            next(err)
         }
     },
-    getNews: async(req, res) => {
+    getNews: async(req, res, next) => {
         const queryLength = Object.keys(req.query).length
         console.log(queryLength)
         switch (queryLength) {
@@ -33,32 +33,27 @@ const newsController = {
                     const news = await newsService.getNewsBy(property)
                     return res.status(200).json(news.map(news => newsDto(news)))
                 } catch (err) {
-                    console.log(err)
-                    return res.status(400).json({ error: err })
+                    return next(err)
                 }
             case 0:
                 try {
                     const news = await newsService.getNews()
-                    return res.status(200).json(news)
+                    return res.status(200).json(news.map(news => newsDto(news)))
                 } catch (err) {
-                    console.log(err)
-                    return res.status(400).json(err)
+                   return next(err)
                 }
             default:
-                return res.status(400).json({
-                    error: 'Invalid request'
-                })
+                return next(ApiError.badRequest('Invalid request'))
 
         }
 
     },
-    deleteNews: async(req, res) => {
+    deleteNews: async(req, res, next) => {
         try{
             await newsService.deleteNews()
             return res.sendStatus(200)
         } catch(err){
-            console.log(err)
-            return res.sendStatus(500)
+            return next(err)
         }
     }
 }

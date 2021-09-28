@@ -6,7 +6,6 @@ const opinionService = {
 
 
     getOpinionsBy: (property) => {
-        console.log(property)
         if (property) return Opinion.find(property).sort({ date: -1 }).populate('author').exec()
     },
 
@@ -16,15 +15,14 @@ const opinionService = {
     },
 
     addNewOpinion: async (opinionData) => {
-
         const user = await userService.getUserById(opinionData.authorId)
         if (!user) throw `User with id ${opinionData.authorId} not found`
-        console.log(user)
         delete (opinionData['authorId'])
         const opinion = await new Opinion({
             _id: new mongoose.Types.ObjectId,
             ...opinionData,
-            author: user._id
+            author: user._id,
+            date: new Date()
         }).save()
     //    await placeService.updateNote(placeData.note, placeData.placeId)
         return opinion.populate('author').execPopulate()

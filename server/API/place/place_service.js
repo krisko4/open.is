@@ -14,28 +14,31 @@ const placeService = {
     getActivePlaces: () => Place.find({ isActive: true }).exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: mongoose.Types.ObjectId(userId) }).exec(),
-    getTop20PlacesSortedBy: (param) => Place.find({isActive: true}).sort(param).limit(20).exec(),
+    getTop20PlacesSortedBy: (param) => Place.find({ isActive: true }).sort(param).limit(20).exec(),
     getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).exec(),
     editPlace: async (placeData, user) => {
-        const { lat, lng, img} = placeData
+        const { lat, lng, img } = placeData
         const place = await placeService.getPlaceById(placeData._id)
-        if(!place) throw new Error('Invalid placeId')
-        if(!user._id.equals(place.userId)) throw new Error('This user is not allowed to edit this place')
-        if(typeof img === 'string' && place.img !== placeData.img) throw ApiError.internal('Invalid image URL')
+        if (!place) throw new Error('Invalid placeId')
+        if (!user._id.equals(place.userId)) throw new Error('This user is not allowed to edit this place')
+        if (typeof img === 'string' && place.img !== placeData.img) throw ApiError.internal('Invalid image URL')
         const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
         if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
-        const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
-        fs.unlink(imagePath, err => {
-            if(err) throw new Error(err)
-        })
-        const uniqueFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg'
-        placeData.img = uniqueFilename
-        const uploadPath = process.cwd() + `\\public\\images\\places\\` + uniqueFilename
-        img.mv(uploadPath, err => {
-            if (err) throw new Error(err)
+        if(typeof img === 'object'){
+            const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
+            fs.unlink(imagePath, err => {
+                if (err) throw new Error(err)
+            })
+            const uniqueFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg'
+            placeData.img = uniqueFilename
+            const uploadPath = process.cwd() + `\\public\\images\\places\\` + uniqueFilename
+            img.mv(uploadPath, err => {
+                if (err) throw new Error(err)
+            }
+            )
+
         }
-        )
-        return Place.findByIdAndUpdate(placeData._id, placeData, {new: true}).exec()
+        return Place.findByIdAndUpdate(placeData._id, placeData, { new: true }).exec()
     },
 
     addPlace: async (placeData) => {
