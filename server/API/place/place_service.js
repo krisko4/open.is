@@ -24,7 +24,7 @@ const placeService = {
         if (typeof img === 'string' && place.img !== placeData.img) throw ApiError.internal('Invalid image URL')
         const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
         if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
-        if(typeof img === 'object'){
+        if (typeof img === 'object') {
             const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
             fs.unlink(imagePath, err => {
                 if (err) throw new Error(err)
@@ -74,6 +74,16 @@ const placeService = {
     incrementVisitCount: (id) => Place.findByIdAndUpdate(id, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
     setStatus: (id, status) => Place.findByIdAndUpdate(id, { 'status': status }, { new: true, runValidators: true }).exec(),
     setOpeningHours: (id, hours) => Place.findByIdAndUpdate(id, { 'openingHours': hours, 'isActive': true }, { new: true, runValidators: true }).exec(),
+    deletePlace: async (id) => {
+        const place = await placeService.getPlaceById(id)
+        if(!place) throw new Error('No place with provided id found')
+        const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
+        fs.unlink(imagePath, err => {
+            if (err) throw new Error(err)
+        })
+        await Place.findByIdAndDelete(id).exec()
+
+    },
 
     updateNote: async (note, placeId) => {
         const doc = await Place.findById(placeId, 'averageNote').exec()

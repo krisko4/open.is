@@ -22,7 +22,8 @@ const visitService = {
         return Visit.find({placeId: place._id}).sort({date: 1}).exec()
     },
 
-    deleteVisits: async () => Visit.deleteMany().exec()
+    deleteVisits: () => Visit.deleteMany().exec(),
+    deleteVisitsByPlaceId: (placeId) => Visit.deleteMany({placeId: placeId}).exec(),
 
     
 }

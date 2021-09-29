@@ -42,13 +42,13 @@ const placeController = {
                     } else {
                         places = await placeService.getActivePlacesBy(searchObj)
                     }
-                    return res.status(200).json(places.map(place => placeDto(place, uid)))
+                    return res.status(200).json(places.map(place => placeDto({...place._doc}, uid)))
                 } catch (err) {
                     return next(err)
                 }
             case 0:
                 return placeService.getActivePlaces()
-                    .then(places => res.status(200).json(places.map(place => placeDto(place, uid))))
+                    .then(places => res.status(200).json(places.map(place => placeDto({...place._doc}, uid))))
                     .catch(err => next(err))
 
             default:
@@ -83,7 +83,7 @@ const placeController = {
                 const { lat, lng } = req.query
                 if (!lat || !lng) return next(ApiError.badRequest('Invalid request parameters. Required: lat, lng'))
                 const place = await placeService.getPlaceByLatLng(lat, lng)
-                return res.status(200).json(place)
+                return res.status(200).json(place ? placeDto(place._doc) : null)
             case 1:
                 const param = Object.keys(req.query)[0]
                 let searchObj = {}
@@ -170,7 +170,17 @@ const placeController = {
     },
 
     deletePlace: async (req, res, next) => {
-        const {placeId} = req.params
+        const { placeId } = req.params
+        try {
+            await placeService.deletePlace(placeId)
+            await opinionService.deleteOpinionsByPlaceId(placeId)
+            await visitService.deleteVisitsByPlaceId(placeId)
+            await newsService.deleteNewsByPlaceId(placeId)
+
+            return res.sendStatus(200)
+        }catch(err){
+            return next(err)
+        }
         
     },
 
@@ -199,7 +209,7 @@ const placeController = {
                 instagram: reqBody.instagram
             }
             const place = await placeService.addPlace(placeData)
-            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({...place._doc}, uid) })
+            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
         }
         catch (err) {
             console.log('zlapany blad')

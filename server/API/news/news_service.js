@@ -22,7 +22,8 @@ const newsService = {
 
     getNewsBy: (property) => News.find(property).sort({date: -1}).exec(),
     getNews: () => News.find().exec(),
-    deleteNews: () => News.deleteMany().exec()
+    deleteNews: () => News.deleteMany().exec(),
+    deleteNewsByPlaceId: (placeId) => News.deleteMany({placeId: placeId}).exec()
 }
 
 module.exports = newsService

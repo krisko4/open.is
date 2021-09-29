@@ -28,10 +28,8 @@ const opinionService = {
         return opinion.populate('author').execPopulate()
     },
 
-    deleteOpinions: () => {
-        return Opinion.deleteMany().exec()
-    },
-
+    deleteOpinions: () => Opinion.deleteMany().exec(),
+    deleteOpinionsByPlaceId: (placeId) => Opinion.deleteMany({placeId: placeId}).exec(),
     getOpinionCount: (placeId) => {
         return Opinion.countDocuments({ placeId: placeId }).exec()
     }
