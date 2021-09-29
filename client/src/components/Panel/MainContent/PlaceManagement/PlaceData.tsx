@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Fade, Grid, makeStyles, Typography } from "@material-ui/core";
 import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
 import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     }
 })
 
-export const PlaceData: FC<Props> = ({ index}) => {
+export const PlaceData: FC<Props> = ({ index }) => {
 
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
@@ -292,10 +292,10 @@ export const PlaceData: FC<Props> = ({ index}) => {
     return (
         <>
             {index === placeIndex &&
-                <Grid container style={{ height: '100%', paddingTop:40, paddingLeft: 40, paddingRight: 40}} justify="center">
-                    <Grid container spacing={2} item justify="space-around">
-                        <Grid container justify="space-around" spacing={2}>
-                            <Grid item lg={4}>
+                <Grid container style={{ height: '100%', paddingTop: 40, paddingLeft: 40, paddingRight: 40 }} justify="center">
+                    <Grid container justify="space-around" spacing={2}>
+                        <Grid item lg={4}>
+                            <Fade in={true} timeout={2000}>
                                 <Card className={classes.shadowCard}>
                                     <CardContent>
                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
@@ -306,7 +306,7 @@ export const PlaceData: FC<Props> = ({ index}) => {
                                                     <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
                                                 </Grid>
                                                 <Typography variant="h3">
-                                                    {visits.reduce((a, b) => a + b.visitCount, 0 )}
+                                                    {visits.reduce((a, b) => a + b.visitCount, 0)}
                                                 </Typography>
                                             </Grid>
                                             <Grid item lg={6} container justify="center">
@@ -315,8 +315,10 @@ export const PlaceData: FC<Props> = ({ index}) => {
                                         </Grid>
                                     </CardContent>
                                 </Card>
-                            </Grid>
-                            <Grid item lg={4}>
+                            </Fade>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Fade in={true} timeout={2000}>
                                 <Card className={classes.shadowCard}>
                                     <CardContent>
                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
@@ -337,8 +339,10 @@ export const PlaceData: FC<Props> = ({ index}) => {
                                         </Grid>
                                     </CardContent>
                                 </Card>
-                            </Grid>
-                            <Grid item lg={4}>
+                            </Fade>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Fade in={true} timeout={2000}>
                                 <Card className={classes.shadowCard}>
                                     <CardContent>
                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
@@ -356,98 +360,98 @@ export const PlaceData: FC<Props> = ({ index}) => {
                                         </Grid>
                                     </CardContent>
                                 </Card>
-                            </Grid>
-                            <Grid item lg={12}>
-                                {currentPlace.status === Status.CLOSED && <Alert variant="filled" severity="error">Your place is now closed.</Alert>}
-                                {!currentPlace.openingHours ?
-                                    <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
-                                    :
-                                    <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
-                                }
-                            </Grid>
+                            </Fade>
                         </Grid>
-                        <Grid container style={{ marginTop: 20 }}>
-                            <Grid item container direction="column" lg={5} style={{ paddingRight: 10 }}>
-                                <Grid container spacing={2}>
-                                    <Grid item lg={6}>
-                                        <Card className={classes.shadowCard} style={{ background: '#2196f3' }}>
-                                            <CardContent>
-                                                <Typography variant="subtitle2" style={{ color: 'white' }}>
-                                                    Press the button below to <span>{currentPlace.status === Status.OPEN ? 'close' : 'open'}</span> your business
-                                                </Typography>
-                                                <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
-                                                    {currentPlace.status === Status.OPEN ? <>
-                                                        <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.CLOSED)} style={{ color: 'white', borderColor: 'white' }}>Close</LoadingButton>
-                                                        <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
+                        <Grid item lg={12}>
+                            {currentPlace.status === Status.CLOSED && <Alert variant="filled" severity="error">Your place is now closed.</Alert>}
+                            {!currentPlace.openingHours ?
+                                <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
+                                :
+                                <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
+                            }
+                        </Grid>
+                    </Grid>
+                    <Grid container style={{ marginTop: 20 }}>
+                        <Grid item container direction="column" lg={5} style={{ paddingRight: 10 }}>
+                            <Grid container spacing={2}>
+                                <Grid item lg={6}>
+                                    <Card className={classes.shadowCard} style={{ background: '#2196f3' }}>
+                                        <CardContent>
+                                            <Typography variant="subtitle2" style={{ color: 'white' }}>
+                                                Press the button below to <span>{currentPlace.status === Status.OPEN ? 'close' : 'open'}</span> your business
+                                            </Typography>
+                                            <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
+                                                {currentPlace.status === Status.OPEN ? <>
+                                                    <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.CLOSED)} style={{ color: 'white', borderColor: 'white' }}>Close</LoadingButton>
+                                                    <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
+                                                </>
+                                                    : <>
+                                                        <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.OPEN)} style={{ color: 'white', borderColor: 'white' }}>Open</LoadingButton>
+                                                        <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
                                                     </>
-                                                        : <>
-                                                            <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.OPEN)} style={{ color: 'white', borderColor: 'white' }}>Open</LoadingButton>
-                                                            <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
-                                                        </>
-                                                    }
-                                                </Grid>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item lg={6}>
-                                        <Card className={classes.shadowCard} style={{ background: '#2196f3' }}>
-                                            <CardContent>
-                                                <Typography variant="subtitle2" style={{ color: 'white' }}>
-                                                    Press the button below to manage your business
-                                                </Typography>
-                                                <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
-                                                    <Button onClick={() => setSettingsOpen(true)} variant="outlined" style={{ color: 'white', borderColor: 'white' }}>Settings</Button>
-                                                    <SettingsIcon style={{ color: 'white', width: 60, height: 60 }} />
-                                                </Grid>
-                                                <PlaceSettings open={settingsOpen} setOpen={setSettingsOpen} />
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item container>
-                                        <Card className={classes.shadowCard} elevation={3}>
-                                            <CardContent>
-                                                <Typography variant="h5">
-                                                    Rating
-                                                </Typography>
-                                                <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
-                                                    The following chart represents the rating of your place
-                                                </Typography>
-                                                <Grid container justify="center" alignItems="center">
-                                                    <Rating
-                                                        size="large"
-                                                        name="simple-controlled"
-                                                        readOnly
-                                                        value={currentPlace.averageNote.average}
-                                                        style={{ marginTop: 10 }}
-                                                    />
-                                                    <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
-                                                </Grid>
+                                                }
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item lg={6}>
+                                    <Card className={classes.shadowCard} style={{ background: '#2196f3' }}>
+                                        <CardContent>
+                                            <Typography variant="subtitle2" style={{ color: 'white' }}>
+                                                Press the button below to manage your business
+                                            </Typography>
+                                            <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
+                                                <Button onClick={() => setSettingsOpen(true)} variant="outlined" style={{ color: 'white', borderColor: 'white' }}>Settings</Button>
+                                                <SettingsIcon style={{ color: 'white', width: 60, height: 60 }} />
+                                            </Grid>
+                                            <PlaceSettings open={settingsOpen} setOpen={setSettingsOpen} />
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item container>
+                                    <Card className={classes.shadowCard} elevation={3}>
+                                        <CardContent>
+                                            <Typography variant="h5">
+                                                Rating
+                                            </Typography>
+                                            <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
+                                                The following chart represents the rating of your place
+                                            </Typography>
+                                            <Grid container justify="center" alignItems="center">
+                                                <Rating
+                                                    size="large"
+                                                    name="simple-controlled"
+                                                    readOnly
+                                                    value={currentPlace.averageNote.average}
+                                                    style={{ marginTop: 10 }}
+                                                />
+                                                <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
+                                            </Grid>
 
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item container>
-                                        <Card className={classes.shadowCard} elevation={3}>
-                                            <CardContent>
-                                                <Typography variant="h5">
-                                                    Activity
-                                                </Typography>
-                                                <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
-                                                    The following chart represents historical data of user activity in your place
-                                                </Typography>
-                                                <StatisticChart type="area" height={500} options={options} setOptions={setOptions} series={series} />
-                                            </CardContent>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item container>
+                                    <Card className={classes.shadowCard} elevation={3}>
+                                        <CardContent>
+                                            <Typography variant="h5">
+                                                Activity
+                                            </Typography>
+                                            <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
+                                                The following chart represents historical data of user activity in your place
+                                            </Typography>
+                                            <StatisticChart type="area" height={500} options={options} setOptions={setOptions} series={series} />
+                                        </CardContent>
 
-                                        </Card>
-                                    </Grid>
+                                    </Card>
                                 </Grid>
                             </Grid>
-                            <Grid style={{marginBottom: 20}} item lg={7}>
-                                <PlaceDetailsCard />
-                            </Grid>
                         </Grid>
-
+                        <Grid style={{ marginBottom: 20 }} item lg={7}>
+                            <PlaceDetailsCard />
+                        </Grid>
                     </Grid>
+
                 </Grid>
             }
         </>

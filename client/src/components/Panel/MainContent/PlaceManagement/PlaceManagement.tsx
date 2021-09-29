@@ -13,30 +13,6 @@ export const PlaceManagement: FC = () => {
         currentPlace.news && setNews(currentPlace.news)
         currentPlace.opinions && setOpinions(currentPlace.opinions)
         currentPlace.visits && setVisits(currentPlace.visits)
-        // console.log(currentPlace._id)
-        // myAxios.get('/news', {
-        //     params: {
-        //         placeId: currentPlace._id
-        //     }
-        // }).then(res => {
-        //     console.log(res)
-        //     setNews(res.data)
-        // }).catch(err => console.log(err))
-        // myAxios.get('/opinions', {
-        //     params: {
-        //         placeId: currentPlace._id
-        //     }
-        // }).then(res => {
-        //     setOpinions(res.data)
-        //     setOpinionCount(res.data.length)
-        // }).catch(err => console.log(err))
-        // myAxios.get('/visits', {
-        //     params: {
-        //         placeId : currentPlace._id
-        //     },
-        //     withCredentials: true
-        // }).then(res => setVisits(res.data))
-        // .catch(err => console.log(err))
     }, [currentPlace])
 
 

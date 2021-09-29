@@ -20,7 +20,7 @@ const PlacesBox: FC = () => {
 
 
 
-    const { setMapCenter, setMapZoom, setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
+    const { setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
     const [tabIndex, setTabIndex] = useState(0)
     const isFirstRender = useRef(true)
 

@@ -21,7 +21,7 @@ const Content = () => {
         window.scrollY > 700 && setVisible1(true)
         window.scrollY > 500 && setVisible2(true)
         window.scrollY > 1500 && setVisible3(true)
-        window.scrollY > 2400 && setVisible6(true)
+        window.scrollY > 2200 && setVisible6(true)
 
     }
 

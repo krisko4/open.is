@@ -166,7 +166,7 @@ interface OpinionProps {
 
 export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlaceCardClicked }) => {
 
-    const { setPopupOpen, setMapZoom, setPlaceCoords } = useMapContext()
+    const { setPopupOpen, setPlaceCoords } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
 
 

@@ -15,7 +15,7 @@ const Section1: FC<Props> = ({ isVisible1 }) => {
             <Grid container style={{marginTop: 80, marginBottom: 80}} justify="center">
                 <Grid item lg={6} style={{ textAlign: 'center' }}>
                     <Fade in={isVisible1} timeout={1000}>
-                            <Typography variant="h5" style={{ color: 'white' }}>Find open places in your neighbourhoodl using our software</Typography>
+                            <Typography variant="h5" style={{ color: 'white' }}>Find open places in your neighbourhood using our software</Typography>
                     </Fade>
                     <Grow in={isVisible1} timeout={1000}>
                         <Typography variant="subtitle1" style={{ color: 'lightgrey', marginTop: 20 }}>

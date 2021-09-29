@@ -31,54 +31,14 @@ export const findByAddress = async (inputValue) => {
 }
 
 
-// export const getPlaces = async (inputValue, chosenCriterias, setSelectedPlaces, setChosenCriterias, isPlaceFoundByName) => {
-//     try{
-//       //  setChosenCriterias([])
-//       //  const places = await getPlacesByName(inputValue)
-//         const names =  await getPlaceNames(inputValue)
-//         names.length === 0 && findByAddress(inputValue, setSelectedPlaces)
-//         // if(!places){
-//         //     findByAddress(inputValue, setSelectedPlaces)
-//         //     isPlaceFoundByName.current = false
-//         //     return
-//         // }
-//        //  isPlaceFoundByName.current = true
-//     //    const selected = []
-
-//         // places.forEach((element) => {
-//         //     const isAlreadySelected = chosenCriterias.some(place => {
-//         //         return place._id === element._id
-//         //     })
-//         //     if (!isAlreadySelected) {
-//         //         selected.push(element)
-//         //     }
-//         // })
-//         setSelectedPlaces(names)
-//     } catch(err) {
-//         console.error(err)
-//     }
-
-// }
-
 export const getPlacesByChosenCriterias = async (criterias) => {
-    let names = []
-    let addresses = []
+    const names = []
+    const addresses = []
     criterias.forEach(criterium => criterium.foundBy === 'name' ? names.push(criterium.name) : addresses.push(criterium.name))
-
-    let params = {}
+    const params = {}
     if (addresses.length > 0) params['address'] = addresses.join('|')
     if (names.length > 0) params['name'] = names.join('|')
-    console.log(params)
     return getPlacesWithParams('/places/active', params)
-    // try {
-    //     const response = await myAxios.get('/places/active', {
-    //         params: params
-    //     })
-    //     return response.data
-
-    // } catch (err) {
-    //     console.log(err)
-    // }
 }
 
 export const getPlacesByAddress = (address) => {
@@ -90,20 +50,20 @@ export const getPlacesByAddress = (address) => {
     })
 }
 
+export const getPlaceByLatLng = (lat, lng) => {
+    return myAxios.get('/places', {
+        withCredentials: true,
+        params: {
+            lat: lat,
+            lng: lng
+        }
+    })
+}
+
+
 export const incrementVisitCount = (placeId) => {
     return myAxios.patch(`/places/${placeId}/visit-count`)
 }
-
-// export const getPopularPlaces = async () => {
-//     try {
-//         const response = await myAxios.get('/places/active/popular', {
-//             withCredentials: true
-//         })
-//         return response.data
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
 
 export const getPlaces = async (url) => {
     try {
@@ -129,50 +89,3 @@ export const getPlacesWithParams = async (url, params) => {
     }
 
 }
-// export const getRecentlyAddedPlaces = async () => {
-//     try {
-//         const response = await myAxios.get('/places/active/new', {
-//             withCredentials: true
-//         })
-//         return response.data
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
-
-// export const getTopRatedPlaces = async () => {
-//     try {
-//         const response = await myAxios.get('/places/active/top', {
-//             withCredentials: true
-//         })
-//         return response.data
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }
-// export const getPlacesByName = async (name) => {
-//     try {
-//         const response = await myAxios.get('/places/active', {
-//             withCredentials: true,
-//             params: {
-//                 name: name
-//             }
-//         })
-//         return response.data
-//     } catch (err) {
-//         console.log(err)
-//     }
-//}
-
-// export const getPlaceNames = async (name) => {
-//     try {
-//         const response = await myAxios.get('/places/name', {
-//             params: {
-//                 name: name
-//             }
-//         })
-//         return response.data
-//     } catch (err) {
-//         console.log(err)
-//     }
-// }

@@ -15,7 +15,8 @@ const places: string[] = [
     'komputery, RTV, serwis',
     'usługi transportowe',
     'giełda kryptowalut',
-    'usługi IT'
+    'usługi IT',
+    'dom rozpusty'
 ]
 // const PlaceDetailsSchema = Yup.object().shape({
 //     type: Yup.string().required(),

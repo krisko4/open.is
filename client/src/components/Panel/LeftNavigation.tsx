@@ -84,6 +84,13 @@ export const LeftNavigation: FC = () => {
                         </ListItemIcon>
                         <ListItemText secondary="My account" />
                     </ListItem>
+                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)}>
+                        <ListItemIcon>
+                            <AddIcon color="primary" />
+                        </ListItemIcon>
+                        <ListItemText secondary="New place" />
+                    </ListItem>
+
                     <ListSubheader disableSticky>
                         My places
                     </ListSubheader>
@@ -98,12 +105,6 @@ export const LeftNavigation: FC = () => {
                             />
                         </ListItem>
                     )}
-                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)}>
-                        <ListItemIcon>
-                            <AddIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText secondary="New place" />
-                    </ListItem>
                 </List>
             </Scrollbars>
         </Grid >

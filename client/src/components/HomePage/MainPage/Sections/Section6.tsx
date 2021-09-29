@@ -15,7 +15,7 @@ const Section6: FC<Props> = ({ isVisible6 }) => {
     return (
 
 
-        <Grid justify="center" container style={{ marginBottom: 100 }}>
+        <Grid justify="center" container style={{background: 'linear-gradient(0deg, rgba(248,248,248,1) 4%, rgba(0,0,0,1) 20%)' }}>
             <Collapse in={isVisible6} timeout={2000}>
                 <Grid container alignItems="center" style={{ marginTop: 40 }} direction="column">
                     <Typography variant="h5" style={{ color: 'white' }}>Watch your business grow using our dedicated panel</Typography>

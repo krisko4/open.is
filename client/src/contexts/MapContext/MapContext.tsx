@@ -16,25 +16,16 @@ const MapContextProvider : FC<ContextProps> = ({ children }) => {
 }
 
 const useProviderSettings = () => {
-    const [mapCenter, setMapCenter] = useState(
-        {
-            lat: 53.13333,
-            lng: 23.16433
-        }
-       )
+   
     const [placeCoords, setPlaceCoords] = useState({
         mapZoom: 10,
         lat: 53.13333,
         lng: 23.16433
     })
-    const [mapZoom, setMapZoom] = useState(10)
+   
     const [popupOpen, setPopupOpen] = useState(false)
     const [popupIndex, setPopupIndex] = useState(0)
     return {
-        mapCenter,
-        setMapCenter,
-        mapZoom,
-        setMapZoom,
         popupOpen,
         setPopupOpen,
         popupIndex,

@@ -2,19 +2,22 @@ import { Button, CircularProgress, Fade, Grid, TextField, Typography } from "@ma
 import { Autocomplete } from "@material-ui/lab";
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
+import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
 import { useSelectedPlacesContext } from "../../../../../../contexts/SelectedPlacesContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-import { findByAddress } from "../../../../../../requests/PlaceRequests";
+import { findByAddress, getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
 import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
+import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
 
 export const AddressDetails: FC = () => {
 
     const [open, setOpen] = useState(false)
-    const { setMapZoom, setMapCenter } = useMapContext()
+    const { setPlaceCoords } = useMapContext()
+    const {enqueueSnackbar} = useSnackbar()
 
     const [tileLayer, setTileLayer] = useState({
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -27,22 +30,37 @@ export const AddressDetails: FC = () => {
     const { setActiveStep } = useStepContext()
     const isFirstFind = useRef(true)
     const [loading, setLoading] = useState(false)
+    const [submitLoading, setSubmitLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
-    const submitAddress = () => {
-        console.log(selectedAddress.postcode)
-        if (selectedAddress.postcode === '') {
-            setErrorMessage('This is not a valid address. Please provide a street number.')
-            return
+    const submitAddress = async () => {
+        setSubmitLoading(true)
+        try {
+            const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
+            console.log(res.data)
+            if(res.data){
+                setErrorMessage('This location is already occupied by another place. If your place is located on this address, try to change the position of a marker')
+                setSubmitLoading(false)
+                return
+            } 
+            console.log(selectedAddress.postcode)
+            if (selectedAddress.postcode === '') {
+                setErrorMessage('This is not a valid address. Please provide a street number.')
+                return
+            }
+            const newCurrentPlace = { ...currentPlace }
+            newCurrentPlace.address = selectedAddress.label
+            const lat: number = selectedAddress.lat
+            const lng: number = selectedAddress.lng
+            newCurrentPlace.lat = lat
+            newCurrentPlace.lng = lng
+            setCurrentPlace(newCurrentPlace)
+            setActiveStep(currentStep => currentStep + 1)
+        }catch(err){
+            enqueueSnackbar("Oops, something went wrong", {
+                variant: 'error'
+            })
         }
-        const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.address = selectedAddress.label
-        const lat: number = selectedAddress.lat
-        const lng: number = selectedAddress.lng
-        newCurrentPlace.lat = lat
-        newCurrentPlace.lng = lng
-        setCurrentPlace(newCurrentPlace)
-        setActiveStep(currentStep => currentStep + 1)
     }
 
     const selectPlace = async (place: any) => {
@@ -54,8 +72,13 @@ export const AddressDetails: FC = () => {
                 lat: place.y,
                 postcode: place.raw.address.postcode
             })
-            setMapZoom(20)
-            setMapCenter({ lat: place.y, lng: place.x })
+            // setMapZoom(20)
+            setPlaceCoords({
+                lat: place.y,
+                lng: place.x,
+                mapZoom: 20
+            })
+            //  setMapCenter({ lat: place.y, lng: place.x })
 
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.lat = place.y
@@ -67,15 +90,18 @@ export const AddressDetails: FC = () => {
 
 
     useEffect(() => {
-        if (currentPlace.address !== ''){
-            setMapZoom(20)
+        if (currentPlace.address !== '') {
             setSelectedAddress({
                 label: currentPlace.address,
                 lng: currentPlace.lng,
                 lat: currentPlace.lat,
                 postcode: 'default'
             })
-            setMapCenter({ lat: currentPlace.lat, lng: currentPlace.lng })
+            setPlaceCoords({
+                lat: currentPlace.lat,
+                lng: currentPlace.lng,
+                mapZoom: 20
+            })
             setChosenCriterias([{ ...currentPlace }])
         }
     }, [])
@@ -162,7 +188,7 @@ export const AddressDetails: FC = () => {
             <Grid style={{ height: 400, marginTop: 20 }} item lg={12}>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <Button disabled={!selectedAddress.label || loading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</Button>
+            <LoadingButton loading={submitLoading} disabled={!selectedAddress.label || loading || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</LoadingButton>
         </Grid>
     )
 }

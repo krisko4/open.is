@@ -21,13 +21,13 @@ import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesCon
 export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const { popupOpen, popupIndex, setMapCenter } = useMapContext()
+    const { popupOpen, popupIndex} = useMapContext()
     const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useSelectedPlacesContext()
     const firstRender = useRef(true)
 
     const myIcon = L.icon({
        // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
-        iconUrl: `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}`,
+        iconUrl: criterium.img ? `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}` : `https://image.flaticon.com/icons/png/512/149/149059.png`,
         iconSize: [50, 50],
         
         // iconAnchor: [10, 0],
@@ -60,7 +60,6 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
                     const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
                     const criterias = [criterium]
                     setChosenCriterias(criterias)
-                    setMapCenter({ lat, lng })
                     const address = res.data
                     console.log(address)
                     setSelectedAddress({
@@ -87,7 +86,7 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
                         style={{ marginTop: 20 }}
                         name="simple-controlled"
                         readOnly
-                        value={criterium.averageNote.average}
+                        value={criterium.averageNote.average || 0}
                     />
                 </Grid>
             </Popup>

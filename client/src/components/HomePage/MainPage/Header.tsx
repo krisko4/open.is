@@ -56,7 +56,7 @@ const useStyles = makeStyles(() =>
             }
         },
         solidAppBar: {
-            backgroundColor: 'white',
+            backgroundColor: 'transparent',
             transition: 'all .5s ease 0s',
             '& .aboutButton': {
                 color: '#2196f3',

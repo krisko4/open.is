@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useSnackbar } from "notistack";
 import React, { FC, MutableRefObject, useRef, useState } from "react";
-import { usePanelContext } from "../../../../contexts/PanelContext";
+import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContext";
 import { StepContextProvider } from "../../../../contexts/StepContext";
 import { EditPlace } from "./EditPlace";
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -23,7 +23,7 @@ interface Props {
 
 export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
-    const { currentPlace, setCurrentPlace } = usePanelContext()
+    const { currentPlace, setCurrentPlace, places, setPlaces, setSelectedOption } = usePanelContext()
     const [initialPlaceData, setInitialPlaceData] = useState(currentPlace)
     const { enqueueSnackbar } = useSnackbar()
     const [isDeleteOpen, setDeleteOpen] = useState(false)
@@ -46,6 +46,11 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
             enqueueSnackbar('You have successfully deleted your place', {
                 variant: 'success'
             })            
+            setOpen(false)
+            const croppedPlaces = places.filter(place => place._id !== currentPlace._id)
+            croppedPlaces.length === 0 ? setSelectedOption(ChosenOptions.NEW_PLACE) : setSelectedOption(ChosenOptions.DASHBOARD)
+            setPlaces(croppedPlaces)
+
         }catch(err){
             enqueueSnackbar('Oops, something went wrong', {
                 variant: 'error'

@@ -6,7 +6,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import React, { FC } from 'react';
 import { usePageContext } from "../../contexts/PageContext";
 import HomeIcon from "@material-ui/icons/Home"
+import SettingsIcon from "@material-ui/icons/Settings"
+import DashboardIcon from "@material-ui/icons/Dashboard"
+import AddIcon from "@material-ui/icons/Add"
 import { AccountCircle } from '@material-ui/icons';
+import { ChosenOptions, usePanelContext } from '../../contexts/PanelContext';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -30,18 +34,23 @@ const Header: FC = () => {
 
     const classes = useStyles();
     const { setPanelOpen } = usePageContext()
+    const { places, setSelectedOption, setPlaceIndex, setCurrentPlace } = usePanelContext()
 
 
     return (
         
-         <AppBar position="static" elevation={0} style={{backgroundColor: 'transparent', paddingTop: 20, paddingBottom: 20}}>
+         <AppBar position="static" elevation={0} style={{backgroundColor: 'transparent', paddingTop: 20, paddingRight: 40, paddingBottom: 20}}>
             <Toolbar>
-                <Grid container alignItems="center">
-                    <Grid item className={classes.homeIcon}>
+                <Grid item container justify="flex-end"  alignItems="center">
                         <IconButton onClick={() => setPanelOpen(false)} color="inherit">
                             <HomeIcon />
                         </IconButton>
-                    </Grid>
+                        <IconButton onClick={() => places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD)} color="inherit">
+                            <DashboardIcon/>
+                        </IconButton>
+                        <IconButton onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)} color="inherit">
+                            <AddIcon />
+                        </IconButton>
                 </Grid>
             </Toolbar>
         </AppBar> 
