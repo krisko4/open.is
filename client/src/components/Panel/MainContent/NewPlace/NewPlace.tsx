@@ -121,7 +121,8 @@ export const NewPlace: FC = () => {
 
             <Grid item lg={5}>
                 <Slide in={true}>
-                    <Card style={{ boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15 }}>
+                    <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
+        
                         <CardContent>
                             <Typography variant="h5" >
                                 Business management

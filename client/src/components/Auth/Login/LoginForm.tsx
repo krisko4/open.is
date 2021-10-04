@@ -94,7 +94,7 @@ export const LoginForm = () => {
                                         <LoadingButton
                                             loading={loading}
                                             fullWidth={true}
-                                            style={{minHeight: 50}}
+                                            
                                             type="submit"
                                             color="secondary"
                                             variant="contained"

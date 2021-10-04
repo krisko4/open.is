@@ -16,8 +16,9 @@ export const GoogleLoginButton = () => {
     return (
         <GoogleLogin
             clientId="882076934469-3dhijrs8140lsll6eu7lh0tdhb9p1qju.apps.googleusercontent.com"
-            buttonText="Sign in with Google"
+            uxMode="redirect"
             onSuccess={signIn}
+            redirectUri={`http://localhost:4000/auth/google/callback`}
             onFailure={setFailureResponse}
             cookiePolicy={'single_host_origin'}
             render={renderProps => (

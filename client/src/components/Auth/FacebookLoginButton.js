@@ -1,6 +1,7 @@
 import Button from "@material-ui/core/Button";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import FacebookIcon from "@material-ui/icons/Facebook";
+import { FC } from "react";
 
 
 
@@ -15,7 +16,7 @@ export const FacebookLoginButton = () => {
             appId="215596057119230"
             autoLoad
             callback={signIn}
-            render={renderProps => (
+            render={(renderProps) => (
                 <Button
                     startIcon={<FacebookIcon/>}
                     fullWidth={true}

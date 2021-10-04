@@ -1,28 +1,10 @@
-import { Button, Grid, TextField, Typography } from "@material-ui/core"
+import { Grid, TextField, Typography } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
-import { FastField, Form, Formik } from "formik"
 import { FC, useEffect, useRef, useState } from "react"
-import * as Yup from "yup"
+import myAxios from "../../../../../../axios/axios"
 import { usePanelContext } from "../../../../../../contexts/PanelContext"
 import { useStepContext } from "../../../../../../contexts/StepContext"
 import { LoadingButton } from "../../../../../reusable/LoadingButton"
-
-
-const places: string[] = [
-    'restaurant',
-    'grocery store',
-    'biuro prawnicze',
-    'komputery, RTV, serwis',
-    'usługi transportowe',
-    'giełda kryptowalut',
-    'usługi IT',
-    'dom rozpusty'
-]
-// const PlaceDetailsSchema = Yup.object().shape({
-//     type: Yup.string().required(),
-//     subtitle: Yup.string().required().max(50),
-//     description: Yup.string().required().max(250)
-// })
 
 export const PlaceDetailsForm: FC = () => {
 
@@ -34,8 +16,15 @@ export const PlaceDetailsForm: FC = () => {
     const [subtitle, setSubtitle] = useState(currentPlace.subtitle)
     const [description, setDescription] = useState(currentPlace.description)
     const [isDirty, setDirty] = useState(true)
+    const [businessTypes, setBusinessTypes] = useState<any>([])
     const isFirstDescriptionRender = useRef(true)
     const isFirstSubtitleRender = useRef(true)
+
+    useEffect(() => {
+        myAxios.get('/business_types')
+            .then(res => setBusinessTypes(res.data))
+            .catch(err => console.log(err))
+    }, [])
 
     useEffect(() => {
         currentPlace.type && subtitle && description && subtitle.length < 101 && description.length < 401 ? setDirty(false) : setDirty(true)
@@ -49,7 +38,7 @@ export const PlaceDetailsForm: FC = () => {
     }
 
     useEffect(() => {
-        if(isFirstDescriptionRender.current){
+        if (isFirstDescriptionRender.current) {
             isFirstDescriptionRender.current = false
             return
         }
@@ -64,7 +53,7 @@ export const PlaceDetailsForm: FC = () => {
     }, [description])
 
     useEffect(() => {
-        if(isFirstSubtitleRender.current){
+        if (isFirstSubtitleRender.current) {
             isFirstSubtitleRender.current = false
             return
         }
@@ -89,7 +78,7 @@ export const PlaceDetailsForm: FC = () => {
             </Grid>
             <Grid item lg={5}>
                 <Autocomplete
-                    options={places}
+                    options={businessTypes}
                     fullWidth={true}
                     value={currentPlace.type}
                     onChange={(e, value) => submitAutocomplete(value)}
@@ -151,6 +140,6 @@ export const PlaceDetailsForm: FC = () => {
                 </LoadingButton>
             </Grid>
         </Grid>
-      
+
     )
 }

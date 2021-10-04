@@ -15,7 +15,7 @@ import { login } from "./store/actions/login";
 import { logout } from "./store/actions/logout";
 import { setEmail } from "./store/actions/setEmail";
 import DateFnsUtils from '@date-io/date-fns';
-
+import {Confirmation} from './components/Auth/Confirmation'
 
 
 
@@ -51,6 +51,7 @@ function App() {
             <Route path="/about" component={About}/>
             <Route path="/contact" component={Contact}/>
             <Route path="/search" component={Browser}/>
+            <Route path="/confirmation/:token" component={Confirmation} />
         </div>
             </Router>
             </MuiPickersUtilsProvider>

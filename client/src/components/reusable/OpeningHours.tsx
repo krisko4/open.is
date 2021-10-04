@@ -184,8 +184,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
 
     return (
-        <Grid container justify="center">
-            <Grid container justify="center" style={{height: 500}}>
+        <Grid container direction="column" style={{height: '100%'}} alignItems="center">
                 {currentPlace.isUserOwner && isUserLoggedIn && openingHours &&
                     <Grid container justify="flex-end" >
                         <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
@@ -195,7 +194,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
                 }
                 {
                     openingHours ?
-                        <Grid item container alignItems="center" style={{ marginBottom: 10}} lg={5} md={8}>
+                        <Grid item container alignItems="center" lg={5} md={8}>
                             <Card className={classes.container} style={{flexGrow: 1}} elevation={10}>
                                 <CardContent>
                                     <Typography variant="h5" className={classes.title}>Opening hours</Typography>
@@ -229,8 +228,8 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
                                 </Grid>
 
                                 :
-                                <Grid item lg={5} md={8} container alignItems="center">
-                                    <Grid item>
+                                <Grid style={{height: '100%'}} container justify="center" alignItems="center">
+                                    <Grid item lg={5}>
                                         <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
                                             <CardContent>
                                                 <Typography variant="h5" className={classes.title}>Opening hours</Typography>
@@ -262,7 +261,6 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
                 }
 
-            </Grid >
             {isUserLoggedIn && currentPlace.isUserOwner &&
                 <Dialog
                     open={dialogOpen}

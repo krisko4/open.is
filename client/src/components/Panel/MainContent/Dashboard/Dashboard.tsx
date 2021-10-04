@@ -14,7 +14,8 @@ import { StatisticChart } from "./StatisticChart";
 
 const useStyles = makeStyles({
     shadowCard: {
-        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
+        // boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
+        boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px',
         //    boxShadow:  'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px',
         borderRadius: 15
     }
