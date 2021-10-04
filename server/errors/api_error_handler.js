@@ -8,7 +8,6 @@ const apiErrorHandler = (err, req, res, next) => {
         switch (err.code) {
             case 403:
                 console.log(err.message)
-                console.log('siema')
                 return res.status(err.code).json('Forbidden')
             default:
                 return res.status(err.code).json(err.message)

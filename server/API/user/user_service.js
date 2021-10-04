@@ -16,9 +16,9 @@ const userService = {
 
     validateLoggedUser: async(userData) => {
         const duplicateUser = await User.findOne({email: userData['email']}).exec()
-        if(!duplicateUser) throw INVALID_CREDENTIALS_MSG
+        if(!duplicateUser) throw new Error(INVALID_CREDENTIALS_MSG)
         const isPasswordValid = bcrypt.compareSync(userData.password, duplicateUser.password)
-        if(!isPasswordValid) throw INVALID_CREDENTIALS_MSG
+        if(!isPasswordValid) throw new Error(INVALID_CREDENTIALS_MSG)
         return duplicateUser
     },
 
@@ -35,7 +35,7 @@ const userService = {
     },
     activateUser: async (userId) => {
         const user = await User.findById(userId).exec()
-        if(!user) throw `Cannot activate user. User with id ${user._id} not found.`
+        if(!user) throw new Error(`Cannot activate user. User with id ${user._id} not found.`)
         user.isActive = true
         return user.save()
     },

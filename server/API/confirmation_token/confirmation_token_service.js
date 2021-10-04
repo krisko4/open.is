@@ -3,6 +3,7 @@ const confirmationToken = require('./model/confirmation_token')
 const mongoose = require('mongoose')
 const {addMinutes} = require('date-fns')
 const ConfirmationToken = require('./model/confirmation_token')
+const ApiError = require('../../errors/ApiError')
 
 
 const confirmationTokenService = {
@@ -23,13 +24,9 @@ const confirmationTokenService = {
     
     confirmToken: async (tokenValue) => {
         const token = await ConfirmationToken.findOne({value: tokenValue}).exec()
-        if(!token){
-            throw 'Provided token is invalid.'
-        }
+        if(!token) throw ApiError.internal('Provided token is invalid.')
         const hasTokenExpired = new Date() > token.expiresAt
-        if(hasTokenExpired){
-            throw 'Provided token has expired.'
-        }
+        if(hasTokenExpired) throw ApiError.internal('Provided token has expired.')
         return token.userId
     },
     getTokens: () => {
