@@ -15,10 +15,18 @@ export const Confirmation: FC = () => {
 
     useEffect(() => {
         myAxios.get(`/confirmation/${token}`)
-            .then(() => history.push('/'))
+            .then(() => {
+                enqueueSnackbar(`Your account has been activated. You can sign in now.`, {
+                    variant: 'info'
+                })
+                history.push('/')
+            })
             .catch(err => {
                 if (err.response.data === `Provided token has expired.`) {
-                    console.log('xd')
+                    enqueueSnackbar(`Your activation token has expired. Please try to sign in again.`, {
+                        variant: 'warning'
+                    })
+                    history.push('/')
                     return
                 }
                 enqueueSnackbar(`Oops, something went wrong`, {

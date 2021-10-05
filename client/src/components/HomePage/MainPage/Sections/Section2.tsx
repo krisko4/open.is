@@ -41,7 +41,7 @@ const Section2: FC = () => {
 
                     bgImage={`${process.env.REACT_APP_BASE_URL}/images/img.jpg`}
                   
-                     strength={-400}
+                     strength={-300}
                    // strength={-400}
                     renderLayer={() => (
                         <div

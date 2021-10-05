@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom';
 import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { usePageContext } from "../../../contexts/PageContext";
-import { login } from "../../../store/actions/login";
 import { logout } from "../../../store/actions/logout";
 import { setEmail } from "../../../store/actions/setEmail";
 import { useAuthSelector } from "../../../store/selectors/AuthSelector";

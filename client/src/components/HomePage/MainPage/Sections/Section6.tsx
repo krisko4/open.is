@@ -5,11 +5,12 @@ import Typography from "@material-ui/core/Typography";
 import React, { FC } from "react";
 
 interface Props {
-    isVisible6: boolean
+    isVisible6: boolean,
+    isVisible7: boolean
 }
 
 
-const Section6: FC<Props> = ({ isVisible6 }) => {
+const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
 
 
     return (
@@ -36,8 +37,8 @@ const Section6: FC<Props> = ({ isVisible6 }) => {
                         style={{ height: 600, marginTop: 100, transform: 'translate(27%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
                     />
                 </Fade>
-                <Fade in={isVisible6}
-                    {...(isVisible6 ? { timeout: 4000 } : {})}>
+                <Fade in={isVisible7} timeout={2000} >
+                     {/* {...(isVisible6 ? { timeout: 4000 } : {})}> */}
                     <CardMedia
                         image={`https://cdn5.vectorstock.com/i/1000x1000/17/49/dashboard-ui-futuristic-data-panel-with-user-vector-29231749.jpg`}
                         style={{ height: 600, marginTop: 100, transform: 'translate(-27%, -15%) rotate(40deg) skew(10deg,-10deg)' }}

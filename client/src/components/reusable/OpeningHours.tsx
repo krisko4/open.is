@@ -184,82 +184,82 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
 
     return (
-        <Grid container direction="column" style={{height: '100%'}} alignItems="center">
-                {currentPlace.isUserOwner && isUserLoggedIn && openingHours &&
-                    <Grid container justify="flex-end" >
-                        <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
-                            <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
-                        </Grid>
+        <Grid container direction="column" style={{ height: '100%' }} justify="center" alignItems="center">
+            {currentPlace.isUserOwner && isUserLoggedIn && openingHours &&
+                <Grid container justify="flex-end" >
+                    <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
+                        <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                     </Grid>
-                }
-                {
-                    openingHours ?
-                        <Grid item container alignItems="center" lg={5} md={8}>
-                            <Card className={classes.container} style={{flexGrow: 1}} elevation={10}>
-                                <CardContent>
-                                    <Typography variant="h5" className={classes.title}>Opening hours</Typography>
-                                    <Divider className={classes.divider} />
-                                    <Grid container justify="center">
-                                        <Grid item className={classes.days} lg={6}>
-                                            {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
-                                        </Grid>
-                                        <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
-                                            {Object.keys(openingHours).map((key, index) => <div key={index}>
-                                                {!openingHours[key].isOpen ?
-                                                    <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>
-                                                    :
-                                                    <Typography variant="h6">{format(new Date(openingHours[key].startHour), 'HH:mm')} - {format(new Date(openingHours[key].endHour), 'HH:mm')}</Typography>
-
-                                                }
-                                            </div>
-                                            )}
-                                        </Grid>
+                </Grid>
+            }
+            {
+                openingHours ?
+                    <Grid item container alignItems="center" lg={5} md={8}>
+                        <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
+                            <CardContent>
+                                <Typography variant="h5" className={classes.title}>Opening hours</Typography>
+                                <Divider className={classes.divider} />
+                                <Grid container justify="center">
+                                    <Grid item className={classes.days} lg={6}>
+                                        {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
                                     </Grid>
-                                </CardContent>
-                            </Card>
-                        </Grid>
+                                    <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
+                                        {Object.keys(openingHours).map((key, index) => <div key={index}>
+                                            {!openingHours[key].isOpen ?
+                                                <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>
+                                                :
+                                                <Typography variant="h6">{format(new Date(openingHours[key].startHour), 'HH:mm')} - {format(new Date(openingHours[key].endHour), 'HH:mm')}</Typography>
 
-                        : <>
-                            {currentPlace.isUserOwner ?
-                                <Grid justify="center" direction="column" alignItems="center" container>
-                                    <Typography variant="h6">This place has not set opening hours yet.</Typography>
-                                    <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
-                                    <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
+                                            }
+                                        </div>
+                                        )}
+                                    </Grid>
                                 </Grid>
+                            </CardContent>
+                        </Card>
+                    </Grid>
 
-                                :
-                                <Grid style={{height: '100%'}} container justify="center" alignItems="center">
-                                    <Grid item lg={5}>
-                                        <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
-                                            <CardContent>
-                                                <Typography variant="h5" className={classes.title}>Opening hours</Typography>
-                                                <Divider className={classes.divider} />
-                                                <Grid container justify="center">
-                                                    <Grid item className={classes.days} lg={6}>
-                                                        {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
-                                                    </Grid>
-                                                    <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
-                                                        {hours.map((hour, index) => <div key={index}>
-                                                            {hour === 'closed' ?
-                                                                <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>
-                                                                :
-                                                                <Typography variant="h6">{hour}</Typography>
-                                                            }
-                                                        </div>
-                                                        )}
-                                                    </Grid>
+                    : <>
+                        {currentPlace.isUserOwner ?
+                            <Grid justify="center" direction="column" alignItems="center" container>
+                                <Typography variant="h6">This place has not set opening hours yet.</Typography>
+                                <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
+                                <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
+                            </Grid>
+
+                            :
+                            <Grid style={{ height: '100%' }} container justify="center" alignItems="center">
+                                <Grid item lg={5}>
+                                    <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
+                                        <CardContent>
+                                            <Typography variant="h5" className={classes.title}>Opening hours</Typography>
+                                            <Divider className={classes.divider} />
+                                            <Grid container justify="center">
+                                                <Grid item className={classes.days} lg={6}>
+                                                    {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
                                                 </Grid>
-                                            </CardContent>
-                                        </Card>
-                                        <Typography variant="caption"><span style={{ color: 'red' }}>*</span>You will be able to specify the opening state of your place once it is registered. This is just an example.</Typography>
-                                    </Grid>
+                                                <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
+                                                    {hours.map((hour, index) => <div key={index}>
+                                                        {hour === 'closed' ?
+                                                            <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>
+                                                            :
+                                                            <Typography variant="h6">{hour}</Typography>
+                                                        }
+                                                    </div>
+                                                    )}
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                    <Typography variant="caption"><span style={{ color: 'red' }}>*</span>You will be able to specify the opening state of your place once it is registered. This is just an example.</Typography>
                                 </Grid>
-                            }
-                        </>
+                            </Grid>
+                        }
+                    </>
 
 
 
-                }
+            }
 
             {isUserLoggedIn && currentPlace.isUserOwner &&
                 <Dialog

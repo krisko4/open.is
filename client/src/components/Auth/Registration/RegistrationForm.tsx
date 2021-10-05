@@ -9,9 +9,11 @@ import { Field, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import * as React from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import myAxios, { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
+import { setEmail } from "../../../store/actions/setEmail";
 import { LoadingButton } from "../../reusable/LoadingButton";
 import { FacebookLoginButton } from "../FacebookLoginButton";
 import { GoogleLoginButton } from "../GoogleLoginButton";
@@ -59,10 +61,11 @@ const SignupSchema = Yup.object().shape({
 
 export const RegistrationForm = () => {
 
-    const { setLoginOpen, setRegistrationOpen, setConfirmationOpen, setEmail } = useAuthContext()
+    const { setLoginOpen, setRegistrationOpen, setConfirmationOpen} = useAuthContext()
     const [errorMessage, setErrorMessage] = useState('')
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
 
     const signInWithFacebook = () => {
         console.log('witam')
@@ -75,13 +78,13 @@ export const RegistrationForm = () => {
         console.log(userData)
         try {
             await myAxios.post('/registration', { ...userData })
-            setEmail(userData['email'])
+            // setEmail(userData['email'])
+            dispatch(setEmail(userData['email']))
             setRegistrationOpen(false)
             setConfirmationOpen(true)
             enqueueSnackbar('You have successfully registered', {
                 variant: 'success'
             })
-
         } catch (err) {
             console.error(err)
             enqueueSnackbar('Registration failed', {
@@ -190,7 +193,7 @@ export const RegistrationForm = () => {
                                     </Grid>
                                     <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <Typography variant="caption">
-                                            Already have an account?&nbsp; 
+                                            Already have an account?&nbsp;
                                             <Link
                                                 onClick={() => {
                                                     setLoginOpen(true);

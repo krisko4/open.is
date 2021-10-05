@@ -16,12 +16,15 @@ const Content = () => {
     const [isVisible2, setVisible2] = useState(false)
     const [isVisible3, setVisible3] = useState(false)
     const [isVisible6, setVisible6] = useState(false)
+    const [isVisible7, setVisible7] = useState(false)
 
     const handleScroll = () => {
         window.scrollY > 700 && setVisible1(true)
         window.scrollY > 500 && setVisible2(true)
         window.scrollY > 1500 && setVisible3(true)
         window.scrollY > 2200 && setVisible6(true)
+        window.scrollY > 3000 && setVisible7(true)
+
 
     }
 
@@ -38,7 +41,7 @@ const Content = () => {
             <Section1 isVisible1={isVisible1} />
             {/* <Section2 /> */}
             <Section3 isVisible3={isVisible3} />
-            <Section6 isVisible6={isVisible6} />
+            <Section6 isVisible6={isVisible6} isVisible7={isVisible7} />
             <Section4 />
             <Section2 />
             <Section5 /> 

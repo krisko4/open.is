@@ -13,9 +13,8 @@ import * as Yup from "yup";
 import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { login } from "../../../store/actions/login";
-import { setEmail } from "../../../store/actions/setEmail";
 import { LoadingButton } from "../../reusable/LoadingButton";
-
+import {setEmail} from "../../../store/actions/setEmail"
 
 interface UserData {
     email: string,
@@ -36,30 +35,36 @@ const LoginSchema = Yup.object().shape({
 export const LoginForm = () => {
 
 
-    const {setLoginOpen, setRegistrationOpen} = useAuthContext()
+    const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext()
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-    const {enqueueSnackbar} = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar()
     const dispatch = useDispatch()
 
-    const signIn = async (userData : UserData) => {
+    const signIn = async (userData: UserData) => {
         setErrorMessage('')
         setLoading(true)
-        try{
-            const response = await authAxios.post('/login', {...userData}, {withCredentials: true})
+        dispatch(setEmail(userData.email))
+        try {
+            const response = await authAxios.post('/login', { ...userData }, { withCredentials: true })
             localStorage.setItem('uid', response.data.uid)
             localStorage.setItem('fullName', response.data.fullName)
             setLoginOpen(false)
-            dispatch(setEmail(userData.email))
             dispatch(login())
             enqueueSnackbar('You have signed in.', {
                 variant: 'success'
             })
-        } catch(err){
+        } catch (err: any) {
             console.log(err)
+            console.log(err.response.data)
+            if (err.response.data === `User is inactive`) {
+                setLoginOpen(false)
+                setConfirmationOpen(true)
+                return
+            }
             setErrorMessage('Invalid credentials')
 
-        }finally {
+        } finally {
             setLoading(false)
         }
     }
@@ -70,40 +75,40 @@ export const LoginForm = () => {
             validationSchema={LoginSchema}
             onSubmit={(values => signIn(values))}
         >
-            {({dirty, isValid}) => (
+            {({ dirty, isValid }) => (
                 <Form>
                     <DialogContent>
-                        <Card elevation={6} style={{marginBottom: 10}}>
+                        <Card elevation={6} style={{ marginBottom: 10 }}>
                             <CardContent>
-                                <Grid container justify="center" style={{marginBottom: 10}}>
-                                    <Grid item lg={10} style={{marginBottom: 10}}>
-                                        <Typography variant="h6" style={{fontWeight: 'bold'}}>Hello!</Typography>
-                                        <Typography variant="body2" style={{color: 'grey'}}>Please sign in to continue</Typography>
-                                        {errorMessage && <Typography variant="body2" style={{textAlign: 'center', color: 'red', marginTop: 10}}>{errorMessage}</Typography>}
+                                <Grid container justify="center" style={{ marginBottom: 10 }}>
+                                    <Grid item lg={10} style={{ marginBottom: 10 }}>
+                                        <Typography variant="h6" style={{ fontWeight: 'bold' }}>Hello!</Typography>
+                                        <Typography variant="body2" style={{ color: 'grey' }}>Please sign in to continue</Typography>
+                                        {errorMessage && <Typography variant="body2" style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>{errorMessage}</Typography>}
                                     </Grid>
-                                    <Grid item lg={10} style={{textAlign: 'center'}}>
-                                        <Field as={TextField} name="email" type="email" fullWidth={true}  style={{marginBottom: 10}}
-                                               label="E-mail"/>
+                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
+                                        <Field as={TextField} name="email" type="email" fullWidth={true} style={{ marginBottom: 10 }}
+                                            label="E-mail" />
                                     </Grid>
-                                    <Grid item lg={10}  style={{marginBottom: 10, textAlign: 'center'}}>
+                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
                                         <Field as={TextField} name="password" type="password" fullWidth={true}
-                                               label="Password"/>
+                                            label="Password" />
                                         <Link variant="caption">I forgot my password</Link>
                                     </Grid>
-                                    <Grid item lg={10} style={{textAlign: 'center'}}>
+                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <LoadingButton
                                             loading={loading}
                                             fullWidth={true}
-                                            
+
                                             type="submit"
                                             color="secondary"
                                             variant="contained"
-                                            disabled={(!(isValid && dirty) || loading) }
+                                            disabled={(!(isValid && dirty) || loading)}
                                         >
                                             Sign in
                                         </LoadingButton>
                                     </Grid>
-                                    <Grid item lg={10} style={{textAlign: 'center'}}>
+                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <h4>OR</h4>
                                     </Grid>
                                     {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
@@ -112,7 +117,7 @@ export const LoginForm = () => {
                                     {/*<Grid item lg={10}>*/}
                                     {/*    <FacebookLoginButton/>*/}
                                     {/*</Grid>*/}
-                                    <Grid item lg={10} style={{textAlign: 'center'}}>
+                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <Typography variant="caption">Don't have an account? <Link onClick={() => {
                                             setRegistrationOpen(true);
                                             setLoginOpen(false)

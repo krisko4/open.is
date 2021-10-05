@@ -91,9 +91,9 @@ export const LeftNavigation: FC = () => {
                         <ListItemText secondary="New place" />
                     </ListItem>
 
-                    <ListSubheader disableSticky>
+                    {places.length > 0 && <ListSubheader disableSticky>
                         My places
-                    </ListSubheader>
+                    </ListSubheader>}
                     {places.map((place: any, index: number) =>
                         <ListItem key={index} button onClick={() => choosePlace(place, index)}>
                             <ListItemAvatar>

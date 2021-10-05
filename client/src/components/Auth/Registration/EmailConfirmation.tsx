@@ -5,15 +5,18 @@ import Slide, { SlideProps } from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
+import { useSelector } from "react-redux";
 import myAxios from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
+import { RootState, useAuthSelector } from "../../../store/selectors/AuthSelector";
 import { LoadingButton } from "../../reusable/LoadingButton";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 export const EmailConfirmation : FC = () => {
 
-    const {confirmationOpen, setConfirmationOpen, setLoginOpen, email} = useAuthContext()
+    const {confirmationOpen, setConfirmationOpen, setLoginOpen} = useAuthContext()
+    const email = useSelector((state : RootState) => state.email)
     const {enqueueSnackbar} = useSnackbar()
     const [loading, setLoading] = useState(false)
 
