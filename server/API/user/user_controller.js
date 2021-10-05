@@ -1,6 +1,10 @@
 const userService = require('./user_service')
 const ApiError = require('../../errors/ApiError')
-
+const confirmationTokenService = require('../confirmation_token/confirmation_token_service')
+const placeService = require('../place/place_service')
+const newsService = require('../news/news_service')
+const visitService = require('../visit/visit_service')
+const opinionService = require('../opinion/opinion_service')
 
 const userController = {
 
@@ -18,11 +22,32 @@ const userController = {
             .catch(err => next(err))
     },
 
-    deleteAll: (req, res, next) => {
-        userService.deleteAll()
-            .then(() => res.status(200).json('All users deleted successfully'))
-            .catch(err => next(err))
+    deleteAll: async (req, res, next) => {
+       try{
+           await userService.deleteAll()
+           await confirmationTokenService.deleteTokens()
+           await placeService.deleteAll()
+           await visitService.deleteVisits()
+           await opinionService.deleteOpinions()
+           await newsService.deleteNews()
+           return res.sendStatus(200)
+       }catch(err){
+           return next(err)
+       }
     },
+
+    deleteUserById: async (req, res, next) => {
+        try {
+            const { id } = req.params
+            if (!id) throw ApiError.badRequest('userId is required')
+            await userService.deleteUserById(id)
+            return res.sendStatus(200)
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    
 
     getUserById: (req, res) => {
         userService.getUserById()

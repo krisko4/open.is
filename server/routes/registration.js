@@ -7,8 +7,8 @@ router.post('/', userValidator.checkEmailPasswordEquality, (req, res, next) => {
     registrationController.registerUser(req, res, next)
 })
 
-router.post('/resend-email', async(req,res) => {
-    await registrationController.resendConfirmationEmail(req, res)
+router.post('/resend-email', async(req, res, next) => {
+    await registrationController.resendConfirmationEmail(req, res, next)
 })
 
 module.exports = router

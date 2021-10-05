@@ -13,7 +13,7 @@ server.use(cookieParser())
 const FacebookStrategy = require('passport-facebook').Strategy
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 const passport = require('passport')
-
+const apiErrorHandler = require('./errors/api_error_handler')
 
 const corsOptions = {
     origin: process.env.CLIENT_URL,
@@ -28,6 +28,7 @@ server.use('/login', loginRouter)
 server.use('/tokens', tokensRouter)
 server.use('/logout', logoutRouter)
 server.use('/auth', authRouter)
+server.use(apiErrorHandler)
 
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID_FB,

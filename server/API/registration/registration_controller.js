@@ -12,15 +12,13 @@ const registrationController = {
         }
     },
 
-    resendConfirmationEmail: async (req, res) => {
-        const userEmail = req.body.email
-        console.log(userEmail)
+    resendConfirmationEmail: async (req, res, next) => {
+        const {email} = req.body
         try {
-            const token = await registrationService.resendConfirmationEmail(userEmail)
+            const token = await registrationService.resendConfirmationEmail(email)
             res.json(token)
         } catch (err) {
-            console.log(err)
-            res.status(400).json({error: err})
+            return next(err)
         }
     }
 

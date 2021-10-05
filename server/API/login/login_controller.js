@@ -2,7 +2,7 @@ const loginService = require('./login_service')
 const { addDays } = require('date-fns')
 
 const loginController = {
-    login: async (req, res) => {
+    login: async (req, res, next) => {
         const userData = req.body
         console.log(userData)
         try {
@@ -26,13 +26,12 @@ const loginController = {
                 httpOnly: true,
                 expires: addDays(new Date(), 30)
             })
-            res.status(200).json({
+            return res.status(200).json({
                 uid: uid,
                 fullName: fullName
             })
         } catch (err) {
-            console.log(err)
-            res.status(400).json(err)
+            return next(err)
         }
     },
     logout: async (req, res) => {

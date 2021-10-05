@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const ApiError = require('../../errors/ApiError')
 const ALREADY_EXISTS_MSG = 'User with this e-mail already exists.'
 const INVALID_CREDENTIALS_MSG = 'Invalid credentials'
+const USER_INACTIVE_MSG = 'User is inactive'
 
 
 const userService = {
@@ -15,11 +16,12 @@ const userService = {
     },
 
     validateLoggedUser: async(userData) => {
-        const duplicateUser = await User.findOne({email: userData['email']}).exec()
-        if(!duplicateUser) throw new Error(INVALID_CREDENTIALS_MSG)
-        const isPasswordValid = bcrypt.compareSync(userData.password, duplicateUser.password)
+        const foundUser = await User.findOne({email: userData['email']}).exec()
+        if(!foundUser) throw new Error(INVALID_CREDENTIALS_MSG)
+        const isPasswordValid = bcrypt.compareSync(userData.password, foundUser.password)
         if(!isPasswordValid) throw new Error(INVALID_CREDENTIALS_MSG)
-        return duplicateUser
+        if(!foundUser.isActive) throw ApiError.internal(USER_INACTIVE_MSG)
+        return foundUser
     },
 
     async addUser(userData) {
@@ -43,7 +45,8 @@ const userService = {
     getUserById: (id) => User.findById(id).exec(),
     deleteAll: () => User.deleteMany().exec(),
     getUserByEmail: (email) => User.findOne({email: email}).exec(),
-    getFullNameById : (id) => User.findById(id, 'firstName lastName').exec()
+    getFullNameById : (id) => User.findById(id, 'firstName lastName').exec(),
+    deleteUserById: (id) => User.findByIdAndDelete(id).exec()
 
 }
 
