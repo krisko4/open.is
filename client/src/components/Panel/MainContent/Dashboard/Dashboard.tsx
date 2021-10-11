@@ -5,8 +5,9 @@ import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
 import { Rating } from "@material-ui/lab";
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import { ChosenOptions, PlaceProps, usePanelContext } from "../../../../contexts/PanelContext";
 import { StatisticChart } from "./StatisticChart";
@@ -29,6 +30,8 @@ export const Dashboard: FC = () => {
     const [totalOpinions, setTotalOpinions] = useState(0)
     const [mostPopularPlace, setMostPopularPlace] = useState<PlaceProps | null>(null)
     const [activityChartSeries, setActivityChartSeries] = useState<any>()
+    const [totalVisitsDiff, setTotalVisitsDiff] = useState(0)
+    const [totalOpinionsDiff, setTotalOpinionsDiff] = useState(0)
     const [activityChartOptions, setActivityChartOptions] = useState({
         chart: {
             id: 'area-datetime',
@@ -86,16 +89,6 @@ export const Dashboard: FC = () => {
 
 
     useEffect(() => {
-        console.log(activityChartSeries)
-    }, [activityChartSeries])
-
-
-    useEffect(() => {
-        console.log(places)
-        const opinionCount = places.reduce((a, b) => a + b.opinions.length, 0)
-        setTotalOpinions(opinionCount)
-        const visitCount = places.reduce((a, b) => a + b.visits.reduce((c, d) => c + d.visitCount, 0), 0)
-        setTotalVisits(visitCount)
         const mostPopularPlace = places.sort((a, b) => a.visits.reduce((c, d) => c + d.visitCount, 0) - b.visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
         setMostPopularPlace(mostPopularPlace)
         setActivityChartSeries(places.map(place => {
@@ -104,12 +97,24 @@ export const Dashboard: FC = () => {
                 data: place.visits.map(visit => [new Date(visit.date), visit.visitCount])
             }
         }))
+        const opinionCount = places.reduce((a, b) => a + b.opinions.length, 0)
+        setTotalOpinions(opinionCount)
+        const opinionsToday = places.reduce((a, b) => a + b.opinions.filter(opinion => isToday(new Date(opinion.date))).length, 0)
+        opinionCount === opinionsToday ? setTotalOpinionsDiff(opinionCount * 100) : setTotalOpinionsDiff(Math.round(((opinionCount / (opinionCount - opinionsToday)) * 100 - 100) * 10) / 10)
+        const visitCount = places.reduce((a, b) => a + b.visits.reduce((c, d) => c + d.visitCount, 0), 0)
+        setTotalVisits(visitCount)
+        const totalVisitsToday = places.reduce((a, b) => a + b.visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0), 0)
+        if (totalVisitsToday === visitCount) {
+            setTotalVisitsDiff(visitCount * 100)
+            return
+        }
+        setTotalVisitsDiff(Math.round(((visitCount / (visitCount - totalVisitsToday)) * 100 - 100) * 10) / 10)
     }, [places])
 
     return (
-        <Grid container justify="center" style={{paddingBottom: 50}}>
+        <Grid container justify="center" style={{ paddingBottom: 50 }}>
             <Grid item lg={11}>
-                <Typography variant="h3" style={{ color: 'white' }}>
+                <Typography variant="h3" >
                     <Grid container>
                         <Grid item lg={10}>
                             Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
@@ -123,7 +128,7 @@ export const Dashboard: FC = () => {
                         </Grid>
                     </Grid>
                 </Typography>
-                <Typography variant="body1" style={{ color: 'white' }}>welcome to your personal dashboard</Typography>
+                <Typography variant="body1" >welcome to your personal dashboard</Typography>
                 <Grid container style={{ marginTop: 20 }} spacing={2} justify="space-between">
                     <Grid item lg={6}>
                         <Fade in={true} timeout={2000}>
@@ -132,8 +137,14 @@ export const Dashboard: FC = () => {
                                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
                                     <Grid container style={{ marginTop: 5 }}>
                                         <Grid container item lg={10} alignItems="center">
-                                            <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                            <span style={{ marginLeft: 5 }}>+10.5%</span>
+                                            {totalVisitsDiff > 0 ? <>
+                                                <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {totalVisitsDiff}%</span>
+                                            </> :
+                                                <>
+                                                    <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                                    <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                                </>}
                                         </Grid>
                                         <Grid item lg={2} >
                                             <EqualizerIcon fontSize="large" color="primary" />
@@ -153,8 +164,14 @@ export const Dashboard: FC = () => {
                                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                                     <Grid container style={{ marginTop: 5 }}>
                                         <Grid container item lg={10} alignItems="center">
-                                            <TrendingUpIcon style={{ color: 'lightgreen' }} />
-                                            <span style={{ marginLeft: 5 }}>+10.5%</span>
+                                            {totalOpinionsDiff > 0 ? <>
+                                                <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {totalOpinionsDiff}%</span>
+                                            </> :
+                                                <>
+                                                    <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                                    <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                                </>}
                                         </Grid>
                                         <Grid item lg={2} >
                                             <EqualizerIcon fontSize="large" color="primary" />
@@ -209,6 +226,7 @@ export const Dashboard: FC = () => {
                                                         <Grid container direction="column" alignItems="center">
                                                             <Typography variant="h4" style={{ borderBottom: '5px solid red', fontWeight: 'bold' }}>
                                                                 {mostPopularPlace?.visits.reduce((a, b) => a + b.visitCount, 0)}
+
                                                             </Typography>
                                                             <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: 50</Typography>
                                                         </Grid>

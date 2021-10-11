@@ -38,7 +38,7 @@ export const AddressDetails: FC = () => {
         try {
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
             console.log(res.data)
-            if(res.data){
+            if(res.data && !res.data.isUserOwner){
                 setErrorMessage('This location is already occupied by another place. If your place is located on this address, try to change the position of a marker')
                 setSubmitLoading(false)
                 return

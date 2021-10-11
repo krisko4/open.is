@@ -1,3 +1,4 @@
+import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { ThemeProvider } from "@material-ui/styles";
 import { SnackbarProvider } from "notistack";
@@ -5,8 +6,9 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { authAxios } from "./axios/axios";
+import { Confirmation } from './components/Auth/Confirmation';
 import Browser from "./components/Browser/Browser";
-import { About } from "./components/HomePage/About";
+import { About } from "./components/HomePage/About/About";
 import { Contact } from "./components/HomePage/Contact";
 import { PageSelector } from "./components/PageSelector";
 import theme from './components/Theme';
@@ -14,8 +16,6 @@ import { PageContextProvider } from "./contexts/PageContext";
 import { login } from "./store/actions/login";
 import { logout } from "./store/actions/logout";
 import { setEmail } from "./store/actions/setEmail";
-import DateFnsUtils from '@date-io/date-fns';
-import {Confirmation} from './components/Auth/Confirmation'
 
 
 
@@ -23,7 +23,7 @@ import {Confirmation} from './components/Auth/Confirmation'
 function App() {
 
     const dispatch = useDispatch()
-    
+
 
     useEffect(() => {
         const authenticate = async () => {
@@ -43,18 +43,18 @@ function App() {
         <ThemeProvider theme={theme}>
             <SnackbarProvider maxSnack={3}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Router>
-        <div className="App">
-            <PageContextProvider>
-                <Route exact path="/" component={PageSelector}/>
-            </PageContextProvider>
-            <Route path="/about" component={About}/>
-            <Route path="/contact" component={Contact}/>
-            <Route path="/search" component={Browser}/>
-            <Route path="/confirmation/:token" component={Confirmation} />
-        </div>
-            </Router>
-            </MuiPickersUtilsProvider>
+                    <Router>
+                        <div className="App">
+                            <PageContextProvider>
+                                <Route exact path="/" component={PageSelector} />
+                                <Route path="/about" component={About} />
+                            </PageContextProvider>
+                            <Route path="/contact" component={Contact} />
+                            <Route path="/search" component={Browser} />
+                            <Route path="/confirmation/:token" component={Confirmation} />
+                        </div>
+                    </Router>
+                </MuiPickersUtilsProvider>
             </SnackbarProvider>
         </ThemeProvider>
 

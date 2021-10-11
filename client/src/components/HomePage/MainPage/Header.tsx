@@ -1,4 +1,4 @@
-import { Grow } from "@material-ui/core";
+import { Grow, IconButton } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { useSnackbar } from "notistack";
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import HomeIcon from '@material-ui/icons/Home';
 import { useHistory } from 'react-router-dom';
 import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -22,10 +23,6 @@ const useStyles = makeStyles(() =>
         },
         menuButton: {
             fontFamily: '-apple-system',
-        },
-        title: {
-            flexGrow: 1,
-            color: 'white'
         },
         elevatedAppBar: {
             transition: 'all .5s ease 0s',
@@ -75,7 +72,7 @@ interface AppBarStateTypes {
     buttonColor: any
 }
 
-const Header : FC = () => {
+const Header: FC = () => {
 
     const { enqueueSnackbar } = useSnackbar()
     const history = useHistory()
@@ -104,19 +101,7 @@ const Header : FC = () => {
     }
 
 
-    // useEffect(() => {
-    //     const authenticate = async () => {
-    //         try {
-    //             await authAxios.get('/auth', { withCredentials: true })
-    //             dispatch(login())
-    //         } catch (err) {
-    //             await authAxios.get('/logout', { withCredentials: true })
-    //             dispatch(logout())
-    //             dispatch(setEmail(''))
-    //         }
-    //     }
-    //     authenticate()
-    // }, [])
+
 
     const handleScroll = () => {
         const isSolid = window.scrollY > 800
@@ -147,19 +132,22 @@ const Header : FC = () => {
 
         <AppBar elevation={appBarState.elevation} className={classes[appBarRef.current]}>
             <Grid container justify="center">
-                <Grid item xs={12} lg={6}>
+                <Grid item xs={12} lg={8}>
                     <Grow in={true} timeout={2000} >
                         <Toolbar>
-                            <Typography variant="h6" className={classes.title}>
-                            </Typography>
+                            <div style={{ flexGrow: 1 }}>
+                                <IconButton onClick={() => history.push('/')} color="inherit">
+                                    <HomeIcon />
+                                </IconButton>
+                            </div>
                             <Button onClick={() => history.push('/about')} variant="outlined"
                                 className="aboutButton">About us</Button>
                             <Button variant="text" className="contactButton">Contact</Button>
                             {isUserLoggedIn ? <div>
                                 <Button variant="contained" onClick={() => setPanelOpen(true)}
                                     color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
-                            <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign
-                                out</Button>
+                                <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign
+                                    out</Button>
                             </div> :
                                 <Button variant="contained" onClick={() => setLoginOpen(true)}
                                     color={appBarState.buttonColor}>Sign

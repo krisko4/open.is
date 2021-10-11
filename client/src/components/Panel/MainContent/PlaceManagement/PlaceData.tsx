@@ -3,11 +3,14 @@ import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
 import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import TrendingDownIcon from "@material-ui/icons/TrendingDown";
+import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
+
 import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
-import { isSameDay } from "date-fns";
+import { isSameDay, isToday, isYesterday } from "date-fns";
 import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import myAxios from "../../../../axios/axios";
 import { Status, usePanelContext } from "../../../../contexts/PanelContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
@@ -38,8 +41,34 @@ export const PlaceData: FC<Props> = ({ index }) => {
     const { currentPlace, placeIndex, setCurrentPlace, places, opinions, visits } = usePanelContext()
     const [settingsOpen, setSettingsOpen] = useState(false)
     const { ones, twos, threes, fours, fives } = currentPlace.averageNote
+    const [totalVisits, setTotalVisits] = useState(0)
+    const [visitsToday, setVisitsToday] = useState(0)
+    const [visitsYesterday, setVisitsYesterday] = useState(0)
+    const [opinionsDiff, setOpinionsDiff] = useState(0)
+    const [visitsDiff, setVisitsDiff] = useState(0)
 
+    useEffect(() => {
+        const totalVisits = visits.reduce((a, b) => a + b.visitCount, 0)
+        setTotalVisits(totalVisits)
+        const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0) 
+        setVisitsToday(visitsToday)
+        setVisitsYesterday(visits.filter(visit => isYesterday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0))
+        if(visitsToday === totalVisits){
+            setVisitsDiff(visitsToday * 100)
+            return
+        }
+        setVisitsDiff(Math.round(((totalVisits / (totalVisits - visitsToday)) * 100 - 100) * 10) / 10)
 
+    }, [visits])
+
+    useEffect(() => {
+        const opinionsToday = opinions.filter(opinion => isToday(new Date(opinion.date))).length
+        if(opinionsToday === opinions.length) {
+            setOpinionsDiff(opinions.length * 100)
+            return
+        }
+        opinions.length > 0 && setOpinionsDiff(Math.round(((opinions.length / (opinions.length - opinionsToday)) * 100 - 100) * 10) / 10)
+    }, [opinions])
 
     const setPlaceStatus = async (status: Status) => {
         setLoading(true)
@@ -176,20 +205,6 @@ export const PlaceData: FC<Props> = ({ index }) => {
         },
     });
 
-    // const [ratingOptions, setRatingOptions] = useState({
-    //     plotOptions: {
-    //         // bar: {
-    //         //     borderRadius: 1,
-    //         //     // horizontal: true
-    //         // },
-    //         // dataLabels: {
-    //         //     enabled: false
-    //         // },
-    //         xaxis: {
-    //             categories: [1, 2, 3, 4, 5]
-    //         }
-    //     }
-    // })
 
     const [ratingOptions, setRatingOptions] = useState({
         chart: {
@@ -234,10 +249,6 @@ export const PlaceData: FC<Props> = ({ index }) => {
 
     const ratingSeries = [ones, twos, threes, fours, fives]
 
-    // const ratingSeries = [{
-    //     name: 'quantity',
-    //     data: [ones, twos, threes, fours, fives]
-    // }]
 
     const [options, setOptions] = useState({
         chart: {
@@ -303,11 +314,21 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                         <Grid container style={{ marginTop: 5 }}>
                                             <Grid item lg={6} container justify="center" direction="column">
                                                 <Grid container alignItems="center">
-                                                    <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                                    <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
+                                                    {
+                                                        visitsDiff === 0 || totalVisits === 0 ?
+                                                            <>
+                                                                <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                                                <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                                            </> :
+                                                            <>
+                                                                <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                                <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsDiff}%</span>
+                                                            </>
+                                                    }
                                                 </Grid>
                                                 <Typography variant="h3">
-                                                    {visits.reduce((a, b) => a + b.visitCount, 0)}
+                                                    {/* {visits.reduce((a, b) => a + b.visitCount, 0)} */}
+                                                    {totalVisits}
                                                 </Typography>
                                             </Grid>
                                             <Grid item lg={6} container justify="center">
@@ -326,11 +347,23 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                         <Grid container style={{ marginTop: 5 }}>
                                             <Grid item lg={6} container justify="center" direction="column">
                                                 <Grid container alignItems="center">
-                                                    <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                                    <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
+                                                    {
+                                                        visitsToday === visitsYesterday || totalVisits === 0 ? <>
+                                                            <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                                            <span style={{ marginLeft: 5, color: '#ffbf00' }}>0</span>
+                                                        </> :
+                                                            visitsToday - visitsYesterday > 0 ? <>
+                                                                <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                                <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsToday - visitsYesterday}</span>
+                                                            </> : <>
+                                                                <TrendingDownIcon style={{ color: 'red' }} />
+                                                                <span style={{ marginLeft: 5, color: 'red' }}>- {visitsToday - visitsYesterday}</span>
+                                                            </>
+                                                    }
                                                 </Grid>
                                                 <Typography variant="h3">
-                                                    {visits.filter(visit => isSameDay(new Date(visit.date), new Date())).reduce((a, b) => a + b.visitCount, 0)}
+                                                    {/* {visits.filter(visit => isSameDay(new Date(visit.date), new Date())).reduce((a, b) => a + b.visitCount, 0)} */}
+                                                    {visitsToday}
                                                     {/* {visits.find(visit => isSameDay(new Date(visit.date), new Date()))?.visitCount || 0} */}
                                                 </Typography>
                                             </Grid>
@@ -351,8 +384,14 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                             <Grid container item alignItems="center" justify="space-between">
                                                 <Grid item style={{ flexGrow: 1 }}>
                                                     <Grid container item alignItems="center">
-                                                        <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                                        <span style={{ marginLeft: 5, color: '#03C03C' }}>+10.5%</span>
+                                                        {opinionsDiff === 0 || opinions.length === 0 ? <>
+                                                            <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                                            <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                                        </> : <>
+                                                            <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                            <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {opinionsDiff}%</span>
+                                                        </>
+                                                        }
                                                     </Grid>
                                                     <Typography variant="h3">{opinions.length}</Typography>
                                                 </Grid>

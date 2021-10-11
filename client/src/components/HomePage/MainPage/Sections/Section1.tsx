@@ -11,7 +11,7 @@ interface Props {
 const Section1: FC<Props> = ({ isVisible1 }) => {
 
     return (
-        <div style={{height: 900, background: '#050505' }}>
+        <div style={{height: 900, background: 'black' }}>
             <Grid container style={{marginTop: 80, marginBottom: 80}} justify="center">
                 <Grid item lg={6} style={{ textAlign: 'center' }}>
                     <Fade in={isVisible1} timeout={1000}>
@@ -28,8 +28,8 @@ const Section1: FC<Props> = ({ isVisible1 }) => {
                     <Grow timeout={3000} in={isVisible1}>
 
                         <CardMedia
-                            image={`https://cdn.pixabay.com/photo/2014/05/28/00/05/earth-356059_960_720.jpg`}
-                            style={{ height: 600}}
+                            image={`${process.env.REACT_APP_BASE_URL}/images/earth.jpg`}
+                            style={{ height: 700, marginTop: 20}}
                         >
                         </CardMedia>
                     </Grow>

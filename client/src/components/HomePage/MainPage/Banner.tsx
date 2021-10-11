@@ -87,23 +87,25 @@ export const Banner: FC = () => {
     }, [])
 
     return (
-        <Grid container className={classes.banner} alignItems="center">
-            <Grid item container lg={8} justify="center">
-                <Grid item xs={7} style={{ textAlign: 'center', marginBottom: 40 }}>
-                    <Collapse in={window.scrollY < 150} timeout={1500}>
-                        <Typography variant="h3"
-                            style={{ color: 'white', fontWeight: 200 }}>
-                            An easy way to track open destinations all over the world
-                        </Typography>
+        <Fade in={true} timeout={1000}>
+            <Grid container className={classes.banner} alignItems="center">
+                <Grid item container lg={8} justify="center">
+                    <Grid item xs={7} style={{ textAlign: 'center', marginBottom: 40 }}>
+                        <Collapse in={window.scrollY < 150} timeout={1500}>
+                            <Typography variant="h3"
+                                style={{ color: 'white', fontWeight: 200 }}>
+                                An easy way to track open destinations all over the world
+                            </Typography>
 
-                    </Collapse>
-                    <Fade in={window.scrollY < 150} timeout={2000}>
-                        <Button className={classes.button} color="secondary" onClick={() => history.push('/search')}
-                            variant="contained">Get started</Button>
-                    </Fade>
+                        </Collapse>
+                        <Fade in={window.scrollY < 150} timeout={2000}>
+                            <Button className={classes.button} color="secondary" onClick={() => history.push('/search')}
+                                variant="contained">Get started</Button>
+                        </Fade>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </Fade>
 
     )
 }
