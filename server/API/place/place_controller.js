@@ -83,7 +83,7 @@ const placeController = {
                 const { lat, lng } = req.query
                 if (!lat || !lng) return next(ApiError.badRequest('Invalid request parameters. Required: lat, lng'))
                 const place = await placeService.getPlaceByLatLng(lat, lng)
-                return res.status(200).json(place ? placeDto(place._doc) : null)
+                return res.status(200).json(place ? placeDto(place._doc, uid) : null)
             case 1:
                 const param = Object.keys(req.query)[0]
                 let searchObj = {}
