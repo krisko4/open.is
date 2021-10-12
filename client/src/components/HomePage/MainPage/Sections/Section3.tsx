@@ -1,4 +1,4 @@
-import { Grow, Zoom } from "@material-ui/core";
+import { Grow, Zoom, Fade } from "@material-ui/core";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -12,9 +12,9 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
     return (
         <Grid item xs={10} justify="center" container style={{ paddingBottom: 200 }}>
             <Grid item container justify="center">
-                <Zoom
+                <Fade
                     in={isVisible3}
-                    timeout={2000}
+                    timeout={3000}
                 >
                     <Grid item xs={6}>
                         <CardMedia
@@ -23,7 +23,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
                         >
                         </CardMedia>
                     </Grid>
-                </Zoom>
+                </Fade>
 
                 <Grid item container xs={5} alignItems="center" >
                     <Grow

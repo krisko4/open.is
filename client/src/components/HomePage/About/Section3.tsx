@@ -51,7 +51,7 @@ export const Section3: FC<any> = ({ classes, setCurrentSection }) => {
                                     {items.map((item, index) => <Grid item lg={4} container alignItems="center" style={{ marginBottom: 20 }} direction="column" key={index}>
                                         <CardMedia style={{ height: 200, width: 200, backgroundPosition: 'top' }} image={item.image} />
                                         <div style={{ marginTop: 10, textAlign: 'center' }}>
-                                            <b>{item.name}</b><br /><span style={{ fontStyle: 'italic' }}>{item.role}</span>
+                                            <b>{item.name}</b><br /><span style={{ fontStyle: 'italic'}}>{item.role}</span>
                                         </div>
                                     </Grid>
                                     )}

@@ -108,9 +108,9 @@ export const LoginForm = () => {
                                             Sign in
                                         </LoadingButton>
                                     </Grid>
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
+                                    {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <h4>OR</h4>
-                                    </Grid>
+                                    </Grid> */}
                                     {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
                                     {/*    <GoogleLoginButton/>*/}
                                     {/*</Grid>*/}

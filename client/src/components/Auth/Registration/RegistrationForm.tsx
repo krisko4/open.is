@@ -181,7 +181,7 @@ export const RegistrationForm = () => {
                                             Sign up
                                         </LoadingButton>
                                     </Grid>
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
+                                    {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <h4>OR</h4>
                                     </Grid>
                                     <Grid item lg={10} style={{ marginBottom: 10 }}>
@@ -189,8 +189,8 @@ export const RegistrationForm = () => {
                                     </Grid>
                                     <Grid item lg={10}>
                                         <FacebookLoginButton />
-                                        {/* <Button color="primary" onClick={() => signInWithFacebook()}>Sign in with facebook</Button> */}
-                                    </Grid>
+                                         <Button color="primary" onClick={() => signInWithFacebook()}>Sign in with facebook</Button>
+                                    </Grid> */}
                                     <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <Typography variant="caption">
                                             Already have an account?&nbsp;

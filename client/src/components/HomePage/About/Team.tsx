@@ -22,7 +22,7 @@ export const Team: FC = () => {
                 {/* <CardMedia style={{ height: 600, width: 600 }} image={`https://i.pinimg.com/564x/27/24/9e/27249e6089986d6d7bdd8adf7578a75d.jpg`} /> */}
                 <Grid item container lg={5} justify="center" alignItems="center" direction="column">
                     <Typography variant="h3">Christopher Cononovitz</Typography>
-                    <Typography variant="h5" style={{fontStyle: 'italic'}}>Development manager</Typography>
+                    <Typography variant="h5" style={{fontStyle: 'italic', marginTop: 10}}>Development manager</Typography>
                     <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
                         Nice to meet you. My name is Christopher Cononovitz.
                         I'm a development manager, which makes me responsible for all the stuff connected with proper development of our services.
@@ -34,7 +34,7 @@ export const Team: FC = () => {
             <Grid container justify="space-evenly" style={{ paddingTop: 20 }}>
                 <Grid item container lg={5} justify="center" alignItems="center" direction="column">
                     <Typography variant="h3">George Suchodolsky</Typography>
-                    <Typography variant="h5" style={{fontStyle: 'italic'}}>Promotion manager</Typography>
+                    <Typography variant="h5" style={{fontStyle: 'italic', marginTop: 10}}>Promotion manager</Typography>
                     <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
                         Hi, my name is George Suchodolsky and I'm a Promotion manager.
                         My primary duty is to encourage you to use our services and provide you

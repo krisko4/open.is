@@ -71,7 +71,7 @@ export const About: FC = (props) => {
     return (
         <AuthContextProvider>
             <Header />
-            <Carousel navButtonsAlwaysVisible fullHeightHover={false} animation="slide" autoPlay={false} indicators={false}>
+            <Carousel navButtonsAlwaysVisible fullHeightHover={false}  autoPlay={false} indicators={false}>
                 {items.map((item, i) => <div key={i}>{item}</div>)
                     // items.map((item, i) => <Grid container align)
                 }
