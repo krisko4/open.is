@@ -22,7 +22,7 @@ const corsOptions = {
 }
 server.use(cors(corsOptions));
 
-const port = process.env.AUTH_SERVER_PORT
+const port = process.env.PORT || 4000
 server.use(express.json());
 server.use('/login', loginRouter)
 server.use('/tokens', tokensRouter)
