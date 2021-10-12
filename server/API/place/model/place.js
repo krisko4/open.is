@@ -13,6 +13,9 @@ const AverageNoteSchema = new mongoose.Schema({
     average: Number
 })
 
+
+
+
 const OpeningHoursSchema = new mongoose.Schema({
     monday: {
         startHour: ReqDate,
