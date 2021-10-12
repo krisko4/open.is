@@ -1,7 +1,11 @@
 import { Grid, Typography } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
-export const Section2: FC<any> = ({classes}) => {
+export const Section2: FC<any> = ({classes, setCurrentSection}) => {
+
+    useEffect(() => {
+        setCurrentSection(1)
+    }, [])
     return (
         <Grid container alignItems="center" className={classes.background}>
             <Grid container>
@@ -11,7 +15,6 @@ export const Section2: FC<any> = ({classes}) => {
                         <Typography style={{ color: 'white' }} variant="h6">
                             We strongly believe that by encouraging our users to actively interact and take care of social aspects of their businesses,
                              we can create a leading global platform for finding and managing places. 
-
                             </Typography>
                     </Grid>
                 </Grid>

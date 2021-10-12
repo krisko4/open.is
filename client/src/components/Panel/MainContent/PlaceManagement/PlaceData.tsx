@@ -357,7 +357,7 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                                                 <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsToday - visitsYesterday}</span>
                                                             </> : <>
                                                                 <TrendingDownIcon style={{ color: 'red' }} />
-                                                                <span style={{ marginLeft: 5, color: 'red' }}>- {visitsToday - visitsYesterday}</span>
+                                                                <span style={{ marginLeft: 5, color: 'red' }}> {visitsToday - visitsYesterday}</span>
                                                             </>
                                                     }
                                                 </Grid>

@@ -9,7 +9,7 @@ import { authAxios } from "./axios/axios";
 import { Confirmation } from './components/Auth/Confirmation';
 import Browser from "./components/Browser/Browser";
 import { About } from "./components/HomePage/About/About";
-import { Contact } from "./components/HomePage/Contact";
+import {Contact} from './components/HomePage/Contact/Contact'
 import { PageSelector } from "./components/PageSelector";
 import theme from './components/Theme';
 import { PageContextProvider } from "./contexts/PageContext";
@@ -48,8 +48,8 @@ function App() {
                             <PageContextProvider>
                                 <Route exact path="/" component={PageSelector} />
                                 <Route path="/about" component={About} />
+                                <Route path="/contact" component={Contact} />
                             </PageContextProvider>
-                            <Route path="/contact" component={Contact} />
                             <Route path="/search" component={Browser} />
                             <Route path="/confirmation/:token" component={Confirmation} />
                         </div>

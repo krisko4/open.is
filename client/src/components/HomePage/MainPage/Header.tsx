@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import HomeIcon from '@material-ui/icons/Home';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { usePageContext } from "../../../contexts/PageContext";
@@ -76,6 +76,7 @@ const Header: FC = () => {
 
     const { enqueueSnackbar } = useSnackbar()
     const history = useHistory()
+    const location = useLocation()
 
 
     const [appBarState, setAppBarState] = useState<AppBarStateTypes>({
@@ -136,16 +137,26 @@ const Header: FC = () => {
                     <Grow in={true} timeout={2000} >
                         <Toolbar>
                             <div style={{ flexGrow: 1 }}>
-                                <IconButton onClick={() => history.push('/')} color="inherit">
-                                    <HomeIcon />
-                                </IconButton>
+
                             </div>
-                            <Button onClick={() => history.push('/about')} variant="outlined"
-                                className="aboutButton">About us</Button>
-                            <Button variant="text" className="contactButton">Contact</Button>
+                            {location.pathname === '/' ?
+                                <Button onClick={() => history.push('/about')} variant="outlined"
+                                    className="aboutButton">About us</Button> :
+                                <Button startIcon={<HomeIcon />} onClick={() => history.push('/')} variant="outlined"
+                                    className="aboutButton">Home</Button>
+
+                            }
+                            {location.pathname === '/contact' ?
+                                <Button variant="text" className="contactButton" onClick={() => history.push('/about')}>About us</Button>
+                                :
+                                <Button variant="text" className="contactButton" onClick={() => history.push('/contact')}>Contact</Button>
+
+                            }
                             {isUserLoggedIn ? <div>
-                                <Button variant="contained" onClick={() => setPanelOpen(true)}
-                                    color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
+                                {location.pathname === '/' &&
+                                    <Button variant="contained" onClick={() => setPanelOpen(true)}
+                                        color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
+                                }
                                 <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign
                                     out</Button>
                             </div> :
