@@ -46,6 +46,9 @@ server.use('/business_types', businessTypesRouter)
 
 server.use(apiErrorHandler)
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('../client/build'))
+}
 
 mongoose.connect(uri.mongoURI, {
     useNewUrlParser: true,
