@@ -56,23 +56,15 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-//  passport.serializeUser(function(user, cb) {
-//     cb(null, user);
-//   });
-
-//   passport.deserializeUser(function(obj, cb) {
-//     cb(null, obj);
-//   });
-
-mongoose.connect(uri.mongoURI, {
+mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : uri.mongoURI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(() => {
     console.log('Successfully connected to mongoDB!')
     server.listen(port, () => {
         console.log('Server running on port %d', port)
     })
 }).catch(err => console.log(err))
-
 
 module.exports = server;

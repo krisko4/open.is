@@ -46,20 +46,33 @@ server.use('/business_types', businessTypesRouter)
 
 server.use(apiErrorHandler)
 
-// if(process.env.NODE_ENV === 'production'){
-//     app.use(express.static('../client/build'))
-// }
+if (process.env.NODE_ENV === 'production') {
+    mongoose.connect(process.env.MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    }).then(() => {
+        console.log('Successfully connected to mongoDB!')
+        server.listen(port, () => {
+            console.log('Server running on port %d', port)
+        })
+    }).catch(err => console.log(err))
+}
 
-mongoose.connect(uri.mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify : false
-}).then(() => {
-    console.log('Successfully connected to mongoDB!')
-    server.listen(port, () => {
-        console.log('Server running on port %d', port)
-    })
-}).catch(err => console.log(err))
+else {
+    mongoose.connect(uri.mongoURI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    }).then(() => {
+        console.log('Successfully connected to mongoDB!')
+        server.listen(port, () => {
+            console.log('Server running on port %d', port)
+        })
+    }).catch(err => console.log(err))
+
+
+}
 
 
 module.exports = server;
