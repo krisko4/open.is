@@ -3,6 +3,9 @@ const cookieParser = require('cookie-parser')
 const express = require('express');
 require('dotenv').config()
 const path = require('path');
+const logoutRouter = require('./routes/logout')
+const tokensRouter = require('./routes/tokens')
+const authRouter = require('./routes/auth')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const placesRouter = require('./routes/places')
@@ -32,6 +35,9 @@ const port = process.env.PORT || 8080
 
 server.use(express.json());
 server.use(express.static(path.join(__dirname, 'public')));
+server.use(express.static(path.resolve(__dirname, '../client/build')))
+
+
 
 server.use('/', indexRouter);
 server.use('/users', usersRouter);
@@ -43,36 +49,30 @@ server.use('/opinions', opinionsRouter)
 server.use('/news', newsRouter)
 server.use('/visits', visitsRouter)
 server.use('/business_types', businessTypesRouter)
+server.use('/login', loginRouter)
+server.use('/tokens', tokensRouter)
+server.use('/logout', logoutRouter)
+server.use('/auth', authRouter)
 
 server.use(apiErrorHandler)
 
-if (process.env.NODE_ENV === 'production') {
-    mongoose.connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }).then(() => {
-        console.log('Successfully connected to mongoDB!')
-        server.listen(port, () => {
-            console.log('Server running on port %d', port)
-        })
-    }).catch(err => console.log(err))
-}
+server.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
+})
 
-else {
-    mongoose.connect(uri.mongoURI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }).then(() => {
-        console.log('Successfully connected to mongoDB!')
-        server.listen(port, () => {
-            console.log('Server running on port %d', port)
-        })
-    }).catch(err => console.log(err))
+mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : uri.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+}).then(() => {
+    console.log('Successfully connected to mongoDB!')
+    server.listen(port, () => {
+        console.log('Server running on port %d', port)
+    })
+}).catch(err => console.log(err))
 
 
-}
+
 
 
 module.exports = server;
