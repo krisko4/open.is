@@ -51,7 +51,7 @@ function App() {
                                 <Route path="/contact" component={Contact} />
                             </PageContextProvider>
                             <Route path="/search" component={Browser} />
-                            <Route path="/confirmation/:token" component={Confirmation} />
+                            <Route path="/confirm/:token" component={Confirmation} />
                         </div>
                     </Router>
                 </MuiPickersUtilsProvider>
