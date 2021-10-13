@@ -38,9 +38,9 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
                                 restaurant via UberEats or book a visit to a hairdresser.
                             </Typography>
                             <Grid container style={{ marginTop: 20 }} justify="space-evenly">
-                                <CardMedia style={{ height: 150, width: 150 }} image="https://pngpress.com/wp-content/uploads/2020/03/Uber-Eats-Transparent.png" />
-                                <CardMedia style={{ height: 150, width: 150 }} image="https://www.telepolis.pl/images/miniatury/bolt-min.jpg" />
-                                <CardMedia style={{ height: 150, width: 150 }} image="https://assets.moment.pl/assets/meta/moment-logo-7becc470e9a40800d632021627b0e25787e4b082018c09ba262bf22031f6d2fa.png" />
+                                <CardMedia style={{ height: 150, width: 150 }} image="/images/ubereats.jpg" />
+                                <CardMedia style={{ height: 150, width: 150 }} image="/images/bolt.jpg" />
+                                <CardMedia style={{ height: 150, width: 150 }} image="/images/moment.png" />
                             </Grid>
 
                         </div>

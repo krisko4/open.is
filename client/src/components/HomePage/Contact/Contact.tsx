@@ -29,7 +29,7 @@ export const Contact: FC = () => {
                                             <Typography variant="h6">
                                                 Our mailing address is:<br />
                                             </Typography>
-                                            <Typography variant="subtitle1">
+                                            <Typography variant="subtitle1" style={{fontStyle: 'italic'}}>
                                                 15 Grow Street,<br />
                                                 New York City,<br />
                                                 Phone: 111-222-333

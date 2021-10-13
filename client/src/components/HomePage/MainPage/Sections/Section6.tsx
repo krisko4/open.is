@@ -33,14 +33,14 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
             <Grid item style={{ marginTop: 20 }} xs={6}>
                 <Fade in={isVisible6} timeout={2000}>
                     <CardMedia
-                        image={`https://cdn5.vectorstock.com/i/1000x1000/17/49/dashboard-ui-futuristic-data-panel-with-user-vector-29231749.jpg`}
+                        image={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
                         style={{ height: 600, marginTop: 100, transform: 'translate(27%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
                     />
                 </Fade>
                 <Fade in={isVisible7} timeout={2000} >
                      {/* {...(isVisible6 ? { timeout: 4000 } : {})}> */}
                     <CardMedia
-                        image={`https://cdn5.vectorstock.com/i/1000x1000/17/49/dashboard-ui-futuristic-data-panel-with-user-vector-29231749.jpg`}
+                        image={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
                         style={{ height: 600, marginTop: 100, transform: 'translate(-27%, -15%) rotate(40deg) skew(10deg,-10deg)' }}
                     />
                 </Fade>
