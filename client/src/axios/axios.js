@@ -7,7 +7,7 @@ const myAxios = axios.create({
 });
 
 export const authAxios = axios.create({
-    baseURL: process.env.REACT_APP_AUTH_URL
+    baseURL: process.env.REACT_APP_BASE_URL
 })
 
 export default myAxios;

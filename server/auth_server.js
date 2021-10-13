@@ -30,31 +30,31 @@ server.use('/logout', logoutRouter)
 server.use('/auth', authRouter)
 server.use(apiErrorHandler)
 
-passport.use(new FacebookStrategy({
-    clientID: process.env.CLIENT_ID_FB,
-    clientSecret: process.env.CLIENT_SECRET_FB,
-    callbackURL: `${process.env.AUTH_URL}/auth/facebook/openis`
-},
-    function (request, accessToken, refreshToken, profile, done) {
-        console.log(profile)
-    }
-));
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.CLIENT_ID_FB,
+//     clientSecret: process.env.CLIENT_SECRET_FB,
+//     callbackURL: `${process.env.AUTH_URL}/auth/facebook/openis`
+// },
+//     function (request, accessToken, refreshToken, profile, done) {
+//         console.log(profile)
+//     }
+// ));
 
-passport.serializeUser((user, done) => done(null, user))
-passport.deserializeUser((user, done) => done(err, user))
+// passport.serializeUser((user, done) => done(null, user))
+// passport.deserializeUser((user, done) => done(err, user))
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID_GOOGLE,
-    clientSecret: process.env.CLIENT_SECRET_GOOGLE,
-    callbackURL: `${process.env.AUTH_URL}/auth/google/callback`,
-    passReqToCallback: true
-},
-    function (accessToken, refreshToken, profile, done) {
-        console.log('hello')
-        console.log(profile)
-        return done(null, profile)
-    }
-));
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.CLIENT_ID_GOOGLE,
+//     clientSecret: process.env.CLIENT_SECRET_GOOGLE,
+//     callbackURL: `${process.env.AUTH_URL}/auth/google/callback`,
+//     passReqToCallback: true
+// },
+//     function (accessToken, refreshToken, profile, done) {
+//         console.log('hello')
+//         console.log(profile)
+//         return done(null, profile)
+//     }
+// ));
 
 mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : uri.mongoURI, {
     useNewUrlParser: true,

@@ -6,7 +6,7 @@
     "node": "12.19.0"
   },
   "scripts": {
-    "start": "concurrently \"node server.js\" \"node auth_server.js\"",
+    "start": "node server.js",
     "server": "nodemon server",
     "authServer": "nodemon auth_server",
     "dev": "concurrently \"npm run server\" \"npm run authServer\""
