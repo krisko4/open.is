@@ -9,7 +9,7 @@
     "start": "node server.js",
     "server": "nodemon server",
     "authServer": "nodemon auth_server",
-    "dev": "concurrently \"npm run server\" \"npm run authServer\""
+    "dev": "nodemon server"
   },
   "dependencies": {
     "axios": "^0.21.4",
