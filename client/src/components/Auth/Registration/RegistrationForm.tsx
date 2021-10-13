@@ -85,12 +85,12 @@ export const RegistrationForm = () => {
             enqueueSnackbar('You have successfully registered', {
                 variant: 'success'
             })
-        } catch (err) {
+        } catch (err : any) {
             console.error(err)
             enqueueSnackbar('Registration failed', {
                 variant: 'error'
             })
-            //  setErrorMessage(err.response.data.error)
+            setErrorMessage(err.response.data)
         } finally {
             setLoading(false)
         }
