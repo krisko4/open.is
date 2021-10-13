@@ -63,7 +63,7 @@ const confirmationEmail = {
             attachments : emailAttachments,
             context: {
                 name: name,
-                url: `${process.env.CLIENT_URL}/confirmation/${tokenValue}`
+                url: `${process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_URL : process.env.CLIENT_URL}/confirm/${tokenValue}`
             }
         });
     }
