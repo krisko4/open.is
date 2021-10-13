@@ -38,7 +38,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
                                 restaurant via UberEats or book a visit to a hairdresser.
                             </Typography>
                             <Grid container style={{ marginTop: 20 }} justify="space-evenly">
-                                <CardMedia style={{ height: 150, width: 150 }} image="/images/ubereats.jpg" />
+                                <CardMedia style={{ height: 150, width: 150 }} image="/images/ubereats.png" />
                                 <CardMedia style={{ height: 150, width: 150 }} image="/images/bolt.jpg" />
                                 <CardMedia style={{ height: 150, width: 150 }} image="/images/moment.png" />
                             </Grid>
