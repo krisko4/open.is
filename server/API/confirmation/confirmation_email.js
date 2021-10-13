@@ -45,6 +45,7 @@ const confirmationEmail = {
     send: async (name, email, tokenValue) => {
 
         console.log(email)
+        console.log(emailConfig)
         let transporter = nodemailer.createTransport(emailConfig)
         transporter.use('compile', hbs({
             viewEngine: {
@@ -55,7 +56,7 @@ const confirmationEmail = {
             viewPath: './views'
         }))
         await transporter.sendMail({
-            from: 'projektfunkcyjny@gmail.com',
+            from: process.env.EMAIL_USERNAME,
             to: email,
             subject: `Confirm your e-mail ✔`,
             template: 'email',
