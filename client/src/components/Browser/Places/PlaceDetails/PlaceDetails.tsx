@@ -15,6 +15,7 @@ import OpeningHours from "../../../reusable/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
 import MainContent from "./MainContent";
 
+
 const useStyles = makeStyles(() =>
     createStyles({
         root: {
@@ -144,11 +145,7 @@ const useOpeningHoursStyles = makeStyles({
 
 })
 
-interface Props {
-    currentPlace: any,
-    setPlaceCardClicked: React.Dispatch<React.SetStateAction<boolean>>,
-    setCurrentPlace: React.Dispatch<any>
-}
+
 interface NewsProps {
     title: string,
     date: string,
@@ -164,9 +161,9 @@ interface OpinionProps {
 }
 
 
-export const PlaceDetails: FC<Props> = ({ currentPlace, setCurrentPlace, setPlaceCardClicked }) => {
+export const PlaceDetails: FC = () => {
 
-    const { setPopupOpen, setPlaceCoords } = useMapContext()
+    const { setPopupOpen, setPlaceCoords, currentPlace, setCurrentPlace, setPlaceCardClicked } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
 
 

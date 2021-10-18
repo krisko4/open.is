@@ -117,9 +117,9 @@ export const NewPlace: FC = () => {
 
     return (
 
-        <Grid container lg={12} spacing={2} item style={{marginBottom: 40, paddingLeft: 10 }} justify="space-evenly">
+        <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2} item style={{marginBottom: 40, paddingLeft: 10 }} justify="space-evenly">
 
-            <Grid item lg={5}>
+            <Grid item lg={activeStep > 0 ? 5 : 6}>
                 <Slide in={true}>
                     <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
         

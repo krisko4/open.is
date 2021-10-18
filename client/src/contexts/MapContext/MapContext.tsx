@@ -25,13 +25,19 @@ const useProviderSettings = () => {
    
     const [popupOpen, setPopupOpen] = useState(false)
     const [popupIndex, setPopupIndex] = useState(0)
+    const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
+    const [currentPlace, setCurrentPlace] = useState<any>()
     return {
         popupOpen,
         setPopupOpen,
         popupIndex,
         setPopupIndex,
         placeCoords,
-        setPlaceCoords
+        setPlaceCoords,
+        isPlaceCardClicked,
+        setPlaceCardClicked,
+        currentPlace,
+        setCurrentPlace
     }
 }
 

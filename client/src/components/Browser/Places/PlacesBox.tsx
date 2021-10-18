@@ -16,11 +16,13 @@ const MyTab = (props: any) => {
     const { label, ...rest } = props
     return <Tab {...rest} label={label} style={{ color: 'white' }} disableRipple />
 }
+
+
 const PlacesBox: FC = () => {
 
 
 
-    const { setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
+    const { setPopupOpen, setPlaceCoords, setPopupIndex, isPlaceCardClicked, setPlaceCardClicked, currentPlace, setCurrentPlace } = useMapContext()
     const [tabIndex, setTabIndex] = useState(0)
     const isFirstRender = useRef(true)
 
@@ -47,9 +49,8 @@ const PlacesBox: FC = () => {
     }, [tabIndex])
 
 
-    const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
     const { chosenCriterias, setChosenCriterias } = useSelectedPlacesContext()
-    const [currentPlace, setCurrentPlace] = useState<any>()
+
 
     const addVisit = async (place: any) => {
         try {
@@ -120,7 +121,7 @@ const PlacesBox: FC = () => {
                                 <ListItem
                                     style={{ marginTop: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
                                     key={index}
-                                    onClick={() => setTimeout(() => openPlaceDetails(place, index), 200)}
+                                    onClick={() => openPlaceDetails(place, index)}
                                     button
                                 >
                                     <PlaceCard place={place} />
@@ -130,7 +131,7 @@ const PlacesBox: FC = () => {
                     })}
 
                 </>
-                    : <PlaceDetails setPlaceCardClicked={setPlaceCardClicked} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />
+                    : <PlaceDetails  />
                 }
             </Scrollbars>
         </Grid>

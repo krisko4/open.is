@@ -24,18 +24,18 @@ const useStyles = makeStyles((theme) =>
                 color: 'white'
             },
             "& .MuiInputLabel-outlined": {
-                color: "red"
+                color: "#ff5252"
             }
 
         },
         tag: {
-            backgroundColor: 'red',
+            backgroundColor: '#ff5252',
             "& .MuiChip-label": {
                 color: 'white'
             },
         },
         clearIndicator: {
-            color: 'red'
+            color: '#ff5252'
         },
         loading: {
             color: 'grey'
@@ -53,11 +53,11 @@ const useStyles = makeStyles((theme) =>
         inputRoot: {
             color: "white",
             "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "red",
+                borderColor: "#ff5252",
                 borderRadius: 15
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "red"
+                borderColor: "#ff5252"
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "grey"
@@ -196,7 +196,7 @@ const Searcher = () => {
                                         <Typography variant="overline" style={{ color: 'lightgrey' }}>Found by name</Typography>
                                     </div>
                                 </Grid>
-                                <Button size="small" variant="contained" color="secondary">Place</Button>
+                                <Button size="small" style={{background: '#ff5252', color: 'white'}} variant="contained">Place</Button>
                             </Grid>
                         </Grid>
                     )

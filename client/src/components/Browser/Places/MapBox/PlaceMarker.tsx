@@ -21,7 +21,7 @@ import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesCon
 export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const { popupOpen, popupIndex} = useMapContext()
+    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked} = useMapContext()
     const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useSelectedPlacesContext()
     const firstRender = useRef(true)
 
@@ -52,6 +52,11 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
             icon={myIcon}
             ref={placeMarker}
             eventHandlers={{
+                click: () => {
+                    const place = chosenCriterias.find((criterium : any) => criterium.lat === placeMarker.current._latlng.lat && criterium.lng === placeMarker.current._latlng.lng)
+                    setCurrentPlace(place)
+                    setPlaceCardClicked(true)
+                },
                 dragend: async () => {
                     criterium.lat = placeMarker.current._latlng.lat
                     criterium.lng = placeMarker.current._latlng.lng

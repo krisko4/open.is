@@ -71,7 +71,7 @@ export const MyAccount: FC = () => {
                 formData.append('upload_preset', 'open_is')
                 const res: any = await axios.post(`https://api.cloudinary.com/v1_1/dftosfmzr/image/upload`, formData)
                 imageAddress = res.data.secure_url
-            
+
             }
             const userData = {
                 firstName: values.firstName,
@@ -102,8 +102,8 @@ export const MyAccount: FC = () => {
 
     return (
         <Slide in={true}>
-            <Grid container alignItems="center" justify="center">
-                <Grid item lg={6}>
+            <Grid container item lg={10} alignItems="center" justify="center">
+                <Grid item lg={7}>
                     <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
                         <Formik initialValues={initialValues} validationSchema={AccountDetailsSchema} validateOnMount onSubmit={handleSubmit}>
                             {({ dirty, errors, isValid, values, setFieldValue }) => (
@@ -132,12 +132,14 @@ export const MyAccount: FC = () => {
                                                 </Grid>
                                                 <Grid container alignItems="center" style={{ marginTop: 10 }}>
                                                     <Typography variant="overline">Password: </Typography>
-                                                    <Button color="primary" onClick={() => setPasswordChangeOpen(true)} variant="outlined" style={{ marginLeft: 46 }}>Change</Button>
+                                                    <Button color="primary" onClick={() => setPasswordChangeOpen(true)} variant="outlined" style={{ marginLeft: 38 }}>Change</Button>
                                                     <PasswordChange errors={errors} setPasswordChangeOpen={setPasswordChangeOpen} passwordChangeOpen={passwordChangeOpen} />
                                                 </Grid>
                                             </Grid>
                                             <Grid item lg={5}>
+
                                                 <ImageUpload setImageFile={setImageFile} img={img} setImg={setImg} />
+
                                             </Grid>
 
                                         </Grid>
