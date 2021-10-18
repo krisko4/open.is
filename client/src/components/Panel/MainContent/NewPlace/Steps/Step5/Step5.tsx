@@ -4,6 +4,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
 import UploadIcon from "@material-ui/icons/CloudUpload"
 import { useStepContext } from "../../../../../../contexts/StepContext";
+import { ImageUpload } from "../../../../../reusable/ImageUpload";
 
 const useStyles = makeStyles({
     imageContainer: {
@@ -28,11 +29,13 @@ export const Step5: FC = () => {
     const [elevation, setElevation] = useState(3)
     const {currentPlace, setCurrentPlace } = usePanelContext()
     const {setImageFile} = useStepContext()
+    const [img, setImg] = useState<any>(null)
 
     const clearImage = () => {
         const newCurrentPlace = { ...currentPlace }
         newCurrentPlace.img = null
         setCurrentPlace(newCurrentPlace)
+        setImageFile(null)
     }
 
     useEffect(() => {
@@ -76,7 +79,8 @@ export const Step5: FC = () => {
             <Grid item container justify="center" style={{ marginTop: 20 }} lg={12}>
                 <Grid item lg={7}>
                     <Card variant="outlined"    style={{ height: 360 }}>
-                        <CardMedia className={classes.imageContainer} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
+                        <ImageUpload img={img} setImg={setImg} setImageFile={setImageFile} />
+                        {/* <CardMedia className={classes.imageContainer} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
                             {currentPlace.img && <Grid container justify="flex-end">
                                 <IconButton onClick={() => clearImage()} className="uploader" >
                                     <ClearIcon color="secondary" />
@@ -90,10 +94,10 @@ export const Step5: FC = () => {
                                 onChange={e => uploadImage(e)}
                             >
                             </input>
-                        </CardMedia>
+                        </CardMedia> */}
                     </Card>
                     <Grid item container direction="column" style={{ textAlign: 'center', marginTop: 10, marginBottom: 20 }}>
-                        <Button startIcon={<UploadIcon />} variant="contained" onClick={() => uploadRef.current && uploadRef.current.click()} color="primary">Upload</Button>
+                        {/* <Button startIcon={<UploadIcon />} variant="contained" onClick={() => uploadRef.current && uploadRef.current.click()} color="primary">Upload</Button> */}
                         <Typography style={{marginTop: 10}} variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
                     </Grid>
                 </Grid>

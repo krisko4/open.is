@@ -10,6 +10,7 @@ import { Dashboard } from "./Dashboard/Dashboard";
 import { NewPlace } from "./NewPlace/NewPlace";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceManagement } from './PlaceManagement/PlaceManagement';
+import {MyAccount} from './MyAccount/MyAccount'
 
 export const MainContent: FC = () => {
 
@@ -26,6 +27,7 @@ export const MainContent: FC = () => {
           </StepContextProvider>}
         {selectedOption === ChosenOptions.NO_PLACES && <NoPlaces />}
         {selectedOption === ChosenOptions.PLACE_MANAGEMENT && <PlaceManagement />}
+        {selectedOption === ChosenOptions.MY_ACCOUNT && <MyAccount />}
       </Scrollbars>
     </Grid>
 

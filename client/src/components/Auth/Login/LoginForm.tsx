@@ -47,8 +47,11 @@ export const LoginForm = () => {
         dispatch(setEmail(userData.email))
         try {
             const response = await authAxios.post('/login', { ...userData }, { withCredentials: true })
+            console.log(response.data)
             localStorage.setItem('uid', response.data.uid)
             localStorage.setItem('fullName', response.data.fullName)
+            localStorage.setItem('email', userData.email)
+            response.data.img && localStorage.setItem('img', response.data.img)
             setLoginOpen(false)
             dispatch(login())
             enqueueSnackbar('You have signed in.', {

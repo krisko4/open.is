@@ -51,7 +51,7 @@ export const LeftNavigation: FC = () => {
                 </Grid>
                 <ListItem style={{ marginBottom: 20, }}>
                     <ListItemAvatar>
-                        <Avatar alt={`${localStorage.getItem('fullName')}`} src="/static/images/avatar/1.jpg" />
+                        <Avatar alt={`${localStorage.getItem('fullName')}`} src={`${localStorage.getItem('img')}`} />
                     </ListItemAvatar>
                     <ListItemText
                         // primaryTypographyProps={{
@@ -78,7 +78,7 @@ export const LeftNavigation: FC = () => {
                         </ListItemIcon>
                         <ListItemText secondary="Dashboard" />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.MY_ACCOUNT)}>
                         <ListItemIcon>
                             <SettingsIcon color="primary" />
                         </ListItemIcon>

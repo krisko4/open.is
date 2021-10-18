@@ -9,14 +9,14 @@ import { authAxios } from "./axios/axios";
 import { Confirmation } from './components/Auth/Confirmation';
 import Browser from "./components/Browser/Browser";
 import { About } from "./components/HomePage/About/About";
-import {Contact} from './components/HomePage/Contact/Contact'
+import { Contact } from './components/HomePage/Contact/Contact'
 import { PageSelector } from "./components/PageSelector";
 import theme from './components/Theme';
 import { PageContextProvider } from "./contexts/PageContext";
 import { login } from "./store/actions/login";
 import { logout } from "./store/actions/logout";
 import { setEmail } from "./store/actions/setEmail";
-
+import {EmailChangeConfirmation} from './components/Auth/EmailChangeConfirmation'
 
 
 
@@ -32,6 +32,10 @@ function App() {
                 dispatch(login())
             } catch (err) {
                 await authAxios.get('/logout', { withCredentials: true })
+                localStorage.removeItem('uid')
+                localStorage.removeItem('fullName')
+                localStorage.removeItem('email')
+                localStorage.removeItem('img')
                 dispatch(logout())
                 dispatch(setEmail(''))
             }
@@ -47,11 +51,12 @@ function App() {
                         <div className="App">
                             <PageContextProvider>
                                 <Route exact path="/" component={PageSelector} />
-                                <Route path="/about" component={About} />
-                                <Route path="/contact" component={Contact} />
+                                <Route path="/about" exact component={About} />
+                                <Route path="/contact" exact component={Contact} />
                             </PageContextProvider>
-                            <Route path="/search" component={Browser} />
-                            <Route path="/confirm/:token" component={Confirmation} />
+                            <Route path="/search" exact component={Browser} />
+                            <Route path="/confirm/:token" exact component={Confirmation} />
+                            <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
                         </div>
                     </Router>
                 </MuiPickersUtilsProvider>

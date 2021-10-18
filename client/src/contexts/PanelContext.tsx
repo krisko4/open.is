@@ -5,7 +5,8 @@ export enum ChosenOptions {
     DASHBOARD,
     NEW_PLACE,
     NO_PLACES,
-    PLACE_MANAGEMENT
+    PLACE_MANAGEMENT,
+    MY_ACCOUNT
 }
 
 export enum Status {
@@ -107,11 +108,15 @@ export const clearPlace = {
     visits: [],
     news: []
 }
+
 interface VisitProps {
     date: string,
     placeId: string,
     visitCount: number
 }
+
+
+
 
 const useProviderSettings = () => {
 
@@ -123,6 +128,12 @@ const useProviderSettings = () => {
     const [visits, setVisits] = useState<VisitProps[]>([])
     const [places, setPlaces] = useState<PlaceProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        img: null
+    })
     // const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
 
     return {
@@ -142,6 +153,8 @@ const useProviderSettings = () => {
         setPlaceIndex,
         visits,
         setVisits
+        // userData,
+        // setUserData
     }
 }
 

@@ -96,6 +96,9 @@ const Header: FC = () => {
         dispatch(logout())
         dispatch(setEmail(''))
         localStorage.removeItem('uid')
+        localStorage.removeItem('fullName')
+        localStorage.removeItem('email')
+        localStorage.removeItem('img')
         enqueueSnackbar('You have signed out.', {
             variant: 'success'
         })
