@@ -6,5 +6,9 @@ router.get('/:tokenValue', async (req, res, next) => {
     await confirmationController.confirmRegistration(req, res, next)
 })
 
+router.get('/:email/:tokenValue', async (req, res, next) => {
+    await confirmationController.confirmEmailChange(req, res, next)
+})
+
 
 module.exports = router

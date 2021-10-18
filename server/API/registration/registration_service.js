@@ -1,12 +1,12 @@
 const userService = require('../user/user_service')
 const confirmationTokenService = require('../confirmation_token/confirmation_token_service')
-const confirmationEmail = require('../confirmation/confirmation_email')
+const emailService = require('../email/email_service')
 
 const registrationService = {
 
     async sendConfirmationEmail(user) {
         const token = await confirmationTokenService.createToken(user['_id'])
-        await confirmationEmail.send(user.firstName, user.email, token.value)
+        await emailService.sendConfirmationEmail(user.firstName, user.email, token.value)
         return token
     },
 

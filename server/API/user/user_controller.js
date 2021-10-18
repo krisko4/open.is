@@ -5,6 +5,7 @@ const placeService = require('../place/place_service')
 const newsService = require('../news/news_service')
 const visitService = require('../visit/visit_service')
 const opinionService = require('../opinion/opinion_service')
+const userDto = require('./model/user_dto')
 
 const userController = {
 
@@ -23,17 +24,32 @@ const userController = {
     },
 
     deleteAll: async (req, res, next) => {
-       try{
-           await userService.deleteAll()
-           await confirmationTokenService.deleteTokens()
-           await placeService.deleteAll()
-           await visitService.deleteVisits()
-           await opinionService.deleteOpinions()
-           await newsService.deleteNews()
-           return res.sendStatus(200)
-       }catch(err){
-           return next(err)
-       }
+        try {
+            await userService.deleteAll()
+            await confirmationTokenService.deleteTokens()
+            await placeService.deleteAll()
+            await visitService.deleteVisits()
+            await opinionService.deleteOpinions()
+            await newsService.deleteNews()
+            return res.sendStatus(200)
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+
+    changeUserData: async (req, res, next) => {
+        try {
+            const { password } = req.body
+            if (password === undefined) throw ApiError.badRequest('Password is required')
+            const { uid } = req.cookies
+            const { id } = req.params
+            if (uid !== id) throw new Error('Uids are different')
+            const result = await userService.changeUserData(req.body, id)
+            return res.status(200).json({emailChanged: result.emailChanged, user: userDto(result.user)})
+        } catch (err) {
+            return next(err)
+        }
     },
 
     deleteUserById: async (req, res, next) => {
@@ -47,12 +63,18 @@ const userController = {
         }
     },
 
-    
 
-    getUserById: (req, res) => {
-        userService.getUserById()
-            .then((user) => res.status(200).json(user))
-            .catch(err => res.status(400).json({ error: err }))
+
+    getUserById: async (req, res, next) => {
+        try {
+            const { id } = req.params
+            console.log(req.params)
+            console.log(id)
+            const user = await userService.getUserById(id)
+            return res.status(200).json(userDto(user))
+        } catch (err) {
+            return next(err)
+        }
     },
 
     getFullNameById: (req, res) => {

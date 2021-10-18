@@ -13,6 +13,18 @@ const confirmationController = {
         }
     },
 
+    confirmEmailChange : async (req, res, next) => {
+        const {email, tokenValue} = req.params
+        try{
+            console.log('halko')
+            await confirmationService.confirmEmailChange(tokenValue, email)
+            res.status(200).json('E-mail change confirmed successfully.')
+        } catch(err) {
+            next(err)
+        }
+
+    }
+
     
 }
 

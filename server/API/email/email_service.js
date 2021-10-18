@@ -41,32 +41,53 @@ const emailAttachments = [
 ]
 
 
-const confirmationEmail = {
-    send: async (name, email, tokenValue) => {
+const emailService = {
 
-        console.log(email)
-        console.log(emailConfig)
-        let transporter = nodemailer.createTransport(emailConfig)
+    sendConfirmationEmail: async (name, emailReceiver, tokenValue) => {
+        const transporter = nodemailer.createTransport(emailConfig)
         transporter.use('compile', hbs({
             viewEngine: {
                 extname: '.handlebars',
                 layoutsDir: './views/',
-                defaultLayout: 'email',
+                defaultLayout: 'confirmation_email',
             },
             viewPath: './views'
         }))
         await transporter.sendMail({
             from: process.env.EMAIL_USERNAME,
-            to: email,
+            to: emailReceiver,
             subject: `Confirm your e-mail ✔`,
-            template: 'email',
-            attachments : emailAttachments,
+            template: 'confirmation_email',
+            attachments: emailAttachments,
             context: {
                 name: name,
                 url: `${process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_URL : process.env.CLIENT_URL}/confirm/${tokenValue}`
             }
         });
+    },
+    sendEmailModificationEmail: async (name, emailReceiver, tokenValue) => {
+        const transporter = nodemailer.createTransport(emailConfig)
+        transporter.use('compile', hbs({
+            viewEngine: {
+                extname: '.handlebars',
+                layoutsDir: './views/',
+                defaultLayout: 'email_modification',
+            },
+            viewPath: './views'
+        }))
+        await transporter.sendMail({
+            from: process.env.EMAIL_USERNAME,
+            to: emailReceiver,
+            subject: `Confirm your e-mail modification ✔`,
+            template: 'email_modification',
+            attachments: emailAttachments,
+            context: {
+                name: name,
+                url: `${process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_URL : process.env.CLIENT_URL}/${emailReceiver}/confirm/${tokenValue}`
+            }
+        });
+
     }
 }
 
-module.exports = confirmationEmail
+module.exports = emailService

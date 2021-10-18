@@ -23,7 +23,12 @@ const fieldTypes = {
     DefaultBoolean: {
         type: Boolean,
         default: false
+    },
+    Image: {
+        type: String,
+        default: ''
     }
+
 
 }
 

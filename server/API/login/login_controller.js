@@ -6,7 +6,7 @@ const loginController = {
         const userData = req.body
         console.log(userData)
         try {
-            const { accessToken, refreshToken, uid, fullName } = await loginService.login(userData)
+            const { accessToken, refreshToken, uid, fullName , img} = await loginService.login(userData)
             res.cookie('access_token', accessToken, {
                 httpOnly: true,
                 // secure: true,
@@ -28,7 +28,8 @@ const loginController = {
             })
             return res.status(200).json({
                 uid: uid,
-                fullName: fullName
+                fullName: fullName,
+                img: img
             })
         } catch (err) {
             return next(err)

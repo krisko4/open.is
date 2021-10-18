@@ -8,11 +8,13 @@ const loginService = {
         const accessToken =  jwtService.generateAccessToken(user)
         const refreshToken = jwtService.generateRefreshToken(user)
         await jwtService.saveRefreshToken(refreshToken, user)
+        console.log(user)
         return {
             accessToken: accessToken,
             refreshToken: refreshToken,
             uid: user._id,
-            fullName: `${user.firstName} ${user.lastName}`
+            fullName: `${user.firstName} ${user.lastName}`,
+            img: user.img
         }
     },
 
