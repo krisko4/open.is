@@ -57,7 +57,7 @@ router.get('/:userId/name', (req, res, next) => {
     userController.getFullNameById(req, res)
 })
 
-router.post('/', userValidator.checkEmailPasswordEquality, (req, res, next) => {
+router.post('/', (req, res, next) => {
     userController.addUser(req, res, next)
 })
 
