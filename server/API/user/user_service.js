@@ -7,7 +7,7 @@ const INVALID_CREDENTIALS_MSG = 'Invalid credentials'
 const USER_INACTIVE_MSG = 'User is inactive'
 const emailService = require('../email/email_service')
 const confirmationTokenService = require('../confirmation_token/confirmation_token_service')
-
+const cloudinary = require('../../config/cloudinary')
 
 const userService = {
 
@@ -57,8 +57,6 @@ const userService = {
         const currentUser = await User.findById(id).exec()
         let emailChanged = false
         if (!currentUser) throw new Error('User not found')
-        console.log(currentUser)
-        console.log(newData)
         if (newData.password) {
             newData.password = bcrypt.hashSync(newData.password, 10)
         } else {
@@ -76,8 +74,18 @@ const userService = {
             emailChanged = true
         }
         delete newData.email
-        const user = await User.findByIdAndUpdate(id, newData, { new: true }).exec()
-        return { emailChanged: emailChanged, user: user }
+        // upload image to cloudinary
+        if (newData.img) {
+            if(currentUser.img){
+                await cloudinary.uploader.destroy(currentUser.img)
+            }
+            const uploadResponse = await cloudinary.uploader.upload(newData.img.tempFilePath, {
+                upload_preset: 'user_images'
+            })
+            newData.img = uploadResponse.public_id
+        }
+         const user = await User.findByIdAndUpdate(id, newData, { new: true }).exec()
+         return { emailChanged: emailChanged, user: user }
     },
 
 }

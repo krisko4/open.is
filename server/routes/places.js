@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const placeController = require('../API/place/place_controller')
 const userService = require('../API/user/user_service')
-const validatePlace = require('../API/place/validation/place_validator');
 const { body, validationResult, cookie, sanitizeBody } = require('express-validator');
 const ApiError = require('../errors/ApiError')
 const fileUpload = require('express-fileupload');
-const placeValidator = require('../API/place/validation/place_validator');
 const jwtController = require('../API/jwt/jwt_controller')
+const placeValidator = require('../request_validators/place_validator')
+const imageValidator = require('../request_validators/image_validator')
 
 
 
@@ -40,14 +40,16 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/',
+    jwtController.authenticateAccessToken,
     fileUpload({
         safeFileNames: true,
         limits: { fileSize: 500000 },
-        abortOnLimit: true
+        abortOnLimit: true,
+        useTempFiles: true,
+        tempFileDir: '/tmp/'
     }),
-    jwtController.authenticateAccessToken,
     placeValidator.validatePlaceAddress,
-    placeValidator.validateUploadedImage,
+    imageValidator.validateUploadedImage,
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 50 }),
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
@@ -80,12 +82,15 @@ router.put('/',
     fileUpload({
         safeFileNames: true,
         limits: { fileSize: 500000 },
-        abortOnLimit: true
+        abortOnLimit: true,
+        useTempFiles: true,
+        tempFileDir: '/tmp/'
+
     }),
     jwtController.authenticateAccessToken,
     body('address').isString().notEmpty(),
     placeValidator.validatePlaceAddress,
-    placeValidator.validateImageOnEdit,
+    imageValidator.validateImageOnEdit,
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 51 }),
     body('subtitle').isString().isLength({ min: 1, max: 101 }),

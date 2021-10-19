@@ -11,6 +11,7 @@ const placeDto = (place, uid) => {
     }
     console.log(place.userId)
     console.log(uid)
+    placeDto['img'] = `${process.env.CLOUDI_URL}/${placeDto['img']}`
     uid && place.userId == uid ? placeDto['isUserOwner'] = true : placeDto['isUserOwner'] = false
     return placeDto
 }

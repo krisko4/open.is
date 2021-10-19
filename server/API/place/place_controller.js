@@ -132,8 +132,8 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            let img = req.files && req.files.img
-            if (!img) img = req.body.img
+            // let img = req.files && req.files.img
+            // if (!img) img = req.body.img
             const placeData = {
                 _id: reqBody._id,
                 name: reqBody.name,
@@ -144,14 +144,14 @@ const placeController = {
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
                 phone: reqBody.phone,
-                img: img,
                 email: reqBody.email,
                 website: reqBody.website,
                 userId: user._id,
                 facebook: reqBody.facebook,
                 instagram: reqBody.instagram
-
             }
+            const {img} = req.files
+            if(img) placeData.img = img
             const place = await placeService.editPlace(placeData, user)
             const placeObject = { ...place._doc }
             const visits = await visitService.getVisitsByPlaceId(placeObject._id)
@@ -192,6 +192,8 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
             const { img } = req.files
+            if(!img) throw ApiError.badRequest('Image file is required')
+            console.log(img)
             const placeData = {
                 name: reqBody.name,
                 address: reqBody.address,
@@ -212,7 +214,6 @@ const placeController = {
             return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
         }
         catch (err) {
-            console.log('zlapany blad')
             return next(err)
         }
 
