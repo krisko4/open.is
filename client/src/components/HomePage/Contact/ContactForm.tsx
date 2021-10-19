@@ -1,20 +1,55 @@
 import { Grid, TextField } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
-import React, { FC } from "react";
+import { useSnackbar } from "notistack";
+import React, { FC, useState } from "react";
+import myAxios from "../../../axios/axios";
 import { LoadingButton } from "../../reusable/LoadingButton";
+import * as Yup from 'yup'
 
+
+const ContactSchema = Yup.object().shape({
+    email: Yup.string().email().required(),
+    name: Yup.string().required().max(40),
+    content: Yup.string().required().max(400)
+})
 
 const initialValues = {
     name: '',
     email: '',
     content: ''
 }
+const isLetter = (e: React.KeyboardEvent) => {
+    // let char = String.fromCharCode(e.keyCode);
+    const char = e.key
+    if (/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\b]+$/.test(char)) return true;
+    else e.preventDefault();
+}
 
 export const ContactForm: FC = () => {
 
+    const [loading, setLoading] = useState(false)
+    const {enqueueSnackbar} = useSnackbar()
 
-    const handleSubmit = () => {
-        console.log('dododo')
+    const handleSubmit = (values: typeof initialValues) => {
+        setLoading(true)
+        myAxios.post('/contact', 
+        {
+            ...values,
+            date: new Date()
+        })
+            .then(res => {
+                enqueueSnackbar('Thank you. We have received your message.', {
+                    variant: 'success'
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                enqueueSnackbar('Oops, something went wrong', {
+                    variant: 'error'
+                })
+            })
+            .finally(() => setLoading(false))
+    
     }
 
     return (
@@ -22,14 +57,15 @@ export const ContactForm: FC = () => {
             <Formik
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
+                validationSchema={ContactSchema}
+                validateOnMount
             >
                 {({ dirty, isValid, values }) => (
                     <Form>
-                        <FastField as={TextField} name="name" fullWidth={true}
+                        <FastField as={TextField} onKeyDown={isLetter} name="name" fullWidth={true}
                             label="Please enter your name" />
                         <FastField style={{ marginTop: 10 }} as={TextField} name="email" fullWidth={true}
                             label="Please enter your e-mail address" />
-
                         <FastField
                             style={{ marginTop: 20 }}
                             as={TextField}
@@ -46,7 +82,7 @@ export const ContactForm: FC = () => {
                             }}
                         />
                         <Grid item container justify="flex-end">
-                            <LoadingButton loading={false} color="primary" variant="contained">Submit</LoadingButton>
+                            <LoadingButton loading={loading} disabled={loading || !dirty || !isValid} color="primary" type="submit" variant="contained">Submit</LoadingButton>
                         </Grid>
                     </Form>
                 )}

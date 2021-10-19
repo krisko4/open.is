@@ -97,6 +97,7 @@ export const Dashboard: FC = () => {
                 data: place.visits.map(visit => [new Date(visit.date), visit.visitCount])
             }
         }))
+        console.log(mostPopularPlace)
         const opinionCount = places.reduce((a, b) => a + b.opinions.length, 0)
         setTotalOpinions(opinionCount)
         const opinionsToday = places.reduce((a, b) => a + b.opinions.filter(opinion => isToday(new Date(opinion.date))).length, 0)
@@ -228,7 +229,8 @@ export const Dashboard: FC = () => {
                                                                 {mostPopularPlace?.visits.reduce((a, b) => a + b.visitCount, 0)}
 
                                                             </Typography>
-                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: 50</Typography>
+                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: { mostPopularPlace?.visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)}</Typography>
+         
                                                         </Grid>
                                                     </CardContent>
                                                 </Card>
@@ -241,7 +243,7 @@ export const Dashboard: FC = () => {
                                                             <Typography variant="h4" style={{ borderBottom: '5px solid red', fontWeight: 'bold' }}>
                                                                 {mostPopularPlace?.opinions.length}
                                                             </Typography>
-                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Opinions today: 3</Typography>
+                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Opinions today: {mostPopularPlace?.opinions.filter(opinion => isToday(new Date(opinion.date))).length}</Typography>
                                                         </Grid>
 
                                                     </CardContent>
@@ -255,7 +257,7 @@ export const Dashboard: FC = () => {
 
                                                             <Rating value={mostPopularPlace?.averageNote.average || 0} readOnly />
 
-                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Costam: 3</Typography>
+                                                            {/* <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Costam: 3</Typography> */}
                                                         </Grid>
                                                     </CardContent>
                                                 </Card>
