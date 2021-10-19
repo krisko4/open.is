@@ -27,9 +27,8 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
 
     const myIcon = L.icon({
        // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
-        iconUrl: criterium.img ? `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}` : `https://image.flaticon.com/icons/png/512/149/149059.png`,
-        iconSize: [50, 50],
-        
+        iconUrl: criterium.img || `https://image.flaticon.com/icons/png/512/149/149059.png`,
+        iconSize: [50, 50], 
         // iconAnchor: [10, 0],
         shadowUrl: iconShadow,
         popupAnchor: [0, -30],
@@ -81,7 +80,7 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
         >
             <Popup className={classes.popup}>
                 <Grid container justify="center" alignItems="center">
-                    <Avatar style={{ width: 60, height: 60 }} src={isEditionMode ? criterium.img : `${process.env.REACT_APP_BASE_URL}/images/places/${criterium.img}`} />
+                    <Avatar style={{ width: 60, height: 60 }} src={criterium.img} />
                     <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
                         <Typography variant="h6">
                             {criterium.name}

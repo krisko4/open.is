@@ -41,7 +41,7 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
                         <Grid item>
                             {/* <CardMedia className={classes.image}
                                 image={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} /> */}
-                                <Avatar style={{width: 80, height: 80}} src={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} alt={place.name}/>
+                                <Avatar style={{width: 80, height: 80}} src={place.img} alt={place.name}/>
                                     
                         </Grid>
                         <Grid item lg={10}  style={{marginLeft: 10}}>

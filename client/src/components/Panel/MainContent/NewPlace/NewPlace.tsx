@@ -83,7 +83,6 @@ export const NewPlace: FC = () => {
         const formData = new FormData()
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
-
         myAxios.post('/places', formData, {
             withCredentials: true,
             headers: {
@@ -92,7 +91,7 @@ export const NewPlace: FC = () => {
         }).then(res => {
             console.log(res.data)
             const newPlace = res.data.place
-            newPlace.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
+            newPlace.img = res.data.place.img
             newPlace.visits = []
             newPlace.opinions = []
             newPlace.news = []

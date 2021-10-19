@@ -38,7 +38,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                 }
             })
             console.log(res.data)
-            res.data.place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
+            // res.data.place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
             const currentPlaces: any = [...places]
             currentPlaces.push(res.data.place)
             setCurrentPlace(res.data.place)

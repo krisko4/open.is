@@ -1,8 +1,6 @@
-import { Button, Card, CardMedia, Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
-import ClearIcon from '@material-ui/icons/Clear';
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { usePanelContext } from "../../../../../../contexts/PanelContext";
-import UploadIcon from "@material-ui/icons/CloudUpload"
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { ImageUpload } from "../../../../../reusable/ImageUpload";
 
@@ -29,14 +27,16 @@ export const Step5: FC = () => {
     const [elevation, setElevation] = useState(3)
     const { currentPlace, setCurrentPlace } = usePanelContext()
     const { imageFile, setImageFile } = useStepContext()
-    const [img, setImg] = useState<any>(null)
+    const [img, setImg] = useState<any>(currentPlace.img)
 
 
     useEffect(() => {
+        console.log('zmienilo sie')
+        console.log(img)
         const newCurrentPlace = { ...currentPlace }
         newCurrentPlace.img = img
         setCurrentPlace(newCurrentPlace)
-    }, [imageFile])
+    }, [img])
 
 
     // const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {

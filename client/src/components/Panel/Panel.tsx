@@ -26,6 +26,7 @@ export const Panel: FC = () => {
 
     const { setPlaces, setSelectedOption } = usePanelContext()
     const [loading, setLoading] = useState(true)
+   
 
     useEffect(() => {
         (async function () {
@@ -42,9 +43,8 @@ export const Panel: FC = () => {
                 }
                 setSelectedOption(ChosenOptions.DASHBOARD)
                 console.log(response.data)
-                response.data.forEach((place: any) => place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`)
+                // response.data.forEach((place: any) => place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`)
                 setPlaces(response.data)
-
             }
             catch (err) {
                 console.log(err)

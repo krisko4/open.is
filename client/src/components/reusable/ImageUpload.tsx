@@ -13,18 +13,14 @@ export const ImageUpload: FC<Props> = ({ img, setImg, setImageFile }) => {
 
     const uploadRef = useRef<HTMLInputElement>(null)
     const [inputKey, setInputKey] = useState<any>()
+    
     const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const image = event.target.files[0]
             setImageFile(image)
             const fileReader = new FileReader()
             fileReader.readAsDataURL(image)
-            fileReader.onload = e => {
-                if (e.target) {
-
-                    setImg(e.target.result)
-                }
-            }
+            fileReader.onload = e => e.target && setImg(e.target.result)        
         }
 
     }
@@ -49,6 +45,7 @@ export const ImageUpload: FC<Props> = ({ img, setImg, setImageFile }) => {
                         ref={uploadRef}
                         style={{ display: 'none' }}
                         onChange={e => uploadImage(e)}
+                        key={inputKey}
                     >
                     </input>
                 </CardMedia>

@@ -64,26 +64,31 @@ export const MyAccount: FC = () => {
         console.log(values)
         setLoading(true)
         try {
-            let imageAddress: string = ''
-            if (imageFile !== null) {
-                const formData = new FormData()
-                formData.append('file', imageFile)
-                formData.append('upload_preset', 'open_is')
-                const res: any = await axios.post(`https://api.cloudinary.com/v1_1/dftosfmzr/image/upload`, formData)
-                imageAddress = res.data.secure_url
-
-            }
+            //    let imageAddress: string = ''
+            //     if (imageFile !== null) {
+            //         const formData = new FormData()
+            //         formData.append('file', imageFile)
+            //         formData.append('upload_preset', 'open_is')
+            //         const res: any = await axios.post(`https://api.cloudinary.com/v1_1/dftosfmzr/image/upload`, formData)
+            //         imageAddress = res.data.secure_url
+            //     }
             const userData = {
                 firstName: values.firstName,
                 lastName: values.lastName,
                 password: values.password,
-                img: imageAddress,
+                img: imageFile,
                 email: values.email
             }
-            const res = await myAxios.patch(`/users/${localStorage.getItem('uid')}`, userData, {
-                withCredentials: true
+            const formData = new FormData()
+            let key: keyof typeof userData
+            for (key in userData) formData.append(key, userData[key])
+            const res = await myAxios.patch(`/users/${localStorage.getItem('uid')}`, formData, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             })
-            localStorage.setItem('img', imageAddress)
+            res.data.user.img && localStorage.setItem('img', res.data.user.img)
             console.log(res.data)
             enqueueSnackbar('You have successfully changed your personal data', {
                 variant: 'success'
