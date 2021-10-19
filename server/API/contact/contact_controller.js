@@ -2,10 +2,10 @@ const contactService = require('./contact_service')
 
 const contactController = {
     sendMessage: async (req, res, next) => {
-        try{
-            await contactService.sendMessage(req,body)
+        try {
+            await contactService.sendMessage(req.body)
             return res.sendStatus(200)
-        }catch(err){
+        } catch (err) {
             return next(err)
         }
     }

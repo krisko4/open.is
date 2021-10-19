@@ -7,7 +7,7 @@ const contactController = require('../API/contact/contact_controller')
 router.post('/',
     body('name').isString().notEmpty().isLength({ max: 40 }),
     body('email').isEmail().notEmpty(),
-    body('message').isString().isLength({ max: 400 }),
+    body('content').isString().isLength({ max: 400 }),
     (req, res, next) => {
         const errors = validationResult(req)
         console.log(errors.array())

@@ -9,8 +9,8 @@ router.post('/', (req, res, next) => {
     opinionController.addNewOpinion(req, res, next)
 })
 
-router.delete('/', (req, res, next) => {
-    opinionController.deleteOpinions(req, res, next)
-})
+// router.delete('/', (req, res, next) => {
+//     opinionController.deleteOpinions(req, res, next)
+// })
 
 module.exports = router

@@ -12,8 +12,8 @@ router.get('/', (req, res, next) => {
 }),
 
 
-router.delete('/', (req, res, next) => {
-    newsController.deleteNews(req, res, next)
-})
+// router.delete('/', (req, res, next) => {
+//     newsController.deleteNews(req, res, next)
+// })
 
 module.exports = router

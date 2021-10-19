@@ -10,9 +10,9 @@ router.post('/', (req, res, next) => {
     visitController.addVisit(req, res, next)
 })
 
-router.delete('/', (req, res, next) => {
-    visitController.deleteVisits(req, res, next)
-})
+// router.delete('/', (req, res, next) => {
+//     visitController.deleteVisits(req, res, next)
+// })
 
 
 module.exports = router
