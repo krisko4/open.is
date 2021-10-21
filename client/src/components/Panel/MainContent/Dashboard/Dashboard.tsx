@@ -1,13 +1,13 @@
-import { Avatar, Button, Collapse, Fade, makeStyles, Slide, Typography } from "@material-ui/core";
+import { Avatar, Button, Fade, makeStyles, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { Rating } from "@material-ui/lab";
-import { format, isToday } from "date-fns";
+import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import { ChosenOptions, PlaceProps, usePanelContext } from "../../../../contexts/PanelContext";
 import { StatisticChart } from "./StatisticChart";
@@ -62,15 +62,7 @@ export const Dashboard: FC = () => {
         },
         xaxis: {
             type: 'datetime',
-            // labels: {
-            //     formatter: (value : any, timestamp : any) => format(new Date(timestamp), 'HH:mm')
-
-
-            // }
         },
-        // yaxis: {
-        //     min: 0
-        // },
         tooltip: {
             x: {
                 format: 'dd MMM yyyy HH:mm'
@@ -210,7 +202,7 @@ export const Dashboard: FC = () => {
                                         <Avatar
                                             // src="https://static.gazetka-24.pl/image/shop/auchan/logo_512.png"
                                             src={`${mostPopularPlace?.img}`}
-                                            alt="elo"
+                                            alt={mostPopularPlace?.name}
                                             style={{ height: 100, width: 100 }}
                                         />
                                         <Typography variant="h3" style={{ fontWeight: 'bold', textAlign: 'center' }}>
