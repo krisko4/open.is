@@ -9,7 +9,7 @@ const ApiError = require('../../errors/ApiError')
 const confirmationTokenService = {
 
 
-    createToken:  (userId) => {
+    createToken:  (userId, session) => {
         const createdAt = new Date()
         const expiresAt = addMinutes(createdAt, 10)
         return new ConfirmationToken({
@@ -18,7 +18,7 @@ const confirmationTokenService = {
             createdAt: createdAt,
             expiresAt: expiresAt,
             userId: userId
-        }).save()
+        }).save({session})
         
     },
     

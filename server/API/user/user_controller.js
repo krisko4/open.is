@@ -75,8 +75,7 @@ const userController = {
 
     getUserById: async (req, res, next) => {
         try {
-            const { id } = req.params
-            console.log(req.params)
+            const { id } = req.params 
             console.log(id)
             const user = await userService.getUserById(id)
             return res.status(200).json(userDto(user))

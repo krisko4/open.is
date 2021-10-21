@@ -1,7 +1,5 @@
 const Place = require('./model/place')
 const mongoose = require('mongoose')
-const opinionService = require('../opinion/opinion_service')
-const userValidator = require('../user/model/user_validator')
 const ApiError = require('../../errors/ApiError')
 const fs = require('fs')
 const cloudinary = require('../../config/cloudinary')
@@ -22,53 +20,47 @@ const placeService = {
         const place = await placeService.getPlaceById(placeData._id)
         if (!place) throw new Error('Invalid placeId')
         if (!user._id.equals(place.userId)) throw new Error('This user is not allowed to edit this place')
-        // if image is URL, we don't want it to be different than current
-        // if (typeof img === 'string' && place.img !== placeData.img) throw ApiError.internal('Invalid image URL')
         const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
         if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
-        // if image is a File, delete current image from cloudinary and upload new one 
-        // if (typeof img === 'object') {
-        //     const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
-        //     fs.unlink(imagePath, err => {
-        //         if (err) throw new Error(err)
-        //     })
-        //     const uniqueFilename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg'
-        //     placeData.img = uniqueFilename
-        //     const uploadPath = process.cwd() + `\\public\\images\\places\\` + uniqueFilename
-        //     img.mv(uploadPath, err => {
-        //         if (err) throw new Error(err)
-        //     }
-        //     )
+        let editedPlace
+        const session = await mongoose.startSession()
+        await session.withTransaction(async () => {
+            if (img) {
+                await cloudinary.uploader.destroy(place.img)
+                const uploadResponse = await cloudinary.uploader.upload(img.tempFilePath, {
+                    upload_preset: 'place_images'
+                })
+                placeData.img = uploadResponse.public_id
+            }
+            editedPlace = Place.findByIdAndUpdate(placeData._id, placeData, { new: true }).exec()
 
-        // }
-        if (img) {
-            await cloudinary.uploader.destroy(place.img)
-            const uploadResponse = await cloudinary.uploader.upload(img.tempFilePath, {
-                upload_preset: 'place_images'
-            })
-            placeData.img = uploadResponse.public_id
-        }
-        return Place.findByIdAndUpdate(placeData._id, placeData, { new: true }).exec()
+        })
+        await session.endSession()
+        return editedPlace
+
     },
 
     addPlace: async (placeData) => {
-        console.log('siem')
         const { lat, lng, img } = placeData
         const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
         if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
-
         // upload image to cloudinary
-        if (img) {
-            const uploadResponse = await cloudinary.uploader.upload(img.tempFilePath, {
-                upload_preset: 'place_images'
-            })
-            placeData.img = uploadResponse.public_id
-        }
-        return new Place({
-            _id: new mongoose.Types.ObjectId,
-            ...placeData
-        }).save()
-       
+        const session = await mongoose.startSession()
+        let newPlace
+        await session.withTransaction(async () => {
+            if (img) {
+                const uploadResponse = await cloudinary.uploader.upload(img.tempFilePath, {
+                    upload_preset: 'place_images'
+                })
+                placeData.img = uploadResponse.public_id
+            }
+            newPlace = await new Place({
+                _id: new mongoose.Types.ObjectId,
+                ...placeData
+            }).save({ session })
+        })
+        await session.endSession()
+        return newPlace
 
     },
 
@@ -90,7 +82,7 @@ const placeService = {
     setOpeningHours: (id, hours) => Place.findByIdAndUpdate(id, { 'openingHours': hours, 'isActive': true }, { new: true, runValidators: true }).exec(),
     deletePlace: async (id) => {
         const place = await placeService.getPlaceById(id)
-        if(!place) throw new Error('No place with provided id found')
+        if (!place) throw new Error('No place with provided id found')
         const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
         fs.unlink(imagePath, err => {
             if (err) throw new Error(err)

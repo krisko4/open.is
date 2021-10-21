@@ -53,7 +53,7 @@ router.post('/',
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 50 }),
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
-    body('description').isString().isLength({ min: 1, max: 400 }),
+    body('description').isString().isLength({ min: 1, max: 600 }),
     body('phone').isMobilePhone().notEmpty(),
     body('email').isEmail().optional({nullable: true, checkFalsy: true}),
     body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
@@ -63,15 +63,16 @@ router.post('/',
     body('lng').isFloat().notEmpty(),
     (req, res, next) => {
         const errors = validationResult(req)
+        console.log(errors.array())
         if (!errors.isEmpty()) return res.status(400).json(errors.array())
         placeController.addPlace(req, res, next)
     }
 )
 
 
-router.delete('/', (req, res, next) => {
-    placeController.deleteAll(req, res, next)
-})
+// router.delete('/', (req, res, next) => {
+//     placeController.deleteAll(req, res, next)
+// })
 
 router.delete('/:placeId', (req, res, next) => {
     placeController.deletePlace(req, res, next)
@@ -92,9 +93,9 @@ router.put('/',
     placeValidator.validatePlaceAddress,
     imageValidator.validateImageOnEdit,
     cookie('uid').notEmpty().isMongoId(),
-    body('name').isString().isLength({ min: 2, max: 51 }),
-    body('subtitle').isString().isLength({ min: 1, max: 101 }),
-    body('description').isString().isLength({ min: 1, max: 401 }),
+    body('name').isString().isLength({ min: 2, max: 50 }),
+    body('subtitle').isString().isLength({ min: 1, max: 100 }),
+    body('description').isString().isLength({ min: 1, max: 600 }),
     body('phone').isMobilePhone().notEmpty(),
     body('email').isEmail().optional({nullable: true, checkFalsy: true}),
     body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),

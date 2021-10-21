@@ -27,7 +27,7 @@ const userService = {
     },
 
 
-    async addUser(userData) {
+    async addUser(userData, session) {
         const { email, password } = userData
         const duplicateUser = await userService.getUserByEmail(email)
         if (duplicateUser) throw ApiError.internal(ALREADY_EXISTS_MSG)
@@ -35,7 +35,7 @@ const userService = {
         return new User({
             _id: new mongoose.Types.ObjectId,
             ...userData
-        }).save()
+        }).save({ session })
 
     },
 
@@ -62,30 +62,36 @@ const userService = {
         } else {
             delete newData.password
         }
-        if (newData.email !== currentUser.email) {
-            const duplicateUser = await userService.getUserByEmail(newData.email)
-            if (duplicateUser) throw ApiError.internal(ALREADY_EXISTS_MSG)
-            const token = await confirmationTokenService.createToken(currentUser['_id'])
-            await emailService.sendEmailModificationEmail(
-                currentUser.firstName,
-                newData.email,
-                token.value
-            )
-            emailChanged = true
-        }
-        delete newData.email
-        // upload image to cloudinary
-        if (newData.img) {
-            if(currentUser.img){
-                await cloudinary.uploader.destroy(currentUser.img)
+        let user
+        const session = await mongoose.startSession()
+        await session.withTransaction(async () => {
+            if (newData.email !== currentUser.email) {
+                const duplicateUser = await userService.getUserByEmail(newData.email)
+                if (duplicateUser) throw ApiError.internal(ALREADY_EXISTS_MSG)
+                const token = await confirmationTokenService.createToken(currentUser['_id'], session)
+                await emailService.sendEmailModificationEmail(
+                    currentUser.firstName,
+                    newData.email,
+                    token.value
+                )
+                emailChanged = true
             }
-            const uploadResponse = await cloudinary.uploader.upload(newData.img.tempFilePath, {
-                upload_preset: 'user_images'
-            })
-            newData.img = uploadResponse.public_id
-        }
-         const user = await User.findByIdAndUpdate(id, newData, { new: true }).exec()
-         return { emailChanged: emailChanged, user: user }
+            delete newData.email
+            // upload image to cloudinary
+            if (newData.img) {
+                if (currentUser.img) {
+                    await cloudinary.uploader.destroy(currentUser.img)
+                }
+                const uploadResponse = await cloudinary.uploader.upload(newData.img.tempFilePath, {
+                    upload_preset: 'user_images'
+                })
+                newData.img = uploadResponse.public_id
+            }
+            user = await User.findByIdAndUpdate(id, newData, { new: true, session: session }).exec()
+
+        })
+        await session.endSession()
+        return { emailChanged: emailChanged, user: user }
     },
 
 }

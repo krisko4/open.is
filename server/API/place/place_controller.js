@@ -8,6 +8,7 @@ const opinionService = require('../opinion/opinion_service')
 const opinionDto = require('../opinion/model/opinion_dto')
 const newsService = require('../news/news_service')
 const newsDto = require('../news/model/news_dto')
+const mongoose = require('mongoose')
 
 const placeController = {
 
@@ -42,13 +43,13 @@ const placeController = {
                     } else {
                         places = await placeService.getActivePlacesBy(searchObj)
                     }
-                    return res.status(200).json(places.map(place => placeDto({...place._doc}, uid)))
+                    return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
                 } catch (err) {
                     return next(err)
                 }
             case 0:
                 return placeService.getActivePlaces()
-                    .then(places => res.status(200).json(places.map(place => placeDto({...place._doc}, uid))))
+                    .then(places => res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid))))
                     .catch(err => next(err))
 
             default:
@@ -88,7 +89,6 @@ const placeController = {
                 const param = Object.keys(req.query)[0]
                 let searchObj = {}
                 searchObj[param] = new RegExp(req.query[param], 'i')
-                console.log(searchObj)
                 try {
                     let places
                     if (param === 'uid') {
@@ -104,7 +104,7 @@ const placeController = {
                             return placeObject
                         }))
                         places = objPlaces
-                        console.log(places)
+
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
@@ -150,8 +150,8 @@ const placeController = {
                 facebook: reqBody.facebook,
                 instagram: reqBody.instagram
             }
-            const {img} = req.files
-            if(img) placeData.img = img
+            const img = req.files && req.files.img
+            if (img) placeData.img = img
             const place = await placeService.editPlace(placeData, user)
             const placeObject = { ...place._doc }
             const visits = await visitService.getVisitsByPlaceId(placeObject._id)
@@ -172,16 +172,19 @@ const placeController = {
     deletePlace: async (req, res, next) => {
         const { placeId } = req.params
         try {
-            await placeService.deletePlace(placeId)
-            await opinionService.deleteOpinionsByPlaceId(placeId)
-            await visitService.deleteVisitsByPlaceId(placeId)
-            await newsService.deleteNewsByPlaceId(placeId)
-
+            const session = await mongoose.startSession()
+            await session.withTransaction(async () => {
+                await placeService.deletePlace(placeId)
+                await opinionService.deleteOpinionsByPlaceId(placeId)
+                await visitService.deleteVisitsByPlaceId(placeId)
+                await newsService.deleteNewsByPlaceId(placeId)
+            })
+            await session.endSession()
             return res.sendStatus(200)
-        }catch(err){
+        } catch (err) {
             return next(err)
         }
-        
+
     },
 
     addPlace: async (req, res, next) => {
@@ -192,7 +195,7 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
             const { img } = req.files
-            if(!img) throw ApiError.badRequest('Image file is required')
+            if (!img) throw ApiError.badRequest('Image file is required')
             console.log(img)
             const placeData = {
                 name: reqBody.name,
