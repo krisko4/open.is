@@ -45,7 +45,7 @@ const userController = {
             const { uid } = req.cookies
             const { id } = req.params
             if (uid !== id) throw new Error('Uids are different')
-            const {img} = req.files
+            const img = req.files && req.files.img
             const userData = {...req.body}
             if(img){
                 userData.img = img

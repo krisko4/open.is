@@ -7,6 +7,7 @@ const opinionDto = (opinion) => {
         note: opinion.note,
         content: opinion.content,
         author: `${user.firstName} ${user.lastName}`,
+        authorImg: user.img
         
     }
 }
