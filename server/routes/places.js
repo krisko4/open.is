@@ -8,7 +8,7 @@ const fileUpload = require('express-fileupload');
 const jwtController = require('../API/jwt/jwt_controller')
 const placeValidator = require('../request_validators/place_validator')
 const imageValidator = require('../request_validators/image_validator')
-
+const validateRequest = require('../request_validators/express_validator')
 
 
 router.get('/active/name', (req, res, next) => {
@@ -61,10 +61,8 @@ router.post('/',
     body('instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
     body('lat').isFloat().notEmpty(),
     body('lng').isFloat().notEmpty(),
+    validateRequest,
     (req, res, next) => {
-        const errors = validationResult(req)
-        console.log(errors.array())
-        if (!errors.isEmpty()) return res.status(400).json(errors.array())
         placeController.addPlace(req, res, next)
     }
 )
@@ -103,10 +101,8 @@ router.put('/',
     body('instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
     body('lat').isFloat().notEmpty(),
     body('lng').isFloat().notEmpty(),
+    validateRequest,
     (req, res, next) => {
-        const errors = validationResult(req)
-        console.log(errors.array())
-        if (!errors.isEmpty()) return res.status(400).json(errors.array())
         placeController.editPlace(req, res, next)
     }
 )

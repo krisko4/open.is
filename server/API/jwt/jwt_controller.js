@@ -13,10 +13,9 @@ const jwtController = {
                 // secure: true,
                 expires: addDays(new Date(), 30)
             })
-            //  return res.sendStatus(200)
-            next()
+            return next()
         } catch (err) {
-            res.sendStatus(403)
+            return next(err)
         }
     },
 
@@ -38,24 +37,22 @@ const jwtController = {
                         expires: addDays(new Date(), 30)
                     })
                     return next()
-
                 } catch (err) {
                     return next(ApiError.forbidden(err))
                 }
             }
-            
             return next(err)
         }
     },
 
-    getTokens: async (req, res) => {
-        try {
-            const tokens = await jwtService.getTokens()
-            res.status(200).json(tokens)
-        } catch (err) {
-            res.status(400).json({ error: err })
-        }
-    }
+    // getTokens: async (req, res, next) => {
+    //     try {
+    //         const tokens = await jwtService.getTokens()
+    //         res.status(200).json(tokens)
+    //     } catch (err) {
+    //         return next(err)
+    //     }
+    // }
 }
 
 module.exports = jwtController

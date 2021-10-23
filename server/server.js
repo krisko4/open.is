@@ -22,8 +22,8 @@ const mongoose = require('mongoose')
 const apiErrorHandler = require('./errors/api_error_handler')
 const uri = require('./config/keys_dev')
 const cors = require('cors')
-
 const server = express();
+server.set('trust proxy', 1)
 server.use(cookieParser())
 const corsOptions = {
     origin: process.env.CLIENT_URL,

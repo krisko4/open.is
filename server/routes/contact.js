@@ -2,16 +2,14 @@ const express = require('express')
 const router = express.Router()
 const { body, validationResult, cookie } = require('express-validator');
 const contactController = require('../API/contact/contact_controller')
-
+const validateRequest = require('../request_validators/express_validator')
 
 router.post('/',
     body('name').isString().notEmpty().isLength({ max: 40 }),
     body('email').isEmail().notEmpty(),
     body('content').isString().isLength({ max: 400 }),
+    validateRequest,
     (req, res, next) => {
-        const errors = validationResult(req)
-        console.log(errors.array())
-        if (!errors.isEmpty()) return res.status(400).json(errors.array())
         contactController.sendMessage(req, res, next)
     })
 

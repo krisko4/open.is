@@ -84,13 +84,13 @@ const userController = {
         }
     },
 
-    getFullNameById: (req, res) => {
+    getFullNameById: (req, res, next) => {
         console.log(req.params)
         userService.getFullNameById(req.params.userId)
             .then(fullName => {
                 res.status(200).json(fullName)
             })
-            .catch(err => res.status(400).json({ error: err }))
+            .catch(err => next(err))
     }
 
 

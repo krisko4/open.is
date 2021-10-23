@@ -5,7 +5,7 @@ const jwtController = require('../API/jwt/jwt_controller')
 const { body, validationResult, param } = require('express-validator');
 const imageValidator = require('../request_validators/image_validator')
 const fileUpload = require('express-fileupload');
-
+const validateRequest = require('../request_validators/express_validator')
 // router.get('/', (req, res, next) => {
 //     userController.getUsers(req, res, next)
 // });
@@ -30,30 +30,28 @@ router.patch('/:id',
     body('email').notEmpty().isEmail(),
     // body('img').optional({nullable: true, checkFalsy: true}).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['res.cloudinary.com'] }),
     body('password').isStrongPassword().optional({ nullable: true, checkFalsy: true }),
+    validateRequest,
     (req, res, next) => {
-        const errors = validationResult(req)
-        console.log(errors)
-        if (!errors.isEmpty()) return res.status(400).json(errors.array())
-        console.log(req.files)
         userController.changeUserData(req, res, next)
     })
 
-router.get('/:id', (req, res, next) => {
-    userController.getUserById(req, res, next)
-})
+router.get('/:id',
+    param('id').notEmpty().isMongoId(),
+    validateRequest,
+    (req, res, next) => {
+        userController.getUserById(req, res, next)
+    })
 
 router.delete('/:id',
     jwtController.authenticateAccessToken,
     param('id').notEmpty().isMongoId(),
+    validateRequest,
     (req, res, next) => {
-        const errors = validationResult(req)
-        console.log(errors)
-        if (!errors.isEmpty()) return res.status(400).json(errors.array())
         userController.deleteUserById(req, res, next)
     })
 
 router.get('/:userId/name', (req, res, next) => {
-    userController.getFullNameById(req, res)
+    userController.getFullNameById(req, res, next)
 })
 
 // router.post('/', (req, res, next) => {

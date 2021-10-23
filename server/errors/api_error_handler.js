@@ -2,7 +2,7 @@ const ApiError = require('./ApiError')
 
 const apiErrorHandler = (err, req, res, next) => {
 
-    console.error(err.stack)
+    console.log(err.stack)
 
     if (err instanceof ApiError) {
         switch (err.code) {

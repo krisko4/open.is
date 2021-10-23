@@ -35,7 +35,7 @@ const loginController = {
             return next(err)
         }
     },
-    logout: async (req, res) => {
+    logout: async (req, res, next) => {
         const { cookies } = req
         const uid = cookies['uid']
         res.clearCookie('access_token')
@@ -47,7 +47,7 @@ const loginController = {
             await loginService.logout(uid)
             res.status(200).json('User logged out successfully.')
         } catch (err) {
-            res.status(400).json({ error: err })
+           return next(err)
         }
     }
 }

@@ -38,11 +38,7 @@ const placeController = {
                 console.log(searchObj)
                 try {
                     let places
-                    if (param === 'uid') {
-                        places = await placeService.getActivePlacesByUserId(req.query['uid'])
-                    } else {
-                        places = await placeService.getActivePlacesBy(searchObj)
-                    }
+                    param === 'uid' ? places = await placeService.getActivePlacesByUserId(req.query['uid']) : places = await placeService.getActivePlacesBy(searchObj)
                     return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
                 } catch (err) {
                     return next(err)
@@ -51,7 +47,6 @@ const placeController = {
                 return placeService.getActivePlaces()
                     .then(places => res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid))))
                     .catch(err => next(err))
-
             default:
                 return next(ApiError.badRequest('Invalid request'))
         }
@@ -95,16 +90,17 @@ const placeController = {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
                         const objPlaces = await Promise.all(places.map(async (place) => {
                             const placeObject = { ...place._doc }
-                            const visits = await visitService.getVisitsByPlaceId(placeObject._id)
+                            const [visits, opinions, news] = await Promise.all([
+                                visitService.getVisitsByPlaceId(placeObject._id),
+                                opinionService.getOpinionsBy({ placeId: placeObject._id }),
+                                newsService.getNewsBy({ placeId: placeObject._id })
+                            ])
                             placeObject.visits = visits.map(visit => visitDto(visit))
-                            const opinions = await opinionService.getOpinionsBy({ placeId: placeObject._id })
                             placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
-                            const news = await newsService.getNewsBy({ placeId: placeObject._id })
                             placeObject.news = news.map(news => newsDto(news))
                             return placeObject
                         }))
                         places = objPlaces
-
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
@@ -132,8 +128,6 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            // let img = req.files && req.files.img
-            // if (!img) img = req.body.img
             const placeData = {
                 _id: reqBody._id,
                 name: reqBody.name,
@@ -154,11 +148,13 @@ const placeController = {
             if (img) placeData.img = img
             const place = await placeService.editPlace(placeData, user)
             const placeObject = { ...place._doc }
-            const visits = await visitService.getVisitsByPlaceId(placeObject._id)
+            const [visits, opinions, news] = await Promise.all([
+                visitService.getVisitsByPlaceId(placeObject._id),
+                opinionService.getOpinionsBy({ placeId: placeObject._id }),
+                newsService.getNewsBy({ placeId: placeObject._id })
+            ])
             placeObject.visits = visits.map(visit => visitDto(visit))
-            const opinions = await opinionService.getOpinionsBy({ placeId: placeObject._id })
             placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
-            const news = await newsService.getNewsBy({ placeId: placeObject._id })
             placeObject.news = news.map(news => newsDto(news))
             return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(placeObject, uid) })
         }
@@ -174,10 +170,12 @@ const placeController = {
         try {
             const session = await mongoose.startSession()
             await session.withTransaction(async () => {
-                await placeService.deletePlace(placeId)
-                await opinionService.deleteOpinionsByPlaceId(placeId)
-                await visitService.deleteVisitsByPlaceId(placeId)
-                await newsService.deleteNewsByPlaceId(placeId)
+                await Promise.all([
+                    placeService.deletePlace(placeId),
+                    opinionService.deleteOpinionsByPlaceId(placeId),
+                    visitService.deleteVisitsByPlaceId(placeId),
+                    newsService.deleteNewsByPlaceId(placeId)
+                ])
             })
             await session.endSession()
             return res.sendStatus(200)
