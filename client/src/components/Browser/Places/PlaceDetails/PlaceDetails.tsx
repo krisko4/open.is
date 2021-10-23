@@ -157,7 +157,8 @@ interface OpinionProps {
     date: string,
     content: string,
     note: number,
-    averageNote: number
+    averageNote: number,
+    authorImg: string
 }
 
 
@@ -253,7 +254,7 @@ export const PlaceDetails: FC = () => {
                     </Tabs>
                 </Paper>
                 <Grid container item>
-                    <Grid container style={{ height: 400 }}>
+                    <Grid container style={{height: 500}}>
                         {tabContents[value]}
                     </Grid>
                 </Grid>

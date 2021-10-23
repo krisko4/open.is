@@ -59,7 +59,8 @@ interface OpinionProps {
     date: string,
     content: string,
     note: number,
-    averageNote: number
+    averageNote: number,
+    authorImg: string
 }
 
 

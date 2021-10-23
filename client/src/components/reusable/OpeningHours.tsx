@@ -184,8 +184,8 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
 
     return (
-        <Grid container direction="column" style={{ height: '100%' }} justify="center" alignItems="center">
-            {currentPlace.isUserOwner && isUserLoggedIn && openingHours &&
+        <Grid container direction="column" style={{ height: '100%' }}  alignItems="center">
+            {currentPlace.isUserOwner  && isUserLoggedIn &&  openingHours &&
                 <Grid container justify="flex-end" >
                     <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
@@ -194,7 +194,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
             }
             {
                 openingHours ?
-                    <Grid item container alignItems="center" lg={5} md={8}>
+                    <Grid item container style={{flexGrow: 1}} alignItems="center" lg={5} md={8} >
                         <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
                             <CardContent>
                                 <Typography variant="h5" className={classes.title}>Opening hours</Typography>

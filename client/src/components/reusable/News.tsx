@@ -101,81 +101,84 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
         emojiSource.current === 'title' ? setNewsTitle(title => title + emoji.emoji) : setNewsContent(content => content + emoji.emoji)
     }
     return (
-        <Grid container >
+        <Grid container direction="column" style={{height: '100%'}}>
             {news && news.length > 0 ?
                 <>
                     {
-                        isUserLoggedIn && currentPlace.isUserOwner && <Grid container item lg={12} style={{ marginTop: 20 }} justify="center">
-                            <Grid item lg={11} style={{ textAlign: 'end' }}>
-                                <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} color="primary">Add news</Button>
-                            </Grid>
+                        isUserLoggedIn && currentPlace.isUserOwner &&
+                        <Grid container style={{ marginTop: 20, paddingRight: 30 }} justify="flex-end">
+                            <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} color="primary">Add news</Button>
                         </Grid>
                     }
-                    <Timeline align="alternate">
-                        {news.map((item, index) => <TimelineItem key={index}>
-                            <TimelineSeparator>
-                                <TimelineDot>
-                                    <AnnouncementIcon />
-                                </TimelineDot>
-                                <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                                <Card className={classes.paper}>
-                                    <CardContent>
-                                        <Typography variant="h6" className={classes.title}>
-                                            {item.title}
-                                        </Typography>
-                                        <Typography variant="caption" className={classes.date}>
-                                            {item.date}
-                                        </Typography>
-                                        <Typography variant="body2" style={{ marginTop: 10 }} className={classes.content}>
-                                            {item.content.length < 100 ? item.content : `${item.content.substring(0, 100)}...`}
-                                        </Typography>
-                                    </CardContent>
-                                    {item.content.length > 50 &&
-                                        <CardActions>
-                                            <Button size="small" onClick={() => setOpenNews({ isOpen: true, newsIndex: index })} color="primary">
-                                                Learn More
-                                            </Button>
-                                        </CardActions>
-                                    }
-                                </Card>
-                            </TimelineContent>
-                        </TimelineItem>
-                        )}
-                    </Timeline>
-                    <Dialog
-                        open={openNews.isOpen}
-                        onClose={() => setOpenNews({ isOpen: false, newsIndex: 0 })}
-                        TransitionComponent={Transition}
-                        PaperProps={{
-                            classes: { root: classes.dialog }
-                        }}
-                    >
-                        <DialogTitle>
-                            <Grid container direction="column">
-                                <Typography variant="h6" className={classes.title}>
-                                    {news[openNews.newsIndex].title}
-                                </Typography>
-                                <Typography variant="caption" className={classes.content}>
-                                    {news[openNews.newsIndex].date}
-                                </Typography>
-                            </Grid>
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} className={classes.content}>
-                                    {news[openNews.newsIndex].content}
-                                </Typography>
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setOpenNews({ isOpen: false, newsIndex: 0 })} color="primary">Okay</Button>
-                        </DialogActions>
-                    </Dialog>
+                    <Grid container>
+                        <Timeline align="alternate">
+                            {news.map((item, index) => <TimelineItem key={index}>
+                                <TimelineSeparator>
+                                    <TimelineDot>
+                                        <AnnouncementIcon />
+                                    </TimelineDot>
+                                    <TimelineConnector />
+                                </TimelineSeparator>
+                                <TimelineContent>
+                                    <Card className={classes.paper}>
+                                        <CardContent>
+                                            <Typography variant="h6" className={classes.title}>
+                                                {item.title}
+                                            </Typography>
+                                            <Typography variant="caption" className={classes.date}>
+                                                {item.date}
+                                            </Typography>
+                                            <Typography variant="body2" style={{ marginTop: 10 }} className={classes.content}>
+                                                {item.content.length < 100 ? item.content : `${item.content.substring(0, 100)}...`}
+                                            </Typography>
+                                        </CardContent>
+                                        {item.content.length > 50 &&
+                                            <CardActions>
+                                                <Button size="small" onClick={() => setOpenNews({ isOpen: true, newsIndex: index })} color="primary">
+                                                    Learn More
+                                                </Button>
+                                            </CardActions>
+                                        }
+                                    </Card>
+                                </TimelineContent>
+                            </TimelineItem>
+                            )}
+                        </Timeline>
+                        <Dialog
+                            open={openNews.isOpen}
+                            onClose={() => setOpenNews({ isOpen: false, newsIndex: 0 })}
+                            TransitionComponent={Transition}
+                            PaperProps={{
+                                classes: { root: classes.dialog }
+                            }}
+                        >
+                            <DialogTitle>
+                                <Grid container direction="column">
+                                    <Typography variant="h6" className={classes.title}>
+                                        {news[openNews.newsIndex].title}
+                                    </Typography>
+                                    <Typography variant="caption" className={classes.content}>
+                                        {news[openNews.newsIndex].date}
+                                    </Typography>
+                                </Grid>
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} className={classes.content}>
+                                        {news[openNews.newsIndex].content}
+                                    </Typography>
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => setOpenNews({ isOpen: false, newsIndex: 0 })} color="primary">Okay</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </Grid>
 
                 </>
-                : <Grid justify="center" style={{ height: 500 }} direction="column" alignItems="center" container >
+                :
+
+                <Grid justify="center" style={{ height: 500 }} direction="column" alignItems="center" container >
                     <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
                     {isUserLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
                         <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>

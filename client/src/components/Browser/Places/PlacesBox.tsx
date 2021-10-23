@@ -93,19 +93,21 @@ const PlacesBox: FC = () => {
 
     return (
         <Grid container direction="column" style={{ height: '100%' }} >
-            <Grid container style={{ background: '#2C2C2C' }} justify="flex-end" alignItems="center">
-                <Tabs
-                    value={tabIndex}
-                    style={{ marginTop: 10 }}
-                    indicatorColor="secondary"
-                    textColor="secondary"
-                    onChange={(e, newIndex) => setTabIndex(newIndex)}
-                >
-                    <MyTab label="Popular" />
-                    <MyTab label="Recently added" />
-                    <MyTab label="Top rated" />
-                </Tabs>
-            </Grid>
+            {isPlaceCardClicked ||
+                <Grid container style={{ background: '#2C2C2C' }} justify="flex-end" alignItems="center">
+                    <Tabs
+                        value={tabIndex}
+                        style={{ marginTop: 10 }}
+                        indicatorColor="secondary"
+                        textColor="secondary"
+                        onChange={(e, newIndex) => setTabIndex(newIndex)}
+                    >
+                        <MyTab label="Popular" />
+                        <MyTab label="Recently added" />
+                        <MyTab label="Top rated" />
+                    </Tabs>
+                </Grid>
+            }
             <Grid container style={{ flexGrow: 1 }} >
                 <Scrollbars>
                     {!isPlaceCardClicked ? <>
@@ -131,7 +133,8 @@ const PlacesBox: FC = () => {
             </Grid >
         </Grid >
 
-       
+
+
     )
 }
 

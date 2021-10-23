@@ -26,8 +26,8 @@ const FirstHeader: FC = () => {
         }}
         >
             <Toolbar>
-                <Grid container alignItems="center">
-                    <Grid item style={{ flexGrow: 1, textAlign: 'center' }}>
+                <Grid container alignItems="center" justify="flex-end">
+                    <Grid item>
                         <IconButton onClick={() => history.push('/')} color="inherit">
                             <HomeIcon />
                         </IconButton>

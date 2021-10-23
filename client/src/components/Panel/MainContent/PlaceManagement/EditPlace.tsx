@@ -27,9 +27,10 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
     const submitChanges = async () => {
         setLoading(true)
         const formData = new FormData()
-        if (imageFile) currentPlace.img = imageFile
-        let key: keyof typeof currentPlace
-        for (key in currentPlace) formData.append(key, currentPlace[key])
+        const changedPlace = {...currentPlace}
+        if (imageFile) changedPlace.img = imageFile
+        let key: keyof typeof changedPlace
+        for (key in currentPlace) formData.append(key, changedPlace[key])
         try {
             const res = await myAxios.put('/places', formData, {
                 withCredentials: true,
