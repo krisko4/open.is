@@ -136,12 +136,10 @@ const Header: FC = () => {
 
         <AppBar elevation={appBarState.elevation} className={classes[appBarRef.current]}>
             <Grid container justify="center">
-                <Grid item xs={12} lg={8}>
+                <Grid item style={{flexGrow: 1}} />
+                <Grid item lg={4}>
                     <Grow in={true} timeout={2000} >
                         <Toolbar>
-                            <div style={{ flexGrow: 1 }}>
-
-                            </div>
                             {location.pathname === '/' ?
                                 <Button onClick={() => history.push('/about')} variant="outlined"
                                     className="aboutButton">About us</Button> :
@@ -170,7 +168,7 @@ const Header: FC = () => {
                             }
                         </Toolbar>
 
-                    </Grow>
+                    </Grow> 
                 </Grid>
             </Grid>
         </AppBar>

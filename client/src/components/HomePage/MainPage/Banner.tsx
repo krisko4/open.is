@@ -90,10 +90,9 @@ export const Banner: FC = () => {
         <Fade in={true} timeout={1000}>
             <Grid container className={classes.banner} alignItems="center">
                 <Grid item container lg={8} justify="center">
-                    <Grid item xs={7} style={{ textAlign: 'center', marginBottom: 40 }}>
+                    <Grid item lg={7} md={7} sm={7} style={{ textAlign: 'center', marginBottom: 40 }}>
                         <Collapse in={window.scrollY < 150} timeout={1500}>
-                            <Typography variant="h3"
-                                style={{ color: 'white', fontWeight: 200 }}>
+                            <Typography variant="h3" style={{ color: 'white', fontWeight: 200 }}>
                                 An easy way to track open destinations all over the world
                             </Typography>
 

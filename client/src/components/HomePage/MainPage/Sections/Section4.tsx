@@ -13,14 +13,26 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
 
         <Grid
             container
-            style={{ background: '#F8F8F8', height: 700 }}
+            style={{ background: '#F8F8F8', height: 700,  paddingTop: 50 }}
             justify="center"
 
         >
+            <Zoom
+                in={true}
+                timeout={500}
+            >
+                <Grid item container lg={5}>
+                    <img
+                        src={`https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif`}
+                        style={{ width: '100%', objectFit: 'contain' }}
+                    
+                    />
+                </Grid>
+            </Zoom >
             <Grow
                 in={true}
             >
-                <Grid item container xs={5} alignItems="center" style={{ marginTop: 100, marginBottom: 100 }}>
+                <Grid item container lg={5} xs={10} alignItems="center" >
                     <Fade in={isVisible4} timeout={1000}>
                         <div>
                             <Typography variant="h5" style={{ color: '#3c4858' }} >Rate places and share your opinion with community</Typography>
@@ -33,18 +45,6 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
                     </Fade>
                 </Grid>
             </Grow>
-            <Zoom
-                in={true}
-                timeout={500}
-            >
-                <Grid item xs={5} style={{ marginTop: 20 }}>
-                    <CardMedia
-                        image={`https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif`}
-                        style={{ height: 500 }}
-                    >
-                    </CardMedia>
-                </Grid>
-            </Zoom>
 
 
             {/* <Grid item lg={5}  style = {{marginTop: 100, color: 'white'}}>
@@ -67,7 +67,7 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
                     image="https://paryskie-perfumy.pl/wp-content/uploads/2020/01/satisfaction.png"
                 />
             </Grid> */}
-        </Grid>
+        </Grid >
     )
 }
 

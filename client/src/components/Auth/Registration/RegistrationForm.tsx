@@ -114,7 +114,7 @@ export const RegistrationForm = () => {
                                         <Typography variant="body2" style={{ color: 'grey' }}>Please sign up to
                                             continue</Typography>
                                     </Grid>
-                                    {errorMessage && <Typography variant="caption" color="secondary">{errorMessage}</Typography>}
+                                    {errorMessage && <Typography variant="caption" style={{textAlign: 'center'}} color="secondary">{errorMessage}</Typography>}
                                     <Grid item container justify="space-between" lg={10} style={{ textAlign: 'center' }}>
                                         <Grid item lg={5} style={{ marginBottom: 10 }}>
                                             <Field as={TextField} onKeyDown={isLetter} fullWidth={true}

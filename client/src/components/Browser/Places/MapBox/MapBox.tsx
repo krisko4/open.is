@@ -40,12 +40,12 @@ interface Props {
 
 export const MapBox: FC<Props> = ({ tileLayer }) => {
 
-    const {placeCoords, setPlaceCoords } = useMapContext()
+    const { placeCoords, setPlaceCoords } = useMapContext()
     const { chosenCriterias } = useSelectedPlacesContext()
     const classes = useStyles()
-   
+
     return (
-        <MapContainer style={{ height: '100%', flexGrow: 1 }} center={{lat: placeCoords.lat, lng: placeCoords.lng}} zoom={placeCoords.mapZoom}
+        <MapContainer style={{ height: '100%', flexGrow: 1 }} center={{ lat: placeCoords.lat, lng: placeCoords.lng }} zoom={placeCoords.mapZoom}
             scrollWheelZoom={true}>
             <TileLayer
                 attribution={tileLayer.attribution}
@@ -54,6 +54,7 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
             {chosenCriterias.map((criterium: any, index: number) => <PlaceMarker key={index} index={index} criterium={criterium} classes={classes} />)}
             <SetViewOnClick />
         </MapContainer>
+
     )
 }
 

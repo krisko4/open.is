@@ -92,49 +92,46 @@ const PlacesBox: FC = () => {
 
 
     return (
-        <Grid
-            item
-            container
-            lg={6}
-            style={{
-                background: '#202020',
-            }}>
-            <Scrollbars>
-                {!isPlaceCardClicked ? <>
-                    <Grid container style={{ background: '#2C2C2C' }} justify="flex-end" alignItems="center">
-                        <Tabs
-                            value={tabIndex}
-                            style={{ marginTop: 10 }}
-                            indicatorColor="secondary"
-                            textColor="secondary"
-                            onChange={(e, newIndex) => setTabIndex(newIndex)}
-                        >
-                            <MyTab label="Popular" />
-                            <MyTab label="Recently added" />
-                            <MyTab label="Top rated" />
-                        </Tabs>
+        <Grid container direction="column" style={{ height: '100%' }} >
+            <Grid container style={{ background: '#2C2C2C' }} justify="flex-end" alignItems="center">
+                <Tabs
+                    value={tabIndex}
+                    style={{ marginTop: 10 }}
+                    indicatorColor="secondary"
+                    textColor="secondary"
+                    onChange={(e, newIndex) => setTabIndex(newIndex)}
+                >
+                    <MyTab label="Popular" />
+                    <MyTab label="Recently added" />
+                    <MyTab label="Top rated" />
+                </Tabs>
+            </Grid>
+            <Grid container style={{ flexGrow: 1 }} >
+                <Scrollbars>
+                    {!isPlaceCardClicked ? <>
 
-                    </Grid>
-                    {chosenCriterias.map((place: any, index: number) => {
-                        return (
-                            <Fade in={true} timeout={1000} key={index}>
-                                <ListItem
-                                    style={{ marginTop: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
-                                    key={index}
-                                    onClick={() => openPlaceDetails(place, index)}
-                                    button
-                                >
-                                    <PlaceCard place={place} />
-                                </ListItem>
-                            </Fade>
-                        )
-                    })}
 
-                </>
-                    : <PlaceDetails  />
-                }
-            </Scrollbars>
-        </Grid>
+                        {chosenCriterias.map((place: any, index: number) => {
+                            return (
+                                <Fade in={true} timeout={1000} key={index}>
+                                    <ListItem
+                                        style={{ marginTop: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
+                                        key={index}
+                                        onClick={() => openPlaceDetails(place, index)}
+                                        button
+                                    >
+                                        <PlaceCard place={place} />
+                                    </ListItem>
+                                </Fade>
+                            )
+                        })} </>
+                        : <PlaceDetails />
+                    }
+                </Scrollbars >
+            </Grid >
+        </Grid >
+
+       
     )
 }
 

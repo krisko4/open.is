@@ -34,9 +34,9 @@ export const Section3: FC<any> = ({ classes, setCurrentSection }) => {
     return (
         <Grid container alignItems="center" className={classes.background}>
             <Grid container justify="center">
-                <Grid item container justify="center" lg={5} style={{ textAlign: 'center', marginBottom: 100 }}>
+                <Grid item container justify="center" xs={11} lg={5} style={{ textAlign: 'center', marginBottom: 100 }}>
                     <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>Who are <span style={{ color: 'red' }}>we</span>?</Typography>
-                    <Grid item lg={10} style={{ marginTop: 20 }}>
+                    <Grid item xs={10} style={{ marginTop: 20 }}>
                         <Typography variant="h6" style={{ color: 'white' }}>
                             We are a group of young, creative people. Programming and constant development is our passion.
                         </Typography>
@@ -44,7 +44,7 @@ export const Section3: FC<any> = ({ classes, setCurrentSection }) => {
                 </Grid>
                 <Grid item container justify="center">
                     <Slide in={true} timeout={1500}>
-                        <Grid item lg={7}>
+                        <Grid item xs={11} lg={7} md={9} sm={10}>
                             <Card>
                                 <CardContent>
                                     <Grid container alignItems="center" direction="column">
@@ -52,8 +52,8 @@ export const Section3: FC<any> = ({ classes, setCurrentSection }) => {
                                         <Divider style={{ width: '80%', marginBottom: 20, marginTop: 10, background: 'darkgrey' }} />
                                     </Grid>
                                     <Grid container>
-                                        {items.map((item, index) => <Grid item lg={4} container alignItems="center" style={{ marginBottom: 20 }} direction="column" key={index}>
-                                            <CardMedia style={{ height: 200, width: 200, backgroundPosition: 'top' }} image={item.image} />
+                                        {items.map((item, index) => <Grid item xs={4} container alignItems="center" style={{ marginBottom: 20 }} direction="column" key={index}>
+                                            <CardMedia style={{  height: 200, width: '100%', backgroundPosition: 'center', backgroundSize: 'contain' }} image={item.image} />
                                             <div style={{ marginTop: 10, textAlign: 'center' }}>
                                                 <b>{item.name}</b><br /><span style={{ fontStyle: 'italic' }}>{item.role}</span>
                                             </div>

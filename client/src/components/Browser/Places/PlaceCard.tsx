@@ -36,19 +36,18 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
             className={classes.card}
         >
             <CardContent>
-                <Grid container direction="row" justify="space-between">
-                    <Grid item container lg={11}>
+                <Grid container  justify="space-between">
+                    <Grid item container alignItems="center" >
                         <Grid item>
                             {/* <CardMedia className={classes.image}
                                 image={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} /> */}
-                                <Avatar style={{width: 80, height: 80}} src={place.img} alt={place.name}/>
-                                    
+                            <Avatar style={{ width: 80, height: 80 }} src={place.img} alt={place.name} />
                         </Grid>
-                        <Grid item lg={10}  style={{marginLeft: 10}}>
-                            <Typography variant="h6" style={{ color: 'white'}}>
+                        <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
+                            <Typography variant="h6" style={{ color: 'white' }}>
                                 {place.name}
                             </Typography>
-                            <Typography variant="body1" style={{ color: '#A0A0A0'}}>
+                            <Typography variant="body1" style={{ color: '#A0A0A0' }}>
                                 {place.subtitle}
                             </Typography>
                             <Typography variant="overline" style={{ color: '#32de84' }}>
@@ -58,13 +57,15 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
                                 Address: {place.address}
                             </Typography>
                         </Grid>
-                    </Grid>
-                    <Grid container item lg={1} alignItems="center" style={{ color: 'white' }}>
-                            {place.status === 'open' ?
-                                <Button variant="contained" size="small" style={{background: '#4caf50', color: 'white'}}>Open</Button>
-                                :
-                                <Button variant="contained" size="small" style={{background: '#ff5252', color: 'white'}}>Closed</Button>
-                            }
+                        <Grid item style={{ flexGrow: 1, color: 'white' }}>
+                            <Grid container justify="center" style={{height: '100%'}} alignItems="center">
+                                {place.status === 'open' ?
+                                    <Button variant="contained" size="small" style={{ background: '#4caf50', color: 'white' }}>Open</Button>
+                                    :
+                                    <Button variant="contained" size="small" style={{ background: '#ff5252', color: 'white' }}>Closed</Button>
+                                }
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
 

@@ -28,14 +28,17 @@ const Browser: FC = () => {
                     <FirstHeader />
                 </AuthContextProvider>
                 <SecondHeader />
-                <Grid container direction="row" style={{ flex: '1 1 auto' }}>
-                    <MapContextProvider>
-                        <PlacesBox />
-                        <Grid item lg={6} style={{ height: '100%' }}>
+                <MapContextProvider>
+                    <Grid container style={{ flexGrow: 1 }}>
+                        <Grid item lg={6} xs={12}>
                             <MapBox tileLayer={tileLayer} />
                         </Grid>
-                    </MapContextProvider>
-                </Grid>
+                        <Grid item lg={6} xs={12} style={{background: '#202020'}}>
+                            <PlacesBox />
+                        </Grid>
+                    </Grid>
+
+                </MapContextProvider>
             </Grid>
         </SelectedPlacesContextProvider>
 

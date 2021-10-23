@@ -18,7 +18,7 @@ export const SecondHeader : FC = () => {
             }}>
             <Toolbar>
                 <Grid container justify="center" style={{marginTop: 10, marginBottom: 10}}>
-                    <Grid item xs={12} lg={5}>
+                    <Grid item xs={10} sm={8} md={6} lg={5}>
                         <Searcher />
                     </Grid>
                 </Grid>
