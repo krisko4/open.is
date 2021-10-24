@@ -23,6 +23,7 @@ const FirstHeader: FC = () => {
             borderColor: '#383838',
             borderBottomStyle: 'solid',
             borderWidth: 2
+            
         }}
         >
             <Toolbar>
