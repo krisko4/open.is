@@ -1,6 +1,36 @@
 import { Avatar, CardMedia, Fade, Slide, Grid, Typography } from "@material-ui/core"
 import React, { FC, useEffect, useState } from "react"
 
+
+const teamMembers = [
+    {
+        name: 'Krzysztof Wyszyński',
+        position: 'CEO',
+        description: 'I believe that great things can be achieved through simple ideas. Our concept is super simple, which gives us lot of room to grow and develop.',
+        img: `${process.env.REACT_APP_BASE_URL}/images/ja.jpg`
+    },
+ 
+    {
+        name: 'Christopher Cononovitz',
+        position: 'Development manager',
+        description: `Hi, my name is George Suchodolsky and I'm a Promotion manager. 
+         My primary duty is to encourage you to use our services and provide you with all the benefits you can gain by cooperating with us. 
+         I spend most of my free time reading books and chilling with my homies.`,
+         img: `https://i.pinimg.com/564x/27/24/9e/27249e6089986d6d7bdd8adf7578a75d.jpg` 
+    },
+    {
+        name: 'Promotion manager',
+        position: 'CEO',
+        description: `Hi, my name is George Suchodolsky and I'm a Promotion manager.
+        My primary duty is to encourage you to use our services and provide you
+        with all the benefits you can gain by cooperating with us. I spend most of my free time
+        reading books and chilling with my homies.`,
+        img: `https://yt3.ggpht.com/a/AGF-l78NQAy60mopFW0l90704VozNKFKp5_Z37IrMg=s400-c-k-c0xffffffff-no-rj-mo`
+    }
+]
+
+
+
 export const Team: FC = () => {
 
     const [isVisible1, setVisible1] = useState(false)
@@ -27,12 +57,12 @@ export const Team: FC = () => {
     }, [])
 
     return (
-        <div style={{overflow: 'hidden'}}>
+        <div style={{ overflow: 'hidden' }}>
             <Grid container justify="space-evenly" style={{ paddingTop: 40, paddingBottom: 40 }}>
 
                 <Fade in={isVisible1} timeout={2000}>
                     <Grid item container lg={5} justify="center" alignItems="center" direction="column">
-                        <Typography variant="h3">Krzysztof Wyszyński</Typography>
+                        <Typography variant="h3" style={{ textAlign: 'center' }}>Krzysztof Wyszyński</Typography>
                         <Typography variant="h5" style={{ fontStyle: 'italic' }}>CEO</Typography>
                         <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
                             I believe that great things can be achieved through simple ideas.
@@ -51,7 +81,7 @@ export const Team: FC = () => {
                 <Fade in={isVisible2} timeout={2000}>
                     {/* <CardMedia style={{ height: 600, width: 600 }} image={`https://i.pinimg.com/564x/27/24/9e/27249e6089986d6d7bdd8adf7578a75d.jpg`} /> */}
                     <Grid item container lg={5} justify="center" alignItems="center" direction="column">
-                        <Typography variant="h3">Christopher Cononovitz</Typography>
+                        <Typography variant="h3" style={{textAlign: 'center'}}>Christopher Cononovitz</Typography>
                         <Typography variant="h5" style={{ fontStyle: 'italic', marginTop: 10 }}>Development manager</Typography>
                         <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
                             Nice to meet you. My name is Christopher Cononovitz.
@@ -65,7 +95,7 @@ export const Team: FC = () => {
             <Grid container justify="space-evenly" style={{ paddingTop: 20 }}>
                 <Fade in={isVisible3} timeout={2000}>
                     <Grid item container lg={5} justify="center" alignItems="center" direction="column">
-                        <Typography variant="h3">George Suchodolsky</Typography>
+                        <Typography variant="h3" style={{textAlign: 'center'}}>George Suchodolsky</Typography>
                         <Typography variant="h5" style={{ fontStyle: 'italic', marginTop: 10 }}>Promotion manager</Typography>
                         <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
                             Hi, my name is George Suchodolsky and I'm a Promotion manager.

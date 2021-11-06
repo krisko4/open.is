@@ -10,7 +10,7 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import React, { useEffect, useRef, useState } from "react";
 import { useSelectedPlacesContext } from "../../contexts/SelectedPlacesContext";
-import {getPlacesByChosenCriterias, getPlacesWithParams } from "../../requests/PlaceRequests";
+import { getPlacesByChosenCriterias, getPlacesWithParams } from "../../requests/PlaceRequests";
 import PlaceTwoToneIcon from '@material-ui/icons/PlaceTwoTone';
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 
@@ -90,7 +90,7 @@ const Searcher = () => {
         }
         setLoading(true)
         const delaySearch = setTimeout(async () => {
-            const names = await getPlacesWithParams('/places/active/name', {name: inputValue})
+            const names = await getPlacesWithParams('/places/active/name', { name: inputValue })
             if (names.length === 0) {
                 const result = await provider.search({ query: inputValue })
                 result.length > 0 ? setSelectedPlaces([{ name: inputValue, foundBy: 'address' }]) : setSelectedPlaces([])
@@ -119,7 +119,7 @@ const Searcher = () => {
 
     const selectPlace = async (criterias) => {
 
-        const places = await getPlacesByChosenCriterias(criterias) 
+        const places = await getPlacesByChosenCriterias(criterias)
         setChosenCriterias(places)
 
         // for (const place of placesArray) {
@@ -196,7 +196,7 @@ const Searcher = () => {
                                         <Typography variant="overline" style={{ color: 'lightgrey' }}>Found by name</Typography>
                                     </div>
                                 </Grid>
-                                <Button size="small" style={{background: '#ff5252', color: 'white'}} variant="contained">Place</Button>
+                                <Button size="small" style={{ background: '#ff5252', color: 'white' }} variant="contained">Place</Button>
                             </Grid>
                         </Grid>
                     )

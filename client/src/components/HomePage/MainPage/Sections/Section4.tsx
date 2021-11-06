@@ -17,18 +17,6 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
             justify="center"
 
         >
-            <Zoom
-                in={true}
-                timeout={500}
-            >
-                <Grid item container lg={5}>
-                    <img
-                        src={`https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif`}
-                        style={{ width: '100%', objectFit: 'contain' }}
-                    
-                    />
-                </Grid>
-            </Zoom >
             <Grow
                 in={true}
             >
@@ -45,6 +33,18 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
                     </Fade>
                 </Grid>
             </Grow>
+            <Zoom
+                in={true}
+                timeout={500}
+            >
+                <Grid item container lg={5}>
+                    <img
+                        src={`https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif`}
+                        style={{ width: '100%', objectFit: 'contain' }}
+                    
+                    />
+                </Grid>
+            </Zoom >
 
 
             {/* <Grid item lg={5}  style = {{marginTop: 100, color: 'white'}}>

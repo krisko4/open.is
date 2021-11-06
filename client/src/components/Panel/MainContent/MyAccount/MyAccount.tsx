@@ -64,14 +64,6 @@ export const MyAccount: FC = () => {
         console.log(values)
         setLoading(true)
         try {
-            //    let imageAddress: string = ''
-            //     if (imageFile !== null) {
-            //         const formData = new FormData()
-            //         formData.append('file', imageFile)
-            //         formData.append('upload_preset', 'open_is')
-            //         const res: any = await axios.post(`https://api.cloudinary.com/v1_1/dftosfmzr/image/upload`, formData)
-            //         imageAddress = res.data.secure_url
-            //     }
             const userData = {
                 firstName: values.firstName,
                 lastName: values.lastName,

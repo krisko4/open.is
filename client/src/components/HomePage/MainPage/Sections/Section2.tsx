@@ -44,20 +44,20 @@ const Section2: FC = () => {
                 strength={-300}
                 style={{flexGrow: 1}}
                 // strength={-400}
-                // renderLayer={() => (
-                //     <div
-                //         style={{
-                //             position: 'absolute',
-                //             background: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.3))`,
-                //             width: '100%',
-                //             height: '100%',
+                renderLayer={() => (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            background: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.3))`,
+                            width: '100%',
+                            height: '100%',
                             
-                //         }}
-                //     />
+                        }}
+                    />
                     
-                // )}
+                )}
             >
-                <Grid container style={{ height: 800 }} alignItems="center" justify="center">
+                <Grid container style={{ height: 800 }} alignItems="center" justify="center" direction="column">
                     <Grid item  style={{textAlign: 'center'}}>
                         <Typography variant="h2" style={{ color: 'white' }}>Spread your wings.</Typography>
                         <Typography variant="h6" style={{ color: 'white' }}>Let us take care of your development</Typography>

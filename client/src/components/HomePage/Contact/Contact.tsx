@@ -17,7 +17,7 @@ export const Contact: FC = () => {
                 </div>
             </Grid>
             <Grid container justify="center">
-                <Grid item xs={7} style={{ marginTop: -50, paddingBottom: 50 }}>
+                <Grid item lg={7} md={7} sm={11} xs={11} style={{ marginTop: -50, paddingBottom: 50 }}>
                     <Slide in={true} timeout={2000}>
                         <Card>
                             <CardContent>
@@ -39,11 +39,12 @@ export const Contact: FC = () => {
                                         <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://gmail.com" /></IconButton>
                                     </Grid>
                                 </Grid>
-                                <Grid container>
-                                    <Grid item container xs={6}>
+                                <Grid container justify="center">
+                                    <Grid item container lg={6} md={10} sm={10}>
+                                        {/* <img src="https://cdn.dribbble.com/users/1551941/screenshots/6346538/thankyoudribble.gif" style={{width: '100%'}} /> */}
                                         <CardMedia image={`https://cdn.dribbble.com/users/1551941/screenshots/6346538/thankyoudribble.gif`} style={{ height: 500, width: 500 }} />
                                     </Grid>
-                                    <Grid item container xs={6}>
+                                    <Grid item container justify="center" lg={6} xs={11} md={10} sm={11}>
                                         <ContactForm />
                                     </Grid>
                                 </Grid>
