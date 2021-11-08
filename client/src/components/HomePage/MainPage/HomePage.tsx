@@ -17,7 +17,7 @@ const useStyles = makeStyles({
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         paddingTop: 50,
-        paddingBottom:  50
+        paddingBottom: 50
 
 
     },
@@ -39,14 +39,15 @@ const HomePage: FC = () => {
     //     return () => clearTimeout(timeout)
     // }, [])
 
-    return <AuthContextProvider>
-        <Header />
-        <Auth />
-        <Banner />
-        <Content />
-        <Footer classes={classes} />
-    </AuthContextProvider>
-
+    return (
+            <AuthContextProvider>
+                <Header />
+                <Auth />
+                <Banner />
+                <Content />
+                <Footer classes={classes} />
+            </AuthContextProvider>
+    )
     {/* {
             loading ?
                 <Fade in={loading} timeout={1000}>

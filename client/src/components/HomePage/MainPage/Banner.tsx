@@ -34,24 +34,25 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     // },
 
     banner: {
-        height: 1000,
-        position: 'relative',
-        overflow: 'hidden',
-        '&&::before': {
-            backgroundImage: props => `linear-gradient(rgba(0, 0, 0, ${props.gradient1}),rgba(0, 0, 0, ${props.gradient2})), url(https://images.unsplash.com/photo-1437196582938-795c4854b3da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80)`,
-            // backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/images/background.jpg)`,
+        height: 1200,
+        // position: 'relative',
+        // overflow: 'hidden',
+        // '&&::before': {
             backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            content: '""',
-            height: '100%',
-            left: 0,
-            position: 'fixed',
-            top: 0,
-            width: '100%',
-            willChange: 'transform',
-            zIndex: -1,
-        }
+            backgroundImage: props => `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, ${props.gradient2})), url(https://images.unsplash.com/photo-1437196582938-795c4854b3da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80)`,
+        //     // backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/images/background.jpg)`,
+        //     backgroundPosition: 'center',
+        //     backgroundRepeat: 'no-repeat',
+        //     backgroundSize: 'cover',
+        //     content: '""',
+        //     height: '100%',
+        //     left: 0,
+        //     position: 'fixed',
+        //     top: 0,
+        //     width: '100%',
+        //     willChange: 'transform',
+        //     zIndex: -1,
+        // }
     }
     // // https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80
     // //     https://i.pinimg.com/originals/45/4d/d3/454dd33dd8a85d430f1e50dcc82cee2d.jpg
@@ -68,13 +69,13 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
 export const Banner: FC = () => {
 
     const history = useHistory()
-    const [gradient1, setGradient1] = useState(0)
+    const [gradient1, setGradient1] = useState(0.3)
     const [gradient2, setGradient2] = useState(0)
     const classes = useStyles({ gradient1: gradient1, gradient2: gradient2 })
 
     const handleScroll = () => {
 
-        setGradient1(window.scrollY * 0.001)
+        // setGradient1(window.scrollY * 0.001)
         setGradient2(window.scrollY * 0.002)
 
     }
@@ -90,7 +91,7 @@ export const Banner: FC = () => {
         <Fade in={true} timeout={1000}>
             <Grid container className={classes.banner} alignItems="center">
                 <Grid item container lg={8} justify="center">
-                    <Grid item lg={7} md={7} sm={7} style={{ textAlign: 'center', marginBottom: 40 }}>
+                    <Grid item lg={7} md={7} sm={7} style={{ textAlign: 'center', marginBottom: 200 }}>
                         <Collapse in={window.scrollY < 150} timeout={1500}>
                             <Typography variant="h3" style={{ color: 'white', fontWeight: 200 }}>
                                 An easy way to track open destinations all over the world
@@ -105,6 +106,7 @@ export const Banner: FC = () => {
                 </Grid>
             </Grid>
         </Fade>
+ 
 
     )
 }

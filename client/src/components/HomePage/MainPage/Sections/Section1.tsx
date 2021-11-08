@@ -18,7 +18,7 @@ interface Props {
 const Section1: FC<Props> = ({ isVisible1 }) => {
 
     return (
-        <div style={{ height: 900, background: 'black' }}>
+        <div style={{ height: 1200, background: 'black' }}>
             <Grid container direction="column" style={{ marginTop: 80, marginBottom: 80 }} alignItems="center" justify="center">
                 <Grid item lg={6} md={9} sm={9} xs={10} style={{ textAlign: 'center' }}>
                     <Fade in={isVisible1} timeout={1000}>

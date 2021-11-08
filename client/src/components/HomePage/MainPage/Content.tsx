@@ -39,16 +39,14 @@ const Content = () => {
 
 
     return (
-        <Grid container justify="center" style={{ background: 'black' }}>
+        <Grid container justify="center" style={{ background: 'black', paddingTop: 100 }}>
             <Section1 isVisible1={isVisible1} />
-            {/* <Section2 /> */}
-            <Section3 isVisible3={isVisible3} />
+            
+              <Section3 isVisible3={isVisible3} />
             <Section6 isVisible6={isVisible6} isVisible7={isVisible7} />
             <Section4 isVisible4={isVisible4}/>
             <Section2 />
-            <Section5 /> 
-            
-
+            <Section5 />         
         </Grid >
     )
 }

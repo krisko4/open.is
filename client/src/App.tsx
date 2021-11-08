@@ -57,6 +57,7 @@ function App() {
                             <Route path="/search" exact component={Browser} />
                             <Route path="/confirm/:token" exact component={Confirmation} />
                             <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
+                     
                         </div>
                     </Router>
                 </MuiPickersUtilsProvider>
