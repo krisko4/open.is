@@ -5,8 +5,10 @@ import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import { KeyboardReturn } from "@material-ui/icons";
+import { url } from "inspector";
 import React, { FC, useEffect, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useHistory, useRouteMatch } from "react-router-dom";
 import myAxios from "../../../../axios/axios";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
@@ -161,18 +163,41 @@ interface OpinionProps {
     authorImg: string
 }
 
+const addVisit = async (place: any) => {
+    try {
+        const response = await myAxios.post('/visits', {
+            date: new Date(),
+            placeId: place._id
+        })
+        return response.data
+    } catch (err) {
+        console.log(err)
+    }
 
-export const PlaceDetails: FC = () => {
+}
 
-    const { setPopupOpen, setPlaceCoords, currentPlace, setCurrentPlace, setPlaceCardClicked } = useMapContext()
+interface Props{
+    currentPlace: any,
+    popupIndex: number
+   
+}
+
+export const PlaceDetails: FC<Props> = ({currentPlace, popupIndex}) => {
+    const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
-
-
-
     const [opinionCount, setOpinionCount] = useState(0)
     const [opinions, setOpinions] = useState<OpinionProps[]>([])
 
     useEffect(() => {
+        setPlaceCardClicked(true)
+        addVisit(currentPlace)
+        setPopupOpen(true)
+        setPopupIndex(popupIndex)
+        setPlaceCoords({
+            lat: currentPlace.lat,
+            lng: currentPlace.lng,
+            mapZoom: 18
+        })
         console.log(currentPlace._id)
         myAxios.get('/news', {
             params: {
@@ -199,6 +224,8 @@ export const PlaceDetails: FC = () => {
     const opinionsClasses = useOpinionsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
 
+    const history = useHistory()
+    let match = useRouteMatch();
     const [value, setValue] = useState(0)
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -219,6 +246,7 @@ export const PlaceDetails: FC = () => {
     ]
 
     const closePlaceDetails = () => {
+        history.push(`/search`)
         setPlaceCardClicked(false)
         setPopupOpen(false)
         setPlaceCoords(currentCoords => {
@@ -254,7 +282,7 @@ export const PlaceDetails: FC = () => {
                     </Tabs>
                 </Paper>
                 <Grid container item>
-                    <Grid container style={{height: 500}}>
+                    <Grid container style={{ height: 500 }}>
                         {tabContents[value]}
                     </Grid>
                 </Grid>

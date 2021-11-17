@@ -16,13 +16,15 @@ import { PageContextProvider } from "./contexts/PageContext";
 import { login } from "./store/actions/login";
 import { logout } from "./store/actions/logout";
 import { setEmail } from "./store/actions/setEmail";
-import {EmailChangeConfirmation} from './components/Auth/EmailChangeConfirmation'
+import { EmailChangeConfirmation } from './components/Auth/EmailChangeConfirmation'
+import { useAuthSelector } from './store/selectors/AuthSelector';
 
 
 
 function App() {
 
     const dispatch = useDispatch()
+    const isUserLoggedIn = useAuthSelector()
 
 
     useEffect(() => {
@@ -31,13 +33,15 @@ function App() {
                 await authAxios.get('/auth', { withCredentials: true })
                 dispatch(login())
             } catch (err) {
-                await authAxios.get('/logout', { withCredentials: true })
-                localStorage.removeItem('uid')
-                localStorage.removeItem('fullName')
-                localStorage.removeItem('email')
-                localStorage.removeItem('img')
-                dispatch(logout())
-                dispatch(setEmail(''))
+                if (isUserLoggedIn) {
+                    await authAxios.get('/logout', { withCredentials: true })
+                    localStorage.removeItem('uid')
+                    localStorage.removeItem('fullName')
+                    localStorage.removeItem('email')
+                    localStorage.removeItem('img')
+                    dispatch(logout())
+                    dispatch(setEmail(''))
+                }
             }
         }
         authenticate()
@@ -54,10 +58,10 @@ function App() {
                                 <Route path="/about" exact component={About} />
                                 <Route path="/contact" exact component={Contact} />
                             </PageContextProvider>
-                            <Route path="/search" exact component={Browser} />
+                            <Route path="/search" component={Browser} />
                             <Route path="/confirm/:token" exact component={Confirmation} />
                             <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
-                     
+
                         </div>
                     </Router>
                 </MuiPickersUtilsProvider>

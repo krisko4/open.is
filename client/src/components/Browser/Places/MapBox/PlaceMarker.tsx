@@ -7,6 +7,7 @@ import { OpenStreetMapProvider } from "leaflet-geosearch";
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import React, { FC, useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { usePanelContext } from "../../../../contexts/PanelContext";
 import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
@@ -21,14 +22,16 @@ import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesCon
 export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked} = useMapContext()
+    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex } = useMapContext()
     const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useSelectedPlacesContext()
     const firstRender = useRef(true)
+    const history = useHistory()
+    const match = useRouteMatch()
 
     const myIcon = L.icon({
-       // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
+        // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
         iconUrl: criterium.img || `https://image.flaticon.com/icons/png/512/149/149059.png`,
-        iconSize: [50, 50], 
+        iconSize: [50, 50],
         // iconAnchor: [10, 0],
         shadowUrl: iconShadow,
         popupAnchor: [0, -30],
@@ -52,9 +55,12 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
             ref={placeMarker}
             eventHandlers={{
                 click: () => {
-                    const place = chosenCriterias.find((criterium : any) => criterium.lat === placeMarker.current._latlng.lat && criterium.lng === placeMarker.current._latlng.lng)
+                    const place = chosenCriterias.find((criterium: any, index: number) => criterium.lat === placeMarker.current._latlng.lat && criterium.lng === placeMarker.current._latlng.lng)
                     setCurrentPlace(place)
+                    setPopupIndex(index)
+                    setPopupOpen(true)
                     setPlaceCardClicked(true)
+                    history.push(`${match.url}/${place.name}`)
                 },
                 dragend: async () => {
                     criterium.lat = placeMarker.current._latlng.lat
