@@ -40,8 +40,6 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
             <Grid container style={{ marginTop: 10 }} justify="space-evenly">
                 <Grid item lg={5} style={{ textAlign: 'center' }}>
                     <CardMedia style={{ height: 345, marginTop: 10 }} image={place.img} />
-                    {/* <img style={{ width: '100%', marginTop: 10 }} alt="place img"
-                    src={`${process.env.REACT_APP_BASE_URL}/images/places/${place.img}`} /> */}
                 </Grid>
                 <Grid item lg={5} container direction="column" style={{ textAlign: 'center', marginLeft: 10, alignItems: 'center' }}>
                     <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
