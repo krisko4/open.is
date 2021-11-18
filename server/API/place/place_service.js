@@ -91,6 +91,11 @@ const placeService = {
 
     },
 
+    getFavoritePlaces: (favIds) => {
+        favIds = favIds.map(el => mongoose.Types.ObjectId(el))
+        return Place.find({'_id':  {$in: favIds}}).exec()
+    },
+
     updateNote: async (note, placeId) => {
         const doc = await Place.findById(placeId, 'averageNote').exec()
         const averageNote = JSON.parse(JSON.stringify(doc.averageNote))

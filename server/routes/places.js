@@ -15,6 +15,10 @@ router.get('/active/name', (req, res, next) => {
     placeController.findPlaceNames(req, res, next)
 })
 
+router.get('/active/favorite', (req, res, next) => {
+    placeController.getFavoritePlaces(req, res, next)
+})
+
 router.get('/active', (req, res, next) => {
     placeController.getActivePlaces(req, res, next)
 })

@@ -254,6 +254,21 @@ const placeController = {
 
     },
 
+    getFavoritePlaces: async (req, res, next) => {
+        const { cookies } = req
+        let { uid, favIds } = cookies
+        if(!favIds) return res.status(200).json([])
+        favIds = favIds.split(',')
+        try {
+            const places = await placeService.getFavoritePlaces(favIds)
+            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+        } catch (err) {
+            next(err)
+        }
+
+
+    },
+
 
     getTopRatedPlaces: async (req, res, next) => {
         const { cookies } = req
