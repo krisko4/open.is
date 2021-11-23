@@ -9,6 +9,7 @@ import createStyles from "@material-ui/styles/createStyles";
 import React, { FC, useEffect, useState } from "react";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import Cookies from 'js-cookie'
+import { useSelectedPlacesContext } from "../../../contexts/SelectedPlacesContext";
 
 
 
@@ -28,8 +29,16 @@ const useStyles = makeStyles(() =>
     })
 )
 
+
+enum tabType {
+    POPULAR = 0,
+    RECENTLY_ADDED = 1,
+    TOP_RATED = 2,
+    FAVORITE = 3
+}
 interface PlaceProps {
-    place: any
+    place: any,
+    tabIndex: number 
 }
 
 const StyledRating = styled(Rating)({
@@ -47,15 +56,18 @@ const StyledRating = styled(Rating)({
 
 
 
-export const PlaceCard: FC<PlaceProps> = ({ place }) => {
+export const PlaceCard: FC<PlaceProps> = ({ place, tabIndex }) => {
     const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
+    const {setChosenCriterias} = useSelectedPlacesContext()
 
 
     useEffect(() => {
         const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === place._id)
         isFavorite ? setValue(1) : setValue(null)
     }, [])
+
+   
 
     const setFavoritePlace = (newValue: number | null) => {
         let favIds = Cookies.get('favIds')
@@ -71,6 +83,7 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
         if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
         if (index !== -1) {
             favIdsArray.splice(index, 1)
+            tabIndex === tabType.FAVORITE && setChosenCriterias((criterias : any) => criterias.filter((criterium : any) => place._id !== criterium._id ))
             if (favIdsArray.length === 0) {
                 Cookies.remove('favIds')
                 return
@@ -113,7 +126,6 @@ export const PlaceCard: FC<PlaceProps> = ({ place }) => {
                                         value={value}
                                         onChange={(event, newValue) => {
                                             setFavoritePlace(newValue)
-
                                         }}
                                         style={{ marginLeft: 5 }}
                                         icon={<Favorite fontSize="inherit" />}

@@ -149,11 +149,11 @@ const PlacesBox: FC = () => {
                             <Fade in={true} timeout={1000} key={index}>
                                 <ListItem
                                     style={{ marginTop: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
-                                    key={index}
+                                    key={place._id}
                                     onClick={() => openPlaceDetails(place)}
                                     button
                                 >
-                                    <PlaceCard place={place} />
+                                    <PlaceCard tabIndex={tabIndex} place={place} />
                                 </ListItem>
                             </Fade>
                         )
