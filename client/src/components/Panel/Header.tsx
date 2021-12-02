@@ -1,16 +1,14 @@
-import { Avatar, Button, CardMedia, IconButton, ListItem, ListItemAvatar, ListItemText, Typography } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
+import AddIcon from "@material-ui/icons/Add";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import HomeIcon from "@material-ui/icons/Home";
 import React, { FC } from 'react';
 import { usePageContext } from "../../contexts/PageContext";
-import HomeIcon from "@material-ui/icons/Home"
-import SettingsIcon from "@material-ui/icons/Settings"
-import DashboardIcon from "@material-ui/icons/Dashboard"
-import AddIcon from "@material-ui/icons/Add"
-import { AccountCircle } from '@material-ui/icons';
-import { ChosenOptions, usePanelContext } from '../../contexts/PanelContext';
+import { ChosenOptions, usePanelContext } from '../../contexts/PanelContexts/PanelContext';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -34,7 +32,8 @@ const Header: FC = () => {
 
     const classes = useStyles();
     const { setPanelOpen } = usePageContext()
-    const { places, setSelectedOption, setPlaceIndex, setCurrentPlace } = usePanelContext()
+    const { places, setSelectedOption} = usePanelContext()
+
 
 
     return (

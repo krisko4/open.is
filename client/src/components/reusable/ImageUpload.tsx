@@ -13,6 +13,7 @@ export const ImageUpload: FC<Props> = ({ img, setImg, setImageFile }) => {
 
     const uploadRef = useRef<HTMLInputElement>(null)
     const [inputKey, setInputKey] = useState<any>()
+
     
     const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {

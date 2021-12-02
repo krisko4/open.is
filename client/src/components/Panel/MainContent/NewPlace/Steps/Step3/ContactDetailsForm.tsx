@@ -7,7 +7,7 @@ import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import { ErrorMessage, FastField, Form, Formik } from "formik";
 import React, { FC } from "react";
 import * as Yup from 'yup';
-import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/
 const facebookRegExp = /(?:https?:\/\/)(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig
@@ -26,7 +26,7 @@ const ContactDetailsSchema = Yup.object().shape({
 
 export const ContactDetailsForm: FC = () => {
 
-    const { currentPlace, setCurrentPlace } = usePanelContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const { setActiveStep } = useStepContext()
 
     const contactDetails = {

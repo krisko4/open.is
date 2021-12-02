@@ -1,23 +1,27 @@
-import { Button, CircularProgress, Fade, Grid, TextField, Typography } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
+import { Fade, Grid, Snackbar, Typography } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
-import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { usePanelContext } from "../../../../../../contexts/PanelContexts/PanelContext";
 import { useSelectedPlacesContext } from "../../../../../../contexts/SelectedPlacesContext";
-import { useStepContext } from "../../../../../../contexts/StepContext";
 import { findByAddress, getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
 import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
+import { AddressSearcher } from "../../../../../reusable/AddressSearcher";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
+interface Props {
+    setActiveStep?: React.Dispatch<React.SetStateAction<number>>,
+    setAddressSubmitted?: React.Dispatch<React.SetStateAction<boolean>>,
+    
+}
 
-export const AddressDetails: FC = () => {
+export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }) => {
 
     const [open, setOpen] = useState(false)
     const { setPlaceCoords } = useMapContext()
-    const {enqueueSnackbar} = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar()
 
     const [tileLayer, setTileLayer] = useState({
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -25,29 +29,26 @@ export const AddressDetails: FC = () => {
     })
 
     const { selectedPlaces, setSelectedPlaces, setChosenCriterias, selectedAddress, isEditionMode, setSelectedAddress, setEditionMode } = useSelectedPlacesContext()
-    const { currentPlace, setCurrentPlace } = usePanelContext()
-    const [inputValue, setInputValue] = useState('')
-    const { setActiveStep } = useStepContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const isFirstFind = useRef(true)
-    const [loading, setLoading] = useState(false)
     const [submitLoading, setSubmitLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
     const submitAddress = async () => {
         setSubmitLoading(true)
         try {
+            console.log(selectedAddress)
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
             console.log(res.data)
-            if(res.data && !res.data.isUserOwner){
-                setErrorMessage('This location is already occupied by another place. If your place is located on this address, try to change the position of a marker')
-                setSubmitLoading(false)
-                return
-            } 
-            console.log(selectedAddress.postcode)
-            if (selectedAddress.postcode === '') {
+            if (!selectedAddress.postcode) {
                 setErrorMessage('This is not a valid address. Please provide a street number.')
                 return
             }
+            if (res.data && !isEditionMode || (isEditionMode && res.data.address !== currentPlace.address)) {
+                setErrorMessage('Selected location is already occupied by another place. If your place is located on this address, try to change the position of a marker.')
+                return
+            }
+            console.log(selectedAddress.postcode)
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.address = selectedAddress.label
             const lat: number = selectedAddress.lat
@@ -55,41 +56,21 @@ export const AddressDetails: FC = () => {
             newCurrentPlace.lat = lat
             newCurrentPlace.lng = lng
             setCurrentPlace(newCurrentPlace)
-            setActiveStep(currentStep => currentStep + 1)
-        }catch(err){
+            setActiveStep && setActiveStep(currentStep => currentStep + 1)
+            setAddressSubmitted && setAddressSubmitted(addressSubmitted => !addressSubmitted)
+        } catch (err) {
             enqueueSnackbar("Oops, something went wrong", {
                 variant: 'error'
             })
         }
-    }
-
-    const selectPlace = async (place: any) => {
-        console.log(place)
-        if (place) {
-            setSelectedAddress({
-                label: place.label,
-                lng: place.x,
-                lat: place.y,
-                postcode: place.raw.address.postcode
-            })
-            // setMapZoom(20)
-            setPlaceCoords({
-                lat: place.y,
-                lng: place.x,
-                mapZoom: 20
-            })
-            //  setMapCenter({ lat: place.y, lng: place.x })
-
-            const newCurrentPlace = { ...currentPlace }
-            newCurrentPlace.lat = place.y
-            newCurrentPlace.lng = place.x
-            setCurrentPlace(newCurrentPlace)
-            setChosenCriterias([newCurrentPlace])
+        finally {
+            setSubmitLoading(false)
         }
     }
 
 
     useEffect(() => {
+        console.log(selectedAddress)
         if (currentPlace.address !== '') {
             setSelectedAddress({
                 label: currentPlace.address,
@@ -106,89 +87,23 @@ export const AddressDetails: FC = () => {
         }
     }, [])
 
-    useEffect(() => {
-        if (isFirstFind.current) {
-            console.log(inputValue)
-            isFirstFind.current = false
-            return
-        }
-        setErrorMessage('')
-        setLoading(true)
-        if (inputValue === '') {
-            setLoading(false)
-            setSelectedPlaces([])
-            return
-        }
-        const delaySearch = setTimeout(async () => {
-            const addresses = await findByAddress(inputValue)
-            setSelectedPlaces(addresses)
-            setLoading(false)
-        }, 500)
-        return () => clearTimeout(delaySearch)
-    }, [inputValue])
-
     return (
-        <Grid container justify="center" style={{ marginTop: 10 }}>
-            <Typography style={{ marginBottom: 10, textAlign: 'center' }}><b>Current address:</b><br /> {selectedAddress.label}</Typography>
+        <Grid container justify="center">
             <Fade in={errorMessage !== ''}>
-                <Grid item lg={8} style={{ textAlign: 'center' }}>
+                <Grid item lg={8} style={{ textAlign: 'center', marginBottom: 10 }}>
                     <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
                 </Grid>
             </Fade>
-            <Grid item lg={8}>
-                <Autocomplete
-                    freeSolo
-                    loading={loading}
-                    inputValue={inputValue}
-                    open={open}
-                    onOpen={() => {
-                        setOpen(true);
-                    }}
-                    onClose={() => {
-                        setOpen(false);
-                    }}
-                    options={selectedPlaces}
-                    onChange={(event, value) => selectPlace(value)}
-                    getOptionLabel={(option: any) => option && option.name}
-                    noOptionsText="No options"
-                    renderOption={(option: any, { inputValue }) => {
-                        const label = option.label
-                        const matches = match(label, inputValue);
-                        const parts = parse(label, matches);
-                        return (
-                            <Grid container>
-                                <Grid item>
-                                    {parts.map((part, index) => (
-                                        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                                            <span>{part.text}</span>
-                                        </span>
-                                    ))}
-                                </Grid>
-                            </Grid>
-                        )
-                    }}
-                    renderInput={(params) =>
-                        <TextField
-                            {...params}
-                            placeholder="Enter the address of your place"
-                            label="What is the address of your place?"
-                            onChange={e => setInputValue(e.target.value)}
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <React.Fragment>
-                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                        {params.InputProps.endAdornment}
-                                    </React.Fragment>
-                                ),
-                            }}
-                        />}
-                />
+            <Grid container justify="center">
+                {selectedAddress.postcode &&  <Alert variant="outlined" style={{ marginBottom: 20 }} severity="info">Current address: {selectedAddress.label}</Alert>}
             </Grid>
-            <Grid style={{ height: 400, marginTop: 20 }} item lg={12}>
+            <Grid item lg={8}>
+                <AddressSearcher setErrorMessage={setErrorMessage} />
+            </Grid>
+            <Grid style={{ height: 400, marginTop: 20 }} container>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <LoadingButton loading={submitLoading} disabled={!selectedAddress.label || loading || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</LoadingButton>
+            <LoadingButton loading={submitLoading} disabled={!selectedAddress.label || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10, marginBottom: 10 }} color="primary">Submit</LoadingButton>
         </Grid>
     )
 }

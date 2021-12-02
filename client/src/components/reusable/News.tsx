@@ -49,11 +49,17 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 
 export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurrentPlace }) => {
 
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [newsTitle, setNewsTitle] = useState('')
+    const [newsContent, setNewsContent] = useState('')
+    const emojiSource = useRef<'title' | 'content'>('title')
+    const isUserLoggedIn = useAuthSelector()
+    const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
     const [openNews, setOpenNews] = useState<OpenNews>({
         isOpen: false,
         newsIndex: 0
     })
-
     const { enqueueSnackbar } = useSnackbar()
 
     const submitNews = () => {
@@ -86,22 +92,13 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
         })
     }
 
-    const [dialogOpen, setDialogOpen] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [newsTitle, setNewsTitle] = useState('')
-    const [newsContent, setNewsContent] = useState('')
-
-    const emojiSource = useRef<'title' | 'content'>('title')
-
-    const isUserLoggedIn = useAuthSelector()
-    const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
-
     const handleEmoji = (emoji: IEmojiData) => {
         setEmojiPickerOpen(false)
         emojiSource.current === 'title' ? setNewsTitle(title => title + emoji.emoji) : setNewsContent(content => content + emoji.emoji)
     }
+    
     return (
-        <Grid container direction="column" style={{height: '100%'}}>
+        <Grid container direction="column" style={{ height: '100%' }}>
             {news && news.length > 0 ?
                 <>
                     {

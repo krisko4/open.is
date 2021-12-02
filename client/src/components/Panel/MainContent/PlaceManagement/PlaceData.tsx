@@ -2,21 +2,24 @@ import { Button, Card, CardContent, CardMedia, Fade, Grid, makeStyles, Typograph
 import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
 import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
 import SettingsIcon from "@material-ui/icons/Settings";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
-
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
-import { isSameDay, isToday, isYesterday } from "date-fns";
+import { isToday, isYesterday } from "date-fns";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import myAxios from "../../../../axios/axios";
-import { Status, usePanelContext } from "../../../../contexts/PanelContext";
+import { Status, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
-import { StatisticChart } from "../Dashboard/StatisticChart";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { PlaceSettings } from "./PlaceSettings";
+import {ActivityChart} from './Charts/ActivityChart'
+import {RatingChart} from './Charts/RatingChart'
+import {TotalOpinionsChart} from './Charts/TotalOpinionsChart'
+import {TotalVisitsChart} from './Charts/TotalVisitsChart'
+import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 
 
 interface Props {
@@ -38,32 +41,34 @@ export const PlaceData: FC<Props> = ({ index }) => {
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
     const classes = useStyles()
-    const { currentPlace, placeIndex, setCurrentPlace, places, opinions, visits } = usePanelContext()
+    const {currentPlace, setCurrentPlace, visits, opinions} = useCurrentPlaceContext()
+    const {placeIndex, places} = usePanelContext()
     const [settingsOpen, setSettingsOpen] = useState(false)
-    const { ones, twos, threes, fours, fives } = currentPlace.averageNote
     const [totalVisits, setTotalVisits] = useState(0)
     const [visitsToday, setVisitsToday] = useState(0)
     const [visitsYesterday, setVisitsYesterday] = useState(0)
     const [opinionsDiff, setOpinionsDiff] = useState(0)
     const [visitsDiff, setVisitsDiff] = useState(0)
 
+
+
     useEffect(() => {
+        console.log(visits)
         const totalVisits = visits.reduce((a, b) => a + b.visitCount, 0)
         setTotalVisits(totalVisits)
-        const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0) 
+        const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)
         setVisitsToday(visitsToday)
         setVisitsYesterday(visits.filter(visit => isYesterday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0))
-        if(visitsToday === totalVisits){
+        if (visitsToday === totalVisits) {
             setVisitsDiff(visitsToday * 100)
             return
         }
         setVisitsDiff(Math.round(((totalVisits / (totalVisits - visitsToday)) * 100 - 100) * 10) / 10)
-
     }, [visits])
 
     useEffect(() => {
         const opinionsToday = opinions.filter(opinion => isToday(new Date(opinion.date))).length
-        if(opinionsToday === opinions.length) {
+        if (opinionsToday === opinions.length) {
             setOpinionsDiff(opinions.length * 100)
             return
         }
@@ -97,209 +102,7 @@ export const PlaceData: FC<Props> = ({ index }) => {
             setLoading(false)
         }
     }
-    const totalVisitsSeries = [
 
-        {
-            name: 'visits',
-            data: visits.map(visit => visit.visitCount)
-        },
-    ]
-
-    const totalOpinionsSeries = [
-        {
-            data: [ones, twos, threes, fours, fives]
-        }
-    ]
-
-
-    const [totalOpinionsOptions, setTotalOpinionsOptions] = useState({
-        chart: {
-            toolbar: {
-                show: false
-            },
-            height: 100,
-            type: 'bar',
-            animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 800,
-                animateGradually: {
-                    enabled: true,
-                    delay: 150
-                },
-                dynamicAnimation: {
-                    enabled: true,
-                    speed: 350
-                }
-            },
-            sparkline: {
-                enabled: true
-            },
-
-        },
-        plotOptions: {
-            // bar: {
-            //     distributed: true
-            // }
-        },
-        legend: {
-            show: false
-        },
-        xaxis: {
-            categories: [
-                ['One'], ['Two'], ['Three'], ['Four'], ['Five']],
-            crosshairs: {
-                width: 1
-            },
-            min: 0
-        },
-        yaxis: {
-            labels: {
-                show: false
-            }
-        },
-        tooltip: {
-            y: {
-                title: {
-                    formatter: function (seriesName: string) {
-                        return ''
-                    }
-                }
-            },
-
-        },
-
-        dataLabels: {
-            enabled: false
-        }
-    })
-
-
-    const [totalVisitsOptions, setTotalVisitsOptions] = useState({
-        chart: {
-            type: 'area',
-            sparkline: {
-                enabled: true
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        tooltip: {
-            enabled: false
-        },
-
-        plotOptions: {
-            dataLabels: {
-                show: false
-            }
-        },
-        stroke: {
-            curve: 'straight'
-        },
-        fill: {
-            opacity: 0.3,
-        },
-        yaxis: {
-            min: 0
-        },
-    });
-
-
-    const [ratingOptions, setRatingOptions] = useState({
-        chart: {
-            width: 380,
-            type: 'donut',
-            animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 800,
-                animateGradually: {
-                    enabled: true,
-                    delay: 150
-                },
-                dynamicAnimation: {
-                    enabled: true,
-                    speed: 350
-                }
-            }
-        },
-        plotOptions: {
-            pie: {
-                startAngle: -90,
-                endAngle: 270
-            }
-        },
-        labels: ['⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'],
-        fill: {
-            type: 'gradient',
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    width: 200
-                },
-                legend: {
-                    position: 'bottom'
-                }
-            }
-        }]
-    })
-
-    const ratingSeries = [ones, twos, threes, fours, fives]
-
-
-    const [options, setOptions] = useState({
-        chart: {
-            id: 'area-datetime',
-            type: 'area',
-            zoom: {
-                autoScaleYaxis: true
-            },
-            animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 800,
-                animateGradually: {
-                    enabled: true,
-                    delay: 150
-                },
-                dynamicAnimation: {
-                    enabled: true,
-                    speed: 350
-                }
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        markers: {
-            size: 0,
-            style: 'hollow',
-        },
-        xaxis: {
-            type: 'datetime',
-        },
-        tooltip: {
-            x: {
-                format: 'dd MMM yyyy'
-            }
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.7,
-                opacityTo: 0.9,
-                stops: [0, 100]
-            }
-        }
-    })
-    const series = [{
-        name: 'visits',
-        data: visits.map(visit => [visit.date, visit.visitCount])
-    }]
 
     return (
         <>
@@ -327,12 +130,11 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                                     }
                                                 </Grid>
                                                 <Typography variant="h3">
-                                                    {/* {visits.reduce((a, b) => a + b.visitCount, 0)} */}
                                                     {totalVisits}
                                                 </Typography>
                                             </Grid>
                                             <Grid item lg={6} container justify="center">
-                                                <StatisticChart height={100} width={150} type="area" options={totalVisitsOptions} setOptions={setTotalVisitsOptions} series={totalVisitsSeries} />
+                                                <TotalVisitsChart visits={visits} />
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -362,9 +164,7 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                                     }
                                                 </Grid>
                                                 <Typography variant="h3">
-                                                    {/* {visits.filter(visit => isSameDay(new Date(visit.date), new Date())).reduce((a, b) => a + b.visitCount, 0)} */}
                                                     {visitsToday}
-                                                    {/* {visits.find(visit => isSameDay(new Date(visit.date), new Date()))?.visitCount || 0} */}
                                                 </Typography>
                                             </Grid>
                                             <Grid item lg={6} container justify="center">
@@ -395,7 +195,7 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                                     </Grid>
                                                     <Typography variant="h3">{opinions.length}</Typography>
                                                 </Grid>
-                                                <StatisticChart height={100} width={200} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
+                                                <TotalOpinionsChart />
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -465,7 +265,7 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                                     value={currentPlace.averageNote.average}
                                                     style={{ marginTop: 10 }}
                                                 />
-                                                <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
+                                                <RatingChart />
                                             </Grid>
 
                                         </CardContent>
@@ -480,9 +280,8 @@ export const PlaceData: FC<Props> = ({ index }) => {
                                             <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
                                                 The following chart represents historical data of user activity in your place
                                             </Typography>
-                                            <StatisticChart type="area" height={500} options={options} setOptions={setOptions} series={series} />
+                                            <ActivityChart visits={visits} />
                                         </CardContent>
-
                                     </Card>
                                 </Grid>
                             </Grid>

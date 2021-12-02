@@ -1,4 +1,4 @@
-import { Card, CardMedia, CardContent, IconButton, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
+import { Card, CardContent, CardMedia, IconButton, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -9,7 +9,8 @@ import Rating from "@material-ui/lab/Rating";
 import React, { FC, useEffect, useRef, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
-import { Status, usePanelContext } from "../../../../contexts/PanelContext";
+import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { Status, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { News } from "../../../reusable/News";
 import OpeningHours from "../../../reusable/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
@@ -132,8 +133,9 @@ const useOpinionsStyles = makeStyles({
 
 export const PlaceDetailsCard: FC = () => {
 
-    const { currentPlace, setPlaces, places, setCurrentPlace, news, setNews, opinions, setOpinions, opinionCount, setOpinionCount } = usePanelContext()
-
+    const {places, setPlaces} = usePanelContext()
+    const { currentPlace,  setCurrentPlace, news, setNews, opinions, setOpinions, opinionCount, setOpinionCount } = useCurrentPlaceContext()
+    console.log('witam')
     const isFirstRender = useRef(true)
     const newsClasses = useNewsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
@@ -157,14 +159,14 @@ export const PlaceDetailsCard: FC = () => {
         },
     ]
 
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
-        }
-        const newPlaces = places.map((place: any) => place._id === currentPlace._id ? currentPlace : place)
-        setPlaces(newPlaces)
-    }, [currentPlace])
+    // useEffect(() => {
+    //     if (isFirstRender.current) {
+    //         isFirstRender.current = false
+    //         return
+    //     }
+    //     const newPlaces = places.map((place: any) => place._id === currentPlace._id ? currentPlace : place)
+    //     setPlaces(newPlaces)
+    // }, [currentPlace])
 
     const tabContents = [
         <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
@@ -197,10 +199,7 @@ export const PlaceDetailsCard: FC = () => {
                     </Typography>
                     <Grid container style={{ marginTop: 10 }} alignItems="center" justify="space-evenly">
                         <Grid item lg={5} style={{ textAlign: 'center' }}>
-                            {/* <img style={{ width: '100%', marginTop: 10, height: 321 }} alt="place img"
-                                src={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} /> */}
                             <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
-
                         </Grid>
                         <Grid item lg={5} container direction="column" alignItems="center" style={{ textAlign: 'center', marginLeft: 10 }}>
                             <Typography variant="h3" style={{ fontWeight: 'bold' }}>
@@ -230,12 +229,12 @@ export const PlaceDetailsCard: FC = () => {
                             </div>
                         </Grid>
                         <Grid item container lg={12} style={{ marginTop: 20 }} justify="center">
-                            <Grid item lg={10} style={{textAlign: 'center'}}>
+                            <Grid item lg={10} style={{ textAlign: 'center' }}>
                                 <Typography variant="body1">
                                     {currentPlace.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
                                 </Typography>
                             </Grid>
-                            <Grid item lg={10} style={{marginTop: 10}}>
+                            <Grid item lg={10} style={{ marginTop: 10 }}>
                                 <Divider style={{ width: '100%', background: '#2196f3' }} />
                             </Grid>
                         </Grid>

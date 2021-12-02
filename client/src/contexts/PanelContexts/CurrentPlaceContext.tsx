@@ -1,13 +1,6 @@
+
 import { createContext, useContext, FC, useState } from "react";
 
-
-export enum ChosenOptions {
-    DASHBOARD,
-    NEW_PLACE,
-    NO_PLACES,
-    PLACE_MANAGEMENT,
-    MY_ACCOUNT
-}
 
 export enum Status {
     OPEN = 'open',
@@ -64,17 +57,17 @@ interface OpinionProps {
 }
 
 
-export const PanelContext = createContext<PanelContextData | null>(null)
+export const CurrentPlaceContext = createContext<CurrentPlaceContextData | null>(null)
 
 
-export const PanelContextProvider: FC = ({ children }) => {
+export const CurrentPlaceContextProvider: FC = ({ children }) => {
 
     const state = useProviderSettings()
 
     return (
-        <PanelContext.Provider value={state}>
+        <CurrentPlaceContext.Provider value={state}>
             {children}
-        </PanelContext.Provider>
+        </CurrentPlaceContext.Provider>
     )
 }
 
@@ -121,27 +114,13 @@ interface VisitProps {
 
 const useProviderSettings = () => {
 
-    const [selectedOption, setSelectedOption] = useState<ChosenOptions | null>(null)
     const [currentPlace, setCurrentPlace] = useState<PlaceProps>(clearPlace)
-    const [placeIndex, setPlaceIndex] = useState(0)
     const [news, setNews] = useState<NewsProps[]>([])
     const [opinions, setOpinions] = useState<OpinionProps[]>([])
     const [visits, setVisits] = useState<VisitProps[]>([])
-    const [places, setPlaces] = useState<PlaceProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
-    const [userData, setUserData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        img: null
-    })
-    // const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
 
     return {
-        places,
-        setPlaces,
-        selectedOption,
-        setSelectedOption,
         currentPlace,
         setCurrentPlace,
         news,
@@ -150,21 +129,17 @@ const useProviderSettings = () => {
         setOpinions,
         opinionCount,
         setOpinionCount,
-        placeIndex,
-        setPlaceIndex,
         visits,
         setVisits
-        // userData,
-        // setUserData
     }
 }
 
-type PanelContextData = ReturnType<typeof useProviderSettings>
+type CurrentPlaceContextData = ReturnType<typeof useProviderSettings>
 
-export const usePanelContext = () => {
-    const panelContext = useContext(PanelContext)
-    if (!panelContext) throw new Error('PanelContextProvider should be used inside PanelContext!')
-    return panelContext
+export const useCurrentPlaceContext = () => {
+    const currentPlaceContext = useContext(CurrentPlaceContext)
+    if (!currentPlaceContext) throw new Error('CurrentPlaceContextProvider should be used inside CurrentPlaceContext!')
+    return currentPlaceContext
 
 }
 

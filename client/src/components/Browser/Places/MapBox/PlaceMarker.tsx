@@ -9,7 +9,7 @@ import React, { FC, useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
-import { usePanelContext } from "../../../../contexts/PanelContext";
+import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 
 

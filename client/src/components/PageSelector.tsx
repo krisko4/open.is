@@ -1,6 +1,6 @@
 import React from "react";
 import { usePageContext } from "../contexts/PageContext";
-import { PanelContextProvider } from '../contexts/PanelContext';
+import { PanelContextProvider } from '../contexts/PanelContexts/PanelContext';
 import HomePage from "./HomePage/MainPage/HomePage";
 import { Panel } from "./Panel/Panel";
 

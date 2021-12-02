@@ -1,20 +1,27 @@
-import { Fade } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { ChosenOptions, usePanelContext } from "../../../contexts/PanelContext";
+import { ChosenOptions, usePanelContext } from "../../../contexts/PanelContexts/PanelContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import Header from "../Header";
 import { Dashboard } from "./Dashboard/Dashboard";
+import { MyAccount } from './MyAccount/MyAccount';
 import { NewPlace } from "./NewPlace/NewPlace";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceManagement } from './PlaceManagement/PlaceManagement';
-import {MyAccount} from './MyAccount/MyAccount'
+import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain'
+import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 
-export const MainContent: FC = () => {
+interface Props {
+  chosenPlace: any
+}
+
+export const MainContent: FC<Props> = ({ chosenPlace }) => {
 
   const { selectedOption } = usePanelContext()
+  console.log('siemanisko')
+
+
 
   return (
     <Grid container direction="row" style={{ height: '100%' }} item lg={10}>
@@ -22,12 +29,20 @@ export const MainContent: FC = () => {
         <Header />
         {selectedOption === ChosenOptions.DASHBOARD && <Dashboard />}
         {selectedOption === ChosenOptions.NEW_PLACE &&
-          <StepContextProvider>
-            <NewPlace />
-          </StepContextProvider>}
+          <CurrentPlaceContextProvider>
+            <StepContextProvider>
+              <NewPlace />
+            </StepContextProvider>
+          </CurrentPlaceContextProvider>
+        }
         {selectedOption === ChosenOptions.NO_PLACES && <NoPlaces />}
-        {selectedOption === ChosenOptions.PLACE_MANAGEMENT && <PlaceManagement />}
+        {selectedOption === ChosenOptions.PLACE_MANAGEMENT &&
+          <CurrentPlaceContextProvider>
+            <PlaceManagement chosenPlace={chosenPlace} />
+          </CurrentPlaceContextProvider>
+        }
         {selectedOption === ChosenOptions.MY_ACCOUNT && <MyAccount />}
+        {selectedOption === ChosenOptions.NEW_BUSINESS_CHAIN && <NewBusinessChain />}
       </Scrollbars>
     </Grid>
 

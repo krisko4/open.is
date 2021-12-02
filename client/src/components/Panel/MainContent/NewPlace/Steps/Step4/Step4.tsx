@@ -2,6 +2,7 @@ import { Grid, Typography } from "@material-ui/core";
 import React, { FC } from "react";
 import MapContextProvider from "../../../../../../contexts/MapContext/MapContext";
 import SelectedPlacesContextProvider from "../../../../../../contexts/SelectedPlacesContext";
+import { useStepContext } from "../../../../../../contexts/StepContext";
 import { AddressDetails } from "./AddressDetails";
 
 
@@ -12,6 +13,8 @@ interface Props{
 }
 
 export const Step4 : FC<Props> = ({isEditionMode}) => {
+
+    const {setActiveStep} = useStepContext()
     
     return (
         <Grid item lg={12} container justify="center">
@@ -26,7 +29,7 @@ export const Step4 : FC<Props> = ({isEditionMode}) => {
             </Grid>
             <MapContextProvider>
                 <SelectedPlacesContextProvider isEditionMode={isEditionMode}>
-                    <AddressDetails />
+                    <AddressDetails setActiveStep={setActiveStep} />
                 </SelectedPlacesContextProvider>
             </MapContextProvider>
         </Grid>

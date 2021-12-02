@@ -2,7 +2,8 @@ import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogCo
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import myAxios from "../../../../axios/axios";
-import { PlaceProps, usePanelContext } from "../../../../contexts/PanelContext";
+import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { PlaceProps, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
@@ -19,7 +20,8 @@ interface Props {
 export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
 
     const { activeStep, setActiveStep, imageFile } = useStepContext()
-    const { currentPlace, setCurrentPlace, places, setPlaces } = usePanelContext()
+    const { currentPlace, setCurrentPlace} = useCurrentPlaceContext()
+    const {places, setPlaces} = usePanelContext()
     const [isLoading, setLoading] = useState(false)
     const [isOpen, setOpen] = useState(false)
     const { enqueueSnackbar } = useSnackbar()

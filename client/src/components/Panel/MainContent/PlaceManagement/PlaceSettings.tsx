@@ -6,12 +6,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import { useSnackbar } from "notistack";
 import React, { FC, MutableRefObject, useRef, useState } from "react";
-import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContext";
+import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { StepContextProvider } from "../../../../contexts/StepContext";
 import { EditPlace } from "./EditPlace";
 import DeleteIcon from '@material-ui/icons/Delete'
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import myAxios from "../../../../axios/axios";
+import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -23,7 +24,8 @@ interface Props {
 
 export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
-    const { currentPlace, setCurrentPlace, places, setPlaces, setSelectedOption } = usePanelContext()
+    const {places, setPlaces, setSelectedOption } = usePanelContext()
+    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
     const [initialPlaceData, setInitialPlaceData] = useState(currentPlace)
     const { enqueueSnackbar } = useSnackbar()
     const [isDeleteOpen, setDeleteOpen] = useState(false)

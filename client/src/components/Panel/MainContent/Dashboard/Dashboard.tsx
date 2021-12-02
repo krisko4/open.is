@@ -9,7 +9,7 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { Rating } from "@material-ui/lab";
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
-import { ChosenOptions, PlaceProps, usePanelContext } from "../../../../contexts/PanelContext";
+import { ChosenOptions, PlaceProps, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { StatisticChart } from "./StatisticChart";
 
 

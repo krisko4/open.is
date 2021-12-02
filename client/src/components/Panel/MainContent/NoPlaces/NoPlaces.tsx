@@ -1,7 +1,7 @@
 import { Button, Grid, Grow, Slide } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import React, { FC } from "react";
-import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContext";
+import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import AddIcon from '@material-ui/icons/Add';
 
 export const NoPlaces: FC = () => {

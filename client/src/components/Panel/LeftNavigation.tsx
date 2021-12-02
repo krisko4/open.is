@@ -1,48 +1,42 @@
-import { CardMedia, Divider, ListItemIcon, ListSubheader, makeStyles } from "@material-ui/core";
+import { CardMedia, ListItemIcon, ListSubheader, makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { Drawer } from "@material-ui/core";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import AddIcon from '@material-ui/icons/Add';
+import CloudCircle from '@material-ui/icons/CloudCircle';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React, { FC } from "react";
-import { ChosenOptions, usePanelContext } from "../../contexts/PanelContext";
 import Scrollbars from "react-custom-scrollbars";
+import { ChosenOptions, usePanelContext } from "../../contexts/PanelContexts/PanelContext";
 const useStyles = makeStyles(() =>
 ({
     navigation: {
         background: 'white',
-
-        // borderWidth: 1,
-
-
     }
 })
 )
 
 
-export const LeftNavigation: FC = () => {
+export const LeftNavigation: FC<any> = ({setChosenPlace}) => {
 
     const classes = useStyles()
-    const { places, setSelectedOption, setPlaceIndex, setCurrentPlace } = usePanelContext()
+    const { places, setSelectedOption, setPlaceIndex} = usePanelContext()
+
 
 
     const choosePlace = (place: any, index: number) => {
         setPlaceIndex(index)
-        setCurrentPlace(place)
+        setChosenPlace(place)
         setSelectedOption(ChosenOptions.PLACE_MANAGEMENT)
     }
 
     return (
         <Grid item lg={2} style={{ height: '100%' }}>
             <Scrollbars autoHide>
-                {/* <div style={{
-                    background: 'linear-gradient(0deg, rgba(245,245,245,1) 0%, rgba(24,131,217,1) 47%)'
-                }}> */}
                 <Grid container justify="center">
                     <CardMedia
                         image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
@@ -54,18 +48,6 @@ export const LeftNavigation: FC = () => {
                         <Avatar alt={`${localStorage.getItem('fullName')}`} src={`${localStorage.getItem('img')}`} />
                     </ListItemAvatar>
                     <ListItemText
-                        // primaryTypographyProps={{
-                        //     style: {
-                        //         color: 'white',
-
-                        //     }
-                        // }}
-                        // secondaryTypographyProps={{
-                        //     style: {
-                        //         color: 'white'
-                        //     }
-
-                        // }}
                         primary={`${localStorage.getItem('fullName')}`}
                         secondary="Standard user"
                     />
@@ -89,6 +71,12 @@ export const LeftNavigation: FC = () => {
                             <AddIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="New place" />
+                    </ListItem>
+                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.NEW_BUSINESS_CHAIN)}>
+                        <ListItemIcon>
+                            <CloudCircle color="primary" />
+                        </ListItemIcon>
+                        <ListItemText secondary="New business chain" />
                     </ListItem>
 
                     {places.length > 0 && <ListSubheader disableSticky>

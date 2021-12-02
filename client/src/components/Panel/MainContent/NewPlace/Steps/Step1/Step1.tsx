@@ -1,7 +1,8 @@
 import { Grid, InputAdornment, TextField, Typography } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import React, { FC, useEffect, useState } from "react";
-import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { usePanelContext } from "../../../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
@@ -11,7 +12,7 @@ import { LoadingButton } from "../../../../../reusable/LoadingButton";
 export const Step1: FC = () => {
 
     const { setActiveStep } = useStepContext()
-    const {currentPlace, setCurrentPlace} = usePanelContext()
+    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
     const [input, setInput] = useState('')
 
     useEffect(() => {

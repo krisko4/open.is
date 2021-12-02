@@ -1,13 +1,24 @@
-import React, { FC, useEffect, useState } from "react";
-import myAxios from "../../../../axios/axios";
-import { usePanelContext } from "../../../../contexts/PanelContext";
+import React, { FC, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useCurrentPlaceContext } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
+import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { PlaceData } from './PlaceData';
+import {setPlace} from '../../../../store/actions/setCurrentPlace'
 
+interface Props {
+    chosenPlace: any
+}
 
-export const PlaceManagement: FC = () => {
+export const PlaceManagement: FC<Props> = ({ chosenPlace }) => {
 
-    const { places, currentPlace, setCurrentPlace, setVisits, setNews, setOpinions, setOpinionCount } = usePanelContext()
+    const { places } = usePanelContext()
+    const { currentPlace, setCurrentPlace, setVisits, setNews, setOpinions } = useCurrentPlaceContext()
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(setPlace({...chosenPlace}))
+        setCurrentPlace({ ...chosenPlace })
+    }, [chosenPlace])
 
     useEffect(() => {
         currentPlace.news && setNews(currentPlace.news)
@@ -16,9 +27,10 @@ export const PlaceManagement: FC = () => {
     }, [currentPlace])
 
 
-
     return <>
-    {places.map((place: any, index: number) => <PlaceData key={index} index={index} />)}
+        {places.map((place: any, index: number) =>
+            <PlaceData key={index} index={index} />
+        )}
     </>
 
 }

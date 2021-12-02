@@ -1,19 +1,15 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Grid, IconButton, Slide, TextField, Typography } from "@material-ui/core";
-import ClearIcon from '@material-ui/icons/Clear';
+import { Button, Card, CardActions, CardContent, Grid, Slide, TextField, Typography } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import myAxios from "../../../../axios/axios";
 import { usePageContext } from "../../../../contexts/PageContext";
-import { usePanelContext, ChosenOptions } from "../../../../contexts/PanelContext";
-import { logout } from "../../../../store/actions/logout";
-import { setEmail } from "../../../../store/actions/setEmail";
+import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { ImageUpload } from '../../../reusable/ImageUpload';
 import { LoadingButton } from "../../../reusable/LoadingButton";
-import { ImageUpload } from '../../../reusable/ImageUpload'
 import { PasswordChange } from './PasswordChange';
-import axios from "axios";
 
 const AccountDetailsSchema = Yup.object().shape({
     email: Yup.string().email('This is not a valid e-mail address').required('E-mail address is required'),
@@ -30,7 +26,6 @@ const AccountDetailsSchema = Yup.object().shape({
 })
 
 const isLetter = (e: React.KeyboardEvent) => {
-    // let char = String.fromCharCode(e.keyCode);
     const char = e.key
     if (/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\b]+$/.test(char)) return true;
     else e.preventDefault();
@@ -40,12 +35,9 @@ const isLetter = (e: React.KeyboardEvent) => {
 
 export const MyAccount: FC = () => {
 
-    const dispatch = useDispatch()
-    const { setPanelOpen } = usePageContext()
     const [loading, setLoading] = useState(false)
     const [passwordChangeOpen, setPasswordChangeOpen] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
-    const { setSelectedOption } = usePanelContext()
     const [img, setImg] = useState<any>(localStorage.getItem('img'))
     const [imageFile, setImageFile] = useState<any>(null)
 

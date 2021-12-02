@@ -5,12 +5,12 @@ export const SelectedPlacesContext = createContext<SelectedPlacesContextData | n
 interface Props {
     children: ReactNode,
     isEditionMode: boolean
-    
+
 }
 
-const SelectedPlacesContextProvider : FC<Props> = ({isEditionMode, children}) => {
+const SelectedPlacesContextProvider: FC<Props> = ({ isEditionMode, children }) => {
     const state = useProviderSettings(isEditionMode)
-    return(
+    return (
         <SelectedPlacesContext.Provider value={state}>
             {children}
         </SelectedPlacesContext.Provider>
@@ -19,21 +19,20 @@ const SelectedPlacesContextProvider : FC<Props> = ({isEditionMode, children}) =>
 
 interface SelectedAddressProps {
     label: string,
-    lat: number, 
+    lat: number,
     lng: number,
-    postcode: string
+    postcode?: string
 }
 
 const useProviderSettings = (isEdition: boolean) => {
     const [selectedPlaces, setSelectedPlaces] = useState<any>([])
     const [chosenCriterias, setChosenCriterias] = useState<any>([])
     const [isEditionMode, setEditionMode] = useState(isEdition)
-    
+
     const [selectedAddress, setSelectedAddress] = useState<SelectedAddressProps>({
         label: '',
         lat: 0,
-        lng: 0,
-        postcode: 'default'
+        lng: 0
     })
     return {
         selectedPlaces,
@@ -51,7 +50,7 @@ type SelectedPlacesContextData = ReturnType<typeof useProviderSettings>
 
 export const useSelectedPlacesContext = () => {
     const context = useContext(SelectedPlacesContext)
-    if(!context) throw new Error('SelectedPlacesContextProvider should be placed inside SelectedPlacesContext')
+    if (!context) throw new Error('SelectedPlacesContextProvider should be placed inside SelectedPlacesContext')
     return context
 }
 

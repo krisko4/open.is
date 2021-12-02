@@ -2,7 +2,7 @@ import { Chip, createStyles, makeStyles, Theme } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
-import React, { FC, useState } from "react";
+import React, { FC, HTMLAttributes, useEffect, useState } from "react";
 import Searcher from "./Searcher";
 import { Fastfood, ShoppingCart, LocalBar, AccountBalance, LocalPharmacy, LocalGasStation, LocalMall } from '@material-ui/icons'
 
@@ -43,16 +43,33 @@ const businessTypes = [
 ]
 
 interface ChipProps {
+    setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>,
     type: {
-        label: string,
-        icon: any
-    }
+        label: string;
+        icon: JSX.Element;
+    },
+    [x: string]: any
 }
 
-const CustomChip: FC <any> = (props) => {
+const CustomChip = (props: ChipProps) => {
 
-    const {type, ...rest} = props
+    const { type, setSelectedTypes, ...rest } = props
     const [selected, setSelected] = useState(false)
+
+    useEffect(() => {
+
+        if (!selected) {
+            setSelectedTypes(selectedTypes => selectedTypes.filter((selectedType) => selectedType !== type.label))
+            return
+        }
+        setSelectedTypes(selectedTypes => {
+            const newSelectedTypes = [...selectedTypes]
+            newSelectedTypes.push(type.label)
+            return newSelectedTypes
+        })
+
+    }, [selected])
+
     return (
         <Chip
             {...rest}
@@ -83,9 +100,16 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }))
 
+
+
 export const SecondHeader: FC = () => {
 
     const classes = useStyles()
+    const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+
+    useEffect(() => {
+        console.log(selectedTypes)
+    }, [selectedTypes])
 
     return (
         <AppBar
@@ -100,7 +124,7 @@ export const SecondHeader: FC = () => {
                     </Grid>
                     <Grid justify="center" container lg={6} item alignItems="center">
                         {businessTypes.map((type, index) =>
-                            <CustomChip className={classes.chip} type={type} key={index} />
+                            <CustomChip setSelectedTypes={setSelectedTypes} className={classes.chip} type={type} key={index} />
                         )}
                     </Grid>
                 </Grid>

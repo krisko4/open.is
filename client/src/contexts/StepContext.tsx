@@ -16,45 +16,14 @@ export const StepContextProvider: FC<ContextProps> = ({ children }) => {
     )
 }
 
-interface PlaceDetailsTypes {
-    type: string | null,
-    subtitle: string,
-    description: string
-}
 
 const useProviderSettings = () => {
-    const [placeName, setPlaceName] = useState('')
     const [activeStep, setActiveStep] = useState(0)
-    const [address, setAddress] = useState<any>(null)
     const [imageFile, setImageFile] = useState<File | null>(null)
-    const [subtitle, setSubtitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [type, setType] = useState('')
 
-    const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>('')
-
-    const [contactDetails, setContactDetails] = useState({
-        phoneNumber: '',
-        website: '',
-        email: ''
-    })
     return {
         activeStep,
         setActiveStep,
-        placeName,
-        setPlaceName,
-        subtitle,
-        setSubtitle,
-        type,
-        setType,
-        description,
-        setDescription,
-        contactDetails,
-        setContactDetails,
-        uploadedImage,
-        setUploadedImage,
-        address,
-        setAddress,
         imageFile,
         setImageFile
 

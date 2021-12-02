@@ -1,6 +1,6 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
-import React, { FC, useEffect, useRef, useState } from "react";
-import { usePanelContext } from "../../../../../../contexts/PanelContext";
+import React, { FC, useEffect, useState } from "react";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { ImageUpload } from "../../../../../reusable/ImageUpload";
 
@@ -23,38 +23,18 @@ export const Step5: FC = () => {
 
     const classes = useStyles()
 
-    const uploadRef = useRef<HTMLInputElement>(null)
-    const [elevation, setElevation] = useState(3)
-    const { currentPlace, setCurrentPlace } = usePanelContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const { imageFile, setImageFile } = useStepContext()
     const [img, setImg] = useState<any>(currentPlace.img)
 
 
     useEffect(() => {
-        console.log('zmienilo sie')
-        console.log(img)
         const newCurrentPlace = { ...currentPlace }
         newCurrentPlace.img = img
         setCurrentPlace(newCurrentPlace)
     }, [img])
 
 
-    // const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     if (event.target.files && event.target.files[0]) {
-    //         const image = event.target.files[0]
-    //         setImageFile(image)
-    //         const fileReader = new FileReader()
-    //         fileReader.readAsDataURL(image)
-    //         fileReader.onload = e => {
-    //             if (e.target) {
-    //                 const newCurrentPlace = { ...currentPlace }
-    //                 newCurrentPlace.img = e.target.result
-    //                 setCurrentPlace(newCurrentPlace)
-    //             }
-    //         }
-    //     }
-
-    // }
 
 
     return (
