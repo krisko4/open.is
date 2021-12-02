@@ -24,7 +24,6 @@ export const AddressSearcher: FC<Props> = ({setErrorMessage}) => {
     const [loading, setLoading] = useState(false)
 
     const selectPlace = async (place: any) => {
-        console.log(place)
         if (place) {
             setSelectedAddress({
                 label: place.label,

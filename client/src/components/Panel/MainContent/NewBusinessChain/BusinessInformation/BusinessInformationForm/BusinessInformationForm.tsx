@@ -1,19 +1,18 @@
-import { Button, Grid, TextField, Typography } from "@material-ui/core"
-import { FastField, Form, useFormikContext } from "formik"
+import { Button, Grid, Typography } from "@material-ui/core"
+import { Form, useFormikContext } from "formik"
 import { FC, useEffect, useState } from "react"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { ImageUpload } from "../../../../reusable/ImageUpload"
-import { BusinessName } from "../BusinessInformationForm/Fields/BusinessName"
-import { Subtitle } from "../BusinessInformationForm/Fields/Subtitle"
-import { BusinessType } from './BusinessType'
-import {Description} from '../BusinessInformationForm/Fields/Description'
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { ImageUpload } from "../../../../../reusable/ImageUpload"
+import { Description } from './Fields/Description'
+import { Subtitle } from './Fields/Subtitle'
+import { BusinessType } from '../BusinessType'
+import { BusinessName } from "./Fields/BusinessName"
 
 
 
 
 export const BusinessInformationForm: FC = () => {
 
-    console.log('hello')
     const [imageFile, setImageFile] = useState<File | null>(null)
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [img, setImg] = useState<any>(currentPlace.img)

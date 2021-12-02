@@ -2,7 +2,7 @@
 import { TextField } from "@material-ui/core"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 
 export const Description = () => {
     const { values, setFieldValue } = useFormikContext()

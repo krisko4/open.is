@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import React, { FC, useState } from 'react'
 import * as Yup from 'yup'
 import { useCurrentPlaceContext } from '../../../../../contexts/PanelContexts/CurrentPlaceContext'
-import { BusinessInformationForm } from './BusinessInformationForm'
+import { BusinessInformationForm } from './BusinessInformationForm/BusinessInformationForm'
 
 const BusinessInformationSchema = Yup.object().shape({
     name: Yup.string().required().max(40),

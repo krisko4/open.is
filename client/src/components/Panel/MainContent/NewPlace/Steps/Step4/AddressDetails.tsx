@@ -1,12 +1,11 @@
-import { Fade, Grid, Snackbar, Typography } from "@material-ui/core";
+import { Fade, Grid, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { usePanelContext } from "../../../../../../contexts/PanelContexts/PanelContext";
 import { useSelectedPlacesContext } from "../../../../../../contexts/SelectedPlacesContext";
-import { findByAddress, getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
+import { getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
 import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
 import { AddressSearcher } from "../../../../../reusable/AddressSearcher";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
@@ -39,16 +38,14 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
         try {
             console.log(selectedAddress)
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
-            console.log(res.data)
             if (!selectedAddress.postcode) {
                 setErrorMessage('This is not a valid address. Please provide a street number.')
                 return
             }
-            if (res.data && !isEditionMode || (isEditionMode && res.data.address !== currentPlace.address)) {
+            if (res.data && (!isEditionMode || (isEditionMode && res.data.address !== currentPlace.address))) {
                 setErrorMessage('Selected location is already occupied by another place. If your place is located on this address, try to change the position of a marker.')
                 return
             }
-            console.log(selectedAddress.postcode)
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.address = selectedAddress.label
             const lat: number = selectedAddress.lat
@@ -59,6 +56,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
             setActiveStep && setActiveStep(currentStep => currentStep + 1)
             setAddressSubmitted && setAddressSubmitted(addressSubmitted => !addressSubmitted)
         } catch (err) {
+            console.log(err)
             enqueueSnackbar("Oops, something went wrong", {
                 variant: 'error'
             })

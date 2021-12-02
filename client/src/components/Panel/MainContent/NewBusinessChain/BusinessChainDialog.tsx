@@ -1,13 +1,12 @@
 import { AppBar, Dialog, Grid, IconButton, Slide, SlideProps, Toolbar, Typography } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { clearPlace, CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { defaultNews, defaultOpinions } from '../../../reusable/defaults';
+import { CurrentPlaceContextProvider } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
-import { BusinessInformation } from './BusinessInformation/BusinessInformation'
-import { LocationDetails } from './LocationDetails';
-import { LocationSelection } from './LocationSelection/LocationSelection';
+import { BusinessInformation } from './BusinessInformation/BusinessInformation';
+import { LocationDetails } from './LocationDetails/LocationDetails';
+import { LocationSelection } from './LocationDetails/LocationSelection';
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 interface Props {
     open: boolean,
@@ -53,7 +52,7 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                             {currentStep === Steps.BUSINESS_INFORMATION ? <>
                                 <BusinessInformation setCurrentStep={setCurrentStep} />
                             </>
-                                : <LocationSelection setCurrentStep={setCurrentStep} />
+                                : <LocationSelection setAddressSubmitted={setAddressSubmitted} setCurrentStep={setCurrentStep} />
                             }
                         </Scrollbars>
                     </Grid>

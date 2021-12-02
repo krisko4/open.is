@@ -1,5 +1,6 @@
 
 import { createContext, useContext, FC, useState } from "react";
+import { defaultNews, defaultOpinions } from "../../components/reusable/defaults";
 
 
 export enum Status {
@@ -115,8 +116,8 @@ interface VisitProps {
 const useProviderSettings = () => {
 
     const [currentPlace, setCurrentPlace] = useState<PlaceProps>(clearPlace)
-    const [news, setNews] = useState<NewsProps[]>([])
-    const [opinions, setOpinions] = useState<OpinionProps[]>([])
+    const [news, setNews] = useState<NewsProps[]>(defaultNews)
+    const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
     const [visits, setVisits] = useState<VisitProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
 
