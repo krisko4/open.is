@@ -30,9 +30,7 @@ export const NewBusinessChain: FC = () => {
                     </Card>
                 </Slide>
             </Grid>
-            <CurrentPlaceContextProvider>
-                <BusinessChainDialog open={dialogOpen} setOpen={setDialogOpen} />
-            </CurrentPlaceContextProvider>
+            <BusinessChainDialog open={dialogOpen} setOpen={setDialogOpen} />
         </Grid>
     )
 }

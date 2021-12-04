@@ -20,7 +20,7 @@ enum Steps {
 
 export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
 
-    const [currentStep, setCurrentStep] = useState(Steps.BUSINESS_DETAILS)
+    const [currentStep, setCurrentStep] = useState(Steps.BUSINESS_INFORMATION)
     const [addressSubmitted, setAddressSubmitted] = useState(false)
 
     const closeDialog = () => {

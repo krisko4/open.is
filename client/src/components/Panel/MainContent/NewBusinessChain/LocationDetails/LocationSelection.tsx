@@ -26,7 +26,7 @@ export const LocationSelection: FC<Props> = ({ setCurrentStep, setAddressSubmitt
             <IconButton onClick={() => setCurrentStep(Steps.BUSINESS_INFORMATION)} color="primary">
                 <KeyboardReturn />
             </IconButton>
-            <Grid item container alignItems="center" direction="column" style={{ marginTop: 20 }}>
+            <Grid item container alignItems="center" direction="column">
                 <Typography variant="h4">
                     Step 2
                 </Typography>

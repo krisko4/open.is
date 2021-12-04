@@ -1,27 +1,143 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails } from "@material-ui/core"
-import { FC } from "react"
+import { Accordion, AccordionSummary, Typography, AccordionDetails, Grid, TextField, Button, IconButton } from "@material-ui/core"
+import { FC, useState } from "react"
 import { ExpandMore } from "@material-ui/icons"
+import { Field, Form, Formik } from "formik"
+import { LocationDetailsForm } from './LocationDetailsForm/LocationDetailsForm'
+import DeleteIcon from '@material-ui/icons/Delete'
 
-interface Props{
-    address : string
+interface Props {
+    address: string,
+    setSelectedPlaces: React.Dispatch<React.SetStateAction<LocationDetails[]>>
+
+}
+interface LocationDetails {
+    address: string,
+    phone: string,
+    website: string,
+    email: string,
+    facebook: string,
+    instagram: string,
+    lat: number,
+    lng: number
 }
 
-export const Location: FC<Props> = ({address}) => {
+const initialValues = {
+    phone: '',
+    email: '',
+    website: '',
+    instagram: '',
+    facebook: ''
+}
+
+const handleSubmit = () => {
+    console.log('hello')
+}
+
+
+export const Location: FC<Props> = ({ address, setSelectedPlaces }) => {
+    const deleteLocation = (e: any) => {
+        e.preventDefault()
+        setSelectedPlaces(locations => {
+            return locations.filter(location => location.address !== address)
+        })
+    }
     return (
-        <Accordion style={{width: '100%'}}>
+        <Accordion style={{ flexGrow: 1, background: 'white' }}>
             <AccordionSummary
                 expandIcon={<ExpandMore />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
             >
-                <Typography>{address}</Typography>
+                <Grid container justify="space-between" alignItems="center">
+                    <Grid item lg={11}>
+                        <Typography variant="subtitle2">{address}</Typography>
+                    </Grid>
+                    <IconButton onClick={deleteLocation}><DeleteIcon color="secondary" /></IconButton>
+                </Grid>
             </AccordionSummary>
             <AccordionDetails>
-                <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </Typography>
+                <Formik initialValues={initialValues} onSubmit={handleSubmit} >
+                    {() =>
+                        <Form style={{ flexGrow: 1, marginBottom: 10 }}>
+                            <Grid container justify="center" alignItems="center">
+                                <Grid item lg={5}>
+                                    <Button
+                                        size="small"
+                                        // color={clickedButtons.includes(Buttons.PHONE) ? "primary" : "default"}
+                                        // onClick={() => addButton(Buttons.PHONE)}
+                                        style={{ marginTop: 15 }}
+                                        variant="outlined"
+                                    >Phone number</Button>
+                                    {/* <Typography style={{ paddingTop: 15 }} variant="subtitle2">Phone number</Typography> */}
+                                </Grid>
+                                <Grid item lg={5}>
+                                    <Field as={TextField} label="Phone number" name="phone" fullWidth />
+                                </Grid>
+                            </Grid>
+                            <Grid container justify="center" alignItems="center">
+                                <Grid item lg={5}>
+                                    <Button
+                                        size="small"
+                                        // color={clickedButtons.includes(Buttons.EMAIL) ? "primary" : "default"}
+                                        // onClick={() => addButton(Buttons.EMAIL)}
+                                        style={{ marginTop: 15 }}
+                                        variant="outlined">
+                                        E-mail address</Button>
+                                    {/* <Typography style={{ paddingTop: 15 }} variant="subtitle2">E-mail address</Typography> */}
+                                </Grid>
+                                <Grid item lg={5}>
+                                    <Field as={TextField} label="example@mail.com" name="email" fullWidth />
+                                </Grid>
+                            </Grid>
+                            <Grid container justify="center" alignItems="center">
+                                <Grid item lg={5}>
+                                    <Button
+                                        size="small"
+                                        // color={clickedButtons.includes(Buttons.WEBSITE) ? "primary" : "default"}
+                                        style={{ marginTop: 15 }}
+                                        variant="outlined"
+                                    // onClick={() => addButton(Buttons.WEBSITE)}
+                                    >Website</Button>
+                                    {/* <Typography style={{ paddingTop: 15 }} variant="subtitle2">Website</Typography> */}
+                                </Grid>
+                                <Grid item lg={5}>
+                                    <Field as={TextField} label="https://example.com" name="website" fullWidth />
+                                </Grid>
+                            </Grid>
+                            <Grid container justify="center" alignItems="center">
+                                <Grid item lg={5}>
+                                    <Button
+                                        // color={clickedButtons.includes(Buttons.FACEBOOK) ? "primary" : "default"}
+                                        size="small"
+                                        style={{ marginTop: 15 }}
+                                        variant="outlined"
+                                    // onClick={() => addButton(Buttons.FACEBOOK)}
+                                    >Facebook</Button>
+                                    {/* <Typography style={{ paddingTop: 15 }} variant="subtitle2">Facebook</Typography> */}
+                                </Grid>
+                                <Grid item lg={5}>
+                                    <Field as={TextField} label="https://facebook.com/my-profile" name="facebook" fullWidth />
+                                </Grid>
+                            </Grid>
+                            <Grid container justify="center" alignItems="center">
+                                <Grid item lg={5}>
+                                    <Button
+                                        // color={clickedButtons.includes(Buttons.INSTAGRAM) ? "primary" : "default"}
+                                        size="small"
+                                        style={{ marginTop: 15 }}
+                                        variant="outlined"
+                                    // onClick={() => addButton(Buttons.INSTAGRAM)}
+                                    >Instagram</Button>
+                                    {/* <Typography style={{ paddingTop: 15 }} variant="subtitle2">Instagram</Typography> */}
+                                </Grid>
+                                <Grid item lg={5}>
+                                    <Field as={TextField} label="https://instagram.com/my-profile" name="instagram" fullWidth />
+                                </Grid>
+                            </Grid>
+
+                        </Form>
+                    }
+                    {/* <LocationDetailsForm /> */}
+                </Formik>
             </AccordionDetails>
-        </Accordion>
+        </Accordion >
     )
 }

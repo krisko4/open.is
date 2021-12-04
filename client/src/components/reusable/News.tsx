@@ -18,7 +18,6 @@ import { format } from "date-fns";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { useSnackbar } from "notistack";
 import React, { FC, useRef, useState } from "react";
-import Scrollbars from "react-custom-scrollbars";
 
 import myAxios from "../../axios/axios";
 import { useAuthSelector } from "../../store/selectors/AuthSelector";

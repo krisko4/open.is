@@ -76,7 +76,7 @@ export const NewPlace: FC = () => {
                             <Typography variant="subtitle2">
                                 Add new place to your place assembly
                             </Typography>
-                                <NewPlaceStepper isEditionMode={false} />
+                            <NewPlaceStepper isEditionMode={false} />
                         </CardContent>
                         {activeStep > 0 &&
                             <CardActions>

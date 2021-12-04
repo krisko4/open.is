@@ -34,7 +34,7 @@ export const ImageUpload: FC<Props> = ({ img, setImg, setImageFile }) => {
     return (
         <>
             <Card variant="outlined">
-                <CardMedia style={{ height: 300 }} image={img || `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
+                <CardMedia style={{ height: 300, backgroundSize: 'contain' }} image={img || `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
                     {img && <Grid container justify="flex-end">
                         <IconButton onClick={() => clearImage()} className="uploader" >
                             <ClearIcon color="secondary" />

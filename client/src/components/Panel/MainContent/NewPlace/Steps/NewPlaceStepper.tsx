@@ -41,7 +41,6 @@ export const NewPlaceStepper: FC<Props> = ({isEditionMode}) => {
     const { activeStep} = useStepContext()
 
 
-
     return (
         <Grid container>
             <Grid item lg={12}>

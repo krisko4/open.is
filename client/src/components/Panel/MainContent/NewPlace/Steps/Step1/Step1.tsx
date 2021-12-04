@@ -2,7 +2,6 @@ import { Grid, InputAdornment, TextField, Typography } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import React, { FC, useEffect, useState } from "react";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { usePanelContext } from "../../../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
@@ -25,7 +24,6 @@ export const Step1: FC = () => {
         const newCurrentPlace = {...currentPlace}
         newCurrentPlace.name = input
         setCurrentPlace(newCurrentPlace)
-
     }
     return (
         <Grid item lg={9} style={{ textAlign: 'center' }}>

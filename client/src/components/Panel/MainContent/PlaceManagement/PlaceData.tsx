@@ -53,7 +53,6 @@ export const PlaceData: FC<Props> = ({ index }) => {
 
 
     useEffect(() => {
-        console.log(visits)
         const totalVisits = visits.reduce((a, b) => a + b.visitCount, 0)
         setTotalVisits(totalVisits)
         const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)

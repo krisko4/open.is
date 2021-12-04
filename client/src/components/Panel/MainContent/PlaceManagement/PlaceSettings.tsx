@@ -4,15 +4,15 @@ import Dialog from "@material-ui/core/Dialog";
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { useSnackbar } from "notistack";
-import React, { FC, MutableRefObject, useRef, useState } from "react";
-import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
-import { StepContextProvider } from "../../../../contexts/StepContext";
-import { EditPlace } from "./EditPlace";
-import DeleteIcon from '@material-ui/icons/Delete'
-import { LoadingButton } from "../../../reusable/LoadingButton";
+import React, { FC, useState } from "react";
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { StepContextProvider } from "../../../../contexts/StepContext";
+import { LoadingButton } from "../../../reusable/LoadingButton";
+import { EditPlace } from "./EditPlace";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 

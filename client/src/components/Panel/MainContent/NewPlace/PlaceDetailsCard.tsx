@@ -133,10 +133,8 @@ const useOpinionsStyles = makeStyles({
 
 export const PlaceDetailsCard: FC = () => {
 
-    const {places, setPlaces} = usePanelContext()
     const { currentPlace,  setCurrentPlace, news, setNews, opinions, setOpinions, opinionCount, setOpinionCount } = useCurrentPlaceContext()
     console.log('witam')
-    const isFirstRender = useRef(true)
     const newsClasses = useNewsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
     const opinionClasses = useOpinionsStyles()
@@ -158,15 +156,6 @@ export const PlaceDetailsCard: FC = () => {
             text: currentPlace.website || 'Website address'
         },
     ]
-
-    // useEffect(() => {
-    //     if (isFirstRender.current) {
-    //         isFirstRender.current = false
-    //         return
-    //     }
-    //     const newPlaces = places.map((place: any) => place._id === currentPlace._id ? currentPlace : place)
-    //     setPlaces(newPlaces)
-    // }, [currentPlace])
 
     const tabContents = [
         <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
