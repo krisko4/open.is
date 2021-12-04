@@ -1,35 +1,27 @@
 import React, { FC, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useCurrentPlaceContext } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
-import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
-import { PlaceData } from './PlaceData';
-import {setPlace} from '../../../../store/actions/setCurrentPlace'
+import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
+import { PlaceData } from './PlaceData/PlaceData';
+import {useChosenPlaceSelector} from '../../../../store/selectors/ChosenPlaceSelector'
 
-interface Props {
-    chosenPlace: any
-}
 
-export const PlaceManagement: FC<Props> = ({ chosenPlace }) => {
+export const PlaceManagement: FC = () => {
 
-    const { places } = usePanelContext()
-    const { currentPlace, setCurrentPlace, setVisits, setNews, setOpinions } = useCurrentPlaceContext()
-    const dispatch = useDispatch()
+    const places = usePlacesSelector()
+    const chosenPlace = useChosenPlaceSelector()
+    const {setCurrentPlace} = useCurrentPlaceContext()
 
     useEffect(() => {
-        dispatch(setPlace({...chosenPlace}))
+        console.log(chosenPlace)
         setCurrentPlace({ ...chosenPlace })
     }, [chosenPlace])
 
-    useEffect(() => {
-        currentPlace.news && setNews(currentPlace.news)
-        currentPlace.opinions && setOpinions(currentPlace.opinions)
-        currentPlace.visits && setVisits(currentPlace.visits)
-    }, [currentPlace])
 
 
     return <>
-        {places.map((place: any, index: number) =>
-            <PlaceData key={index} index={index} />
+        {places.map((place) =>
+            chosenPlace._id === place._id &&
+            <PlaceData key={place._id} />
         )}
     </>
 

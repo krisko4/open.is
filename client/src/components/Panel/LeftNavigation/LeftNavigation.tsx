@@ -1,4 +1,4 @@
-import { CardMedia, ListItemIcon, ListSubheader, makeStyles } from "@material-ui/core";
+import { CardMedia, ListItemIcon, ListSubheader } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -11,28 +11,22 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { ChosenOptions, usePanelContext } from "../../contexts/PanelContexts/PanelContext";
-const useStyles = makeStyles(() =>
-({
-    navigation: {
-        background: 'white',
-    }
-})
-)
+import { ChosenOptions, usePanelContext } from "../../../contexts/PanelContexts/PanelContext";
+import { MyPlaces } from './MyPlaces';
+import { usePlacesSelector } from '../../../store/selectors/PlacesSelector'
+import { useDispatch } from 'react-redux'
+import { setSelectedOption } from '../../../store/actions/setSelectedOption'
+import { PlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 
+// interface Props {
+//     setChosenPlace: React.Dispatch<React.SetStateAction<PlaceProps | null>>
+// }
 
-export const LeftNavigation: FC<any> = ({setChosenPlace}) => {
+export const LeftNavigation: FC = () => {
 
-    const classes = useStyles()
-    const { places, setSelectedOption, setPlaceIndex} = usePanelContext()
+    const places = usePlacesSelector()
+    const dispatch = useDispatch()
 
-
-
-    const choosePlace = (place: any, index: number) => {
-        setPlaceIndex(index)
-        setChosenPlace(place)
-        setSelectedOption(ChosenOptions.PLACE_MANAGEMENT)
-    }
 
     return (
         <Grid item lg={2} style={{ height: '100%' }}>
@@ -54,45 +48,31 @@ export const LeftNavigation: FC<any> = ({setChosenPlace}) => {
                 </ListItem>
                 <List>
                     <ListSubheader disableSticky>Settings</ListSubheader>
-                    <ListItem button onClick={() => places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD)}>
+                    <ListItem button onClick={() => dispatch(places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD))}>
                         <ListItemIcon>
                             <DashboardIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="Dashboard" />
                     </ListItem>
-                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.MY_ACCOUNT)}>
+                    <ListItem button onClick={() => dispatch(setSelectedOption(ChosenOptions.MY_ACCOUNT))}>
                         <ListItemIcon>
                             <SettingsIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="My account" />
                     </ListItem>
-                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)}>
+                    <ListItem button onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_PLACE))}>
                         <ListItemIcon>
                             <AddIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="New place" />
                     </ListItem>
-                    <ListItem button onClick={() => setSelectedOption(ChosenOptions.NEW_BUSINESS_CHAIN)}>
+                    <ListItem button onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_BUSINESS_CHAIN))}>
                         <ListItemIcon>
                             <CloudCircle color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="New business chain" />
                     </ListItem>
-
-                    {places.length > 0 && <ListSubheader disableSticky>
-                        My places
-                    </ListSubheader>}
-                    {places.map((place: any, index: number) =>
-                        <ListItem key={index} button onClick={() => choosePlace(place, index)}>
-                            <ListItemAvatar>
-                                <Avatar alt={place.name} src={place.img} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={place.name}
-                                secondary={place.subtitle}
-                            />
-                        </ListItem>
-                    )}
+                    <MyPlaces  />
                 </List>
             </Scrollbars>
         </Grid >

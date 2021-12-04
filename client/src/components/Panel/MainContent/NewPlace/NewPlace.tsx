@@ -1,10 +1,14 @@
 import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
+import { useDispatch } from "react-redux";
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
+import { setPlaces } from "../../../../store/actions/setPlaces";
+import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
+import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
@@ -17,7 +21,9 @@ export const NewPlace: FC = () => {
 
     const { activeStep, imageFile, setActiveStep } = useStepContext()
     const { currentPlace } = useCurrentPlaceContext()
-    const { setSelectedOption, setPlaces, places } = usePanelContext()
+    // const { setSelectedOption, setPlaces, places } = usePanelContext()
+    const dispatch = useDispatch()
+    const places = usePlacesSelector()
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
@@ -43,13 +49,12 @@ export const NewPlace: FC = () => {
             newPlace.visits = []
             newPlace.opinions = []
             newPlace.news = []
-            const currentPlaces: any = [...places]
-            currentPlaces.push(newPlace)
-            setPlaces(currentPlaces)
+            places.push(newPlace)
+            dispatch(setPlaces(places))
             enqueueSnackbar('You have successfully registered new place', {
                 variant: 'success'
             })
-            setSelectedOption(ChosenOptions.DASHBOARD)
+            dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
         }).catch(err => {
             console.log(err)
             enqueueSnackbar('Oops, something went wrong', {

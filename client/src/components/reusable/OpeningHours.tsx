@@ -14,6 +14,8 @@ import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from 'react';
 import Scrollbars from "react-custom-scrollbars";
 import myAxios from "../../axios/axios";
+import { useLoginContext } from "../../contexts/LoginContext";
+import { PlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
 import { useAuthSelector } from '../../store/selectors/AuthSelector';
 import { LoadingButton } from './LoadingButton';
 
@@ -41,11 +43,13 @@ const HourPicker: FC<any> = ({ field, form, label, classes, disabled, ...other }
 }
 
 interface Props {
-    currentPlace?: any,
+    currentPlace?: PlaceProps,
     setCurrentPlace: React.Dispatch<any>,
     classes: ClassNameMap<"title" | "container" | "divider" | "days" | "hours" | "content" | "dialog">,
 }
 const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => {
+
+    const {isUserLoggedIn} = useLoginContext()
 
     const openingHours = currentPlace && currentPlace.openingHours
 
@@ -159,7 +163,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
         })
         console.log(hours)
         console.log(disabledIndices)
-        myAxios.patch(`places/${currentPlace._id}/opening-hours`, hours)
+        myAxios.patch(`places/${currentPlace?._id}/opening-hours`, hours)
             .then(res => {
                 console.log(res.data)
                 enqueueSnackbar('Opening hours changed successfully', {
@@ -180,12 +184,11 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
 
 
-    const isUserLoggedIn = useAuthSelector()
 
 
     return (
         <Grid container direction="column" style={{ height: '100%' }}  alignItems="center">
-            {currentPlace.isUserOwner  && isUserLoggedIn &&  openingHours &&
+            {currentPlace?.isUserOwner  && isUserLoggedIn &&  openingHours &&
                 <Grid container justify="flex-end" >
                     <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
@@ -220,7 +223,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
                     </Grid>
 
                     : <>
-                        {currentPlace.isUserOwner ?
+                        {currentPlace?.isUserOwner ?
                             <Grid justify="center" direction="column" alignItems="center" container>
                                 <Typography variant="h6">This place has not set opening hours yet.</Typography>
                                 <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
@@ -261,7 +264,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
             }
 
-            {isUserLoggedIn && currentPlace.isUserOwner &&
+            {isUserLoggedIn && currentPlace?.isUserOwner &&
                 <Dialog
                     open={dialogOpen}
                     TransitionComponent={Transition}

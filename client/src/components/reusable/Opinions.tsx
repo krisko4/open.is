@@ -13,6 +13,8 @@ import Alert from '@material-ui/lab/Alert';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import Scrollbars from "react-custom-scrollbars";
+import { PlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
+import { useLoginContext } from "../../contexts/LoginContext";
 
 
 
@@ -29,19 +31,17 @@ interface OpinionProps {
 
 interface Props {
     classes: ClassNameMap<"opinionCard" | "author" | "date" | "content" | "dialog">,
-    currentPlace: any,
+    currentPlace: PlaceProps,
     setCurrentPlace: React.Dispatch<any>,
-    opinions: OpinionProps[],
-    setOpinions: React.Dispatch<React.SetStateAction<OpinionProps[]>>,
     opinionCount: number,
     setOpinionCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 
-export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, opinions, setOpinions, opinionCount, setOpinionCount }) => {
+export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) => {
 
 
-    const isUserLoggedIn = useAuthSelector()
+    const {isUserLoggedIn} = useLoginContext()
     const { enqueueSnackbar } = useSnackbar()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [noteValue, setNoteValue] = useState<number | null>(null)
@@ -69,18 +69,9 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
             try {
                 const res = await myAxios.post('/opinions', opinion)
                 console.log(res.data)
-
-                setOpinions(opinions => {
-                    return [
-                        res.data.opinion,
-                        ...opinions
-                    ]
-
-                })
-                setOpinionCount(opinionCount => opinionCount + 1)
                 const updatedPlace = { ...currentPlace }
                 updatedPlace.averageNote = res.data.averageNote
-                updatedPlace.opinions = [res.data.opinion, ...opinions]
+                updatedPlace.opinions = [res.data.opinion, ...currentPlace.opinions]
                 console.log(updatedPlace)
                 setCurrentPlace(updatedPlace)
                 setDialogOpen(false)
@@ -106,16 +97,16 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace, op
 
         <Grid container style={{height: '100%'}} justify="center">
             <Grid container item xs={11} direction="column" style={{marginTop: 20, marginBottom: 20 }}>
-                {opinions.length > 0 ?
+                {currentPlace.opinions.length > 0 ?
                     <div>
                         <Grid container justify="space-between" >
-                            <Alert severity="info" variant="filled">{opinions.length} {opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
+                            <Alert severity="info" variant="filled">{currentPlace.opinions.length} {currentPlace.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
                             {isUserLoggedIn  &&
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                             }
                         </Grid>
                         {
-                            opinions.map((opinion, index) =>
+                            currentPlace.opinions.map((opinion, index) =>
                                 <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
                                     <Card onMouseEnter={() => setElevation(10)} onMouseLeave={() => setElevation(3)} elevation={elevation} style={{ borderRadius: 10 }} className={classes.opinionCard} >
                                         <CardContent>

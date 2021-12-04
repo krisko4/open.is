@@ -16,6 +16,7 @@ import { usePageContext } from "../../../contexts/PageContext";
 import { logout } from "../../../store/actions/logout";
 import { setEmail } from "../../../store/actions/setEmail";
 import { useAuthSelector } from "../../../store/selectors/AuthSelector";
+import { useLoginContext } from "../../../contexts/LoginContext";
 const useStyles = makeStyles(() =>
     createStyles({
         root: {
@@ -85,16 +86,18 @@ const Header: FC = () => {
     })
 
     const { setLoginOpen } = useAuthContext()
-    const { setPanelOpen } = usePageContext()
-    const isUserLoggedIn = useAuthSelector()
-    const dispatch = useDispatch()
+    const {isUserLoggedIn, setUserLoggedIn, setEmail} = useLoginContext()
+    // const isUserLoggedIn = useAuthSelector()
+    // const dispatch = useDispatch()
 
     const appBarRef = useRef<'transparentAppBar' | 'solidAppBar' | 'elevatedAppBar'>('transparentAppBar')
 
     const signOut = async () => {
         await authAxios.get('/logout', { withCredentials: true })
-        dispatch(logout())
-        dispatch(setEmail(''))
+        // dispatch(logout())
+        setUserLoggedIn(false)
+        setEmail('')
+        // dispatch(setEmail(''))
         localStorage.removeItem('uid')
         localStorage.removeItem('fullName')
         localStorage.removeItem('email')
@@ -155,7 +158,7 @@ const Header: FC = () => {
                             }
                             {isUserLoggedIn ? <div>
                                 {location.pathname === '/' &&
-                                    <Button variant="contained" onClick={() => setPanelOpen(true)}
+                                    <Button variant="contained" onClick={() => history.push('/panel')}
                                         color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
                                 }
                                 <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign

@@ -7,8 +7,12 @@ import AddIcon from "@material-ui/icons/Add";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import HomeIcon from "@material-ui/icons/Home";
 import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import { usePageContext } from "../../contexts/PageContext";
 import { ChosenOptions, usePanelContext } from '../../contexts/PanelContexts/PanelContext';
+import { setSelectedOption } from '../../store/actions/setSelectedOption';
+import { usePlacesSelector } from '../../store/selectors/PlacesSelector';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -31,8 +35,12 @@ const useStyles = makeStyles((theme) => ({
 const Header: FC = () => {
 
     const classes = useStyles();
-    const { setPanelOpen } = usePageContext()
-    const { places, setSelectedOption} = usePanelContext()
+    // const { setPanelOpen } = usePageContext()
+    // const { places, setSelectedOption} = usePanelContext()
+    
+    const places = usePlacesSelector()
+    const dispatch = useDispatch()
+    const history = useHistory()
 
 
 
@@ -41,13 +49,13 @@ const Header: FC = () => {
          <AppBar position="static" elevation={0} style={{backgroundColor: 'transparent', paddingTop: 20, paddingRight: 40, paddingBottom: 20}}>
             <Toolbar>
                 <Grid item container justify="flex-end"  alignItems="center">
-                        <IconButton onClick={() => setPanelOpen(false)} color="inherit">
+                        <IconButton onClick={() => history.push('/')} color="inherit">
                             <HomeIcon />
                         </IconButton>
-                        <IconButton onClick={() => places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD)} color="inherit">
+                        <IconButton onClick={() => dispatch(places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD))} color="inherit">
                             <DashboardIcon/>
                         </IconButton>
-                        <IconButton onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)} color="inherit">
+                        <IconButton onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_PLACE))} color="inherit">
                             <AddIcon />
                         </IconButton>
                 </Grid>

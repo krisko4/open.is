@@ -9,8 +9,12 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { Rating } from "@material-ui/lab";
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { ChosenOptions, PlaceProps, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
+import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { StatisticChart } from "./StatisticChart";
+import {ActivityChart} from './Charts/ActivityChart'
 
 
 const useStyles = makeStyles({
@@ -24,61 +28,15 @@ const useStyles = makeStyles({
 
 export const Dashboard: FC = () => {
 
-    const { setSelectedOption, places } = usePanelContext()
+    const dispatch = useDispatch()
+    const places = usePlacesSelector()
     const classes = useStyles()
     const [totalVisits, setTotalVisits] = useState(0)
     const [totalOpinions, setTotalOpinions] = useState(0)
     const [mostPopularPlace, setMostPopularPlace] = useState<PlaceProps | null>(null)
-    const [activityChartSeries, setActivityChartSeries] = useState<any>()
     const [totalVisitsDiff, setTotalVisitsDiff] = useState(0)
     const [totalOpinionsDiff, setTotalOpinionsDiff] = useState(0)
-    const [activityChartOptions, setActivityChartOptions] = useState({
-        chart: {
-            id: 'area-datetime',
-            type: 'area',
-            zoom: {
-                autoScaleYaxis: true
-            },
-            animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 800,
-                animateGradually: {
-                    enabled: true,
-                    delay: 150
-                },
-                dynamicAnimation: {
-                    enabled: true,
-                    speed: 350
-                }
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        markers: {
-            size: 0,
-            style: 'hollow',
-        },
-        xaxis: {
-            type: 'datetime',
-        },
-        tooltip: {
-            x: {
-                format: 'dd MMM yyyy HH:mm'
-            }
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.7,
-                opacityTo: 0.9,
-                stops: [0, 100]
-            }
-        }
-    });
-
+    const [activityChartSeries, setActivityChartSeries] = useState<any>()
 
     useEffect(() => {
         const mostPopularPlace = places.sort((a, b) => a.visits.reduce((c, d) => c + d.visitCount, 0) - b.visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
@@ -114,7 +72,7 @@ export const Dashboard: FC = () => {
                         </Grid>
                         <Grid item container justify="flex-end" lg={2} >
                             <Grid item style={{ marginRight: 5 }}>
-                                <Button onClick={() => setSelectedOption(ChosenOptions.NEW_PLACE)} startIcon={<AddIcon />} variant="contained" color="secondary">
+                                <Button onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_PLACE))} startIcon={<AddIcon />} variant="contained" color="secondary">
                                     New place
                                 </Button>
                             </Grid>
@@ -188,7 +146,7 @@ export const Dashboard: FC = () => {
                                     <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
                                         The following chart represents historical data of user activity in your places
                                     </Typography>
-                                    {totalVisits && <StatisticChart type="area" series={activityChartSeries} setOptions={setActivityChartOptions} options={activityChartOptions} height={500} />}
+                                    {totalVisits && <ActivityChart series={activityChartSeries} /> }
                                 </CardContent>
                             </Card>
                         </Fade>
@@ -221,8 +179,8 @@ export const Dashboard: FC = () => {
                                                                 {mostPopularPlace?.visits.reduce((a, b) => a + b.visitCount, 0)}
 
                                                             </Typography>
-                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: { mostPopularPlace?.visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)}</Typography>
-         
+                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: {mostPopularPlace?.visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)}</Typography>
+
                                                         </Grid>
                                                     </CardContent>
                                                 </Card>

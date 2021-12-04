@@ -11,15 +11,14 @@ import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceManagement } from './PlaceManagement/PlaceManagement';
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain'
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import {useSelectedOptionSelector} from '../../../store/selectors/SelectedOptionSelector'
+// interface Props {
+//   chosenPlace: any
+// }
 
-interface Props {
-  chosenPlace: any
-}
+export const MainContent: FC = () => {
 
-export const MainContent: FC<Props> = ({ chosenPlace }) => {
-
-  const { selectedOption } = usePanelContext()
-  console.log('siemanisko')
+  const selectedOption = useSelectedOptionSelector()
 
 
 
@@ -38,7 +37,7 @@ export const MainContent: FC<Props> = ({ chosenPlace }) => {
         {selectedOption === ChosenOptions.NO_PLACES && <NoPlaces />}
         {selectedOption === ChosenOptions.PLACE_MANAGEMENT &&
           <CurrentPlaceContextProvider>
-            <PlaceManagement chosenPlace={chosenPlace} />
+            <PlaceManagement/>
           </CurrentPlaceContextProvider>
         }
         {selectedOption === ChosenOptions.MY_ACCOUNT && <MyAccount />}

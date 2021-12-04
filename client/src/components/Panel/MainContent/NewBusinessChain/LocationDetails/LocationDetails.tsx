@@ -1,14 +1,16 @@
-import { Button, Card, CardContent, Fade, Grid, Paper, Typography } from "@material-ui/core"
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Paper, Typography } from "@material-ui/core"
 import { useSnackbar } from "notistack"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { Location } from './Location'
+import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
+import { authAxios } from "../../../../../axios/axios"
 interface Props {
     addressSubmitted: boolean
 }
 
-interface LocationDetails {
+export interface LocationDetails {
     address: string,
     phone: string,
     website: string,
@@ -19,13 +21,33 @@ interface LocationDetails {
     lng: number
 }
 
-
 export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
 
     const { currentPlace } = useCurrentPlaceContext()
     const isFirstRender = useRef(true)
     const { enqueueSnackbar } = useSnackbar()
-    const [selectedPlaces, setSelectedPlaces] = useState<LocationDetails[]>([])
+    const { setSaveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
+    const [businessSummary, setBusinessSummary] = useState({
+        name: currentPlace.name,
+        subtitle: currentPlace.subtitle,
+        type: currentPlace.type,
+        description: currentPlace.description,
+        img: currentPlace.img,
+        locations: selectedLocations
+    })
+
+    const registerNewBusiness = () => {
+        console.log(businessSummary)
+        // authAxios.post('/')
+    }
+
+    const [dialogOpen, setDialogOpen] = useState(false)
+
+
+    const handleSaveButtonClick = () => {
+        setSaveButtonClicked(state => !state)
+        setDialogOpen(true)
+    }
 
     useEffect(() => {
         if (isFirstRender.current) {
@@ -33,12 +55,11 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
             return
         }
         console.log(currentPlace)
-        if (selectedPlaces.some(place => place.address === currentPlace.address)) {
+        if (selectedLocations.some(place => place.address === currentPlace.address)) {
             enqueueSnackbar('You have already selected this location.', {
                 variant: 'info'
             })
             return
-
         }
         const newLocation = {
             address: currentPlace.address,
@@ -50,17 +71,22 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
             instagram: '',
             facebook: ''
         }
-        selectedPlaces.push(newLocation)
-        setSelectedPlaces([...selectedPlaces])
+        selectedLocations.push(newLocation)
+        setSelectedLocations([...selectedLocations])
     }, [addressSubmitted])
 
     useEffect(() => {
-        console.log(selectedPlaces)
-    }, [selectedPlaces])
+        setBusinessSummary(summary => {
+            return {
+                ...summary,
+                locations: selectedLocations
+            }
+        })
+    }, [selectedLocations])
 
     return (
         <Grid container style={{ height: '100%', borderLeftStyle: 'solid', borderWidth: 1, borderColor: 'lightgrey' }}>
-            {selectedPlaces.length === 0 ?
+            {selectedLocations.length === 0 ?
                 <Fade in={true} timeout={1000}>
                     <Grid container style={{ height: '100%' }} justify="center" alignItems="center">
                         <Grid container item justify="center" lg={10}>
@@ -76,9 +102,11 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
                         <div style={{ flexGrow: 1 }}>
                             <Scrollbars autoHide>
                                 {
-                                    selectedPlaces.map((place, index) =>
-                                        <Grid item key={place.address} style={{ width: '100%' }}>
-                                            <Location setSelectedPlaces={setSelectedPlaces} address={place.address} />
+                                    selectedLocations.map((location) =>
+                                        <Grid item key={location.address} style={{ width: '100%' }}>
+                                            <Location
+                                                location={location}
+                                            />
                                         </Grid>
                                     )
                                 }
@@ -89,10 +117,22 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
                     <Grid container style={{ height: '10%' }}>
                         <Paper elevation={5} style={{ flexGrow: 1 }}>
                             <Grid container style={{ height: '100%' }} alignItems="center" justify="flex-end">
-                                <Button style={{ marginRight: 20 }} variant="contained" color="primary">Register my business</Button>
+                                <Button style={{ marginRight: 20 }} onClick={handleSaveButtonClick} variant="contained" color="primary">Register my business</Button>
                             </Grid>
                         </Paper>
                     </Grid>
+                    <Dialog open={dialogOpen}>
+                        <DialogTitle>
+                            Business registration confirmation
+                        </DialogTitle>
+                        <DialogContent>
+                            You have selected <b>{selectedLocations.length}</b> {selectedLocations.length > 1 ? 'locations' : 'location'}. Are you sure you would like to register your business?
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setDialogOpen(false)} color="primary">Cancel</Button>
+                            <Button onClick={() => registerNewBusiness()} color="primary">Yes, I am sure</Button>
+                        </DialogActions>
+                    </Dialog>
                 </>
             }
 

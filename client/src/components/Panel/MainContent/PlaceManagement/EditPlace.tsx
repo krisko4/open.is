@@ -1,10 +1,13 @@
 import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
+import { useDispatch } from "react-redux";
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { PlaceProps, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
+import { setPlaces } from "../../../../store/actions/setPlaces";
+import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
@@ -21,7 +24,8 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
 
     const { activeStep, setActiveStep, imageFile } = useStepContext()
     const { currentPlace, setCurrentPlace} = useCurrentPlaceContext()
-    const {places, setPlaces} = usePanelContext()
+    const places = usePlacesSelector()
+    const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(false)
     const [isOpen, setOpen] = useState(false)
     const { enqueueSnackbar } = useSnackbar()

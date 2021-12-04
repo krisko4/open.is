@@ -6,11 +6,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { StepContextProvider } from "../../../../contexts/StepContext";
+import { setPlaces } from "../../../../store/actions/setPlaces";
+import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
+import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
+import { useSelectedOptionSelector } from "../../../../store/selectors/SelectedOptionSelector";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { EditPlace } from "./EditPlace";
 
@@ -24,16 +29,23 @@ interface Props {
 
 export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
-    const {places, setPlaces, setSelectedOption } = usePanelContext()
-    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
-    const [initialPlaceData, setInitialPlaceData] = useState(currentPlace)
+    const dispatch = useDispatch()
+    const places = usePlacesSelector()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const [initialPlaceData, setInitialPlaceData] = useState({ ...currentPlace })
     const { enqueueSnackbar } = useSnackbar()
     const [isDeleteOpen, setDeleteOpen] = useState(false)
     const [businessName, setBusinessName] = useState('')
     const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        console.log('initial')
+        console.log(initialPlaceData)
+    }, [initialPlaceData])
+
 
     const closeSettings = () => {
+        console.log(initialPlaceData)
         setCurrentPlace(initialPlaceData)
         enqueueSnackbar('Your changes have not been saved', {
             variant: 'warning'
@@ -47,30 +59,31 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
             await myAxios.delete(`/places/${currentPlace._id}`)
             enqueueSnackbar('You have successfully deleted your place', {
                 variant: 'success'
-            })            
+            })
             setOpen(false)
             const croppedPlaces = places.filter(place => place._id !== currentPlace._id)
-            croppedPlaces.length === 0 ? setSelectedOption(ChosenOptions.NEW_PLACE) : setSelectedOption(ChosenOptions.DASHBOARD)
-            setPlaces(croppedPlaces)
+            dispatch(croppedPlaces.length === 0 ? setSelectedOption(ChosenOptions.NEW_PLACE) : setSelectedOption(ChosenOptions.DASHBOARD))
+            dispatch(setPlaces(croppedPlaces))
 
-        }catch(err){
+        } catch (err) {
             enqueueSnackbar('Oops, something went wrong', {
                 variant: 'error'
-            })            
-        }finally{
+            })
+        } finally {
             setLoading(false)
         }
-        
-        
+
+
     }
 
 
     return (
-        <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            fullScreen
-        >
+        // <Dialog
+        //     open={open}
+        //     TransitionComponent={Transition}
+        //     fullScreen
+        // >
+        <>
             <AppBar style={{ position: 'relative' }}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={() => closeSettings()} aria-label="close">
@@ -106,6 +119,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
             <StepContextProvider>
                 <EditPlace setDialogOpen={setOpen} initialPlaceData={initialPlaceData} />
             </StepContextProvider>
-        </Dialog>
+            {/* </Dialog> */}
+        </>
     )
 }

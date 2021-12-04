@@ -38,7 +38,8 @@ export interface PlaceProps {
         average: number
     },
     openingHours? : any,
-    isActive: boolean
+    isActive: boolean,
+    isUserOwner?: boolean
 }
 
 interface NewsProps {
@@ -99,9 +100,9 @@ export const clearPlace = {
         average: 0
     },
     isActive: false,
-    opinions: [],
+    opinions: defaultOpinions,
     visits: [],
-    news: []
+    news: defaultNews
 }
 
 interface VisitProps {
@@ -116,18 +117,14 @@ interface VisitProps {
 const useProviderSettings = () => {
 
     const [currentPlace, setCurrentPlace] = useState<PlaceProps>(clearPlace)
-    const [news, setNews] = useState<NewsProps[]>(defaultNews)
-    const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
+    // const [news, setNews] = useState<NewsProps[]>(defaultNews)
+    // const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
     const [visits, setVisits] = useState<VisitProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
 
     return {
         currentPlace,
         setCurrentPlace,
-        news,
-        setNews,
-        opinions,
-        setOpinions,
         opinionCount,
         setOpinionCount,
         visits,

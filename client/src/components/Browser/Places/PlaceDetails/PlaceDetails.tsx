@@ -232,13 +232,11 @@ export const PlaceDetails: FC<Props> = ({currentPlace, popupIndex}) => {
     };
 
     const tabContents = [
-        <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
+        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
         <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
-            opinions={opinions}
-            setOpinions={setOpinions}
             opinionCount={opinionCount}
             setOpinionCount={setOpinionCount}
             classes={opinionsClasses}

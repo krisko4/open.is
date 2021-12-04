@@ -7,6 +7,7 @@ import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { BusinessInformation } from './BusinessInformation/BusinessInformation';
 import { LocationDetails } from './LocationDetails/LocationDetails';
 import { LocationSelection } from './LocationDetails/LocationSelection';
+import {LocationContextProvider} from '../../../../contexts/PanelContexts/LocationContext'
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 interface Props {
     open: boolean,
@@ -64,7 +65,10 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                                         <PlaceDetailsCard />
                                     </Grid>
                                 </Grid>
-                                : <LocationDetails addressSubmitted={addressSubmitted} />
+                                :
+                                <LocationContextProvider>
+                                    <LocationDetails addressSubmitted={addressSubmitted} />
+                                </LocationContextProvider>
                             }
                         </Scrollbars>
                     </Grid>

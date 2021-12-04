@@ -20,6 +20,8 @@ import { useSnackbar } from "notistack";
 import React, { FC, useRef, useState } from "react";
 
 import myAxios from "../../axios/axios";
+import { useLoginContext } from "../../contexts/LoginContext";
+import { PlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
 import { useAuthSelector } from "../../store/selectors/AuthSelector";
 import { LoadingButton } from "./LoadingButton";
 
@@ -31,9 +33,8 @@ interface NewsProps {
 
 interface Props {
     classes: ClassNameMap<"paper" | "content" | "title" | "dialog" | "date">,
-    news?: NewsProps[],
-    setNews: React.Dispatch<React.SetStateAction<NewsProps[]>>,
-    currentPlace: any,
+ 
+    currentPlace: PlaceProps,
     setCurrentPlace: React.Dispatch<any>,
 
 }
@@ -46,14 +47,14 @@ type OpenNews = {
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurrentPlace }) => {
+export const News: FC<Props> = ({classes, currentPlace, setCurrentPlace}) => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [newsTitle, setNewsTitle] = useState('')
     const [newsContent, setNewsContent] = useState('')
     const emojiSource = useRef<'title' | 'content'>('title')
-    const isUserLoggedIn = useAuthSelector()
+    const {isUserLoggedIn} = useLoginContext()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
     const [openNews, setOpenNews] = useState<OpenNews>({
         isOpen: false,
@@ -70,12 +71,9 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
         }, {
             withCredentials: true
         }).then(res => {
-            setNews(news => {
-                return [
-                    res.data,
-                    ...news
-                ]
-            })
+     
+            currentPlace.news = [res.data, ...currentPlace.news]
+            setCurrentPlace({...currentPlace})
             enqueueSnackbar('News added successfully', {
                 variant: 'success'
             })
@@ -98,7 +96,7 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
     
     return (
         <Grid container direction="column" style={{ height: '100%' }}>
-            {news && news.length > 0 ?
+            {currentPlace.news && currentPlace.news.length > 0 ?
                 <>
                     {
                         isUserLoggedIn && currentPlace.isUserOwner &&
@@ -108,7 +106,7 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
                     }
                     <Grid container>
                         <Timeline align="alternate">
-                            {news.map((item, index) => <TimelineItem key={index}>
+                            {currentPlace.news.map((item, index) => <TimelineItem key={index}>
                                 <TimelineSeparator>
                                     <TimelineDot>
                                         <AnnouncementIcon />
@@ -151,17 +149,17 @@ export const News: FC<Props> = ({ news, setNews, classes, currentPlace, setCurre
                             <DialogTitle>
                                 <Grid container direction="column">
                                     <Typography variant="h6" className={classes.title}>
-                                        {news[openNews.newsIndex].title}
+                                        {currentPlace.news[openNews.newsIndex].title}
                                     </Typography>
                                     <Typography variant="caption" className={classes.content}>
-                                        {news[openNews.newsIndex].date}
+                                        {currentPlace.news[openNews.newsIndex].date}
                                     </Typography>
                                 </Grid>
                             </DialogTitle>
                             <DialogContent>
                                 <DialogContentText>
                                     <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} className={classes.content}>
-                                        {news[openNews.newsIndex].content}
+                                        {currentPlace.news[openNews.newsIndex].content}
                                     </Typography>
                                 </DialogContentText>
                             </DialogContent>

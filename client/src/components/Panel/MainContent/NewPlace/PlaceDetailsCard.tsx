@@ -133,7 +133,8 @@ const useOpinionsStyles = makeStyles({
 
 export const PlaceDetailsCard: FC = () => {
 
-    const { currentPlace,  setCurrentPlace, news, setNews, opinions, setOpinions, opinionCount, setOpinionCount } = useCurrentPlaceContext()
+    const { currentPlace,  setCurrentPlace, opinionCount, setOpinionCount } = useCurrentPlaceContext()
+
     console.log('witam')
     const newsClasses = useNewsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
@@ -158,14 +159,12 @@ export const PlaceDetailsCard: FC = () => {
     ]
 
     const tabContents = [
-        <News news={news} setNews={setNews} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
+        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
         <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
             classes={opinionClasses}
-            opinions={opinions}
-            setOpinions={setOpinions}
             opinionCount={opinionCount}
             setOpinionCount={setOpinionCount}
         />
