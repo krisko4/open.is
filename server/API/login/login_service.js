@@ -13,7 +13,7 @@ const loginService = {
             refreshToken: refreshToken,
             uid: user._id,
             fullName: `${user.firstName} ${user.lastName}`,
-            img: `${process.env.CLOUDI_URL}/${user.img}`
+            img: user.img && `${process.env.CLOUDI_URL}/${user.img}`
         }
     },
 
