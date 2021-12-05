@@ -17,6 +17,7 @@ import { usePlacesSelector } from '../../../store/selectors/PlacesSelector'
 import { useDispatch } from 'react-redux'
 import { setSelectedOption } from '../../../store/actions/setSelectedOption'
 import { PlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 // interface Props {
 //     setChosenPlace: React.Dispatch<React.SetStateAction<PlaceProps | null>>
@@ -26,7 +27,8 @@ export const LeftNavigation: FC = () => {
 
     const places = usePlacesSelector()
     const dispatch = useDispatch()
-
+    const history = useHistory()
+    const match = useRouteMatch()
 
     return (
         <Grid item lg={2} style={{ height: '100%' }}>
@@ -48,25 +50,29 @@ export const LeftNavigation: FC = () => {
                 </ListItem>
                 <List>
                     <ListSubheader disableSticky>Settings</ListSubheader>
-                    <ListItem button onClick={() => dispatch(places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD))}>
+                    <ListItem
+                     button 
+                     onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
+                     >
+                     {/* onClick={() => dispatch(places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD))} */}
                         <ListItemIcon>
                             <DashboardIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="Dashboard" />
                     </ListItem>
-                    <ListItem button onClick={() => dispatch(setSelectedOption(ChosenOptions.MY_ACCOUNT))}>
+                    <ListItem button onClick={() => history.push(`${match.url}/account`)}>
                         <ListItemIcon>
                             <SettingsIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="My account" />
                     </ListItem>
-                    <ListItem button onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_PLACE))}>
+                    <ListItem button onClick={() => history.push(`${match.url}/new-place`)}>
                         <ListItemIcon>
                             <AddIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="New place" />
                     </ListItem>
-                    <ListItem button onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_BUSINESS_CHAIN))}>
+                    <ListItem button onClick={() => history.push(`${match.url}/new-business-chain`)}>
                         <ListItemIcon>
                             <CloudCircle color="primary" />
                         </ListItemIcon>

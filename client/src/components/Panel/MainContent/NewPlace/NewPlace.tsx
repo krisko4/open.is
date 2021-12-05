@@ -12,7 +12,7 @@ import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
-
+import {useHistory, useRouteMatch} from 'react-router-dom'
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -21,8 +21,9 @@ export const NewPlace: FC = () => {
 
     const { activeStep, imageFile, setActiveStep } = useStepContext()
     const { currentPlace } = useCurrentPlaceContext()
-    // const { setSelectedOption, setPlaces, places } = usePanelContext()
     const dispatch = useDispatch()
+    const match = useRouteMatch()
+    const history = useHistory()
     const places = usePlacesSelector()
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
@@ -54,7 +55,8 @@ export const NewPlace: FC = () => {
             enqueueSnackbar('You have successfully registered new place', {
                 variant: 'success'
             })
-            dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
+            // dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
+            history.push(`${match.url}/dashboard`)
         }).catch(err => {
             console.log(err)
             enqueueSnackbar('Oops, something went wrong', {

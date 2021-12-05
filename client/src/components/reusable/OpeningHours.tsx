@@ -121,6 +121,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
 
     const submitForm = (values: any) => {
+        setLoading(true)
         const hours: any = {
             monday: {
                 startHour: values.mondayStart,
@@ -163,7 +164,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
         })
         console.log(hours)
         console.log(disabledIndices)
-        myAxios.patch(`places/${currentPlace?._id}/opening-hours`, hours)
+        myAxios.patch(`/places/${currentPlace?._id}/opening-hours`, hours)
             .then(res => {
                 console.log(res.data)
                 enqueueSnackbar('Opening hours changed successfully', {
@@ -224,7 +225,7 @@ const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => 
 
                     : <>
                         {currentPlace?.isUserOwner ?
-                            <Grid justify="center" direction="column" alignItems="center" container>
+                            <Grid justify="center" style={{height: '100%'}} direction="column" alignItems="center" container>
                                 <Typography variant="h6">This place has not set opening hours yet.</Typography>
                                 <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>

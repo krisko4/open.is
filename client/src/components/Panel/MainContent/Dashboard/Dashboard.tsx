@@ -10,11 +10,10 @@ import { Rating } from "@material-ui/lab";
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ChosenOptions, PlaceProps, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { ChosenOptions, PlaceProps } from "../../../../contexts/PanelContexts/PanelContext";
 import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
-import { StatisticChart } from "./StatisticChart";
-import {ActivityChart} from './Charts/ActivityChart'
+import { ActivityChart } from './Charts/ActivityChart';
 
 
 const useStyles = makeStyles({

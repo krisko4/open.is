@@ -21,6 +21,7 @@ import { useAuthSelector } from './store/selectors/AuthSelector';
 import { Panel } from './components/Panel/Panel';
 import HomePage from './components/HomePage/MainPage/HomePage';
 import { LoginContextProvider } from './contexts/LoginContext'
+import { PanelContextProvider } from './contexts/PanelContexts/PanelContext';
 
 
 
@@ -39,7 +40,9 @@ function App() {
                                     <Route path="/about" exact component={About} />
                                     <Route path="/contact" exact component={Contact} />
                                     <Route path="/panel">
-                                        <Panel />
+                                        <PanelContextProvider>
+                                            <Panel />
+                                        </PanelContextProvider>
                                     </Route>
                                     <Route path="/search" component={Browser} />
                                     <Route path="/confirm/:token" exact component={Confirmation} />

@@ -15,6 +15,7 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import { login } from "../../../store/actions/login";
 import { LoadingButton } from "../../reusable/LoadingButton";
 import {setEmail} from "../../../store/actions/setEmail"
+import { useLoginContext } from "../../../contexts/LoginContext";
 
 interface UserData {
     email: string,
@@ -40,6 +41,7 @@ export const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const { enqueueSnackbar } = useSnackbar()
     const dispatch = useDispatch()
+    const {setUserLoggedIn} = useLoginContext()
 
     const signIn = async (userData: UserData) => {
         setErrorMessage('')
@@ -53,7 +55,8 @@ export const LoginForm = () => {
             localStorage.setItem('email', userData.email)
             response.data.img && localStorage.setItem('img', response.data.img)
             setLoginOpen(false)
-            dispatch(login())
+            // dispatch(login())
+            setUserLoggedIn(true)
             enqueueSnackbar('You have signed in.', {
                 variant: 'success'
             })

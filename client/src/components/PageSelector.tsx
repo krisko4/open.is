@@ -15,9 +15,9 @@ export const PageSelector = () => {
     return (
         <div>
             {isUserLoggedIn ?
-                <PanelContextProvider>
+                // <PanelContextProvider>
                     <Panel />
-                </PanelContextProvider>
+                // </PanelContextProvider>
                 : <HomePage />}
         </div>
     )

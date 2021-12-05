@@ -8,7 +8,7 @@ import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 import { setPlaces } from '../../store/actions/setPlaces'
 import { useLoginContext } from "../../contexts/LoginContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { setSelectedOption } from "../../store/actions/setSelectedOption";
 
 export const Panel: FC = () => {
@@ -17,6 +17,7 @@ export const Panel: FC = () => {
     // const [chosenPlace, setChosenPlace] = useState<PlaceProps | null>(null)
     const { isUserLoggedIn } = useLoginContext()
     const history = useHistory()
+    const match = useRouteMatch()
     console.log('panel ')
     const dispatch = useDispatch()
 
@@ -35,12 +36,14 @@ export const Panel: FC = () => {
                     }
                 })
                 console.log(response.data)
+                // dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
+                
+                dispatch(setPlaces(response.data))
                 if (response.data.length === 0) {
-                    dispatch(setSelectedOption(ChosenOptions.NO_PLACES))
+                    // dispatch(setSelectedOption(ChosenOptions.NO_PLACES))
                     return
                 }
-                dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
-                dispatch(setPlaces(response.data))
+                history.push(`${match.url}/dashboard`)
             } catch (err) {
                 console.log(err)
             } finally {
@@ -54,9 +57,7 @@ export const Panel: FC = () => {
             <Grid container direction="column" style={{ height: '100vh', background: 'linear-gradient(45deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)' }}>
                 {loading ?
                     <Grid container style={{ height: '100%' }} justify="center" alignItems="center">
-                        {/* <Backdrop open={loading}> */}
                         <CircularProgress style={{ color: 'white' }} />
-                        {/* </Backdrop> */}
                     </Grid> :
                     <Grid container direction="row" style={{ flex: '1 1 auto' }}>
                         <LeftNavigation  />

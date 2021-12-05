@@ -1,6 +1,7 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemText, ListSubheader } from "@material-ui/core"
 import { FC } from "react"
 import { useDispatch } from "react-redux"
+import { useHistory, useRouteMatch } from "react-router"
 import { PlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext"
 import { ChosenOptions } from "../../../contexts/PanelContexts/PanelContext"
 import { setPlace } from "../../../store/actions/setCurrentPlace"
@@ -11,10 +12,13 @@ export const MyPlaces: FC = () => {
     
     const dispatch = useDispatch()
     const places = usePlacesSelector()
+    const history = useHistory()
+    const match = useRouteMatch()
 
     const choosePlace = (place: PlaceProps) => {
         dispatch(setPlace(place))
-        dispatch(setSelectedOption(ChosenOptions.PLACE_MANAGEMENT))
+        history.push(`${match.url}/management`)
+        // dispatch(setSelectedOption(ChosenOptions.PLACE_MANAGEMENT))
     }
 
     return <>

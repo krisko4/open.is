@@ -49,7 +49,7 @@ export const PlaceData: FC = () => {
     const setPlaceStatus = async (status: Status) => {
         setLoading(true)
         try {
-            await myAxios.patch(`places/${currentPlace._id}/status`, {
+            await myAxios.patch(`/places/${currentPlace._id}/status`, {
                 status: status
             })
             if (currentPlace) {
@@ -71,6 +71,9 @@ export const PlaceData: FC = () => {
                 variant: 'success'
             })
         } catch (err) {
+            enqueueSnackbar('Oops, something went wrong', {
+                variant: 'error'
+            })
             console.log(err)
         } finally {
             setLoading(false)

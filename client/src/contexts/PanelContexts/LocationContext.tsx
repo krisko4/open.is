@@ -39,6 +39,7 @@ const useProviderSettings = () => {
         field: '',
         value: ''
     })
+    
     // const [businessSummary, setBusinessSummary] = useState({
     //     name: currentPlace.name,
     //     subtitle: currentPlace.subtitle,

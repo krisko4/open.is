@@ -11,7 +11,9 @@ import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceManagement } from './PlaceManagement/PlaceManagement';
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain'
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
-import {useSelectedOptionSelector} from '../../../store/selectors/SelectedOptionSelector'
+import { useSelectedOptionSelector } from '../../../store/selectors/SelectedOptionSelector'
+import { Route, useHistory, useRouteMatch, useLocation, Redirect } from "react-router-dom";
+import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 // interface Props {
 //   chosenPlace: any
 // }
@@ -19,6 +21,11 @@ import {useSelectedOptionSelector} from '../../../store/selectors/SelectedOption
 export const MainContent: FC = () => {
 
   const selectedOption = useSelectedOptionSelector()
+  let match = useRouteMatch();
+  const history = useHistory()
+  const places = usePlacesSelector()
+  const location = useLocation()
+  console.log(location)
 
 
 
@@ -26,22 +33,44 @@ export const MainContent: FC = () => {
     <Grid container direction="row" style={{ height: '100%' }} item lg={10}>
       <Scrollbars autoHide>
         <Header />
-        {selectedOption === ChosenOptions.DASHBOARD && <Dashboard />}
-        {selectedOption === ChosenOptions.NEW_PLACE &&
+        {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
+        <CurrentPlaceContextProvider>
+          <StepContextProvider>
+            <Route
+              path={`${match.url}/new-place`}
+              component={NewPlace}
+            />
+          </StepContextProvider>
+        </CurrentPlaceContextProvider>
+        <CurrentPlaceContextProvider>
+          <Route
+            path={`${match.url}/management`}
+            component={PlaceManagement}
+          />
+        </CurrentPlaceContextProvider>
+        <Route
+          path={`${match.url}/dashboard`}
+
+        >
+          <Dashboard />
+        </Route>
+        <Route
+          path={`${match.url}/account`}
+          component={MyAccount}
+        />
+        <Route
+          path={`${match.url}/new-business-chain`}
+          component={NewBusinessChain}
+        />
+
+        {/* {selectedOption === ChosenOptions.NO_PLACES && <NoPlaces />} */}
+        {/* {selectedOption === ChosenOptions.PLACE_MANAGEMENT &&
           <CurrentPlaceContextProvider>
-            <StepContextProvider>
-              <NewPlace />
-            </StepContextProvider>
+            <PlaceManagement />
           </CurrentPlaceContextProvider>
-        }
-        {selectedOption === ChosenOptions.NO_PLACES && <NoPlaces />}
-        {selectedOption === ChosenOptions.PLACE_MANAGEMENT &&
-          <CurrentPlaceContextProvider>
-            <PlaceManagement/>
-          </CurrentPlaceContextProvider>
-        }
-        {selectedOption === ChosenOptions.MY_ACCOUNT && <MyAccount />}
-        {selectedOption === ChosenOptions.NEW_BUSINESS_CHAIN && <NewBusinessChain />}
+        } */}
+        {/* {selectedOption === ChosenOptions.MY_ACCOUNT && <MyAccount />}
+        {selectedOption === ChosenOptions.NEW_BUSINESS_CHAIN && <NewBusinessChain />} */}
       </Scrollbars>
     </Grid>
 
