@@ -13,7 +13,7 @@ const placeService = {
     getActivePlaces: () => Place.find({ isActive: true }).exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: mongoose.Types.ObjectId(userId) }).exec(),
-    getTop20PlacesSortedBy: (sortParam, types) => Place.find({ isActive: true}).sort(sortParam).limit(20).exec(),
+    getTop20PlacesSortedBy: (sortParam, types) => Place.find({ isActive: true }).sort(sortParam).limit(20).exec(),
     getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).exec(),
     editPlace: async (placeData, user) => {
         const { lat, lng, img } = placeData
@@ -41,10 +41,12 @@ const placeService = {
     },
 
     addPlace: async (placeData) => {
-        const { lat, lng, img } = placeData
+        const { lat, lng } = placeData.locations[0]
+        const { img } = placeData
         const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
         if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
         // upload image to cloudinary
+        console.log(placeData)
         const session = await mongoose.startSession()
         let newPlace
         await session.withTransaction(async () => {
@@ -70,6 +72,7 @@ const placeService = {
 
     activatePlace: (id) => Place.findByIdAndUpdate(id, { 'isActive': true }, { new: true }).exec(),
     getPlaceById: (id) => Place.findById(id).exec(),
+    findByLocationId: (id) => Place.find({ 'locations._id': id }).exec(),
     getPlaceByLatLng: (lat, lng) => Place.findOne({ lat: lat, lng: lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
     getPlacesBy: (param) => Place.find({ ...param }).exec(),
@@ -77,9 +80,13 @@ const placeService = {
     getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).exec(),
     getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true }).exec(),
     deleteAll: () => Place.deleteMany().exec(),
-    incrementVisitCount: (id) => Place.findByIdAndUpdate(id, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
-    setStatus: (id, status) => Place.findByIdAndUpdate(id, { 'status': status }, { new: true, runValidators: true }).exec(),
-    setOpeningHours: (id, hours) => Place.findByIdAndUpdate(id, { 'openingHours': hours, 'isActive': true }, { new: true, runValidators: true }).exec(),
+    incrementVisitCount: (id) => Place.find({ 'locations._id': id }, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
+    setStatus: (id, status) => Place.findOneAndUpdate({'locations._id' : id}, {'locations.$.status': status }, { new: true, runValidators: true }).exec(),
+    setOpeningHours: (id, hours) => Place.findOneAndUpdate(
+        { 'locations._id': id },
+        { 'locations.$.openingHours': hours, 'locations.$.isActive': true },
+        { new: true, runValidators: true }
+    ).exec(),
     deletePlace: async (id) => {
         const place = await placeService.getPlaceById(id)
         if (!place) throw new Error('No place with provided id found')
@@ -93,7 +100,7 @@ const placeService = {
 
     getFavoritePlaces: (favIds) => {
         favIds = favIds.map(el => mongoose.Types.ObjectId(el))
-        return Place.find({'_id':  {$in: favIds}}).exec()
+        return Place.find({ '_id': { $in: favIds } }).exec()
     },
 
     updateNote: async (note, placeId) => {

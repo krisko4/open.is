@@ -78,14 +78,7 @@ const OpeningHoursSchema = new mongoose.Schema({
 const PlaceSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: ReqString,
-    address: String,
-    phone: ReqString,
-    email: String,
-    facebook: String,
-    instagram: String,
     type: ReqString,
-    lat: ReqNumber,
-    lng: ReqNumber,
     img: ReqString,
     description: ReqString,
     createdAt: {
@@ -93,35 +86,70 @@ const PlaceSchema = new mongoose.Schema({
         default: new Date()
     },
     subtitle: String,
-    status: {
-        type: String,
-        enum: ['open', 'closed'],
-        default: 'closed'
-    },
-    website: String,
-    openingHours: {
-        type: OpeningHoursSchema
-    },
     userId: ReqId,
-    visitCount: {
-        type: Number,
-        default: 0
-    },
-    averageNote: {
-        type: AverageNoteSchema,
-        default: {
-            ones: 0,
-            twos: 0,
-            threes: 0,
-            fours: 0,
-            fives: 0,
-            average: 0
+    locations: [
+        {
+            address: ReqString,
+            lat: ReqNumber,
+            lng: ReqNumber,
+            facebook: String,
+            instagram: String,
+            phone: ReqString,
+            email: String,
+            website: String,
+            status: {
+                type: String,
+                enum: ['open', 'closed'],
+                default: 'closed'
+            },
+            openingHours: {
+                type: OpeningHoursSchema
+            },
+            visitCount: {
+                type: Number,
+                default: 0
+            },
+            averageNote: {
+                type: AverageNoteSchema,
+                default: {
+                    ones: 0,
+                    twos: 0,
+                    threes: 0,
+                    fours: 0,
+                    fives: 0,
+                    average: 0
+                }
+            },
+            isActive: {
+                type: Boolean,
+                default: false
+            },
+            visits: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: "Visit"
+                }
+            ],
+            news: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: "News"
+
+                }
+            ],
+            opinions: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: "Opinions"
+
+                }
+
+            ]
         }
-    },
-    isActive: {
-        type: Boolean,
-        default: false
-    }
+    ],
 }
 )
 

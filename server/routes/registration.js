@@ -15,7 +15,7 @@ const registrationLimiter = rateLimit({
 
 router.post('/',
     registrationLimiter,
-    body('firstName').notEmpty().isString().isLength({ max: 20 }).not().equals('chuj'),
+    body('firstName').notEmpty().isString().isLength({ max: 20 }),
     body('lastName').notEmpty().isString().isLength({ max: 30 }),
     body('password').isStrongPassword().notEmpty(),
     body('email').isEmail().notEmpty(),

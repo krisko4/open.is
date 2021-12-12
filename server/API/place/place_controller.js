@@ -90,14 +90,16 @@ const placeController = {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
                         const objPlaces = await Promise.all(places.map(async (place) => {
                             const placeObject = { ...place._doc }
-                            const [visits, opinions, news] = await Promise.all([
-                                visitService.getVisitsByPlaceId(placeObject._id),
-                                opinionService.getOpinionsBy({ placeId: placeObject._id }),
-                                newsService.getNewsBy({ placeId: placeObject._id })
-                            ])
-                            placeObject.visits = visits.map(visit => visitDto(visit))
-                            placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
-                            placeObject.news = news.map(news => newsDto(news))
+                            for (const location of placeObject.locations) {
+                                const [visits, opinions, news] = await Promise.all([
+                                    visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
+                                    opinionService.getOpinionsBy({ locationId: location._id }),
+                                    newsService.getNewsBy({ locationId: location._id })
+                                ])
+                                location.visits = visits.map(visit => visitDto(visit)) 
+                                location.opinions = opinions.map(opinion => opinionDto(opinion)) 
+                                location.news = news.map(news => newsDto(news)) 
+                            }
                             return placeObject
                         }))
                         places = objPlaces
@@ -197,19 +199,24 @@ const placeController = {
             console.log(img)
             const placeData = {
                 name: reqBody.name,
-                address: reqBody.address,
                 type: reqBody.type,
-                lat: reqBody.lat,
-                lng: reqBody.lng,
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
-                phone: reqBody.phone,
                 img: img,
-                email: reqBody.email,
-                website: reqBody.website,
+                locations: [
+                    {
+                        email: reqBody.email,
+                        website: reqBody.website,
+                        facebook: reqBody.facebook,
+                        instagram: reqBody.instagram,
+                        phone: reqBody.phone,
+                        address: reqBody.address,
+                        lat: reqBody.lat,
+                        lng: reqBody.lng
+                        
+                    }
+                ],
                 userId: user._id,
-                facebook: reqBody.facebook,
-                instagram: reqBody.instagram
             }
             const place = await placeService.addPlace(placeData)
             return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
@@ -257,7 +264,7 @@ const placeController = {
     getFavoritePlaces: async (req, res, next) => {
         const { cookies } = req
         let { uid, favIds } = cookies
-        if(!favIds) return res.status(200).json([])
+        if (!favIds) return res.status(200).json([])
         favIds = favIds.split(',')
         try {
             const places = await placeService.getFavoritePlaces(favIds)
@@ -286,7 +293,8 @@ const placeController = {
         const { cookies } = req
         const { uid } = cookies
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ visitCount: -1 })
+            const places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
+            console.log(places)
             return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
         } catch (err) {
             next(err)

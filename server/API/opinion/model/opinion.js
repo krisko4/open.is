@@ -16,7 +16,7 @@ const OpinionSchema = new mongoose.Schema({
         required : true,
         ref: "User"
     },
-    placeId: ReqId
+    locationId: ReqId
 
     })
 
