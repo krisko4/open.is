@@ -10,7 +10,10 @@ import { Rating } from "@material-ui/lab";
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ChosenOptions, PlaceProps } from "../../../../contexts/PanelContexts/PanelContext";
+import { useHistory, useRouteMatch } from "react-router";
+import { RawPlaceDataProps } from "../../../../contexts/PanelContexts/BusinessChainContext";
+import { CurrentPlaceProps} from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { ChosenOptions} from "../../../../contexts/PanelContexts/PanelContext";
 import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { ActivityChart } from './Charts/ActivityChart';
@@ -32,34 +35,36 @@ export const Dashboard: FC = () => {
     const classes = useStyles()
     const [totalVisits, setTotalVisits] = useState(0)
     const [totalOpinions, setTotalOpinions] = useState(0)
-    const [mostPopularPlace, setMostPopularPlace] = useState<PlaceProps | null>(null)
+    const [mostPopularPlace, setMostPopularPlace] = useState<RawPlaceDataProps | null>(null)
     const [totalVisitsDiff, setTotalVisitsDiff] = useState(0)
     const [totalOpinionsDiff, setTotalOpinionsDiff] = useState(0)
     const [activityChartSeries, setActivityChartSeries] = useState<any>()
+    const history = useHistory()
+    const match = useRouteMatch()
 
-    useEffect(() => {
-        const mostPopularPlace = places.sort((a, b) => a.visits.reduce((c, d) => c + d.visitCount, 0) - b.visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
-        setMostPopularPlace(mostPopularPlace)
-        setActivityChartSeries(places.map(place => {
-            return {
-                name: place.name,
-                data: place.visits.map(visit => [new Date(visit.date), visit.visitCount])
-            }
-        }))
-        console.log(mostPopularPlace)
-        const opinionCount = places.reduce((a, b) => a + b.opinions.length, 0)
-        setTotalOpinions(opinionCount)
-        const opinionsToday = places.reduce((a, b) => a + b.opinions.filter(opinion => isToday(new Date(opinion.date))).length, 0)
-        opinionCount === opinionsToday ? setTotalOpinionsDiff(opinionCount * 100) : setTotalOpinionsDiff(Math.round(((opinionCount / (opinionCount - opinionsToday)) * 100 - 100) * 10) / 10)
-        const visitCount = places.reduce((a, b) => a + b.visits.reduce((c, d) => c + d.visitCount, 0), 0)
-        setTotalVisits(visitCount)
-        const totalVisitsToday = places.reduce((a, b) => a + b.visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0), 0)
-        if (totalVisitsToday === visitCount) {
-            setTotalVisitsDiff(visitCount * 100)
-            return
-        }
-        setTotalVisitsDiff(Math.round(((visitCount / (visitCount - totalVisitsToday)) * 100 - 100) * 10) / 10)
-    }, [places])
+    // useEffect(() => {
+    //     const mostPopularPlace = places.sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
+    //     setMostPopularPlace(mostPopularPlace)
+    //     setActivityChartSeries(places.map(place => {
+    //         return {
+    //             name: place.name,
+    //             data: place.locations[0].visits.map(visit => [new Date(visit.date), visit.visitCount])
+    //         }
+    //     }))
+    //     console.log(mostPopularPlace)
+    //     const opinionCount = places.reduce((a, b) => a + b.locations[0].opinions.length, 0)
+    //     setTotalOpinions(opinionCount)
+    //     const opinionsToday = places.reduce((a, b) => a + b.locations[0].opinions.filter(opinion => isToday(new Date(opinion.date))).length, 0)
+    //     opinionCount === opinionsToday ? setTotalOpinionsDiff(opinionCount * 100) : setTotalOpinionsDiff(Math.round(((opinionCount / (opinionCount - opinionsToday)) * 100 - 100) * 10) / 10)
+    //     const visitCount = places.reduce((a, b) => a + b.locations[0].visits.reduce((c, d) => c + d.visitCount, 0), 0)
+    //     setTotalVisits(visitCount)
+    //     const totalVisitsToday = places.reduce((a, b) => a + b.locations[0].visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0), 0)
+    //     if (totalVisitsToday === visitCount) {
+    //         setTotalVisitsDiff(visitCount * 100)
+    //         return
+    //     }
+    //     setTotalVisitsDiff(Math.round(((visitCount / (visitCount - totalVisitsToday)) * 100 - 100) * 10) / 10)
+    // }, [places])
 
     return (
         <Grid container justify="center" style={{ paddingBottom: 50 }}>
@@ -71,7 +76,7 @@ export const Dashboard: FC = () => {
                         </Grid>
                         <Grid item container justify="flex-end" lg={2} >
                             <Grid item style={{ marginRight: 5 }}>
-                                <Button onClick={() => dispatch(setSelectedOption(ChosenOptions.NEW_PLACE))} startIcon={<AddIcon />} variant="contained" color="secondary">
+                                <Button onClick={() => history.push(`new-place`)} startIcon={<AddIcon />} variant="contained" color="secondary">
                                     New place
                                 </Button>
                             </Grid>
@@ -174,11 +179,11 @@ export const Dashboard: FC = () => {
                                                     <CardContent>
                                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
                                                         <Grid container direction="column" alignItems="center">
-                                                            <Typography variant="h4" style={{ borderBottom: '5px solid red', fontWeight: 'bold' }}>
-                                                                {mostPopularPlace?.visits.reduce((a, b) => a + b.visitCount, 0)}
+                                                            {/* <Typography variant="h4" style={{ borderBottom: '5px solid red', fontWeight: 'bold' }}>
+                                                                {mostPopularPlace?.locations[0].visits.reduce((a, b) => a + b.visitCount, 0)}
 
-                                                            </Typography>
-                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: {mostPopularPlace?.visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)}</Typography>
+                                                            </Typography> */}
+                                                            {/* <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Visits today: {mostPopularPlace?.locations[0].visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)}</Typography> */}
 
                                                         </Grid>
                                                     </CardContent>
@@ -189,10 +194,10 @@ export const Dashboard: FC = () => {
                                                     <CardContent>
                                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                                                         <Grid container alignItems="center" direction="column">
-                                                            <Typography variant="h4" style={{ borderBottom: '5px solid red', fontWeight: 'bold' }}>
-                                                                {mostPopularPlace?.opinions.length}
-                                                            </Typography>
-                                                            <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Opinions today: {mostPopularPlace?.opinions.filter(opinion => isToday(new Date(opinion.date))).length}</Typography>
+                                                            {/* <Typography variant="h4" style={{ borderBottom: '5px solid red', fontWeight: 'bold' }}>
+                                                                {mostPopularPlace?.locations[0].opinions.length}
+                                                            </Typography> */}
+                                                            {/* <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Opinions today: {mostPopularPlace?.locations[0].opinions.filter(opinion => isToday(new Date(opinion.date))).length}</Typography> */}
                                                         </Grid>
 
                                                     </CardContent>
@@ -204,7 +209,7 @@ export const Dashboard: FC = () => {
                                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Average note</Typography>
                                                         <Grid style={{ height: 80 }} container alignItems="center" justify="center" direction="column">
 
-                                                            <Rating value={mostPopularPlace?.averageNote.average || 0} readOnly />
+                                                            {/* <Rating value={mostPopularPlace?.locations[0].averageNote.average || 0} readOnly /> */}
 
                                                             {/* <Typography style={{ marginTop: 10, fontStyle: 'italic' }}>Costam: 3</Typography> */}
                                                         </Grid>

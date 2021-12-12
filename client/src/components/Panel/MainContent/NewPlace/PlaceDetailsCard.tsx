@@ -6,13 +6,13 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { Alert } from "@material-ui/lab";
 import Rating from "@material-ui/lab/Rating";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { Status, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { Status } from "../../../../contexts/PanelContexts/PanelContext";
 import { News } from "../../../reusable/News";
-import OpeningHours from "../../../reusable/OpeningHours";
+import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
 
 
@@ -200,14 +200,14 @@ export const PlaceDetailsCard: FC = () => {
                                 This place is now {currentPlace.status.toUpperCase()}
                             </Alert>
                                 : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
-                                    This place is now {currentPlace.status.toUpperCase()}
+                                    This place is now {currentPlace.status?.toUpperCase()}
                                 </Alert>
 
                             }
                             <Rating
                                 name="simple-controlled"
                                 readOnly
-                                value={currentPlace.averageNote.average}
+                                value={currentPlace.averageNote?.average}
                                 style={{ marginTop: 10 }}
                             />
                             <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>

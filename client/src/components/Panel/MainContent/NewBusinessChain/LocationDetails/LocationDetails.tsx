@@ -6,6 +6,7 @@ import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/Cu
 import { Location } from './Location'
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
 import { authAxios } from "../../../../../axios/axios"
+import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 interface Props {
     addressSubmitted: boolean
 }
@@ -23,16 +24,16 @@ export interface LocationDetails {
 
 export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
 
-    const { currentPlace } = useCurrentPlaceContext()
+    const { businessChain } = useBusinessChainContext()
     const isFirstRender = useRef(true)
     const { enqueueSnackbar } = useSnackbar()
     const { setSaveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
     const [businessSummary, setBusinessSummary] = useState({
-        name: currentPlace.name,
-        subtitle: currentPlace.subtitle,
-        type: currentPlace.type,
-        description: currentPlace.description,
-        img: currentPlace.img,
+        name: businessChain.name,
+        subtitle: businessChain.subtitle,
+        type: businessChain.type,
+        description: businessChain.description,
+        img: businessChain.img,
         locations: selectedLocations
     })
 
@@ -54,25 +55,28 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
             isFirstRender.current = false
             return
         }
-        console.log(currentPlace)
-        if (selectedLocations.some(place => place.address === currentPlace.address)) {
-            enqueueSnackbar('You have already selected this location.', {
-                variant: 'info'
-            })
-            return
-        }
-        const newLocation = {
-            address: currentPlace.address,
-            lat: currentPlace.lat,
-            lng: currentPlace.lng,
-            phone: '',
-            email: '',
-            website: '',
-            instagram: '',
-            facebook: ''
-        }
-        selectedLocations.push(newLocation)
-        setSelectedLocations([...selectedLocations])
+        // console.log(businessChain)
+        // const {locations} = businessChain
+
+        // if (selectedLocations.some(place => place.address === businessChain.address)) {
+        //     enqueueSnackbar('You have already selected this location.', {
+        //         variant: 'info'
+        //     })
+        //     return
+        // }
+        // const newLocation = {
+        //     address: businessChain.address,
+        //     lat: businessChain.lat,
+        //     lng: businessChain.lng,
+        //     phone: '',
+        //     email: '',
+        //     website: '',
+        //     instagram: '',
+        //     facebook: ''
+        // }
+        // selectedLocations.push(newLocation)
+
+        setSelectedLocations([...businessChain.locations])
     }, [addressSubmitted])
 
     useEffect(() => {

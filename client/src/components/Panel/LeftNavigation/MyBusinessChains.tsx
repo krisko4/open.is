@@ -1,37 +1,35 @@
+
 import { Avatar, ListItem, ListItemAvatar, ListItemText, ListSubheader } from "@material-ui/core"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
 import { RawPlaceDataProps } from "../../../contexts/PanelContexts/BusinessChainContext"
 import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext"
 import { setPlace } from "../../../store/actions/setCurrentPlace"
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector"
-import { convertToCurrentPlace } from '../../../utils/place_data_utils'
-export const MyPlaces: FC = () => {
+import {convertToCurrentPlace} from '../../../utils/place_data_utils'
+export const MyBusinessChains: FC = () => {
 
     const dispatch = useDispatch()
     const places = usePlacesSelector()
     const history = useHistory()
     const match = useRouteMatch()
+    const [businessChains, setBusinessChains] = useState(places.filter(place => place.locations.length > 1))
 
     const choosePlace = (place: RawPlaceDataProps) => {
         const currentPlace = convertToCurrentPlace(place)
         console.log(currentPlace)
         dispatch(setPlace(currentPlace))
-        history.push({
-            pathname: `${match.url}/management/${currentPlace._id}`,
-            state: {place: currentPlace}
-        }
-        )
+        history.push(`${match.url}/management`)
     }
 
     return <>
-        {places.length > 0 &&
+        {businessChains.length > 0 &&
             <>
                 <ListSubheader disableSticky>
-                    My places
+                    My business chains
                 </ListSubheader>
-                {places.map((place) =>
+                {businessChains.map((place) =>
                     <ListItem key={place._id} button onClick={() => choosePlace(place)}>
                         <ListItemAvatar>
                             <Avatar

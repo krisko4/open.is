@@ -16,9 +16,9 @@ import { MyPlaces } from './MyPlaces';
 import { usePlacesSelector } from '../../../store/selectors/PlacesSelector'
 import { useDispatch } from 'react-redux'
 import { setSelectedOption } from '../../../store/actions/setSelectedOption'
-import { PlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useHistory, useRouteMatch } from "react-router-dom";
-
+import {MyBusinessChains} from './MyBusinessChains'
 // interface Props {
 //     setChosenPlace: React.Dispatch<React.SetStateAction<PlaceProps | null>>
 // }
@@ -51,10 +51,9 @@ export const LeftNavigation: FC = () => {
                 <List>
                     <ListSubheader disableSticky>Settings</ListSubheader>
                     <ListItem
-                     button 
-                     onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
-                     >
-                     {/* onClick={() => dispatch(places.length === 0 ? setSelectedOption(ChosenOptions.NO_PLACES) : setSelectedOption(ChosenOptions.DASHBOARD))} */}
+                        button
+                        onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
+                    >
                         <ListItemIcon>
                             <DashboardIcon color="primary" />
                         </ListItemIcon>
@@ -78,7 +77,8 @@ export const LeftNavigation: FC = () => {
                         </ListItemIcon>
                         <ListItemText secondary="New business chain" />
                     </ListItem>
-                    <MyPlaces  />
+                    <MyPlaces />
+                    <MyBusinessChains />
                 </List>
             </Scrollbars>
         </Grid >

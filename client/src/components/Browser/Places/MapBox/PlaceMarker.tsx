@@ -9,6 +9,7 @@ import React, { FC, useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
+import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 
@@ -16,21 +17,26 @@ import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesCon
 
 
 
+interface Props{
+    criterium: CurrentPlaceProps,
+    index: number,
+    classes: any
+}
 
 
-
-export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
+export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex } = useMapContext()
+    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable } = useMapContext()
+
     const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useSelectedPlacesContext()
     const firstRender = useRef(true)
     const history = useHistory()
     const match = useRouteMatch()
-
+    const img = criterium.img as string
     const myIcon = L.icon({
         // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
-        iconUrl: criterium.img || `https://image.flaticon.com/icons/png/512/149/149059.png`,
+        iconUrl: img || `https://image.flaticon.com/icons/png/512/149/149059.png`,
         iconSize: [50, 50],
         // iconAnchor: [10, 0],
         shadowUrl: iconShadow,
@@ -82,11 +88,11 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
                 }
             }}
             position={[criterium.lat, criterium.lng]}
-            draggable={isEditionMode}
+            draggable={isMarkerDraggable}
         >
             <Popup className={classes.popup}>
                 <Grid container justify="center" alignItems="center">
-                    <Avatar style={{ width: 60, height: 60 }} src={criterium.img} />
+                    <Avatar style={{ width: 60, height: 60 }} src={criterium.img as string} />
                     <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
                         <Typography variant="h6">
                             {criterium.name}
@@ -96,7 +102,7 @@ export const PlaceMarker: FC<any> = ({ criterium, index, classes }) => {
                         style={{ marginTop: 20 }}
                         name="simple-controlled"
                         readOnly
-                        value={criterium.averageNote.average || 0}
+                        value={criterium.averageNote?.average || 0}
                     />
                 </Grid>
             </Popup>

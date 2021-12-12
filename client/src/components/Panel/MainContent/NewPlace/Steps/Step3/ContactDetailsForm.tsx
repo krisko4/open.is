@@ -5,7 +5,7 @@ import LanguageIcon from '@material-ui/icons/Language';
 import MailIcon from '@material-ui/icons/Mail';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import { ErrorMessage, FastField, Form, Formik } from "formik";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
@@ -29,15 +29,17 @@ export const ContactDetailsForm: FC = () => {
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const { setActiveStep } = useStepContext()
 
-    const contactDetails = {
+    const [contactDetails, setContactDetails] = useState({
         phone: currentPlace.phone,
         email: currentPlace.email,
         website: currentPlace.website,
         facebook: currentPlace.facebook,
         instagram: currentPlace.instagram
-    }
+    })
+
 
     const handleSubmit = (values: typeof contactDetails) => {
+        console.log(currentPlace)
         const newCurrentPlace = { ...currentPlace, ...values }
         setCurrentPlace(newCurrentPlace)
         setActiveStep(3)
@@ -77,7 +79,7 @@ export const ContactDetailsForm: FC = () => {
                             </Grid>
                             <Grid item lg={5} style={{ marginTop: 20 }}>
                                 <Typography variant="overline">
-                                    E-mail address (optional) 
+                                    E-mail address (optional)
                                 </Typography>
                             </Grid>
                             <Grid item lg={5}>
@@ -99,7 +101,7 @@ export const ContactDetailsForm: FC = () => {
                             </Grid>
                             <Grid item lg={5} style={{ marginTop: 20 }}>
                                 <Typography variant="overline">
-                                    Personal website address (optional) 
+                                    Personal website address (optional)
                                 </Typography>
                             </Grid>
                             <Grid item lg={5}>

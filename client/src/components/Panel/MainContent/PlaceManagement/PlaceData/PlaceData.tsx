@@ -5,8 +5,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
 import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import myAxios from "../../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status } from "../../../../../contexts/PanelContexts/PanelContext";
@@ -44,6 +45,7 @@ export const PlaceData: FC = () => {
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [totalVisits, setTotalVisits] = useState(0)
     const dispatch = useDispatch()
+    const location = useLocation()
 
 
     const setPlaceStatus = async (status: Status) => {
@@ -53,12 +55,12 @@ export const PlaceData: FC = () => {
                 status: status
             })
             if (currentPlace) {
-                const oldPlace = places.find(place => place._id === currentPlace._id)
+                let oldPlace = places.find(place => place._id === currentPlace._id)
                 console.log(oldPlace)
                 const updatedPlace = { ...currentPlace }
                 updatedPlace.status = status
-                if(oldPlace) places[places.indexOf(oldPlace)] = updatedPlace
-                dispatch(setPlaces([...places]))
+                // if(oldPlace) places[places.indexOf(oldPlace)] = updatedPlace
+                // dispatch(setPlaces([...places]))
                 setCurrentPlace(updatedPlace)
             }
             if (status === Status.OPEN) {
@@ -79,6 +81,11 @@ export const PlaceData: FC = () => {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        //@ts-ignore
+        setCurrentPlace(location.state.place)
+    }, [])
 
 
     return (
@@ -164,7 +171,7 @@ export const PlaceData: FC = () => {
                                                 size="large"
                                                 name="simple-controlled"
                                                 readOnly
-                                                value={currentPlace.averageNote.average}
+                                                value={currentPlace.averageNote?.average}
                                                 style={{ marginTop: 10 }}
                                             />
                                             <RatingChart />

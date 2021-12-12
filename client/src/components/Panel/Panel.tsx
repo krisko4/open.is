@@ -1,27 +1,21 @@
-import { Backdrop, CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import myAxios from "../../axios/axios";
-import { ChosenOptions, PlaceProps, usePanelContext } from "../../contexts/PanelContexts/PanelContext";
+import { useLoginContext } from "../../contexts/LoginContext";
+import { setPlaces } from '../../store/actions/setPlaces';
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
-import { setPlaces } from '../../store/actions/setPlaces'
-import { useLoginContext } from "../../contexts/LoginContext";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { setSelectedOption } from "../../store/actions/setSelectedOption";
 
 export const Panel: FC = () => {
 
     const [loading, setLoading] = useState(true)
-    // const [chosenPlace, setChosenPlace] = useState<PlaceProps | null>(null)
     const { isUserLoggedIn } = useLoginContext()
     const history = useHistory()
     const match = useRouteMatch()
-    console.log('panel ')
     const dispatch = useDispatch()
-
-
 
     useEffect(() => {
         if (!isUserLoggedIn) {
@@ -36,11 +30,8 @@ export const Panel: FC = () => {
                     }
                 })
                 console.log(response.data)
-                // dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
-                
                 dispatch(setPlaces(response.data))
                 if (response.data.length === 0) {
-                    // dispatch(setSelectedOption(ChosenOptions.NO_PLACES))
                     return
                 }
                 history.push(`${match.url}/dashboard`)

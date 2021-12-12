@@ -11,7 +11,7 @@ export const LocationChooser: FC = () => {
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     })
     return (
-        <MapContextProvider>
+        <MapContextProvider isMarkerDraggable={true}>
             <SelectedPlacesContextProvider isEditionMode={true}>
                 <Grid container lg={8} justify="center">
                     <AddressDetails />

@@ -1,4 +1,4 @@
-import {format} from 'date-fns'
+import { format } from 'date-fns'
 
 export const defaultNews = [
     {
@@ -20,6 +20,7 @@ export const defaultNews = [
     }
 
 ]
+
 
 export const defaultOpinions = [
     {
@@ -50,3 +51,37 @@ export const defaultOpinions = [
 
 ]
 
+export const defaultAverageNote = {
+    ones: 0,
+    twos: 0,
+    threes: 0,
+    fours: 0,
+    fives: 0,
+    average: 0
+}
+
+enum Status {
+    OPEN = 'open',
+    CLOSED = 'closed'
+}
+
+export const defaultLocations = [
+    {
+        email: '',
+        website: '',
+        instagram: '',
+        lat: 0,
+        lng: 0,
+        address: '',
+        facebook: '',
+        phone: '',
+        opinions: defaultOpinions,
+        visits: [],
+        news: defaultNews,
+        isActive: false,
+        status: Status.CLOSED,
+        visitCount: 0,
+        averageNote: defaultAverageNote
+
+    }
+]

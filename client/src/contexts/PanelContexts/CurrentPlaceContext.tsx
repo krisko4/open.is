@@ -1,6 +1,6 @@
 
 import { createContext, useContext, FC, useState } from "react";
-import { defaultNews, defaultOpinions } from "../../components/reusable/defaults";
+import { defaultNews, defaultOpinions } from "../../utils/defaults";
 
 
 export enum Status {
@@ -8,10 +8,11 @@ export enum Status {
     CLOSED = 'closed'
 }
 
-export interface PlaceProps {
-    status: Status,
-    visitCount: number,
-    _id: string,
+
+export interface CurrentPlaceProps {
+    status?: Status,
+    visitCount?: number,
+    _id?: string,
     name: string,
     address: string,
     type: string,
@@ -24,12 +25,12 @@ export interface PlaceProps {
     email: string,
     website: string,
     instagram: string,
-    news : NewsProps[],
-    opinions : OpinionProps[],
+    news?: NewsProps[],
+    opinions?: OpinionProps[],
     facebook: string,
-    userId: string,
-    visits: VisitProps[],
-    averageNote: {
+    userId?: string,
+    visits?: VisitProps[],
+    averageNote?: {
         ones: number,
         twos: number,
         threes: number,
@@ -37,8 +38,8 @@ export interface PlaceProps {
         fives: number,
         average: number
     },
-    openingHours? : any,
-    isActive: boolean,
+    openingHours?: any,
+    isActive?: boolean,
     isUserOwner?: boolean
 }
 
@@ -74,9 +75,6 @@ export const CurrentPlaceContextProvider: FC = ({ children }) => {
 }
 
 export const clearPlace = {
-    status: Status.CLOSED,
-    visitCount: 0,
-    _id: '',
     name: '',
     address: '',
     type: '',
@@ -88,18 +86,8 @@ export const clearPlace = {
     img: '',
     email: '',
     website: '',
-    userId: '',
     instagram: '',
     facebook: '',
-    averageNote: {
-        ones: 0,
-        twos: 0,
-        threes: 0,
-        fours: 0,
-        fives: 0,
-        average: 0
-    },
-    isActive: false,
     opinions: defaultOpinions,
     visits: [],
     news: defaultNews
@@ -116,7 +104,7 @@ interface VisitProps {
 
 const useProviderSettings = () => {
 
-    const [currentPlace, setCurrentPlace] = useState<PlaceProps>(clearPlace)
+    const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps>(clearPlace)
     // const [news, setNews] = useState<NewsProps[]>(defaultNews)
     // const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
     const [visits, setVisits] = useState<VisitProps[]>([])

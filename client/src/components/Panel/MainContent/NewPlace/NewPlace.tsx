@@ -1,18 +1,17 @@
 import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { setPlaces } from "../../../../store/actions/setPlaces";
-import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
+import { convertToRawPlaceData } from "../../../../utils/place_data_utils";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
-import {useHistory, useRouteMatch} from 'react-router-dom'
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -28,12 +27,14 @@ export const NewPlace: FC = () => {
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
-    console.log('newPlace')
 
     const registerPlace = () => {
         setLoading(true)
-        const place = { ...currentPlace }
+        const place = {...currentPlace}
         place.img = imageFile
+        delete place['visits']
+        delete place['news']
+        delete place['opinions']
         console.log(place)
         const formData = new FormData()
         let key: keyof typeof place
@@ -55,8 +56,7 @@ export const NewPlace: FC = () => {
             enqueueSnackbar('You have successfully registered new place', {
                 variant: 'success'
             })
-            // dispatch(setSelectedOption(ChosenOptions.DASHBOARD))
-            history.push(`${match.url}/dashboard`)
+            history.push(`dashboard`)
         }).catch(err => {
             console.log(err)
             enqueueSnackbar('Oops, something went wrong', {
@@ -68,6 +68,10 @@ export const NewPlace: FC = () => {
         }
         )
     }
+
+    useEffect(() => {
+        console.log(currentPlace)
+    }, [])
 
     return (
 

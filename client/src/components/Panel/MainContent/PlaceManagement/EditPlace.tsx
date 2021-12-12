@@ -3,8 +3,8 @@ import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import myAxios from "../../../../axios/axios";
-import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { PlaceProps, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import {  usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
@@ -16,8 +16,7 @@ import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface Props {
-    initialPlaceData: PlaceProps,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+    initialPlaceData: CurrentPlaceProps, setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {

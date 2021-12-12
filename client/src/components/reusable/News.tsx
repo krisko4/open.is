@@ -21,7 +21,7 @@ import React, { FC, useRef, useState } from "react";
 
 import myAxios from "../../axios/axios";
 import { useLoginContext } from "../../contexts/LoginContext";
-import { PlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
 import { useAuthSelector } from "../../store/selectors/AuthSelector";
 import { LoadingButton } from "./LoadingButton";
 
@@ -34,7 +34,7 @@ interface NewsProps {
 interface Props {
     classes: ClassNameMap<"paper" | "content" | "title" | "dialog" | "date">,
  
-    currentPlace: PlaceProps,
+    currentPlace: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<any>,
 
 }
@@ -71,8 +71,8 @@ export const News: FC<Props> = ({classes, currentPlace, setCurrentPlace}) => {
         }, {
             withCredentials: true
         }).then(res => {
-     
-            currentPlace.news = [res.data, ...currentPlace.news]
+            
+            currentPlace.news = currentPlace.news && [res.data, ...currentPlace.news]
             setCurrentPlace({...currentPlace})
             enqueueSnackbar('News added successfully', {
                 variant: 'success'

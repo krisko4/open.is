@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 
 export const Description = () => {
-    const { values, setFieldValue } = useFormikContext()
-    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [description, setDescription] = useState(currentPlace.description)
+    const { setFieldValue } = useFormikContext()
     const handleChange = (e: any) => {
         setDescription(e.target.value)
     }
@@ -15,8 +15,8 @@ export const Description = () => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setCurrentPlace(currentPlace => {
-                currentPlace.description = description 
-                return {...currentPlace}
+                currentPlace.description = description
+                return { ...currentPlace }
             })
             setFieldValue('description', description)
         }, 50)
@@ -29,8 +29,7 @@ export const Description = () => {
             label="This is a description of my business!"
             multiline
             value={description}
-            onChange= {handleChange}
-            name="description"
+            onChange={handleChange}
             rows={10}
             variant="outlined"
             rowsMax={10}

@@ -5,7 +5,7 @@ import { StatisticChart } from "../../Dashboard/StatisticChart"
 export const TotalOpinionsChart: FC = () => {
 
     const { currentPlace } = useCurrentPlaceContext()
-    const { ones, twos, threes, fours, fives } = currentPlace.averageNote
+    const { ones, twos, threes, fours, fives } = currentPlace.averageNote || {}
     const totalOpinionsSeries = [
         {
             data: [ones, twos, threes, fours, fives]
@@ -76,6 +76,10 @@ export const TotalOpinionsChart: FC = () => {
     })
 
     return (
-        <StatisticChart height={100} width={200} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
+        <>
+            {currentPlace.averageNote &&
+                <StatisticChart height={100} width={200} type="bar" options={totalOpinionsOptions} setOptions={setTotalOpinionsOptions} series={totalOpinionsSeries} />
+            }
+        </>
     )
 }

@@ -10,15 +10,18 @@ import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/Cu
 export const TotalOpinions: FC<any> = ({ shadowCard }) => {
 
     const [opinionsDiff, setOpinionsDiff] = useState(0)
-    const {currentPlace} = useCurrentPlaceContext()
-   
+    const { currentPlace } = useCurrentPlaceContext()
+
     useEffect(() => {
-        const opinionsToday = currentPlace.opinions.filter(opinion => isToday(new Date(opinion.date))).length
-        if (opinionsToday === currentPlace.opinions.length) {
-            setOpinionsDiff(currentPlace.opinions.length * 100)
-            return
+        const opinions = currentPlace.opinions
+        if (opinions) {
+            const opinionsToday = opinions.filter(opinion => isToday(new Date(opinion.date))).length
+            if (opinionsToday === opinions.length) {
+                setOpinionsDiff(opinions.length * 100)
+                return
+            }
+            opinions.length > 0 && setOpinionsDiff(Math.round(((opinions.length / (opinions.length - opinionsToday)) * 100 - 100) * 10) / 10)
         }
-        currentPlace.opinions.length > 0 && setOpinionsDiff(Math.round(((currentPlace.opinions.length / (currentPlace.opinions.length - opinionsToday)) * 100 - 100) * 10) / 10)
     }, [currentPlace.opinions])
 
 
@@ -30,7 +33,7 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
                     <Grid container item alignItems="center" justify="space-between">
                         <Grid item style={{ flexGrow: 1 }}>
                             <Grid container item alignItems="center">
-                                {opinionsDiff === 0 || currentPlace.opinions.length === 0 ? <>
+                                {opinionsDiff === 0 || (currentPlace.opinions && currentPlace.opinions.length === 0) ? <>
                                     <TrendingFlatIcon style={{ color: '#ffbf00' }} />
                                     <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
                                 </> : <>
@@ -39,7 +42,7 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
                                 </>
                                 }
                             </Grid>
-                            <Typography variant="h3">{currentPlace.opinions.length}</Typography>
+                            <Typography variant="h3">{currentPlace.opinions?.length}</Typography>
                         </Grid>
                         <TotalOpinionsChart />
                     </Grid>

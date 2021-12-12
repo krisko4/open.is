@@ -36,7 +36,6 @@ export const AddressSearcher: FC<Props> = ({setErrorMessage}) => {
                 lng: place.x,
                 mapZoom: 20
             })
-
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.lat = place.y
             newCurrentPlace.lng = place.x

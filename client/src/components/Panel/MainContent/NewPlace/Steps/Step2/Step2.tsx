@@ -7,16 +7,16 @@ import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import * as Yup from 'yup'
 import { PlaceDetailsForm } from "./PlaceDetailsForm";
-
+import {CoolForm} from './CoolForm'
 
 const PlaceDetailsSchema = Yup.object().shape({
     subtitle: Yup.string().required().max(100),
-    description: Yup.string().required().max(600)
+    description: Yup.string().required().max(600),
+    businessType: Yup.string().required()
 })
 
 export const Step2: FC = () => {
 
-    console.log('form')
     const { setActiveStep } = useStepContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [initialValues, setInitialValues] = useState({
@@ -47,6 +47,7 @@ export const Step2: FC = () => {
             <Formik initialValues={initialValues} onSubmit={handleSubmit} validateOnMount validationSchema={PlaceDetailsSchema}>
                 <PlaceDetailsForm />
             </Formik>
+            {/* <CoolForm /> */}
         </Grid>
     )
 }

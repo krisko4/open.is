@@ -27,7 +27,7 @@ export const Step4 : FC<Props> = ({isEditionMode}) => {
                  Make sure to provide valid address, including city and street number.
                  </Typography>
             </Grid>
-            <MapContextProvider>
+            <MapContextProvider isMarkerDraggable={true}>
                 <SelectedPlacesContextProvider isEditionMode={isEditionMode}>
                     <AddressDetails setActiveStep={setActiveStep} />
                 </SelectedPlacesContextProvider>

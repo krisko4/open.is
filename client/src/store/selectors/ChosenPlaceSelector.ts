@@ -1,6 +1,6 @@
 
 import { useSelector } from "react-redux";
-import { PlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
 
 export interface RootState {
     chosenPlace: any

@@ -1,11 +1,8 @@
 import { Grid, IconButton, Typography } from "@material-ui/core"
 import { KeyboardReturn } from "@material-ui/icons"
-import { tileLayer } from "leaflet"
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 import MapContextProvider from "../../../../../contexts/MapContext/MapContext"
 import SelectedPlacesContextProvider from "../../../../../contexts/SelectedPlacesContext"
-import { MapBox } from "../../../../Browser/Places/MapBox/MapBox"
-import { AddressSearcher } from "../../../../reusable/AddressSearcher"
 import { AddressDetails } from "../../NewPlace/Steps/Step4/AddressDetails"
 
 enum Steps {
@@ -34,7 +31,7 @@ export const LocationSelection: FC<Props> = ({ setCurrentStep, setAddressSubmitt
                 <Typography variant="subtitle2" style={{textAlign: 'center'}}>
                     Please enter the location of your business in the field below.  <br/>You can also modify the location by dragging your place over the map.
                     </Typography>
-                <MapContextProvider>
+                <MapContextProvider isMarkerDraggable={true}>
                     <SelectedPlacesContextProvider isEditionMode={true}>
                         <Grid item container lg={10} justify="center" style={{ marginTop: 20 }}>
                             <Grid item lg={10}>

@@ -14,6 +14,7 @@ import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/Cur
 import { useSelectedOptionSelector } from '../../../store/selectors/SelectedOptionSelector'
 import { Route, useHistory, useRouteMatch, useLocation, Redirect } from "react-router-dom";
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
+import { PlaceData } from "./PlaceManagement/PlaceData/PlaceData";
 // interface Props {
 //   chosenPlace: any
 // }
@@ -44,13 +45,13 @@ export const MainContent: FC = () => {
         </CurrentPlaceContextProvider>
         <CurrentPlaceContextProvider>
           <Route
-            path={`${match.url}/management`}
-            component={PlaceManagement}
+            path={`${match.url}/management/:id`}
+            // component={PlaceManagement}
+            component={PlaceData}
           />
         </CurrentPlaceContextProvider>
         <Route
           path={`${match.url}/dashboard`}
-
         >
           <Dashboard />
         </Route>
@@ -62,15 +63,6 @@ export const MainContent: FC = () => {
           path={`${match.url}/new-business-chain`}
           component={NewBusinessChain}
         />
-
-        {/* {selectedOption === ChosenOptions.NO_PLACES && <NoPlaces />} */}
-        {/* {selectedOption === ChosenOptions.PLACE_MANAGEMENT &&
-          <CurrentPlaceContextProvider>
-            <PlaceManagement />
-          </CurrentPlaceContextProvider>
-        } */}
-        {/* {selectedOption === ChosenOptions.MY_ACCOUNT && <MyAccount />}
-        {selectedOption === ChosenOptions.NEW_BUSINESS_CHAIN && <NewBusinessChain />} */}
       </Scrollbars>
     </Grid>
 

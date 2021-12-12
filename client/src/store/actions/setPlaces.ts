@@ -1,7 +1,7 @@
-import { PlaceProps } from "../../contexts/PanelContexts/PanelContext"
+import { RawPlaceDataProps } from "../../contexts/PanelContexts/BusinessChainContext"
 
 
-export const setPlaces = (places : PlaceProps[]) => {
+export const setPlaces = (places : RawPlaceDataProps[]) => {
     return {
         type: 'SET_PLACES',
         payload: places

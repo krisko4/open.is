@@ -1,12 +1,13 @@
 import React, { createContext, FC, useContext, useState } from "react";
 import { ContextProps } from "../ContextProps";
+import MapContextProps from "./MapContextProps";
 
 
 export const MapContext = createContext<MapContextData | null>(null)
 
-const MapContextProvider : FC<ContextProps> = ({ children }) => {
+const MapContextProvider : FC<MapContextProps> = ({ children, isMarkerDraggable }) => {
 
-    const state = useProviderSettings()
+    const state = useProviderSettings(isMarkerDraggable)
 
     return (
         <MapContext.Provider value={state}>
@@ -15,14 +16,14 @@ const MapContextProvider : FC<ContextProps> = ({ children }) => {
     )
 }
 
-const useProviderSettings = () => {
+const useProviderSettings = (isDraggable : boolean) => {
    
     const [placeCoords, setPlaceCoords] = useState({
         mapZoom: 10,
         lat: 53.13333,
         lng: 23.16433
     })
-   
+    const [isMarkerDraggable, setMarkerDraggable] = useState(isDraggable)
     const [popupOpen, setPopupOpen] = useState(false)
     const [popupIndex, setPopupIndex] = useState(0)
     const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
@@ -37,7 +38,10 @@ const useProviderSettings = () => {
         isPlaceCardClicked,
         setPlaceCardClicked,
         currentPlace,
-        setCurrentPlace
+        setCurrentPlace,
+        isMarkerDraggable,
+        setMarkerDraggable
+      
     }
 }
 

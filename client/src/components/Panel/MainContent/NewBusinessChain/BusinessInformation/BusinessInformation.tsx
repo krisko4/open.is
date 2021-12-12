@@ -2,6 +2,7 @@ import { Grid, Typography } from '@material-ui/core'
 import { Formik } from 'formik'
 import React, { FC, useState } from 'react'
 import * as Yup from 'yup'
+import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext'
 import { useCurrentPlaceContext } from '../../../../../contexts/PanelContexts/CurrentPlaceContext'
 import { BusinessInformationForm } from './BusinessInformationForm/BusinessInformationForm'
 
@@ -25,12 +26,12 @@ export const BusinessInformation: FC<Props> = ({ setCurrentStep }) => {
     const handleSubmit = () => {
         setCurrentStep(Steps.BUSINESS_DETAILS)
     }
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const { businessChain, setBusinessChain} = useBusinessChainContext()
 
     const [initialValues, setInitialValues] = useState({
-        businessName: currentPlace.name,
-        subtitle: currentPlace.subtitle,
-        description: currentPlace.description
+        businessName: businessChain.name,
+        subtitle: businessChain.subtitle,
+        description: businessChain.description
     })
 
     return <>

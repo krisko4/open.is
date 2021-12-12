@@ -5,7 +5,7 @@ import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts
 import { ImageUpload } from "../../../../../reusable/ImageUpload"
 import { Description } from './Fields/Description'
 import { Subtitle } from './Fields/Subtitle'
-import { BusinessType } from '../BusinessType'
+import { BusinessType } from './Fields/BusinessType'
 import { BusinessName } from "./Fields/BusinessName"
 
 

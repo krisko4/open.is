@@ -46,13 +46,18 @@ export const RatingChart: FC = () => {
         }]
     })
 
-    const {currentPlace} = useCurrentPlaceContext()
-    const { ones, twos, threes, fours, fives } = currentPlace.averageNote
+    const { currentPlace } = useCurrentPlaceContext()
+    const { ones, twos, threes, fours, fives } = currentPlace.averageNote || {}
 
     const ratingSeries = [ones, twos, threes, fours, fives]
 
 
     return (
-        <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
+        <>
+            {currentPlace.averageNote &&
+
+                <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
+            }
+        </>
     )
 }

@@ -40,7 +40,7 @@ interface Props {
 
 export const MapBox: FC<Props> = ({ tileLayer }) => {
 
-    const { placeCoords, setPlaceCoords } = useMapContext()
+    const { placeCoords} = useMapContext()
     const { chosenCriterias } = useSelectedPlacesContext()
     const classes = useStyles()
 

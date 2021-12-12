@@ -1,16 +1,16 @@
 import { Grid, TextField, Typography } from "@material-ui/core"
-import { Autocomplete } from "@material-ui/lab"
 import { FastField, Form, useFormikContext } from "formik"
 import { FC, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
 import myAxios from "../../../../../../axios/axios"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { LoadingButton } from "../../../../../reusable/LoadingButton"
+import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/BusinessType"
+import { Description } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Description"
+import { Subtitle } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Subtitle"
 
 
 export const PlaceDetailsForm: FC = () => {
 
-    console.log('dupsko')
     const { values, isValid } = useFormikContext<any>()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [loading, setLoading] = useState(false)
@@ -24,24 +24,17 @@ export const PlaceDetailsForm: FC = () => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-
             setCurrentPlace(currentPlace => {
                 currentPlace.description = values.description
                 currentPlace.subtitle = values.subtitle
                 currentPlace.type = values.businessType
                 return { ...currentPlace }
             })
-
         }, 50)
         return () => clearTimeout(timeout)
     }, [values])
 
 
-    const submitAutocomplete = (value: string | null) => {
-        const newCurrentPlace = { ...currentPlace }
-        if (value) newCurrentPlace.type = value
-        setCurrentPlace(newCurrentPlace)
-    }
 
 
     return (
@@ -53,14 +46,7 @@ export const PlaceDetailsForm: FC = () => {
                     </Typography>
                 </Grid>
                 <Grid item lg={5}>
-                    <Autocomplete
-                        freeSolo
-                        options={businessTypes}
-                        fullWidth={true}
-                        value={currentPlace.type}
-                        onChange={(e, value) => submitAutocomplete(value)}
-                        renderInput={(params) => <TextField  {...params} label="Business type" />}
-                    />
+                    <BusinessType />
                 </Grid>
                 <Grid item lg={5} style={{ marginTop: 20 }}>
                     <Typography>
@@ -68,14 +54,7 @@ export const PlaceDetailsForm: FC = () => {
                     </Typography>
                 </Grid>
                 <Grid item lg={5}>
-                    <FastField as={TextField}
-                        name="subtitle"
-                        fullWidth={true}
-                        label='Subtitle'
-                        helperText={`${values.subtitle.length}/100`}
-                        inputProps={{
-                            maxLength: 100
-                        }} />
+                    <Subtitle />
                 </Grid>
                 <Grid item lg={10} style={{ marginTop: 20 }}>
                     <Typography style={{ textAlign: 'center' }}>
@@ -83,19 +62,7 @@ export const PlaceDetailsForm: FC = () => {
                     </Typography>
                 </Grid>
                 <Grid item lg={10} style={{ marginTop: 10 }}>
-                    <FastField as={TextField}
-                        fullWidth={true}
-                        label="This is a description of my place!"
-                        multiline
-                        name="description"
-                        rows={10}
-                        variant="outlined"
-                        rowsMax={10}
-                        helperText={`${values.description.length}/600`}
-                        inputProps={{
-                            maxLength: 600
-                        }}
-                    />
+                    <Description />
                 </Grid>
                 <Grid item lg={10}>
                     <LoadingButton

@@ -15,14 +15,17 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
 
     useEffect(() => {
         const { visits } = currentPlace
-        const totalVisits = visits.reduce((a, b) => a + b.visitCount, 0)
-        setTotalVisits(totalVisits)
-        const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)
-        if (visitsToday === totalVisits) {
-            setVisitsDiff(visitsToday * 100)
-            return
+        if (visits) {
+            const totalVisits = visits.reduce((a, b) => a + b.visitCount, 0)
+            setTotalVisits(totalVisits)
+            const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)
+            if (visitsToday === totalVisits) {
+                setVisitsDiff(visitsToday * 100)
+                return
+            }
+            setVisitsDiff(Math.round(((totalVisits / (totalVisits - visitsToday)) * 100 - 100) * 10) / 10)
+
         }
-        setVisitsDiff(Math.round(((totalVisits / (totalVisits - visitsToday)) * 100 - 100) * 10) / 10)
     }, [currentPlace.visits])
 
     return (

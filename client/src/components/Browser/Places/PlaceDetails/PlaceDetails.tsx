@@ -13,7 +13,7 @@ import myAxios from "../../../../axios/axios";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 import { News } from "../../../reusable/News";
-import OpeningHours from "../../../reusable/OpeningHours";
+import {OpeningHours} from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
 import MainContent from "./MainContent";
 

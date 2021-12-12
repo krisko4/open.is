@@ -28,7 +28,7 @@ const Browser: FC = () => {
                     <FirstHeader />
                 </AuthContextProvider>
                 <SecondHeader />
-                <MapContextProvider>
+                <MapContextProvider isMarkerDraggable={false}>
                     <Grid container style={{ flexGrow: 1 }}>
                         <Grid item lg={6} xs={12}>
                             <MapBox tileLayer={tileLayer} />

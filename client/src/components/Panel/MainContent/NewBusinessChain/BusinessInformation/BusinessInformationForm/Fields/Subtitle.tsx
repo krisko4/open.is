@@ -6,7 +6,7 @@ import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelConte
 export const Subtitle = () => {
     const {currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [subtitle, setSubtitle] = useState(currentPlace.subtitle)
-    const { setFieldValue } = useFormikContext()
+    const {setFieldValue} = useFormikContext()
     const handleChange = (e: any) => {
         setSubtitle(e.target.value)
     }
