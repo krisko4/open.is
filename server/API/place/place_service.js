@@ -13,12 +13,13 @@ const placeService = {
     getActivePlaces: () => Place.find({ isActive: true }).exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: mongoose.Types.ObjectId(userId) }).exec(),
-    getTop20PlacesSortedBy: (sortParam, types) => Place.find({ isActive: true }).sort(sortParam).limit(20).exec(),
+    getTop20PlacesSortedBy: (sortParam, types) => Place.find({ 'locations.isActive': true }).sort(sortParam).limit(20).exec(),
     getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).exec(),
+    getPlaceByLocationId: (locationId) => Place.findOne({ 'locations._id': locationId }).exec(),
     editPlace: async (placeData, user) => {
         const { lat, lng, img } = placeData
-        const place = await placeService.getPlaceById(placeData._id)
-        if (!place) throw new Error('Invalid placeId')
+        const place = await placeService.getPlaceByLocationId(placeData._id)
+        if (!place) throw new Error('Invalid locationId')
         if (!user._id.equals(place.userId)) throw new Error('This user is not allowed to edit this place')
         const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
         if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
@@ -32,21 +33,43 @@ const placeService = {
                 })
                 placeData.img = uploadResponse.public_id
             }
-            editedPlace = Place.findByIdAndUpdate(placeData._id, placeData, { new: true }).exec()
-
+            // editedPlace = Place.findByIdAndUpdate(placeData._id, placeData, { new: true }).exec()
+            editedPlace = Place.findOneAndUpdate(
+                { 'locations._id': placeData._id },
+                {
+                    name: placeData.name,
+                    subtitle: placeData.subtitle,
+                    description: placeData.description,
+                    type: placeData.type,
+                    'locations.$.email': placeData.email,
+                    'locations.$.phone': placeData.phone,
+                    'locations.$.website': placeData.website,
+                    'locations.$.facebook': placeData.facebook,
+                    'locations.$.instagram': placeData.instagram,
+                    'locations.$.lat': placeData.lat,
+                    'locations.$.lng': placeData.lng,
+                    'locations.$.address': placeData.address
+                },
+                { new: true }
+            ).exec()
         })
         await session.endSession()
         return editedPlace
 
     },
 
+
+
+
     addPlace: async (placeData) => {
-        const { lat, lng } = placeData.locations[0]
-        const { img } = placeData
-        const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
-        if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
+        const { img, locations } = placeData
+        console.log(locations)
+        for (const location of locations) {
+            const {lat, lng} = location
+            const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
+            if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
+        }
         // upload image to cloudinary
-        console.log(placeData)
         const session = await mongoose.startSession()
         let newPlace
         await session.withTransaction(async () => {
@@ -63,7 +86,6 @@ const placeService = {
         })
         await session.endSession()
         return newPlace
-
     },
 
     test: (message) => {
@@ -73,7 +95,7 @@ const placeService = {
     activatePlace: (id) => Place.findByIdAndUpdate(id, { 'isActive': true }, { new: true }).exec(),
     getPlaceById: (id) => Place.findById(id).exec(),
     findByLocationId: (id) => Place.find({ 'locations._id': id }).exec(),
-    getPlaceByLatLng: (lat, lng) => Place.findOne({ lat: lat, lng: lng }).exec(),
+    getPlaceByLatLng: (lat, lng) => Place.findOne({ 'locations.lat': lat, 'locations.lng': lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
     getPlacesBy: (param) => Place.find({ ...param }).exec(),
     getActivePlacesBy: (param) => Place.find({ ...param, isActive: true }).exec(),
@@ -81,7 +103,7 @@ const placeService = {
     getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true }).exec(),
     deleteAll: () => Place.deleteMany().exec(),
     incrementVisitCount: (id) => Place.find({ 'locations._id': id }, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
-    setStatus: (id, status) => Place.findOneAndUpdate({'locations._id' : id}, {'locations.$.status': status }, { new: true, runValidators: true }).exec(),
+    setStatus: (id, status) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.status': status }, { new: true, runValidators: true }).exec(),
     setOpeningHours: (id, hours) => Place.findOneAndUpdate(
         { 'locations._id': id },
         { 'locations.$.openingHours': hours, 'locations.$.isActive': true },

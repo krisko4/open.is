@@ -96,9 +96,9 @@ const placeController = {
                                     opinionService.getOpinionsBy({ locationId: location._id }),
                                     newsService.getNewsBy({ locationId: location._id })
                                 ])
-                                location.visits = visits.map(visit => visitDto(visit)) 
-                                location.opinions = opinions.map(opinion => opinionDto(opinion)) 
-                                location.news = news.map(news => newsDto(news)) 
+                                location.visits = visits.map(visit => visitDto(visit))
+                                location.opinions = opinions.map(opinion => opinionDto(opinion))
+                                location.news = news.map(news => newsDto(news))
                             }
                             return placeObject
                         }))
@@ -150,14 +150,16 @@ const placeController = {
             if (img) placeData.img = img
             const place = await placeService.editPlace(placeData, user)
             const placeObject = { ...place._doc }
-            const [visits, opinions, news] = await Promise.all([
-                visitService.getVisitsByPlaceId(placeObject._id),
-                opinionService.getOpinionsBy({ placeId: placeObject._id }),
-                newsService.getNewsBy({ placeId: placeObject._id })
-            ])
-            placeObject.visits = visits.map(visit => visitDto(visit))
-            placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
-            placeObject.news = news.map(news => newsDto(news))
+            for (const location of placeObject.locations) {
+                const [visits, opinions, news] = await Promise.all([
+                    visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
+                    opinionService.getOpinionsBy({ locationId: location._id }),
+                    newsService.getNewsBy({ locationId: location._id })
+                ])
+                location.visits = visits.map(visit => visitDto(visit))
+                location.opinions = opinions.map(opinion => opinionDto(opinion))
+                location.news = news.map(news => newsDto(news))
+            }
             return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(placeObject, uid) })
         }
         catch (err) {
@@ -196,26 +198,13 @@ const placeController = {
             if (!user) throw ApiError.internal('User with provided uid not found')
             const { img } = req.files
             if (!img) throw ApiError.badRequest('Image file is required')
-            console.log(img)
             const placeData = {
                 name: reqBody.name,
                 type: reqBody.type,
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
                 img: img,
-                locations: [
-                    {
-                        email: reqBody.email,
-                        website: reqBody.website,
-                        facebook: reqBody.facebook,
-                        instagram: reqBody.instagram,
-                        phone: reqBody.phone,
-                        address: reqBody.address,
-                        lat: reqBody.lat,
-                        lng: reqBody.lng
-                        
-                    }
-                ],
+                locations: reqBody.locations,
                 userId: user._id,
             }
             const place = await placeService.addPlace(placeData)

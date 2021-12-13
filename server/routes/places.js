@@ -42,6 +42,11 @@ router.get('/', (req, res, next) => {
 
 
 
+const parseLocations = (req, res, next) => {
+    console.log(req.body.locations)
+    req.body.locations = JSON.parse(req.body.locations)
+    next()
+}
 
 router.post('/',
     jwtController.authenticateAccessToken,
@@ -52,19 +57,20 @@ router.post('/',
         useTempFiles: true,
         tempFileDir: '/tmp/'
     }),
+    parseLocations,
     placeValidator.validatePlaceAddress,
     imageValidator.validateUploadedImage,
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 50 }),
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
     body('description').isString().isLength({ min: 1, max: 600 }),
-    body('phone').isMobilePhone().notEmpty(),
-    body('email').isEmail().optional({nullable: true, checkFalsy: true}),
-    body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
-    body('facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
-    body('instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
-    body('lat').isFloat().notEmpty(),
-    body('lng').isFloat().notEmpty(),
+    body('locations.*.phone').isMobilePhone().notEmpty(),
+    body('locations.*.email').isEmail().optional({nullable: true, checkFalsy: true}),
+    body('locations.*.website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
+    body('locations.*.facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
+    body('locations.*.instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
+    body('locations.*.lat').isFloat().notEmpty(),
+    body('locations.*.lng').isFloat().notEmpty(),
     validateRequest,
     (req, res, next) => {
         placeController.addPlace(req, res, next)
