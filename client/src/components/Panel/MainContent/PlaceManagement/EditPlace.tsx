@@ -4,10 +4,11 @@ import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import myAxios from "../../../../axios/axios";
 import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import {  usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
+import { convertToCurrentPlace } from "../../../../utils/place_data_utils";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
@@ -16,13 +17,14 @@ import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface Props {
-    initialPlaceData: CurrentPlaceProps, setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+    initialPlaceData: CurrentPlaceProps,
+    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
 
     const { activeStep, setActiveStep, imageFile } = useStepContext()
-    const { currentPlace, setCurrentPlace} = useCurrentPlaceContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const places = usePlacesSelector()
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(false)
@@ -32,7 +34,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
     const submitChanges = async () => {
         setLoading(true)
         const formData = new FormData()
-        const changedPlace = {...currentPlace}
+        const changedPlace = { ...currentPlace }
         if (imageFile) changedPlace.img = imageFile
         let key: keyof typeof changedPlace
         for (key in currentPlace) formData.append(key, changedPlace[key])
@@ -44,11 +46,12 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                 }
             })
             console.log(res.data)
-            // res.data.place.img = `${process.env.REACT_APP_BASE_URL}/images/places/${res.data.place.img}`
-            const currentPlaces: any = [...places]
-            currentPlaces.push(res.data.place)
-            setCurrentPlace(res.data.place)
-            setPlaces(currentPlaces)
+
+            const placeBeforeUpdate = places.find(place => place.locations.find(location => location._id === currentPlace._id))
+            const rawPlaceDataAfterUpdate = res.data.place
+            if(placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
+            dispatch(setPlaces([...places]))
+            setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate))
             enqueueSnackbar('You have successfully modified your place', {
                 variant: 'success'
             })

@@ -49,6 +49,32 @@ interface NewsProps {
     content: string
 }
 
+export interface LocationProps {
+    _id? : string,
+    address: string,
+    lat: number,
+    lng: number,
+    phone: string,
+    email: string,
+    website: string,
+    instagram: string,
+    news?: NewsProps[],
+    opinions?: OpinionProps[],
+    facebook: string,
+    visits?: VisitProps[],
+    averageNote?: {
+        ones: number,
+        twos: number,
+        threes: number,
+        fours: number,
+        fives: number,
+        average: number
+    },
+    openingHours?: any,
+    isActive?: boolean
+    status?: Status,
+    visitCount?: number,
+}
 
 interface OpinionProps {
     author: string,

@@ -7,13 +7,15 @@ import { Description } from './Fields/Description'
 import { Subtitle } from './Fields/Subtitle'
 import { BusinessType } from './Fields/BusinessType'
 import { BusinessName } from "./Fields/BusinessName"
+import { useBusinessChainContext } from "../../../../../../contexts/PanelContexts/BusinessChainContext"
 
 
+interface Props {
+    setImageFile: React.Dispatch<React.SetStateAction<File | null>>
+}
 
+export const BusinessInformationForm: FC<Props> = ({setImageFile}) => {
 
-export const BusinessInformationForm: FC = () => {
-
-    const [imageFile, setImageFile] = useState<File | null>(null)
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [img, setImg] = useState<any>(currentPlace.img)
     const { isValid, values } = useFormikContext<any>()
@@ -24,17 +26,6 @@ export const BusinessInformationForm: FC = () => {
         setCurrentPlace(newCurrentPlace)
     }, [img])
 
-    // useEffect(() => {
-    //     const timeout = setTimeout(() => {
-    //         setCurrentPlace(currentPlace => {
-    //             currentPlace.description = values.description
-    //             currentPlace.subtitle = values.subtitle
-    //             currentPlace.name = values.name
-    //             return { ...currentPlace }
-    //         })
-    //     }, 100)
-    //     return () => clearTimeout(timeout)
-    // }, [values])
 
 
     return (

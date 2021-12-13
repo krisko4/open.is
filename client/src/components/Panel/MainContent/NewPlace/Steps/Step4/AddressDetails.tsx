@@ -41,7 +41,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
                 return
             }
             if (res.data && (!isEditionMode || (isEditionMode && currentPlace.address !== res.data.address))) {
-                setErrorMessage('Selected currentPlace is already occupied by another place. If your place is located on this address, try to change the position of a marker.')
+                setErrorMessage('Selected location is already occupied by another place. If your place is located on this address, try to change the position of a marker.')
                 return
             }
             const newCurrentPlace = {

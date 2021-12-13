@@ -38,14 +38,8 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
     const [businessName, setBusinessName] = useState('')
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        console.log('initial')
-        console.log(initialPlaceData)
-    }, [initialPlaceData])
-
 
     const closeSettings = () => {
-        console.log(initialPlaceData)
         setCurrentPlace(initialPlaceData)
         enqueueSnackbar('Your changes have not been saved', {
             variant: 'warning'
@@ -78,11 +72,6 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
 
     return (
-        // <Dialog
-        //     open={open}
-        //     TransitionComponent={Transition}
-        //     fullScreen
-        // >
         <>
             <AppBar style={{ position: 'relative' }}>
                 <Toolbar>
@@ -119,7 +108,6 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
             <StepContextProvider>
                 <EditPlace setDialogOpen={setOpen} initialPlaceData={initialPlaceData} />
             </StepContextProvider>
-            {/* </Dialog> */}
         </>
     )
 }

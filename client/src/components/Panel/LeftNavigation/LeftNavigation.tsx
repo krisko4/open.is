@@ -11,14 +11,11 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { ChosenOptions, usePanelContext } from "../../../contexts/PanelContexts/PanelContext";
-import { MyPlaces } from './MyPlaces';
-import { usePlacesSelector } from '../../../store/selectors/PlacesSelector'
-import { useDispatch } from 'react-redux'
-import { setSelectedOption } from '../../../store/actions/setSelectedOption'
-import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from "react-router-dom";
-import {MyBusinessChains} from './MyBusinessChains'
+import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
+import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
+import { MyPlaces } from './MyPlaces';
 // interface Props {
 //     setChosenPlace: React.Dispatch<React.SetStateAction<PlaceProps | null>>
 // }

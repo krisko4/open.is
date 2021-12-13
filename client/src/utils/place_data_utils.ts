@@ -5,6 +5,7 @@ import { CurrentPlaceProps } from "../contexts/PanelContexts/CurrentPlaceContext
 export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
     const locations = [
         {
+            _id: currentPlace._id,
             address: currentPlace.address,
             lat: currentPlace.lat,
             lng: currentPlace.lng,
@@ -25,14 +26,14 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
         }
     ]
     const rawPlaceData: RawPlaceDataProps = {
-        _id: currentPlace._id,
         img: currentPlace.img,
         userId: currentPlace.userId,
         name: currentPlace.name,
         subtitle: currentPlace.subtitle,
         description: currentPlace.description,
         type: currentPlace.type,
-        locations: locations
+        locations: locations,
+        isUserOwner: currentPlace.isUserOwner
     }
     return rawPlaceData
 }

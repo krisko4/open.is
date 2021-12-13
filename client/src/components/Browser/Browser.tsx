@@ -37,7 +37,6 @@ const Browser: FC = () => {
                             <PlacesBox />
                         </Grid>
                     </Grid>
-
                 </MapContextProvider>
             </Grid>
         </SelectedPlacesContextProvider>

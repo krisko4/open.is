@@ -55,7 +55,6 @@ export const Step5: FC = () => {
             <Grid item container justify="center" style={{ marginTop: 20 }} lg={12}>
                 <Grid item lg={7}>
                     <ImageUpload img={img} setImg={setImg} setImageFile={setImageFile} />
-
                     <Grid item container direction="column" style={{ textAlign: 'center', marginTop: 10, marginBottom: 20 }}>
                         <Typography style={{ marginTop: 10 }} variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
                     </Grid>

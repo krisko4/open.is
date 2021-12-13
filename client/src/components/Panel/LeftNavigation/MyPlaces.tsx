@@ -31,7 +31,7 @@ export const MyPlaces: FC = () => {
                 <ListSubheader disableSticky>
                     My places
                 </ListSubheader>
-                {places.map((place) =>
+                {places.filter(place => place.locations.length === 1).map((place) =>
                     <ListItem key={place._id} button onClick={() => choosePlace(place)}>
                         <ListItemAvatar>
                             <Avatar

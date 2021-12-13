@@ -14,26 +14,26 @@ const BusinessInformationSchema = Yup.object().shape({
 
 
 interface Props {
-    setCurrentStep: React.Dispatch<React.SetStateAction<number>>
+    setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
+    setImageFile: React.Dispatch<React.SetStateAction<File | null>>
+
 }
 enum Steps {
     BUSINESS_INFORMATION,
     BUSINESS_DETAILS
 }
-export const BusinessInformation: FC<Props> = ({ setCurrentStep }) => {
+export const BusinessInformation: FC<Props> = ({ setCurrentStep, setImageFile }) => {
 
-    console.log('wtf')
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const [initialValues, setInitialValues] = useState({
+        businessName: currentPlace.name,
+        subtitle: currentPlace.subtitle,
+        description: currentPlace.description
+    })
+
     const handleSubmit = () => {
         setCurrentStep(Steps.BUSINESS_DETAILS)
     }
-    const { businessChain, setBusinessChain} = useBusinessChainContext()
-
-    const [initialValues, setInitialValues] = useState({
-        businessName: businessChain.name,
-        subtitle: businessChain.subtitle,
-        description: businessChain.description
-    })
-
     return <>
         <Grid item container alignItems="center" direction="column" style={{ marginTop: 30 }}>
             <Typography variant="h4">
@@ -47,7 +47,7 @@ export const BusinessInformation: FC<Props> = ({ setCurrentStep }) => {
             onSubmit={handleSubmit}
             initialValues={initialValues}
         >
-            <BusinessInformationForm />
+            <BusinessInformationForm setImageFile={setImageFile} />
         </Formik>
     </>
 }

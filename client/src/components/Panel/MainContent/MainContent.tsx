@@ -1,32 +1,24 @@
 import Grid from "@material-ui/core/Grid";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { ChosenOptions, usePanelContext } from "../../../contexts/PanelContexts/PanelContext";
+import { Route, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
+import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
+import { useSelectedOptionSelector } from '../../../store/selectors/SelectedOptionSelector';
 import Header from "../Header";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { MyAccount } from './MyAccount/MyAccount';
+import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
 import { NewPlace } from "./NewPlace/NewPlace";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
-import { PlaceManagement } from './PlaceManagement/PlaceManagement';
-import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain'
-import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useSelectedOptionSelector } from '../../../store/selectors/SelectedOptionSelector'
-import { Route, useHistory, useRouteMatch, useLocation, Redirect } from "react-router-dom";
-import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import { PlaceData } from "./PlaceManagement/PlaceData/PlaceData";
-// interface Props {
-//   chosenPlace: any
-// }
 
 export const MainContent: FC = () => {
 
-  const selectedOption = useSelectedOptionSelector()
   let match = useRouteMatch();
-  const history = useHistory()
   const places = usePlacesSelector()
   const location = useLocation()
-  console.log(location)
 
 
 
@@ -43,13 +35,16 @@ export const MainContent: FC = () => {
             />
           </StepContextProvider>
         </CurrentPlaceContextProvider>
-        <CurrentPlaceContextProvider>
-          <Route
-            path={`${match.url}/management/:id`}
-            // component={PlaceManagement}
-            component={PlaceData}
-          />
-        </CurrentPlaceContextProvider>
+        {places.map((place) => {
+          return (
+            <CurrentPlaceContextProvider key={place._id}>
+              <Route
+                path={`${match.url}/management/:${place._id}`}
+                component={PlaceData}
+              />
+            </CurrentPlaceContextProvider>
+          )
+        })}
         <Route
           path={`${match.url}/dashboard`}
         >

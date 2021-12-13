@@ -19,7 +19,8 @@ export interface RawPlaceDataProps {
     isUserOwner?: boolean
 }
 
-interface LocationProps {
+export interface LocationProps {
+    _id? : string,
     address: string,
     lat: number,
     lng: number,
@@ -77,7 +78,6 @@ export const BusinessChainContextProvider: FC = ({ children }) => {
 }
 
 export const clearBusinessChain = {
-    _id: '',
     name: '',
     locations: [
         {
@@ -89,21 +89,9 @@ export const clearBusinessChain = {
             phone: '',
             instagram: '',
             facebook: '',
-            averageNote: {
-                ones: 0,
-                twos: 0,
-                threes: 0,
-                fours: 0,
-                fives: 0,
-                average: 0
-            },
-            opinions: defaultOpinions,
-            visits: [],
-            news: defaultNews,
             email: '',
             website: '',
             isActive: false,
-
         }
     ],
     type: '',
@@ -135,7 +123,7 @@ type BusinessChainContextData = ReturnType<typeof useProviderSettings>
 
 export const useBusinessChainContext = () => {
     const businessChainContext = useContext(BusinessChainContext)
-    if (!businessChainContext) throw new Error('BusinessChainContext should be used inside CurrentPlaceContextProvider')
+    if (!businessChainContext) throw new Error('BusinessChainContext should be used inside BusinessChainContextProvider')
     return businessChainContext
 
 }

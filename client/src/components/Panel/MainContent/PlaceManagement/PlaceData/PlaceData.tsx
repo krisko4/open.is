@@ -13,6 +13,7 @@ import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/Cu
 import { Status } from "../../../../../contexts/PanelContexts/PanelContext";
 import { setPlaces } from "../../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
+import { convertToRawPlaceData } from "../../../../../utils/place_data_utils";
 import { LoadingButton } from "../../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../../NewPlace/PlaceDetailsCard";
 import { ActivityChart } from '../Charts/ActivityChart';
@@ -55,12 +56,13 @@ export const PlaceData: FC = () => {
                 status: status
             })
             if (currentPlace) {
-                let oldPlace = places.find(place => place._id === currentPlace._id)
+                let oldPlace = places.find(place => place.locations.find(location => location._id = currentPlace._id))
                 console.log(oldPlace)
-                const updatedPlace = { ...currentPlace }
+                let updatedPlace = { ...currentPlace }
                 updatedPlace.status = status
-                // if(oldPlace) places[places.indexOf(oldPlace)] = updatedPlace
-                // dispatch(setPlaces([...places]))
+                const rawPlaceData = convertToRawPlaceData(updatedPlace)
+                if (oldPlace) places[places.indexOf(oldPlace)] = rawPlaceData
+                dispatch(setPlaces([...places]))
                 setCurrentPlace(updatedPlace)
             }
             if (status === Status.OPEN) {
@@ -83,6 +85,7 @@ export const PlaceData: FC = () => {
     }
 
     useEffect(() => {
+        console.log('elo')
         //@ts-ignore
         setCurrentPlace(location.state.place)
     }, [])
@@ -125,11 +128,11 @@ export const PlaceData: FC = () => {
                                         </Typography>
                                         <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
                                             {currentPlace.status === Status.OPEN ? <>
-                                                <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.CLOSED)} style={{ color: 'white', borderColor: 'white' }}>Close</LoadingButton>
+                                                <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setPlaceStatus(Status.CLOSED)} >Close</LoadingButton>
                                                 <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
                                             </>
                                                 : <>
-                                                    <LoadingButton disabled={loading} loading={loading} variant="outlined" onClick={() => setPlaceStatus(Status.OPEN)} style={{ color: 'white', borderColor: 'white' }}>Open</LoadingButton>
+                                                    <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setPlaceStatus(Status.OPEN)}>Open</LoadingButton>
                                                     <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
                                                 </>
                                             }

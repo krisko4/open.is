@@ -90,7 +90,7 @@ export const MyAccount: FC = () => {
 
 
     return (
-        <Slide in={true}>
+        <Slide in={true} timeout={1000}>
             <Grid container item lg={10} alignItems="center" justify="center">
                 <Grid item lg={7}>
                     <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>

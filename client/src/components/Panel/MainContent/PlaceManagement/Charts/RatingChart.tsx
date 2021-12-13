@@ -55,7 +55,6 @@ export const RatingChart: FC = () => {
     return (
         <>
             {currentPlace.averageNote &&
-
                 <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
             }
         </>

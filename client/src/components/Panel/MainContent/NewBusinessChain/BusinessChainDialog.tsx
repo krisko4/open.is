@@ -8,7 +8,7 @@ import { BusinessInformation } from './BusinessInformation/BusinessInformation';
 import { LocationDetails } from './LocationDetails/LocationDetails';
 import { LocationSelection } from './LocationDetails/LocationSelection';
 import { LocationContextProvider } from '../../../../contexts/PanelContexts/LocationContext'
-import {BusinessChainContextProvider} from '../../../../contexts/PanelContexts/BusinessChainContext'
+import { SettingsInputComponentRounded } from "@material-ui/icons";
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 interface Props {
     open: boolean,
@@ -25,6 +25,7 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
     const [currentStep, setCurrentStep] = useState(Steps.BUSINESS_INFORMATION)
     const [addressSubmitted, setAddressSubmitted] = useState(false)
 
+    const [imageFile, setImageFile] = useState<File | null>(null)
     const closeDialog = () => {
         setOpen(false)
         setCurrentStep(Steps.BUSINESS_INFORMATION)
@@ -48,12 +49,11 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                 </Toolbar>
             </AppBar>
             <Grid container style={{ height: '100%' }}>
-                <BusinessChainContextProvider>
-
+                <CurrentPlaceContextProvider>
                     <Grid item style={{ background: 'white' }} lg={6} xs={9}>
                         <Scrollbars>
                             {currentStep === Steps.BUSINESS_INFORMATION ? <>
-                                <BusinessInformation setCurrentStep={setCurrentStep} />
+                                <BusinessInformation setImageFile={setImageFile} setCurrentStep={setCurrentStep} />
                             </>
                                 : <LocationSelection setAddressSubmitted={setAddressSubmitted} setCurrentStep={setCurrentStep} />
                             }
@@ -69,12 +69,12 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                                 </Grid>
                                 :
                                 <LocationContextProvider>
-                                    <LocationDetails addressSubmitted={addressSubmitted} />
+                                    <LocationDetails setOpen={setOpen} imageFile={imageFile} addressSubmitted={addressSubmitted} />
                                 </LocationContextProvider>
                             }
                         </Scrollbars>
                     </Grid>
-                </BusinessChainContextProvider>
+                </CurrentPlaceContextProvider>
             </Grid >
         </Dialog >
 

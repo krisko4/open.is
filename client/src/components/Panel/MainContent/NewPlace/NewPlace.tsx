@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { createUnzip } from "zlib";
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../contexts/StepContext";
@@ -30,15 +31,29 @@ export const NewPlace: FC = () => {
 
     const registerPlace = () => {
         setLoading(true)
-        const place = {...currentPlace}
-        place.img = imageFile
-        delete place['visits']
-        delete place['news']
-        delete place['opinions']
-        console.log(place)
+        const place = {
+            img: imageFile as File,
+            name: currentPlace.name,
+            subtitle: currentPlace.subtitle,
+            description: currentPlace.description,
+            type: currentPlace.type,
+        }
+        const locations = [
+            {
+                address: currentPlace.address,
+                lat: currentPlace.lat,
+                lng: currentPlace.lng,
+                phone: currentPlace.phone,
+                email: currentPlace.email,
+                website: currentPlace.website,
+                facebook: currentPlace.facebook,
+                instagram: currentPlace.instagram
+            }
+        ]
         const formData = new FormData()
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
+        formData.append('locations', JSON.stringify(locations))
         myAxios.post('/places', formData, {
             withCredentials: true,
             headers: {
@@ -78,7 +93,7 @@ export const NewPlace: FC = () => {
         <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2} item style={{ marginBottom: 40, paddingLeft: 10 }} justify="space-evenly">
 
             <Grid item lg={activeStep > 0 ? 5 : 6}>
-                <Slide in={true}>
+                <Slide in={true} timeout={1000}>
                     <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
                         <CardContent>
                             <Typography variant="h5" >

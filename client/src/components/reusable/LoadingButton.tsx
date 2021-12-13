@@ -11,8 +11,9 @@ export const LoadingButton : FC<any> = (props) => {
     } = props
     return (
         <Button {...rest}>
+          
             {!loading && children}
-            {loading && <CircularProgress size={20}/>}
+            {loading && <CircularProgress style={{color: 'inherit'}} size={20}/>}
         </Button>
     )
 }
