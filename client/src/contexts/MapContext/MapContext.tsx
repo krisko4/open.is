@@ -1,11 +1,11 @@
 import React, { createContext, FC, useContext, useState } from "react";
-import { ContextProps } from "../ContextProps";
+import { CurrentPlaceProps } from "../PanelContexts/CurrentPlaceContext";
 import MapContextProps from "./MapContextProps";
 
 
 export const MapContext = createContext<MapContextData | null>(null)
 
-const MapContextProvider : FC<MapContextProps> = ({ children, isMarkerDraggable }) => {
+const MapContextProvider: FC<MapContextProps> = ({ children, isMarkerDraggable }) => {
 
     const state = useProviderSettings(isMarkerDraggable)
 
@@ -16,8 +16,8 @@ const MapContextProvider : FC<MapContextProps> = ({ children, isMarkerDraggable 
     )
 }
 
-const useProviderSettings = (isDraggable : boolean) => {
-   
+const useProviderSettings = (isDraggable: boolean) => {
+
     const [placeCoords, setPlaceCoords] = useState({
         mapZoom: 10,
         lat: 53.13333,
@@ -27,7 +27,7 @@ const useProviderSettings = (isDraggable : boolean) => {
     const [popupOpen, setPopupOpen] = useState(false)
     const [popupIndex, setPopupIndex] = useState(0)
     const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
-    const [currentPlace, setCurrentPlace] = useState<any>()
+    const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps | null>(null)
     return {
         popupOpen,
         setPopupOpen,
@@ -41,7 +41,7 @@ const useProviderSettings = (isDraggable : boolean) => {
         setCurrentPlace,
         isMarkerDraggable,
         setMarkerDraggable
-      
+
     }
 }
 
@@ -49,7 +49,7 @@ type MapContextData = ReturnType<typeof useProviderSettings>
 
 export const useMapContext = () => {
     const context = useContext(MapContext)
-    if(!context) throw new Error('MapContext should be placed inside MapContextProvider')
+    if (!context) throw new Error('MapContext should be placed inside MapContextProvider')
     return context
 }
 

@@ -2,6 +2,14 @@ import { FC, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { StatisticChart } from "../../Dashboard/StatisticChart"
 
+const defaultOptions = {
+    ones : 0,
+    twos: 0,
+    threes: 0,
+    fours: 0,
+    fives: 0
+}
+
 export const RatingChart: FC = () => {
 
 
@@ -47,7 +55,7 @@ export const RatingChart: FC = () => {
     })
 
     const { currentPlace } = useCurrentPlaceContext()
-    const { ones, twos, threes, fours, fives } = currentPlace.averageNote || {}
+    const { ones, twos, threes, fours, fives } = currentPlace.averageNote || defaultOptions
 
     const ratingSeries = [ones, twos, threes, fours, fives]
 

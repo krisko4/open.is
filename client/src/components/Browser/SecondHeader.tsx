@@ -117,9 +117,9 @@ export const SecondHeader: FC = () => {
                 background: '#2C2C2C',
                 position: 'static'
             }}>
-            <Toolbar>
+            <Toolbar disableGutters>
                 <Grid container className={classes.secondHeader}>
-                    <Grid item xs={10} sm={9} md={8} lg={6}>
+                    <Grid item xs={10} sm={9} md={8} lg={6} style={{paddingLeft: 5, paddingRight: 5}}>
                         <Searcher />
                     </Grid>
                     <Grid justify="center" container lg={6} item alignItems="center">

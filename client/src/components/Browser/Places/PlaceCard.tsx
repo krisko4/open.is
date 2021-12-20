@@ -8,14 +8,16 @@ import { Rating } from "@material-ui/lab";
 import createStyles from "@material-ui/styles/createStyles";
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
+import { useMapContext } from "../../../contexts/MapContext/MapContext";
+import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 
 
 
 const useStyles = makeStyles(() =>
     createStyles({
         card: {
-            //  backgroundColor: '#430075',
             backgroundColor: '#2C2C2C',
             // borderRadius: 20,
             width: '100%',
@@ -36,8 +38,8 @@ enum tabType {
     FAVORITE = 3
 }
 interface PlaceProps {
-    place: any,
-    tabIndex: number 
+    tabIndex: number ,
+    currentPlace: CurrentPlaceProps
 }
 
 const StyledRating = styled(Rating)({
@@ -55,14 +57,14 @@ const StyledRating = styled(Rating)({
 
 
 
-export const PlaceCard: FC<PlaceProps> = ({ place, tabIndex }) => {
+export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
     const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
     const {setChosenCriterias} = useAddressDetailsContext()
 
 
     useEffect(() => {
-        const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === place._id)
+        const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === currentPlace._id)
         isFavorite ? setValue(1) : setValue(null)
     }, [])
 
@@ -70,25 +72,26 @@ export const PlaceCard: FC<PlaceProps> = ({ place, tabIndex }) => {
 
     const setFavoritePlace = (newValue: number | null) => {
         let favIds = Cookies.get('favIds')
+        console.log(favIds)
         setValue(newValue)
         if (!favIds) {
-            newValue === 1 && Cookies.set('favIds', `${place._id}`)
+            newValue === 1 && Cookies.set('favIds', `${currentPlace._id}`)
             console.log(Cookies.get())
             return
         }
         const favIdsArray = favIds.split(',')
-        const index = favIdsArray.findIndex(id => id === place._id)
+        const index = favIdsArray.findIndex(id => id === currentPlace._id)
         // index not found && no value || index found && value
         if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
         if (index !== -1) {
             favIdsArray.splice(index, 1)
-            tabIndex === tabType.FAVORITE && setChosenCriterias((criterias : any) => criterias.filter((criterium : any) => place._id !== criterium._id ))
+            tabIndex === tabType.FAVORITE && setChosenCriterias((criterias : any) => criterias.filter((criterium : any) => currentPlace._id !== criterium._id ))
             if (favIdsArray.length === 0) {
                 Cookies.remove('favIds')
                 return
             }
         } else {
-            favIdsArray.push(place._id)
+            currentPlace._id && favIdsArray.push(currentPlace._id)
         }
         favIds = favIdsArray.join(',')
         Cookies.set('favIds', favIds)
@@ -105,22 +108,22 @@ export const PlaceCard: FC<PlaceProps> = ({ place, tabIndex }) => {
                 <Grid container justify="space-between">
                     <Grid item container alignItems="center" >
                         <Grid item>
-                            <Avatar style={{ width: 80, height: 80 }} src={place.img} alt={place.name} />
+                            <Avatar style={{ width: 80, height: 80 }} src={currentPlace.img as string} alt={currentPlace.name} />
                         </Grid>
                         <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
                             <Typography variant="h6" style={{ color: 'white' }}>
-                                {place.name}
+                                {currentPlace.name}
                             </Typography>
                             <Typography variant="body1" style={{ color: '#A0A0A0' }}>
-                                {place.subtitle}
+                                {currentPlace.subtitle}
                             </Typography>
                             <Grid container alignItems="center">
                                 <Typography variant="overline" style={{ color: '#32de84' }}>
-                                    {place.type}
+                                    {currentPlace.type}
                                 </Typography>
                                 <Tooltip title="Add to favorites">
                                     <StyledRating
-                                        name={`${place._id}`}
+                                        name={`${currentPlace._id}`}
                                         onClick={(event) => event.stopPropagation()}
                                         value={value}
                                         onChange={(event, newValue) => {
@@ -134,12 +137,12 @@ export const PlaceCard: FC<PlaceProps> = ({ place, tabIndex }) => {
                                 </Tooltip>
                             </Grid>
                             <Typography variant="body2" color="primary">
-                                Address: {place.address}
+                                Address: {currentPlace.address}
                             </Typography>
                         </Grid>
                         <Grid item style={{ flexGrow: 1, color: 'white' }}>
-                            <Grid container justify="center" style={{ height: '100%' }} alignItems="center">
-                                {place.status === 'open' ?
+                            <Grid container justify="flex-end" style={{ height: '100%' }} alignItems="center">
+                                {currentPlace.status === 'open' ?
                                     <Tooltip title="This place is now open">
                                         <Button variant="contained" size="small" style={{ background: '#4caf50', color: 'white' }}>Open</Button>
                                     </Tooltip>

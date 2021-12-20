@@ -67,7 +67,7 @@ export const News: FC<Props> = ({classes, currentPlace, setCurrentPlace}) => {
         myAxios.post('/news', {
             title: newsTitle,
             content: newsContent,
-            placeId: currentPlace._id
+            locationId: currentPlace._id
         }, {
             withCredentials: true
         }).then(res => {

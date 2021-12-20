@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
-                color: 'white'
+                color: 'lightgrey'
             },
             "& .MuiInputLabel-outlined": {
                 color: "#ff5252"
@@ -53,14 +53,15 @@ const useStyles = makeStyles((theme) =>
         inputRoot: {
             color: "white",
             "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#ff5252",
-                borderRadius: 15
+                borderColor: "grey",
+                borderRadius: 1,
+               
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#ff5252"
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "grey"
+                borderColor: "#ff5252"
             },
 
         }

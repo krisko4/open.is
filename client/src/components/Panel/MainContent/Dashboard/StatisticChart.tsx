@@ -58,13 +58,6 @@ export const StatisticChart: FC<Props> = ({ series, options, setOptions, type, h
 
 
     return (
-        <div>
-            {/* {type === 'area' && <>
-                <Button color="primary" style={{ marginLeft: 20 }} size="small" onClick={() => handleChange(1)} variant="contained">1M</Button>
-                <Button color="primary" style={{ marginLeft: 10 }} size="small" variant="contained">6M</Button>
-                <Button color="primary" style={{ marginLeft: 10 }} size="small" variant="contained">1Y</Button>
-            </>
-            } */}
             <Chart
                 options={options}
                 series={series}
@@ -72,6 +65,5 @@ export const StatisticChart: FC<Props> = ({ series, options, setOptions, type, h
                 height={height}
                 width={width}
             />
-        </div>
     )
 }

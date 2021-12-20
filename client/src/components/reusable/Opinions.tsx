@@ -62,7 +62,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) =
         if (noteValue) {
             const opinion = {
                 authorId: localStorage.getItem('uid'),
-                placeId: currentPlace._id,
+                locationId: currentPlace._id,
                 content: opinionText,
                 note: noteValue
             }

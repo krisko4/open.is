@@ -11,8 +11,9 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import myAxios from "../../../../axios/axios";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
+import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { News } from "../../../reusable/News";
-import {OpeningHours} from "../../../reusable/OpeningHours/OpeningHours";
+import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
 import MainContent from "./MainContent";
 
@@ -162,7 +163,7 @@ interface OpinionProps {
     authorImg: string
 }
 
-const addVisit = async (place: any) => {
+const addVisit = async (place: CurrentPlaceProps) => {
     try {
         const response = await myAxios.post('/visits', {
             date: new Date(),
@@ -175,45 +176,67 @@ const addVisit = async (place: any) => {
 
 }
 
-interface Props{
+interface Props {
     currentPlace: any,
     popupIndex: number
-   
+
 }
 
-export const PlaceDetails: FC<Props> = ({currentPlace, popupIndex}) => {
+export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
     const [opinions, setOpinions] = useState<OpinionProps[]>([])
 
     useEffect(() => {
-        setPlaceCardClicked(true)
-        addVisit(currentPlace)
-        setPopupOpen(true)
-        setPopupIndex(popupIndex)
-        setPlaceCoords({
-            lat: currentPlace.lat,
-            lng: currentPlace.lng,
-            mapZoom: 18
-        })
-        console.log(currentPlace._id)
-        myAxios.get('/news', {
-            params: {
-                placeId: currentPlace._id
+        (async () => {
+            setPlaceCardClicked(true)
+            addVisit(currentPlace)
+            setPopupOpen(true)
+            setPopupIndex(popupIndex)
+            setPlaceCoords({
+                lat: currentPlace.lat,
+                lng: currentPlace.lng,
+                mapZoom: 18
+            })
+            try {
+                const [newsRes, opinionsRes] = await Promise.all([
+                    myAxios.get('/news', {
+                        params: {
+                            locationId: currentPlace._id
+                        }
+                    }),
+                    myAxios.get('/opinions', {
+                        params: {
+                            locationId: currentPlace._id
+                        }
+                    })
+                ])
+               
+
+            } catch (err) {
+                console.log(err)
             }
-        }).then(res => {
-            console.log(res)
-            setNews(res.data)
-        }).catch(err => console.log(err))
-        myAxios.get('/opinions', {
-            params: {
-                placeId: currentPlace._id
-            }
-        }).then(res => {
-            setOpinions(res.data)
-            setOpinionCount(res.data.length)
-        }).catch(err => console.log(err))
+
+        })()
+        // console.log(currentPlace._id)
+        // myAxios.get('/news', {
+        //     params: {
+        //         locationId: currentPlace._id
+        //     }
+        // }).then(res => {
+        //     console.log(res)
+        //     setNews(res.data)
+        // }).catch(err => console.log(err))
+        // myAxios.get('/opinions', {
+        //     params: {
+        //         locationId: currentPlace._id
+        //     }
+        // }).then(res => {
+        //     console.log(res.data)
+        //     setOpinions(res.data)
+        //     setOpinionCount(res.data.length)
+        // }).catch(err => console.log(err))
 
     }, [])
 
@@ -224,7 +247,6 @@ export const PlaceDetails: FC<Props> = ({currentPlace, popupIndex}) => {
     const openingHoursClasses = useOpeningHoursStyles()
 
     const history = useHistory()
-    let match = useRouteMatch();
     const [value, setValue] = useState(0)
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);

@@ -42,11 +42,13 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
 
     const { placeCoords } = useMapContext()
     const { chosenCriterias } = useAddressDetailsContext()
-    console.log(chosenCriterias)
     const classes = useStyles()
 
     return (
-        <MapContainer style={{ height: '100%', flexGrow: 1 }} center={{ lat: placeCoords.lat, lng: placeCoords.lng }} zoom={placeCoords.mapZoom}
+        <MapContainer
+            style={{ height: '100%', flexGrow: 1 }}
+            center={{ lat: placeCoords.lat, lng: placeCoords.lng }}
+            zoom={placeCoords.mapZoom}
             scrollWheelZoom={true}>
             <TileLayer
                 attribution={tileLayer.attribution}

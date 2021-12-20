@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         // boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
         boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px',
         //    boxShadow:  'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px',
-        borderRadius: 15,
+        borderRadius: 5,
         flexGrow: 1
     }
 })
@@ -85,7 +85,6 @@ export const PlaceData: FC = () => {
     }
 
     useEffect(() => {
-        console.log('elo')
         //@ts-ignore
         setCurrentPlace(location.state.place)
     }, [])
@@ -96,10 +95,10 @@ export const PlaceData: FC = () => {
             <Grid container style={{ height: '100%', paddingTop: 40, paddingLeft: 40, paddingRight: 40 }} justify="center">
                 <Grid container justify="space-around" spacing={2}>
                     <Grid item lg={4}>
-                            <TotalVisits totalVisits={totalVisits} setTotalVisits={setTotalVisits} shadowCard={classes.shadowCard} />
+                        <TotalVisits totalVisits={totalVisits} setTotalVisits={setTotalVisits} shadowCard={classes.shadowCard} />
                     </Grid>
                     <Grid item lg={4}>
-                            <VisitsToday totalVisits={totalVisits} shadowCard={classes.shadowCard} />
+                        <VisitsToday totalVisits={totalVisits} shadowCard={classes.shadowCard} />
                     </Grid>
                     <Grid item lg={4}>
                         <TotalOpinions shadowCard={classes.shadowCard} />
@@ -157,27 +156,28 @@ export const PlaceData: FC = () => {
                                 </Card>
                             </Grid>
                             <Grid item container>
-                                <Card className={classes.shadowCard} elevation={3}>
-                                    <CardContent>
-                                        <Typography variant="h5">
-                                            Rating
-                                        </Typography>
-                                        <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
-                                            The following chart represents the rating of your place
-                                        </Typography>
-                                        <Grid container justify="center" alignItems="center">
-                                            <Rating
-                                                size="large"
-                                                name="simple-controlled"
-                                                readOnly
-                                                value={currentPlace.averageNote?.average}
-                                                style={{ marginTop: 10 }}
-                                            />
-                                            <RatingChart />
-                                        </Grid>
-
-                                    </CardContent>
-                                </Card>
+                                <Fade in={true} timeout={2000}>
+                                    <Card className={classes.shadowCard} elevation={3}>
+                                        <CardContent>
+                                            <Typography variant="h5">
+                                                Rating
+                                            </Typography>
+                                            <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
+                                                The following chart represents the rating of your place
+                                            </Typography>
+                                            <Grid container justify="center" alignItems="center">
+                                                <Rating
+                                                    size="large"
+                                                    name="simple-controlled"
+                                                    readOnly
+                                                    value={currentPlace.averageNote?.average || 0}
+                                                    style={{ marginTop: 10 }}
+                                                />
+                                                <RatingChart />
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Fade>
                             </Grid>
                             <Grid item container>
                                 <Card className={classes.shadowCard} elevation={3}>

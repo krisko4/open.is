@@ -50,7 +50,7 @@ const PlacesBox: FC = () => {
 
 
     const { chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
-    const {isPlaceCardClicked, setPlaceCardClicked, currentPlace, setCurrentPlace } = useMapContext()
+    const { isPlaceCardClicked, currentPlace } = useMapContext()
     const [tabIndex, setTabIndex] = useState(0)
     const isFirstRender = useRef(true)
     const scrollbarRef = useRef<any>()
@@ -60,7 +60,7 @@ const PlacesBox: FC = () => {
 
     useEffect(() => {
         (async () => {
-            let places : RawPlaceDataProps[]
+            let places: RawPlaceDataProps[]
             switch (tabIndex) {
                 case tabType.POPULAR:
                     places = await getPlaces('/places/active/popular')
@@ -78,11 +78,11 @@ const PlacesBox: FC = () => {
                     places = []
                     console.log('Invalid tab index')
             }
-            
+
             let currentPlaces = places.map(place => convertToCurrentPlace(place))
-            console.log(currentPlaces)
-            let chosenCriterias : CurrentPlaceProps[] = []
+            let chosenCriterias: CurrentPlaceProps[] = []
             currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
+            console.log(chosenCriterias)
             setChosenCriterias(chosenCriterias)
         })()
 
@@ -92,7 +92,10 @@ const PlacesBox: FC = () => {
 
     const openPlaceDetails = (place: any) => {
         scrollbarRef.current?.scrollToTop()
-        history.push(`${match.url}/${place.name}`)
+        history.push({
+            pathname: `${match.url}/${place._id}`,
+            state: { place: place }
+        })
     }
 
 
@@ -102,7 +105,6 @@ const PlacesBox: FC = () => {
             return
         }
         if (currentPlace) {
-            console.log(chosenCriterias)
             const newChosenCriterias = chosenCriterias.map((criterium: any) => criterium._id === currentPlace._id ? currentPlace : criterium)
             setChosenCriterias(newChosenCriterias)
         }
@@ -118,11 +120,11 @@ const PlacesBox: FC = () => {
                         variant="scrollable"
                         scrollButtons="on"
                         TabScrollButtonProps={
-                          {
-                              style: {
-                                  color: 'white'
-                              }
-                          }
+                            {
+                                style: {
+                                    color: 'white'
+                                }
+                            }
                         }
                         value={tabIndex}
                         style={{ marginTop: 10 }}
@@ -143,26 +145,32 @@ const PlacesBox: FC = () => {
                         {chosenCriterias.map((place: any, index: number) =>
                             <Route
                                 key={index}
-                                path={`${match.url}/${place.name}`}
+                                path={`${match.url}/${place._id}`}
                             >
                                 <PlaceDetails currentPlace={place} popupIndex={index} />
                             </Route>
+
                         )}
                     </Switch>
-                    {!isPlaceCardClicked && chosenCriterias.map((place: any, index: number) => {
-                        return (
-                            <Fade in={true} timeout={1000} key={index}>
-                                <ListItem
-                                    style={{ marginTop: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
-                                    key={place._id}
-                                    onClick={() => openPlaceDetails(place)}
-                                    button
-                                >
-                                    <PlaceCard tabIndex={tabIndex} place={place} />
-                                </ListItem>
-                            </Fade>
+                    {
+                        chosenCriterias.map((place: any, index: number) => <div key={place._id}>
+                            {!isPlaceCardClicked &&
+                                <Fade in={true} timeout={1000}>
+                                    <ListItem
+                                        style={{ marginTop: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
+                                        key={place._id}
+                                        onClick={() => openPlaceDetails(place)}
+                                        button
+                                    >
+                                        <PlaceCard currentPlace={place} tabIndex={tabIndex} />
+                                    </ListItem>
+                                </Fade>
+
+                            }
+                        </div>
+
                         )
-                    })}
+                    }
                 </Scrollbars >
             </Grid >
         </Grid >

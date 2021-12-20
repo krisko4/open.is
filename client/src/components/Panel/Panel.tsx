@@ -1,5 +1,6 @@
 import { CircularProgress } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/styles";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -9,8 +10,17 @@ import { setPlaces } from '../../store/actions/setPlaces';
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 
+
+const useStyles = makeStyles({
+    panel: {
+        height: '100vh',
+        background: 'linear-gradient(20deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)',
+    }
+})
+
 export const Panel: FC = () => {
 
+    const classes = useStyles()
     const [loading, setLoading] = useState(true)
     const { isUserLoggedIn } = useLoginContext()
     const history = useHistory()
@@ -45,14 +55,14 @@ export const Panel: FC = () => {
 
     return (
         <div>
-            <Grid container direction="column" style={{ height: '100vh', background: 'linear-gradient(45deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)' }}>
+            <Grid container direction="column" className={classes.panel}>
                 {loading ?
                     <Grid container style={{ height: '100%' }} justify="center" alignItems="center">
                         <CircularProgress style={{ color: 'white' }} />
                     </Grid> :
                     <Grid container direction="row" style={{ flex: '1 1 auto' }}>
-                        <LeftNavigation  />
-                        <MainContent  />
+                        <LeftNavigation />
+                        <MainContent />
                     </Grid>
                 }
             </Grid>
