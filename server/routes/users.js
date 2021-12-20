@@ -25,7 +25,6 @@ router.patch('/:id',
     body('password').isStrongPassword().optional({ nullable: true, checkFalsy: true }),
     validateRequest,
     (req, res, next) => {
-        console.log('jest')
         userController.changeUserData(req, res, next)
     })
 

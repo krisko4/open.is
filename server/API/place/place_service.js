@@ -9,12 +9,42 @@ const cloudinary = require('../../config/cloudinary')
 
 const placeService = {
 
+
+    aggregateActiveLocations: () => {
+        return [
+            {
+                $project: {
+                    name: 1,
+                    type: 1,
+                    img: 1,
+                    description: 1,
+                    createdAt: 1,
+                    subtitle: 1,
+                    userId: 1,
+                    locations: {
+                        $filter: {
+                            input: '$locations',
+                            as: 'location',
+                            cond: { $eq: ['$$location.isActive', true] }
+                        }
+                    }
+                }
+
+            }
+
+        ]
+    },
+
     getPlaces: () => Place.find().exec(),
-    getActivePlaces: () => Place.find({ isActive: true }).exec(),
+    getActivePlaces: () => Place.find({ 'locations.isActive': false }).exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
+    getTop20PlacesSortedBy: (sortParam) => Place.aggregate(placeService.aggregateActiveLocations()).limit(20).exec(),
+
+
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: mongoose.Types.ObjectId(userId) }).exec(),
-    getTop20PlacesSortedBy: (sortParam, types) => Place.find({ 'locations.isActive': true }).sort(sortParam).limit(20).exec(),
-    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).exec(),
+
+    // getTop20PlacesSortedBy: (sortParam) => Place.find().projection('locations.isActive'),
+    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).populate('vitits').exec(),
     getPlaceByLocationId: (locationId) => Place.findOne({ 'locations._id': locationId }).exec(),
     editPlace: async (placeData, user) => {
         const { lat, lng, img } = placeData
@@ -63,9 +93,8 @@ const placeService = {
 
     addPlace: async (placeData) => {
         const { img, locations } = placeData
-        console.log(locations)
         for (const location of locations) {
-            const {lat, lng} = location
+            const { lat, lng } = location
             const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
             if (duplicateAddress) throw ApiError.internal('This address is already occupied by another place')
         }
@@ -88,13 +117,9 @@ const placeService = {
         return newPlace
     },
 
-    test: (message) => {
-        if (!message) throw new ApiError(400, 'message is required')
-    },
-
     activatePlace: (id) => Place.findByIdAndUpdate(id, { 'isActive': true }, { new: true }).exec(),
     getPlaceById: (id) => Place.findById(id).exec(),
-    findByLocationId: (id) => Place.find({ 'locations._id': id }).exec(),
+    findByLocationId: (id) => Place.findOne({ 'locations._id': id }).exec(),
     getPlaceByLatLng: (lat, lng) => Place.findOne({ 'locations.lat': lat, 'locations.lng': lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
     getPlacesBy: (param) => Place.find({ ...param }).exec(),
@@ -122,12 +147,13 @@ const placeService = {
 
     getFavoritePlaces: (favIds) => {
         favIds = favIds.map(el => mongoose.Types.ObjectId(el))
-        return Place.find({ '_id': { $in: favIds } }).exec()
+        return Place.find({ 'locations._id': { $in: favIds } }).exec()
     },
 
-    updateNote: async (note, placeId) => {
-        const doc = await Place.findById(placeId, 'averageNote').exec()
-        const averageNote = JSON.parse(JSON.stringify(doc.averageNote))
+    updateNote: async (note, locationId, session) => {
+        const place = await Place.findOne({ 'locations._id': locationId }, 'locations.averageNote').exec()
+        let averageNote = place.locations[0].averageNote
+        averageNote = JSON.parse(JSON.stringify(averageNote))
         delete averageNote['average']
         const id = averageNote['_id']
         delete averageNote['_id']
@@ -152,7 +178,7 @@ const placeService = {
         const valueArray = Object.values(averageNote)
         averageNote['average'] = valueArray.reduce((a, b, index) => a + b * (index + 1)) / valueArray.reduce((a, b) => a + b)
         averageNote['_id'] = id
-        return Place.findByIdAndUpdate(placeId, { 'averageNote': averageNote }, { new: true }).exec()
+        return Place.findOneAndUpdate({ 'locations._id': locationId }, { 'locations.$.averageNote': averageNote }, { new: true, session: session }).exec()
     }
 
 }

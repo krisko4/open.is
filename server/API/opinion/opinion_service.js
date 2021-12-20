@@ -1,6 +1,7 @@
 const Opinion = require('./model/opinion')
 const userService = require('../user/user_service')
 const placeService = require('../place/place_service')
+const ApiError = require('../../errors/ApiError')
 const mongoose = require('mongoose')
 const opinionService = {
 
@@ -14,16 +15,17 @@ const opinionService = {
         return Opinion.find().populate('author').exec()
     },
 
-    addNewOpinion: async (opinionData) => {
+    addNewOpinion: async (opinionData, session) => {
+        console.log(opinionData)
         const user = await userService.getUserById(opinionData.authorId)
-        if (!user) throw `User with id ${opinionData.authorId} not found`
+        if (!user) throw ApiError.internal(`User with id ${opinionData.authorId} not found`)
         delete (opinionData['authorId'])
         const opinion = await new Opinion({
             _id: new mongoose.Types.ObjectId,
             ...opinionData,
             author: user._id,
             date: new Date()
-        }).save()
+        }).save({session})
     //    await placeService.updateNote(placeData.note, placeData.placeId)
         return opinion.populate('author').execPopulate()
     },

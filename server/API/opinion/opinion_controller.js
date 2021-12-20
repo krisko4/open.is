@@ -12,7 +12,7 @@ const opinionController = {
             case 1:
                 let param = Object.keys(req.query)[0]
                 let value = req.query[param]
-                if (param === 'authorId' || param === 'placeId') {
+                if (param === 'authorId' || param === 'locationId') {
                     if (param === 'authorId') param = param.substring(0, param.length - 2)
                     value = mongoose.Types.ObjectId(value)
                 }
@@ -27,7 +27,6 @@ const opinionController = {
             case 0:
                 try {
                     const opinions = await opinionService.getOpinions()
-                    //  const opinionsDto = opinions.map(opinion => opinionDto(opinion))
                     return res.status(200).json(opinions)
                 } catch (err) {
                     return next(err)
@@ -39,12 +38,19 @@ const opinionController = {
 
     },
     addNewOpinion: async (req, res, next) => {
-        const {authorId, note, placeId } = req.body
-        if (!authorId || !placeId || !note || note > 5 || note < 1) return res.status(400).json({ error: 'Invalid request' })
+        const { authorId, note, locationId } = req.body
+        if (!authorId || !locationId || !note || note > 5 || note < 1) return next(ApiError.badRequest('Invalid request'))
         try {
-            const opinion = opinionDto(await opinionService.addNewOpinion(req.body))
-            const updatedPlace = await placeService.updateNote(note, placeId)
-            return res.status(200).json({ message: 'New opinion added successfully!', opinion, averageNote: updatedPlace.averageNote})
+            const session = await mongoose.startSession()
+            session.startTransaction()
+            const [opinion, updatedPlace] = await Promise.all([
+                opinionDto(await opinionService.addNewOpinion(req.body, session)),
+                placeService.updateNote(note, locationId, session)
+            ])
+            console.log(opinion)
+            console.log(updatedPlace)
+            await session.endSession()
+            return res.status(200).json({ message: 'New opinion added successfully!', opinion, averageNote: updatedPlace.averageNote })
         } catch (err) {
             return next(err)
         }
