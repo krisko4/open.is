@@ -96,14 +96,10 @@ export const PlaceData: FC = () => {
             <Grid container style={{ height: '100%', paddingTop: 40, paddingLeft: 40, paddingRight: 40 }} justify="center">
                 <Grid container justify="space-around" spacing={2}>
                     <Grid item lg={4}>
-                        <Fade in={true} timeout={2000}>
                             <TotalVisits totalVisits={totalVisits} setTotalVisits={setTotalVisits} shadowCard={classes.shadowCard} />
-                        </Fade>
                     </Grid>
                     <Grid item lg={4}>
-                        <Fade in={true} timeout={2000}>
                             <VisitsToday totalVisits={totalVisits} shadowCard={classes.shadowCard} />
-                        </Fade>
                     </Grid>
                     <Grid item lg={4}>
                         <TotalOpinions shadowCard={classes.shadowCard} />

@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Grid } from "@material-ui/core"
+import { Card, CardContent, Typography, Grid, Fade } from "@material-ui/core"
 import { isToday } from "date-fns"
 import { FC, useEffect, useState } from "react"
 import { TotalOpinionsChart } from "../Charts/TotalOpinionsChart"
@@ -26,29 +26,31 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
 
 
     return (
-        <Card className={shadowCard}>
-            <CardContent>
-                <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
-                <Grid container style={{ marginTop: 5 }}>
-                    <Grid container item alignItems="center" justify="space-between">
-                        <Grid item style={{ flexGrow: 1 }}>
-                            <Grid container item alignItems="center">
-                                {opinionsDiff === 0 || (currentPlace.opinions && currentPlace.opinions.length === 0) ? <>
-                                    <TrendingFlatIcon style={{ color: '#ffbf00' }} />
-                                    <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
-                                </> : <>
-                                    <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                    <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {opinionsDiff}%</span>
-                                </>
-                                }
+        <Fade in={true} timeout={2500}>
+            <Card className={shadowCard}>
+                <CardContent>
+                    <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
+                    <Grid container style={{ marginTop: 5 }}>
+                        <Grid container item alignItems="center" justify="space-between">
+                            <Grid item style={{ flexGrow: 1 }}>
+                                <Grid container item alignItems="center">
+                                    {opinionsDiff === 0 || (currentPlace.opinions && currentPlace.opinions.length === 0) ? <>
+                                        <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                        <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                    </> : <>
+                                        <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                        <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {opinionsDiff}%</span>
+                                    </>
+                                    }
+                                </Grid>
+                                <Typography variant="h3">{currentPlace.opinions?.length}</Typography>
                             </Grid>
-                            <Typography variant="h3">{currentPlace.opinions?.length}</Typography>
+                            <TotalOpinionsChart />
                         </Grid>
-                        <TotalOpinionsChart />
                     </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </Fade>
 
     )
 }

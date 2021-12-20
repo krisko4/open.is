@@ -1,15 +1,14 @@
-import { Avatar, CardContent, Button, styled, Tooltip } from "@material-ui/core";
+import { Avatar, Button, CardContent, styled, Tooltip } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import { Alert, Rating } from "@material-ui/lab";
-import createStyles from "@material-ui/styles/createStyles";
-import React, { FC, useEffect, useState } from "react";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
-import Cookies from 'js-cookie'
-import { useSelectedPlacesContext } from "../../../contexts/SelectedPlacesContext";
+import { Rating } from "@material-ui/lab";
+import createStyles from "@material-ui/styles/createStyles";
+import Cookies from 'js-cookie';
+import React, { FC, useEffect, useState } from "react";
+import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
 
 
 
@@ -59,7 +58,7 @@ const StyledRating = styled(Rating)({
 export const PlaceCard: FC<PlaceProps> = ({ place, tabIndex }) => {
     const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
-    const {setChosenCriterias} = useSelectedPlacesContext()
+    const {setChosenCriterias} = useAddressDetailsContext()
 
 
     useEffect(() => {

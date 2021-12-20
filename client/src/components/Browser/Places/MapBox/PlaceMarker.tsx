@@ -2,16 +2,13 @@ import { Avatar, Grid, Typography } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import axios from "axios";
 import L from 'leaflet';
-import LCG from 'leaflet-control-geocoder';
-import { OpenStreetMapProvider } from "leaflet-geosearch";
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import React, { FC, useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
-import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 
 
 
@@ -28,8 +25,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
     const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable } = useMapContext()
-
-    const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useSelectedPlacesContext()
+    const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useAddressDetailsContext()
     const firstRender = useRef(true)
     const history = useHistory()
     const match = useRouteMatch()
@@ -44,6 +40,8 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
         className: classes.icon
 
     });
+
+    console.log(criterium)
 
     useEffect(() => {
         if (firstRender.current) {

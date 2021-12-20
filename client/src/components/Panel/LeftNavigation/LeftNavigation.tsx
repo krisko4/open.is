@@ -13,6 +13,7 @@ import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { useLoginContext } from "../../../contexts/LoginContext";
 import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
@@ -26,6 +27,7 @@ export const LeftNavigation: FC = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const match = useRouteMatch()
+    const {fullName, img} = useLoginContext()
 
     return (
         <Grid item lg={2} style={{ height: '100%' }}>
@@ -38,10 +40,10 @@ export const LeftNavigation: FC = () => {
                 </Grid>
                 <ListItem style={{ marginBottom: 20, }}>
                     <ListItemAvatar>
-                        <Avatar alt={`${localStorage.getItem('fullName')}`} src={`${localStorage.getItem('img')}`} />
+                        <Avatar alt={fullName} src={img} />
                     </ListItemAvatar>
                     <ListItemText
-                        primary={`${localStorage.getItem('fullName')}`}
+                        primary={fullName}
                         secondary="Standard user"
                     />
                 </ListItem>

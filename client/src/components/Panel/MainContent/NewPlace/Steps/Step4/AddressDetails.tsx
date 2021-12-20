@@ -4,7 +4,7 @@ import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useSelectedPlacesContext } from "../../../../../../contexts/SelectedPlacesContext";
+import { useAddressDetailsContext } from "../../../../../../contexts/AddressDetailsContext";
 import { getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
 import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
 import { AddressSearcher } from "../../../../../reusable/AddressSearcher";
@@ -26,7 +26,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
         url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     })
 
-    const { setChosenCriterias, selectedAddress, isEditionMode, setSelectedAddress } = useSelectedPlacesContext()
+    const { setChosenCriterias, selectedAddress, isEditionMode, setSelectedAddress } = useAddressDetailsContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [submitLoading, setSubmitLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -50,17 +50,6 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
                 lat: selectedAddress.lat,
                 lng: selectedAddress.lng,
             }
-            // const newLocation = {
-            //     address: selectedAddress.label,
-            //     lat: selectedAddress.lat,
-            //     lng: selectedAddress.lng,
-            //     email: '',
-            //     website: '',
-            //     instagram: '',
-            //     facebook: '',
-            //     phone: ''
-            // }
-            // newCurrentPlace.locations.push(newLocation)
             console.log(newCurrentPlace)
             setCurrentPlace(newCurrentPlace)
             setActiveStep && setActiveStep(currentStep => currentStep + 1)

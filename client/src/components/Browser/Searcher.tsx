@@ -1,18 +1,18 @@
-import Button from "@material-ui/core/Button";
 import { Typography } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import HomeIcon from '@material-ui/icons/Home';
+import PlaceTwoToneIcon from '@material-ui/icons/PlaceTwoTone';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import React, { useEffect, useRef, useState } from "react";
-import { useSelectedPlacesContext } from "../../contexts/SelectedPlacesContext";
-import { getPlacesByChosenCriterias, getPlacesWithParams } from "../../requests/PlaceRequests";
-import PlaceTwoToneIcon from '@material-ui/icons/PlaceTwoTone';
 import { OpenStreetMapProvider } from "leaflet-geosearch";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
+import { getPlacesByChosenCriterias, getPlacesWithParams } from "../../requests/PlaceRequests";
 
 
 const provider = new OpenStreetMapProvider({});
@@ -68,11 +68,11 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Searcher = () => {
+const Searcher : FC = () => {
 
     const classes = useStyles()
 
-    const { selectedPlaces, setSelectedPlaces, chosenCriterias, setChosenCriterias } = useSelectedPlacesContext()
+    const { availableAddresses, setAvailableAddresses, chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
     const [inputValue, setInputValue] = useState('')
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -85,7 +85,7 @@ const Searcher = () => {
         }
         if (inputValue === '') {
             setLoading(false)
-            setSelectedPlaces([])
+            setAvailableAddresses([])
             return
         }
         setLoading(true)
@@ -93,9 +93,9 @@ const Searcher = () => {
             const names = await getPlacesWithParams('/places/active/name', { name: inputValue })
             if (names.length === 0) {
                 const result = await provider.search({ query: inputValue })
-                result.length > 0 ? setSelectedPlaces([{ name: inputValue, foundBy: 'address' }]) : setSelectedPlaces([])
+                result.length > 0 ? setAvailableAddresses([{ name: inputValue, foundBy: 'address' }]) : setAvailableAddresses([])
             } else {
-                setSelectedPlaces(names)
+                setAvailableAddresses(names)
             }
             setLoading(false)
         }, 500)
@@ -117,7 +117,7 @@ const Searcher = () => {
     //     })
     // }
 
-    const selectPlace = async (criterias) => {
+    const selectPlace = async (criterias : typeof chosenCriterias) => {
 
         const places = await getPlacesByChosenCriterias(criterias)
         setChosenCriterias(places)
@@ -130,7 +130,7 @@ const Searcher = () => {
         //     }
         // }
         // setChosenCriterias(criterias)
-        // setSelectedPlaces([])
+        // setAvailableAddresses([])
         // setInputValue('')
     }
 
@@ -148,8 +148,8 @@ const Searcher = () => {
             autoHighlight
             classes={classes}
             freeSolo={true}
-            options={selectedPlaces}
-            getOptionLabel={(option) => option.name}
+            options={availableAddresses}
+            getOptionLabel={(option : any) => option.name}
             onChange={(event, value) => selectPlace(value)}
             noOptionsText="No options"
             renderInput={(params) =>
@@ -169,7 +169,7 @@ const Searcher = () => {
                         ),
                     }}
                 />}
-            renderOption={(option, { inputValue }) => {
+            renderOption={(option : any, { inputValue }) => {
                 //    const label = isPlaceFoundByName.current ? option.name : option.label
                 // const label = isPlaceFoundByName.current ? option.name : option.label
                 const label = option.name

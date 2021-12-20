@@ -35,16 +35,14 @@ export const MainContent: FC = () => {
             />
           </StepContextProvider>
         </CurrentPlaceContextProvider>
-        {places.map((place) => {
-          return (
-            <CurrentPlaceContextProvider key={place._id}>
-              <Route
-                path={`${match.url}/management/:${place._id}`}
-                component={PlaceData}
-              />
-            </CurrentPlaceContextProvider>
-          )
-        })}
+        <CurrentPlaceContextProvider>
+          <Route
+            path={`${match.url}/management/:id`}
+            component={(props : any) => <PlaceData {...props} />}
+          >
+          </Route>
+        </CurrentPlaceContextProvider>
+        
         <Route
           path={`${match.url}/dashboard`}
         >

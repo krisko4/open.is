@@ -41,17 +41,32 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
 
 export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
 
-    const location = place.locations[0]
-    const currentPlace: CurrentPlaceProps = {
-        ...location,
-        name: place.name,
-        type: place.type,
-        description: place.description,
-        subtitle: place.subtitle,
-        img: place.img,
-        userId: place.userId,
-        isUserOwner: place.isUserOwner
-    }
-    return currentPlace
+    console.log(place)
+    const { locations } = place
+    const currentPlaces = locations.map(location => {
+        return {
+            ...location,
+            name: place.name,
+            type: place.type,
+            description: place.description,
+            subtitle: place.subtitle,
+            img: place.img,
+            userId: place.userId,
+            isUserOwner: place.isUserOwner
+
+        }
+    })
+    // const location = place.locations[0]
+    // const currentPlace: CurrentPlaceProps = {
+    //     ...location,
+    //     name: place.name,
+    //     type: place.type,
+    //     description: place.description,
+    //     subtitle: place.subtitle,
+    //     img: place.img,
+    //     userId: place.userId,
+    //     isUserOwner: place.isUserOwner
+    // }
+    return currentPlaces
 
 }

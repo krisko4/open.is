@@ -22,7 +22,6 @@ export const NewPlace: FC = () => {
     const { activeStep, imageFile, setActiveStep } = useStepContext()
     const { currentPlace } = useCurrentPlaceContext()
     const dispatch = useDispatch()
-    const match = useRouteMatch()
     const history = useHistory()
     const places = usePlacesSelector()
     const [isOpen, setOpen] = useState(false)

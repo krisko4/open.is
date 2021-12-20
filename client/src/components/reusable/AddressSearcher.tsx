@@ -3,21 +3,21 @@ import { Autocomplete } from "@material-ui/lab"
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import React, { FC, useEffect, useRef, useState } from "react"
+import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext"
 import { useMapContext } from "../../contexts/MapContext/MapContext"
 import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
-import { useSelectedPlacesContext } from "../../contexts/SelectedPlacesContext"
 import { findByAddress } from "../../requests/PlaceRequests"
 
-interface Props{
+interface Props {
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const AddressSearcher: FC<Props> = ({setErrorMessage}) => {
-    
+export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
+
     const [open, setOpen] = useState(false)
     const { setPlaceCoords } = useMapContext()
 
-    const { selectedPlaces, setSelectedPlaces, setChosenCriterias, setSelectedAddress, setEditionMode } = useSelectedPlacesContext()
+    const { availableAddresses, setAvailableAddresses, setChosenCriterias, setSelectedAddress } = useAddressDetailsContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [inputValue, setInputValue] = useState('')
     const isFirstFind = useRef(true)
@@ -50,7 +50,7 @@ export const AddressSearcher: FC<Props> = ({setErrorMessage}) => {
             setSelectedAddress({
                 label: currentPlace.address,
                 lng: currentPlace.lng,
-                lat: currentPlace.lat         
+                lat: currentPlace.lat
             })
             setPlaceCoords({
                 lat: currentPlace.lat,
@@ -63,20 +63,19 @@ export const AddressSearcher: FC<Props> = ({setErrorMessage}) => {
 
     useEffect(() => {
         if (isFirstFind.current) {
-            console.log(inputValue)
             isFirstFind.current = false
-            return
         }
         setErrorMessage('')
         setLoading(true)
         if (inputValue === '') {
             setLoading(false)
-            setSelectedPlaces([])
+            setAvailableAddresses([])
             return
         }
         const delaySearch = setTimeout(async () => {
             const addresses = await findByAddress(inputValue)
-            setSelectedPlaces(addresses)
+            console.log(addresses)
+            setAvailableAddresses(addresses)
             setLoading(false)
         }, 500)
         return () => clearTimeout(delaySearch)
@@ -94,7 +93,7 @@ export const AddressSearcher: FC<Props> = ({setErrorMessage}) => {
             onClose={() => {
                 setOpen(false);
             }}
-            options={selectedPlaces}
+            options={availableAddresses}
             onChange={(event, value) => selectPlace(value)}
             getOptionLabel={(option: any) => option && option.name}
             noOptionsText="No options"

@@ -10,10 +10,11 @@ import HomeIcon from '@material-ui/icons/Home';
 import { IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { SignOutButton } from "../reusable/SignOutButton";
+import { useLoginContext } from "../../contexts/LoginContext";
 const FirstHeader: FC = () => {
 
     const { setLoginOpen } = useAuthContext()
-    const isUserLoggedIn = useAuthSelector()
+    const {isUserLoggedIn} = useLoginContext()
     const history = useHistory()
 
     return (

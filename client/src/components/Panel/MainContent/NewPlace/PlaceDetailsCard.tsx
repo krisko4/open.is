@@ -176,7 +176,7 @@ export const PlaceDetailsCard: FC = () => {
         return <Tab {...rest} label={label} disableRipple />
     }
     return (
-        <Slide in={true}>
+        <Slide in={true} timeout={1000}>
             <Card elevation={3} style={{ boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15 }}>
                 <CardContent>
                     <Typography variant="h5">

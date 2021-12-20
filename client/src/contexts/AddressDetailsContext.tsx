@@ -1,19 +1,19 @@
 import { createContext, FC, ReactNode, useContext, useState } from "react";
 
 
-export const SelectedPlacesContext = createContext<SelectedPlacesContextData | null>(null)
+export const AddressDetailsContext = createContext<AddressDetailsContextData | null>(null)
 interface Props {
     children: ReactNode,
     isEditionMode: boolean
 
 }
 
-const SelectedPlacesContextProvider: FC<Props> = ({ isEditionMode, children }) => {
+const AddressDetailsContextProvider: FC<Props> = ({ isEditionMode, children }) => {
     const state = useProviderSettings(isEditionMode)
     return (
-        <SelectedPlacesContext.Provider value={state}>
+        <AddressDetailsContext.Provider value={state}>
             {children}
-        </SelectedPlacesContext.Provider>
+        </AddressDetailsContext.Provider>
     )
 }
 
@@ -25,7 +25,7 @@ interface SelectedAddressProps {
 }
 
 const useProviderSettings = (isEdition: boolean) => {
-    const [selectedPlaces, setSelectedPlaces] = useState<any>([])
+    const [availableAddresses, setAvailableAddresses] = useState<any>([])
     const [chosenCriterias, setChosenCriterias] = useState<any>([])
     const [isEditionMode, setEditionMode] = useState(isEdition)
 
@@ -35,8 +35,8 @@ const useProviderSettings = (isEdition: boolean) => {
         lng: 0
     })
     return {
-        selectedPlaces,
-        setSelectedPlaces,
+        availableAddresses,
+        setAvailableAddresses,
         chosenCriterias,
         setChosenCriterias,
         isEditionMode,
@@ -46,12 +46,12 @@ const useProviderSettings = (isEdition: boolean) => {
     }
 }
 
-type SelectedPlacesContextData = ReturnType<typeof useProviderSettings>
+type AddressDetailsContextData = ReturnType<typeof useProviderSettings>
 
-export const useSelectedPlacesContext = () => {
-    const context = useContext(SelectedPlacesContext)
-    if (!context) throw new Error('SelectedPlacesContextProvider should be placed inside SelectedPlacesContext')
+export const useAddressDetailsContext = () => {
+    const context = useContext(AddressDetailsContext)
+    if (!context) throw new Error('AddressDetailsContext should be placed inside AddressDetailsContextProvider')
     return context
 }
 
-export default SelectedPlacesContextProvider
+export default AddressDetailsContextProvider

@@ -15,7 +15,7 @@ export const MyPlaces: FC = () => {
     const match = useRouteMatch()
 
     const choosePlace = (place: RawPlaceDataProps) => {
-        const currentPlace = convertToCurrentPlace(place)
+        const currentPlace = convertToCurrentPlace(place)[0]
         console.log(currentPlace)
         dispatch(setPlace(currentPlace))
         history.push({

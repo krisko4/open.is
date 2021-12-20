@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Grid, CardMedia } from "@material-ui/core"
+import { Card, CardContent, Typography, Grid, CardMedia, Fade } from "@material-ui/core"
 import { FC, useEffect, useState } from "react"
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
@@ -23,36 +23,37 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
     }, [currentPlace.visits])
 
     return (
-
-        <Card className={shadowCard}>
-            <CardContent>
-                <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
-                <Grid container style={{ marginTop: 5 }}>
-                    <Grid item lg={6} container justify="center" direction="column">
-                        <Grid container alignItems="center">
-                            {
-                                visitsToday === visitsYesterday || totalVisits === 0 ? <>
-                                    <TrendingFlatIcon style={{ color: '#ffbf00' }} />
-                                    <span style={{ marginLeft: 5, color: '#ffbf00' }}>0</span>
-                                </> :
-                                    visitsToday - visitsYesterday > 0 ? <>
-                                        <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                        <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsToday - visitsYesterday}</span>
-                                    </> : <>
-                                        <TrendingDownIcon style={{ color: 'red' }} />
-                                        <span style={{ marginLeft: 5, color: 'red' }}> {visitsToday - visitsYesterday}</span>
-                                    </>
-                            }
+        <Fade in={true} timeout={2200}>
+            <Card className={shadowCard}>
+                <CardContent>
+                    <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
+                    <Grid container style={{ marginTop: 5 }}>
+                        <Grid item lg={6} container justify="center" direction="column">
+                            <Grid container alignItems="center">
+                                {
+                                    visitsToday === visitsYesterday || totalVisits === 0 ? <>
+                                        <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                        <span style={{ marginLeft: 5, color: '#ffbf00' }}>0</span>
+                                    </> :
+                                        visitsToday - visitsYesterday > 0 ? <>
+                                            <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                            <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsToday - visitsYesterday}</span>
+                                        </> : <>
+                                            <TrendingDownIcon style={{ color: 'red' }} />
+                                            <span style={{ marginLeft: 5, color: 'red' }}> {visitsToday - visitsYesterday}</span>
+                                        </>
+                                }
+                            </Grid>
+                            <Typography variant="h3">
+                                {visitsToday}
+                            </Typography>
                         </Grid>
-                        <Typography variant="h3">
-                            {visitsToday}
-                        </Typography>
+                        <Grid item lg={6} container justify="center">
+                            <CardMedia style={{ height: 100, width: 120 }} image="https://s38357.pcdn.co/wp-content/uploads/2020/04/Site-visit-Icon.png" />
+                        </Grid>
                     </Grid>
-                    <Grid item lg={6} container justify="center">
-                        <CardMedia style={{ height: 100, width: 120 }} image="https://s38357.pcdn.co/wp-content/uploads/2020/04/Site-visit-Icon.png" />
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </Fade>
     )
 }

@@ -3,12 +3,12 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import { FC, useEffect } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { FC } from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
+import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
 import { useMapContext } from '../../../../contexts/MapContext/MapContext';
-import { useSelectedPlacesContext } from "../../../../contexts/SelectedPlacesContext";
 import { PlaceMarker } from "./PlaceMarker";
-import { SetViewOnClick } from "./SetViewOnClick"
+import { SetViewOnClick } from "./SetViewOnClick";
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
@@ -41,7 +41,8 @@ interface Props {
 export const MapBox: FC<Props> = ({ tileLayer }) => {
 
     const { placeCoords } = useMapContext()
-    const { chosenCriterias } = useSelectedPlacesContext()
+    const { chosenCriterias } = useAddressDetailsContext()
+    console.log(chosenCriterias)
     const classes = useStyles()
 
     return (

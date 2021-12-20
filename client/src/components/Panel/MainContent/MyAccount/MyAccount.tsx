@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import myAxios from "../../../../axios/axios";
+import { useLoginContext } from "../../../../contexts/LoginContext";
 import { usePageContext } from "../../../../contexts/PageContext";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { ImageUpload } from '../../../reusable/ImageUpload';
@@ -38,15 +39,16 @@ export const MyAccount: FC = () => {
     const [loading, setLoading] = useState(false)
     const [passwordChangeOpen, setPasswordChangeOpen] = useState(false)
     const { enqueueSnackbar } = useSnackbar()
-    const [img, setImg] = useState<any>(localStorage.getItem('img'))
+    const {fullName, setFullName, img, setImg, email} = useLoginContext()
+    // const [img, setImg] = useState<any>(localStorage.getItem('img'))
     const [imageFile, setImageFile] = useState<any>(null)
 
 
 
     const initialValues = {
-        firstName: localStorage.fullName.split(' ')[0],
-        lastName: localStorage.fullName.split(' ')[1],
-        email: localStorage.email,
+        firstName: fullName.split(' ')[0],
+        lastName: fullName.split(' ')[1],
+        email: email,
         password: '',
         confirmPassword: ''
     }
@@ -72,8 +74,18 @@ export const MyAccount: FC = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            res.data.user.img && localStorage.setItem('img', res.data.user.img)
-            console.log(res.data)
+            const { user } = res.data
+            if(user.img){
+                localStorage.setItem('img', user.img)
+                setImg(user.img)
+            }
+            const firstName = fullName.split(' ')[0]
+            const lastName = fullName.split(' ')[1]
+            if (user.firstName !== firstName || user.lastName !== lastName) {
+                const fullName = `${user.firstName} ${user.lastName}`
+                localStorage.setItem('fullName', fullName)
+                setFullName(fullName)
+            }
             enqueueSnackbar('You have successfully changed your personal data', {
                 variant: 'success'
             })

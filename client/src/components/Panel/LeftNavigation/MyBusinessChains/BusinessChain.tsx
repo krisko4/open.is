@@ -24,7 +24,8 @@ export const BusinessChain: FC<Props> = ({ place }) => {
     const choosePlace = (place: RawPlaceDataProps, location: LocationProps) => {
         const placeCopy = { ...place }
         placeCopy.locations = [location]
-        const currentPlace = convertToCurrentPlace(placeCopy)
+        const currentPlaces = convertToCurrentPlace(placeCopy)
+        const currentPlace = currentPlaces[0]
         dispatch(setPlace(currentPlace))
         history.push({
             pathname: `${match.url}/management/${currentPlace._id}`,

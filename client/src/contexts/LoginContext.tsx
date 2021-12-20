@@ -18,6 +18,10 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
             try {
                 await authAxios.get('/auth', { withCredentials: true })
                 state.setUserLoggedIn(true)
+                state.setEmail(localStorage.getItem('email') || '')
+                state.setFullName(localStorage.getItem('fullName') || '')
+                state.setImg(localStorage.getItem('img') || '')
+
             } catch (err) {
                 if (state.isUserLoggedIn) {
                     await authAxios.get('/logout', { withCredentials: true })
@@ -25,7 +29,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
                     localStorage.removeItem('fullName')
                     localStorage.removeItem('email')
                     localStorage.removeItem('img')
-                    state.setEmail('')
+                    // state.setEmail('')
                 }
             } finally {
                 setAuthFinished(true)
@@ -49,12 +53,18 @@ const useProviderData = () => {
 
     const [isUserLoggedIn, setUserLoggedIn] = useState(false)
     const [email, setEmail] = useState('')
+    const [fullName, setFullName] = useState('')
+    const [img, setImg] = useState('')
 
     return {
         isUserLoggedIn,
         setUserLoggedIn,
         setEmail,
-        email
+        email,
+        fullName,
+        setFullName,
+        img,
+        setImg
     }
 }
 

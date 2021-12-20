@@ -6,7 +6,7 @@ import { TotalVisitsChart } from "../Charts/TotalVisitsChart"
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-
+import {Fade} from '@material-ui/core'
 
 export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }) => {
 
@@ -15,6 +15,7 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
 
     useEffect(() => {
         const { visits } = currentPlace
+        console.log(visits)
         if (visits) {
             const totalVisits = visits.reduce((a, b) => a + b.visitCount, 0)
             setTotalVisits(totalVisits)
@@ -29,34 +30,36 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
     }, [currentPlace.visits])
 
     return (
-        <Card className={shadowCard}>
-            <CardContent>
-                <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
-                <Grid container style={{ marginTop: 5 }}>
-                    <Grid item lg={6} container justify="center" direction="column">
-                        <Grid container alignItems="center">
-                            {
-                                visitsDiff === 0 || totalVisits === 0 ?
-                                    <>
-                                        <TrendingFlatIcon style={{ color: '#ffbf00' }} />
-                                        <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
-                                    </> :
-                                    <>
-                                        <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                        <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsDiff}%</span>
-                                    </>
-                            }
+        <Fade in={true} timeout={2000}>
+            <Card className={shadowCard}>
+                <CardContent>
+                    <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
+                    <Grid container style={{ marginTop: 5 }}>
+                        <Grid item lg={6} container justify="center" direction="column">
+                            <Grid container alignItems="center">
+                                {
+                                    visitsDiff === 0 || totalVisits === 0 ?
+                                        <>
+                                            <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                            <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                        </> :
+                                        <>
+                                            <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                            <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsDiff}%</span>
+                                        </>
+                                }
+                            </Grid>
+                            <Typography variant="h3">
+                                {totalVisits}
+                            </Typography>
                         </Grid>
-                        <Typography variant="h3">
-                            {totalVisits}
-                        </Typography>
+                        <Grid item lg={6} container justify="center">
+                            <TotalVisitsChart visits={currentPlace.visits} />
+                        </Grid>
                     </Grid>
-                    <Grid item lg={6} container justify="center">
-                        <TotalVisitsChart visits={currentPlace.visits} />
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </Fade>
 
     )
 }

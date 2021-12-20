@@ -2,15 +2,17 @@ import { Tab, Tabs } from "@material-ui/core";
 import Fade from '@material-ui/core/Fade';
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
-import { FiberNew, Star, Timelapse, Favorite } from "@material-ui/icons";
+import { Favorite, FiberNew, Star, Timelapse } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
-import React, { FC, LegacyRef, RefObject, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
-import myAxios from "../../../axios/axios";
+import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
 import { useMapContext } from "../../../contexts/MapContext/MapContext";
-import { useSelectedPlacesContext } from "../../../contexts/SelectedPlacesContext";
-import { getPlaces, incrementVisitCount } from "../../../requests/PlaceRequests";
+import { RawPlaceDataProps } from "../../../contexts/PanelContexts/BusinessChainContext";
+import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { getPlaces } from "../../../requests/PlaceRequests";
+import { convertToCurrentPlace } from "../../../utils/place_data_utils";
 import { PlaceCard } from "./PlaceCard";
 import { PlaceDetails } from "./PlaceDetails/PlaceDetails";
 
@@ -47,7 +49,8 @@ const PlacesBox: FC = () => {
 
 
 
-    const { setPopupOpen, setPlaceCoords, setPopupIndex, isPlaceCardClicked, setPlaceCardClicked, currentPlace, setCurrentPlace } = useMapContext()
+    const { chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
+    const {isPlaceCardClicked, setPlaceCardClicked, currentPlace, setCurrentPlace } = useMapContext()
     const [tabIndex, setTabIndex] = useState(0)
     const isFirstRender = useRef(true)
     const scrollbarRef = useRef<any>()
@@ -57,7 +60,7 @@ const PlacesBox: FC = () => {
 
     useEffect(() => {
         (async () => {
-            let places
+            let places : RawPlaceDataProps[]
             switch (tabIndex) {
                 case tabType.POPULAR:
                     places = await getPlaces('/places/active/popular')
@@ -75,13 +78,17 @@ const PlacesBox: FC = () => {
                     places = []
                     console.log('Invalid tab index')
             }
-            setChosenCriterias(places)
+            
+            let currentPlaces = places.map(place => convertToCurrentPlace(place))
+            console.log(currentPlaces)
+            let chosenCriterias : CurrentPlaceProps[] = []
+            currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
+            setChosenCriterias(chosenCriterias)
         })()
 
     }, [tabIndex])
 
 
-    const { chosenCriterias, setChosenCriterias } = useSelectedPlacesContext()
 
     const openPlaceDetails = (place: any) => {
         scrollbarRef.current?.scrollToTop()
@@ -97,7 +104,6 @@ const PlacesBox: FC = () => {
         if (currentPlace) {
             console.log(chosenCriterias)
             const newChosenCriterias = chosenCriterias.map((criterium: any) => criterium._id === currentPlace._id ? currentPlace : criterium)
-            console.log(newChosenCriterias)
             setChosenCriterias(newChosenCriterias)
         }
     }, [currentPlace])
@@ -108,7 +114,6 @@ const PlacesBox: FC = () => {
             {isPlaceCardClicked ||
                 <Grid container style={{ background: '#2C2C2C' }} justify="flex-end" alignItems="center">
                     <Tabs
-                        
                         selectionFollowsFocus
                         variant="scrollable"
                         scrollButtons="on"
@@ -148,7 +153,7 @@ const PlacesBox: FC = () => {
                         return (
                             <Fade in={true} timeout={1000} key={index}>
                                 <ListItem
-                                    style={{ marginTop: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
+                                    style={{ marginTop: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
                                     key={place._id}
                                     onClick={() => openPlaceDetails(place)}
                                     button

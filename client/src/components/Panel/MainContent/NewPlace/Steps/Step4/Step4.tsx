@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import React, { FC } from "react";
+import AddressDetailsContextProvider from "../../../../../../contexts/AddressDetailsContext";
 import MapContextProvider from "../../../../../../contexts/MapContext/MapContext";
-import SelectedPlacesContextProvider from "../../../../../../contexts/SelectedPlacesContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { AddressDetails } from "./AddressDetails";
 
@@ -28,9 +28,9 @@ export const Step4 : FC<Props> = ({isEditionMode}) => {
                  </Typography>
             </Grid>
             <MapContextProvider isMarkerDraggable={true}>
-                <SelectedPlacesContextProvider isEditionMode={isEditionMode}>
+                <AddressDetailsContextProvider isEditionMode={isEditionMode}>
                     <AddressDetails setActiveStep={setActiveStep} />
-                </SelectedPlacesContextProvider>
+                </AddressDetailsContextProvider>
             </MapContextProvider>
         </Grid>
     )

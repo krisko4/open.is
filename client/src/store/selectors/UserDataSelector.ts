@@ -4,6 +4,6 @@ import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceCont
 import { RootState } from "../RootState";
 
 
-export const useChosenPlaceSelector = () => {
-    return useSelector((state : RootState) => state.chosenPlace)
+export const useUserDataSelector = () => {
+    return useSelector((state : RootState) => state.userData)
 }

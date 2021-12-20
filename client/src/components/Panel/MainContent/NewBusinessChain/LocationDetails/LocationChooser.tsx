@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core"
 import { FC, useState } from "react"
 import MapContextProvider from "../../../../../contexts/MapContext/MapContext"
-import SelectedPlacesContextProvider from "../../../../../contexts/SelectedPlacesContext"
+import AddressDetailsContextProvider from "../../../../../contexts/AddressDetailsContext"
 import { MapBox } from "../../../../Browser/Places/MapBox/MapBox"
 import { AddressDetails } from "../../NewPlace/Steps/Step4/AddressDetails"
 export const LocationChooser: FC = () => {
@@ -12,14 +12,14 @@ export const LocationChooser: FC = () => {
     })
     return (
         <MapContextProvider isMarkerDraggable={true}>
-            <SelectedPlacesContextProvider isEditionMode={true}>
+            <AddressDetailsContextProvider isEditionMode={true}>
                 <Grid container lg={8} justify="center">
                     <AddressDetails />
                     <Grid style={{ height: 400, marginTop: 20 }} container>
                         <MapBox tileLayer={tileLayer} />
                     </Grid>
                 </Grid >
-            </SelectedPlacesContextProvider>
+            </AddressDetailsContextProvider>
         </MapContextProvider>
     )
 }
