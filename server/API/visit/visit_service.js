@@ -7,6 +7,8 @@ const visitService = {
     addVisit: async (locationId) => {
         const existingVisit = await Visit.findOne({ date: {$gte: startOfMinute(new Date()), $lte: endOfMinute(new Date())}, locationId: mongoose.Types.ObjectId(locationId)}).exec()
         if (existingVisit) return Visit.findByIdAndUpdate(existingVisit._id, { $inc: { visitCount: 1 } }, { new: true })
+        console.log('adding visit')
+        console.log(locationId)
         return new Visit({
             _id: new mongoose.Types.ObjectId,
             date: new Date(),

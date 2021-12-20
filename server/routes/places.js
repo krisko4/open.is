@@ -73,6 +73,7 @@ router.post('/',
     body('locations.*.lng').isFloat().notEmpty(),
     validateRequest,
     (req, res, next) => {
+
         placeController.addPlace(req, res, next)
     }
 )

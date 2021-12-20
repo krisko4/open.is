@@ -6,13 +6,6 @@ const { body, validationResult, param } = require('express-validator');
 const imageValidator = require('../request_validators/image_validator')
 const fileUpload = require('express-fileupload');
 const validateRequest = require('../request_validators/express_validator')
-// router.get('/', (req, res, next) => {
-//     userController.getUsers(req, res, next)
-// });
-
-// router.delete('/', (req, res, next) => {
-//     userController.deleteAll(req, res, next)
-// })
 
 router.patch('/:id',
     jwtController.authenticateAccessToken,
@@ -32,6 +25,7 @@ router.patch('/:id',
     body('password').isStrongPassword().optional({ nullable: true, checkFalsy: true }),
     validateRequest,
     (req, res, next) => {
+        console.log('jest')
         userController.changeUserData(req, res, next)
     })
 

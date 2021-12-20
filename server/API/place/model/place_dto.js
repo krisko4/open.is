@@ -1,7 +1,6 @@
 
 const placeDto = (place, uid) => {
     const placeDto = { ...place }
-    console.log(placeDto)
     delete placeDto['userId']
     delete placeDto['createdAt']
     placeDto.locations.forEach(location => {

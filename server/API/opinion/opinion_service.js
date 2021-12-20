@@ -6,7 +6,6 @@ const opinionService = {
 
 
     getOpinionsBy: (property) => {
-        console.log('opinki')
         if (property) return Opinion.find(property).sort({ date: -1 }).populate('author').exec()
     },
 

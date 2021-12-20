@@ -90,6 +90,7 @@ const placeController = {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
                         const objPlaces = await Promise.all(places.map(async (place) => {
                             const placeObject = { ...place._doc }
+                            placeObject.locations = placeObject.locations.map(location => {return {...location._doc}})
                             for (const location of placeObject.locations) {
                                 const [visits, opinions, news] = await Promise.all([
                                     visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
@@ -100,6 +101,7 @@ const placeController = {
                                 location.opinions = opinions.map(opinion => opinionDto(opinion))
                                 location.news = news.map(news => newsDto(news))
                             }
+                            console.log(placeObject)
                             return placeObject
                         }))
                         places = objPlaces

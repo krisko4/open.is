@@ -17,12 +17,12 @@ const visitController = {
 
    
 
-    getVisitsByPlaceId: async (req, res, next) => {
+    getVisitsByLocationId: async (req, res, next) => {
         const {uid} = req.cookies
         const {placeId} = req.query
         try {
             if(!uid) next(ApiError.badRequest('uid is required'))
-            const visits = await visitService.getVisitsByPlaceId(placeId, uid)
+            const visits = await visitService.getVisitsByLocationId(placeId, uid)
             return res.status(200).json(visits.map(visit => visitDto(visit)))
         } catch (err) {
             next(err)
