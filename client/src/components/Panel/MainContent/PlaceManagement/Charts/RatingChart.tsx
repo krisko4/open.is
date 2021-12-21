@@ -56,9 +56,7 @@ export const RatingChart: FC = () => {
 
     const { currentPlace } = useCurrentPlaceContext()
     const { ones, twos, threes, fours, fives } = currentPlace.averageNote || defaultOptions
-
     const ratingSeries = [ones, twos, threes, fours, fives]
-
 
     return (
         <>

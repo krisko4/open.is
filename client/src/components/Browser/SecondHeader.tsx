@@ -119,10 +119,10 @@ export const SecondHeader: FC = () => {
             }}>
             <Toolbar disableGutters>
                 <Grid container className={classes.secondHeader}>
-                    <Grid item xs={10} sm={9} md={8} lg={6} style={{paddingLeft: 5, paddingRight: 5}}>
+                    <Grid item xs={10} sm={9} md={8} lg={5} style={{paddingLeft: 5, paddingRight: 5}}>
                         <Searcher />
                     </Grid>
-                    <Grid justify="center" container lg={6} item alignItems="center">
+                    <Grid justify="center" container lg={7} item alignItems="center">
                         {businessTypes.map((type, index) =>
                             <CustomChip setSelectedTypes={setSelectedTypes} className={classes.chip} type={type} key={index} />
                         )}

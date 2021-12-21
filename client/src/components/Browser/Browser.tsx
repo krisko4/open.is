@@ -30,11 +30,11 @@ const Browser: FC = () => {
                 <SecondHeader />
                 <MapContextProvider isMarkerDraggable={false}>
                     <Grid container style={{ flexGrow: 1 }}>
-                        <Grid item lg={6} xs={12}>
-                            <MapBox tileLayer={tileLayer} />
-                        </Grid>
-                        <Grid item lg={6} xs={12} style={{ background: '#202020' }}>
+                        <Grid item lg={5} style={{ background: '#202020' }}>
                             <PlacesBox />
+                        </Grid>
+                        <Grid item lg={7} xs={12}>
+                            <MapBox tileLayer={tileLayer} />
                         </Grid>
                     </Grid>
                 </MapContextProvider>

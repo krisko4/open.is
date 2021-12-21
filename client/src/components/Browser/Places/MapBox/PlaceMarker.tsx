@@ -24,8 +24,8 @@ interface Props{
 export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable } = useMapContext()
-    const { isEditionMode, chosenCriterias, setSelectedAddress, setChosenCriterias } = useAddressDetailsContext()
+    const {popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable} = useMapContext()
+    const {chosenCriterias, setSelectedAddress, setChosenCriterias} = useAddressDetailsContext()
     const firstRender = useRef(true)
     const history = useHistory()
     const match = useRouteMatch()
@@ -41,7 +41,6 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     });
 
-    console.log(criterium)
 
     useEffect(() => {
         if (firstRender.current) {
@@ -64,7 +63,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                     setPopupIndex(index)
                     setPopupOpen(true)
                     setPlaceCardClicked(true)
-                    history.push(`${match.url}/${place.name}`)
+                    history.push(`${match.url}/${place._id}`)
                 },
                 dragend: async () => {
                     criterium.lat = placeMarker.current._latlng.lat

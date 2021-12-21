@@ -1,4 +1,4 @@
-import { createStyles, Divider, makeStyles } from "@material-ui/core";
+import { AppBar, Button, Card, CardMedia, createStyles, Divider, makeStyles, Toolbar } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
@@ -8,6 +8,7 @@ import { KeyboardReturn } from "@material-ui/icons";
 import { url } from "inspector";
 import React, { FC, useEffect, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
+import Carousel from "react-material-ui-carousel";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import myAxios from "../../../../axios/axios";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
@@ -16,6 +17,7 @@ import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions";
 import MainContent from "./MainContent";
+import {ImagesCarousel} from './ImagesCarousel'
 
 
 const useStyles = makeStyles(() =>
@@ -24,6 +26,8 @@ const useStyles = makeStyles(() =>
             // fontWeight: 'bold',
             color: '#fff'
         },
+
+
 
     }))
 
@@ -182,6 +186,8 @@ interface Props {
 
 }
 
+
+
 export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
     const [news, setNews] = useState<NewsProps[]>([])
@@ -212,7 +218,8 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                         }
                     })
                 ])
-               
+
+
 
             } catch (err) {
                 console.log(err)
@@ -279,33 +286,45 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     }
 
     return (
-
         <Grid container>
-            <IconButton onClick={() => closePlaceDetails()} color="secondary">
-                <KeyboardReturn />
-            </IconButton>
-            <MainContent place={currentPlace} />
-            <Grid container style={{ marginTop: 10 }}>
-                <Divider style={{ width: '100%', backgroundColor: 'red' }} />
-                <Paper square style={{ width: '100%', background: 'inherit' }}>
-                    <Tabs
-                        value={value}
-                        variant="fullWidth"
-                        indicatorColor="secondary"
-                        textColor="secondary"
-                        onChange={handleChange}
-                    >
-                        <MyTab label="News" />
-                        <MyTab label="Opening hours" />
-                        <MyTab label="Opinions" />
-                    </Tabs>
-                </Paper>
-                <Grid container item>
-                    <Grid container style={{ height: 500 }}>
-                        {tabContents[value]}
+            <Grid container item style={{ background: '#2C2C2C' }}>
+                <Toolbar style={{ flexGrow: 1 }} disableGutters>
+                    <IconButton onClick={() => closePlaceDetails()} color="secondary">
+                        <KeyboardReturn />
+                    </IconButton>
+                    <Grid container justify="flex-end" style={{ paddingRight: 20 }} item>
+                        <Button variant="contained" color="secondary">
+                            Subscribe
+                        </Button>
+                    </Grid>
+                </Toolbar>
+            </Grid>
+            <Grid container>
+            <ImagesCarousel address={currentPlace.address} img={currentPlace.img} />
+            </Grid>
+                <MainContent place={currentPlace} />
+                <Grid container style={{ marginTop: 10 }}>
+                    <Divider style={{ width: '100%', backgroundColor: 'red' }} />
+                    <Paper square style={{ width: '100%', background: 'inherit' }}>
+                        <Tabs
+                            value={value}
+                            variant="fullWidth"
+                            indicatorColor="secondary"
+                            textColor="secondary"
+                            onChange={handleChange}
+                        >
+                            <MyTab label="News" />
+                            <MyTab label="Opening hours" />
+                            <MyTab label="Opinions" />
+                        </Tabs>
+                    </Paper>
+                    <Grid container item>
+                        <Grid container style={{ height: 500 }}>
+                            {tabContents[value]}
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+
         </Grid>
     )
 }

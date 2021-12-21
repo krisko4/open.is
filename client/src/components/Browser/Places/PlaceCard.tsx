@@ -1,4 +1,4 @@
-import { Avatar, Button, CardContent, styled, Tooltip } from "@material-ui/core";
+import { Avatar, Button, CardContent, CardMedia, styled, Tooltip } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -105,6 +105,8 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
             className={classes.card}
         >
             <CardContent>
+
+                
                 <Grid container justify="space-between">
                     <Grid item container alignItems="center" >
                         <Grid item>

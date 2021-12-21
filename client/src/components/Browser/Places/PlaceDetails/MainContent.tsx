@@ -37,9 +37,10 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
 
     return (
         <Fade timeout={1000} in={true}>
-            <Grid container style={{ marginTop: 10 }} justify="space-evenly">
-                <Grid item lg={5} style={{ textAlign: 'center' }}>
-                    <CardMedia style={{ height: 345, marginTop: 10 }} image={place.img} />
+            <Grid container style={{ marginTop: 10 }}>
+
+                {/* <Grid item lg={5} style={{ textAlign: 'center' }}>
+                    <CardMedia style={{ height: 200, marginTop: 10, borderRadius: 20 }} image={place.img} />
                 </Grid>
                 <Grid item lg={5} container direction="column" style={{ textAlign: 'center', marginLeft: 10, alignItems: 'center' }}>
                     <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
@@ -68,8 +69,41 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                         <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
                     </div>
 
+                </Grid> */}
+                <Grid container item lg={8}>
+                    <Grid item style={{ marginLeft: 20 }}>
+                        <CardMedia style={{ height: 100, width: 100, marginTop: 10, borderRadius: 20 }} image={place.img} />
+                        <Rating
+                            style={{ marginTop: 20 }}
+                            name="simple-controlled"
+                            value={place.averageNote.average}
+                            readOnly
+                        />
+                    </Grid>
+                    <Grid item style={{ marginLeft: 20 }}>
+                        <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
+                            {place.name}
+                        </Typography>
+                        <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
+                            {place.subtitle}
+                        </Typography>
+                    </Grid>
                 </Grid>
-                <Grid item container lg={12} justify="center">
+                <Grid item lg={4}>
+                    {place.status === 'open' ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
+                        This place is now {place.status.toUpperCase()}
+                    </Alert>
+                        : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
+                            This place is now {place.status.toUpperCase()}
+                        </Alert>
+
+                    }
+
+                </Grid>
+
+
+                <Grid item container justify="center">
+
                     <Grid style={{ textAlign: 'center' }} item lg={10}>
                         <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 20 }}>{place.description}</Typography>
                     </Grid>
