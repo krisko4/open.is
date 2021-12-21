@@ -245,7 +245,7 @@ const placeController = {
         const { uid } = cookies
         try {
             const places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
@@ -259,7 +259,8 @@ const placeController = {
         favIds = favIds.split(',')
         try {
             const places = await placeService.getFavoritePlaces(favIds)
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            console.log(places)
+            return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
@@ -272,10 +273,9 @@ const placeController = {
         const { cookies } = req
         const { uid } = cookies
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ 'averageNote.average': -1 })
-            console.log(places)
-            return res.status(200).json(places)
-            // return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            const places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
+            // return res.status(200).json(places)
+            return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
@@ -287,8 +287,7 @@ const placeController = {
         const { uid } = cookies
         try {
             const places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
-            console.log(places)
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
