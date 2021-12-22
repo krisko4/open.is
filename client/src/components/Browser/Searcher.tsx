@@ -12,7 +12,10 @@ import parse from 'autosuggest-highlight/parse';
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
-import { getPlacesByChosenCriterias, getPlacesWithParams } from "../../requests/PlaceRequests";
+import { RawPlaceDataProps } from "../../contexts/PanelContexts/BusinessChainContext";
+import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
+import { getPlacesBySearchParams, getPlacesWithParams } from "../../requests/PlaceRequests";
+import { convertToCurrentPlace } from "../../utils/place_data_utils";
 
 
 const provider = new OpenStreetMapProvider({});
@@ -55,7 +58,7 @@ const useStyles = makeStyles((theme) =>
             "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "grey",
                 borderRadius: 1,
-               
+
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#ff5252"
@@ -69,7 +72,13 @@ const useStyles = makeStyles((theme) =>
 );
 
 
-const Searcher : FC = () => {
+export interface SearchParams {
+    name: string,
+    foundBy: string
+}
+
+
+const Searcher: FC = () => {
 
     const classes = useStyles()
 
@@ -118,21 +127,12 @@ const Searcher : FC = () => {
     //     })
     // }
 
-    const selectPlace = async (criterias : typeof chosenCriterias) => {
-
-        const places = await getPlacesByChosenCriterias(criterias)
-        setChosenCriterias(places)
-
-        // for (const place of placesArray) {
-        //     if (place.type === 'address') {
-        //         await fetchByAddress(place, criterias)
-        //     } else {
-        //         criterias.push(place)
-        //     }
-        // }
-        // setChosenCriterias(criterias)
-        // setAvailableAddresses([])
-        // setInputValue('')
+    const selectPlace = async (searchParams : SearchParams[]) => {
+        const places : RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
+        let currentPlaces = places.map(place => convertToCurrentPlace(place))
+        let chosenCriterias: CurrentPlaceProps[] = []
+        currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
+        setChosenCriterias(chosenCriterias)
     }
 
     return (
@@ -150,7 +150,7 @@ const Searcher : FC = () => {
             classes={classes}
             freeSolo={true}
             options={availableAddresses}
-            getOptionLabel={(option : any) => option.name}
+            getOptionLabel={(option: any) => option.name}
             onChange={(event, value) => selectPlace(value)}
             noOptionsText="No options"
             renderInput={(params) =>
@@ -170,7 +170,7 @@ const Searcher : FC = () => {
                         ),
                     }}
                 />}
-            renderOption={(option : any, { inputValue }) => {
+            renderOption={(option: any, { inputValue }) => {
                 //    const label = isPlaceFoundByName.current ? option.name : option.label
                 // const label = isPlaceFoundByName.current ? option.name : option.label
                 const label = option.name

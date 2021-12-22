@@ -17,6 +17,7 @@ import { logout } from "../../../store/actions/logout";
 import { setEmail } from "../../../store/actions/setEmail";
 import { useAuthSelector } from "../../../store/selectors/AuthSelector";
 import { useLoginContext } from "../../../contexts/LoginContext";
+import { SignOutButton } from "../../reusable/SignOutButton";
 const useStyles = makeStyles(() =>
     createStyles({
         root: {
@@ -94,10 +95,8 @@ const Header: FC = () => {
 
     const signOut = async () => {
         await authAxios.get('/logout', { withCredentials: true })
-        // dispatch(logout())
         setUserLoggedIn(false)
         setEmail('')
-        // dispatch(setEmail(''))
         localStorage.removeItem('uid')
         localStorage.removeItem('fullName')
         localStorage.removeItem('email')
@@ -161,8 +160,9 @@ const Header: FC = () => {
                                     <Button variant="contained" onClick={() => history.push('/panel')}
                                         color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
                                 }
-                                <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign
-                                    out</Button>
+                                <SignOutButton variant="contained" color={appBarState.buttonColor}>Sign out</SignOutButton>
+                                {/* <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign
+                                    out</Button> */}
                             </div> :
                                 <Button variant="contained" onClick={() => setLoginOpen(true)}
                                     color={appBarState.buttonColor}>Sign

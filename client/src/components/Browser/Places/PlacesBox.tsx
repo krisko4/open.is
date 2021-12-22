@@ -136,6 +136,7 @@ const PlacesBox: FC = () => {
                         <MyTab icon={<Timelapse />} label="Recently added" />
                         <MyTab icon={<Star />} label="Top rated" />
                         <MyTab icon={<Favorite />} label="Favorite" />
+                        <MyTab icon={<Favorite />} label="Subscriptions" />
                     </Tabs>
                 </Grid>
             }

@@ -41,7 +41,7 @@ export const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const { enqueueSnackbar } = useSnackbar()
     const dispatch = useDispatch()
-    const {setUserLoggedIn} = useLoginContext()
+    const {setUserLoggedIn, setFullName} = useLoginContext()
 
     const signIn = async (userData: UserData) => {
         setErrorMessage('')
@@ -55,7 +55,7 @@ export const LoginForm = () => {
             localStorage.setItem('email', userData.email)
             response.data.img && localStorage.setItem('img', response.data.img)
             setLoginOpen(false)
-            // dispatch(login())
+            setFullName(response.data.fullName)
             setUserLoggedIn(true)
             enqueueSnackbar('You have signed in.', {
                 variant: 'success'

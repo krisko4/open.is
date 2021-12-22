@@ -37,40 +37,24 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
 
     return (
         <Fade timeout={1000} in={true}>
-            <Grid container style={{ marginTop: 10 }}>
+            <Grid container >
+                <Grid container item>
+                    <Card elevation={10} style={{ flexGrow: 1, paddingBottom: 12, paddingTop: 12, paddingRight: 20, background: '#202020' }}>
+                            <Grid container justify="flex-end">
+                                <Grid item>
+                                    {place.status === 'open' ? <Alert severity="success" variant="filled" >
+                                        This place is now {place.status.toUpperCase()}
+                                    </Alert>
+                                        : <Alert severity="error" variant="filled" >
+                                            This place is now {place.status.toUpperCase()}
+                                        </Alert>
 
-                {/* <Grid item lg={5} style={{ textAlign: 'center' }}>
-                    <CardMedia style={{ height: 200, marginTop: 10, borderRadius: 20 }} image={place.img} />
+                                    }
+                                </Grid>
+                            </Grid>
+                    </Card>
                 </Grid>
-                <Grid item lg={5} container direction="column" style={{ textAlign: 'center', marginLeft: 10, alignItems: 'center' }}>
-                    <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
-                        {place.name}
-                    </Typography>
-                    <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
-                        {place.subtitle}
-                    </Typography>
-                    {place.status === 'open' ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
-                        This place is now {place.status.toUpperCase()}
-                    </Alert>
-                        : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
-                            This place is now {place.status.toUpperCase()}
-                        </Alert>
-
-                    }
-                    <Rating
-                        style={{ marginTop: 20 }}
-                        name="simple-controlled"
-                        value={place.averageNote.average}
-                        readOnly
-                    />
-                    <Typography variant="body1" style={{ color: 'white', fontStyle: 'italic' }}>{place.type}</Typography>
-                    <div>
-                        <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
-                        <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
-                    </div>
-
-                </Grid> */}
-                <Grid container item lg={8}>
+                <Grid container item style={{ marginTop: 10 }}>
                     <Grid item style={{ marginLeft: 20 }}>
                         <CardMedia style={{ height: 100, width: 100, marginTop: 10, borderRadius: 20 }} image={place.img} />
                         <Rating
@@ -80,32 +64,28 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                             readOnly
                         />
                     </Grid>
-                    <Grid item style={{ marginLeft: 20 }}>
+                    <Grid item lg={9} style={{ marginLeft: 20 }}>
                         <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
                             {place.name}
                         </Typography>
                         <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
                             {place.subtitle}
                         </Typography>
+                        <Typography variant="body1" color="primary">{place.type}</Typography>
+                        <div>
+                            <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
+                            <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
+                        </div>
                     </Grid>
                 </Grid>
-                <Grid item lg={4}>
-                    {place.status === 'open' ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
-                        This place is now {place.status.toUpperCase()}
-                    </Alert>
-                        : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
-                            This place is now {place.status.toUpperCase()}
-                        </Alert>
+                <Grid item container justify="center" style={{ marginTop: 20 }}>
+                    <Grid item lg={10}>
+                        <Card elevation={10} style={{ flexGrow: 1, background: '#2C2C2C' }}>
+                            <CardContent>
+                                <Typography variant="body1" style={{ color: 'white' }}>{place.description}</Typography>
+                            </CardContent>
+                        </Card>
 
-                    }
-
-                </Grid>
-
-
-                <Grid item container justify="center">
-
-                    <Grid style={{ textAlign: 'center' }} item lg={10}>
-                        <Typography variant="body1" style={{ color: 'lightgrey', marginTop: 20 }}>{place.description}</Typography>
                     </Grid>
                     <Grid item lg={10} style={{ marginTop: 20 }}>
                         <Divider style={{ width: '100%', background: 'red' }}></Divider>

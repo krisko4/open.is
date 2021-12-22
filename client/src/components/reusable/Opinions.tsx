@@ -101,7 +101,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) =
                     <div>
                         <Grid container justify="space-between" >
                             <Alert severity="info" variant="filled">{currentPlace.opinions?.length} {currentPlace.opinions && currentPlace.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
-                            {isUserLoggedIn  &&
+                            {isUserLoggedIn && !currentPlace.isUserOwner  &&
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                             }
                         </Grid>
@@ -131,7 +131,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) =
                     </div>
                     : <Grid container direction="column" justify="center" style={{ height: '100%' }} alignItems="center">
                         <Typography variant="h6" className={classes.content}>This place doesn't have any opinions yet.</Typography>
-                        {isUserLoggedIn ? <Grid item style={{ textAlign: 'center' }}>
+                        {isUserLoggedIn && !currentPlace.isUserOwner ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
                             <Button style={{ marginTop: 10 }} startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                         </Grid>
