@@ -7,7 +7,23 @@ const visitService = require('../visit/visit_service')
 const opinionService = require('../opinion/opinion_service')
 const userDto = require('./model/user_dto')
 
+
 const userController = {
+
+    addSubscription: async (req, res, next) => {
+        const { locationId } = req.body
+        const {uid} = req.cookies
+        try {
+            const place = await placeService.findByLocationId(locationId)
+            if (!place) throw ApiError.badRequest('Invalid placeId')
+            if(place.userId === uid) throw ApiError.internal('You cannot subscribe to your own place')
+            const updatedUser = await userService.addSubscription(locationId, place._id, uid)
+            console.log(updatedUser)
+            return res.status(200).json(updatedUser)
+        }catch(err){
+            return next(err)
+        }
+    },
 
     getUsers: (req, res, next) => {
         userService.getUsers()
@@ -46,15 +62,15 @@ const userController = {
             const { id } = req.params
             if (uid !== id) throw new Error('Uids are different')
             const img = req.files && req.files.img
-            const userData = {...req.body}
-            if(img){
+            const userData = { ...req.body }
+            if (img) {
                 userData.img = img
             }
-            else{
+            else {
                 delete userData.img
             }
             const result = await userService.changeUserData(userData, id)
-            return res.status(200).json({emailChanged: result.emailChanged, user: userDto(result.user)})
+            return res.status(200).json({ emailChanged: result.emailChanged, user: userDto(result.user) })
         } catch (err) {
             return next(err)
         }
@@ -75,7 +91,7 @@ const userController = {
 
     getUserById: async (req, res, next) => {
         try {
-            const { id } = req.params 
+            const { id } = req.params
             console.log(id)
             const user = await userService.getUserById(id)
             return res.status(200).json(userDto(user))

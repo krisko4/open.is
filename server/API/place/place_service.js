@@ -87,7 +87,7 @@ const placeService = {
                 '$addToSet': '$locations'
             }
         }),
-    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, address: addresses }).populate('vitits').exec(),
+    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, 'location.address': addresses }).lean().exec(),
     getPlaceByLocationId: (locationId) => Place.findOne({ 'locations._id': locationId }).exec(),
     editPlace: async (placeData, user) => {
         const { lat, lng, img } = placeData
@@ -124,7 +124,7 @@ const placeService = {
                     'locations.$.address': placeData.address
                 },
                 { new: true }
-            ).exec()
+            ).lean().exec()
         })
         await session.endSession()
         return editedPlace
@@ -166,8 +166,8 @@ const placeService = {
     getPlaceByLatLng: (lat, lng) => Place.findOne({ 'locations.lat': lat, 'locations.lng': lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
     getPlacesBy: (param) => Place.find({ ...param }).exec(),
-    getActivePlacesBy: (param) => Place.find({ ...param, isActive: true }).exec(),
-    getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).exec(),
+    getActivePlacesBy: (param) => Place.find({ ...param, 'locations.isActive': true }).lean().exec(),
+    getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).lean().exec(),
     getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true }).exec(),
     deleteAll: () => Place.deleteMany().exec(),
     incrementVisitCount: (id) => Place.find({ 'locations._id': id }, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),

@@ -1,5 +1,5 @@
 const userValidator = require('./user_validator')
-
+const mongoose = require('mongoose')
 
 
 const fieldTypes = {
@@ -27,6 +27,12 @@ const fieldTypes = {
     Image: {
         type: String,
         default: ''
+    },
+    Subscription: {
+        place: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Place"
+        }
     }
 
 

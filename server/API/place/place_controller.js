@@ -20,7 +20,6 @@ const placeController = {
         switch (queryLength) {
             case 2:
                 const { name, address } = req.query
-                console.log(name, address)
                 if (!name || !address) return next(ApiError.badRequest('Invalid request parameters. Required parameters: name, address'))
                 const nameRegExp = new RegExp(name, 'i')
                 const addressRegExp = new RegExp(address, 'i')
@@ -32,14 +31,16 @@ const placeController = {
                 }
 
             case 1:
-                const param = Object.keys(req.query)[0]
+                let param = Object.keys(req.query)[0]
+                const paramValue = req.query[param]
+                if(param == 'address') param = 'locations.address'
                 let searchObj = {}
-                searchObj[param] = new RegExp(req.query[param], 'i')
+                searchObj[param] = new RegExp(paramValue, 'i')
                 console.log(searchObj)
                 try {
                     let places
                     param === 'uid' ? places = await placeService.getActivePlacesByUserId(req.query['uid']) : places = await placeService.getActivePlacesBy(searchObj)
-                    return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+                    return res.status(200).json(places.map(place => placeDto(place, uid)))
                 } catch (err) {
                     return next(err)
                 }
@@ -70,6 +71,21 @@ const placeController = {
 
     },
 
+
+    getVisitsNewsOpinions: async (place, uid) => {
+        for (const location of place.locations) {
+            const [visits, opinions, news] = await Promise.all([
+                visitService.getVisitsByLocationId(place._id, location._id, uid),
+                opinionService.getOpinionsBy({ locationId: location._id }),
+                newsService.getNewsBy({ locationId: location._id })
+            ])
+            location.visits = visits.map(visit => visitDto(visit))
+            location.opinions = opinions.map(opinion => opinionDto(opinion))
+            location.news = news.map(news => newsDto(news))
+        }
+        return place
+    },
+
     getPlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
         const { cookies } = req
@@ -88,23 +104,9 @@ const placeController = {
                     let places
                     if (param === 'uid') {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
-                        const objPlaces = await Promise.all(places.map(async (place) => {
-                            const placeObject = { ...place._doc }
-                            placeObject.locations = placeObject.locations.map(location => {return {...location._doc}})
-                            for (const location of placeObject.locations) {
-                                const [visits, opinions, news] = await Promise.all([
-                                    visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
-                                    opinionService.getOpinionsBy({ locationId: location._id }),
-                                    newsService.getNewsBy({ locationId: location._id })
-                                ])
-                                location.visits = visits.map(visit => visitDto(visit))
-                                location.opinions = opinions.map(opinion => opinionDto(opinion))
-                                location.news = news.map(news => newsDto(news))
-                            }
-                            console.log(placeObject)
-                            return placeObject
+                        places = await Promise.all(places.map(async (place) => {
+                            return placeController.getVisitsNewsOpinions(place, uid)
                         }))
-                        places = objPlaces
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
@@ -151,18 +153,19 @@ const placeController = {
             const img = req.files && req.files.img
             if (img) placeData.img = img
             const place = await placeService.editPlace(placeData, user)
-            const placeObject = { ...place._doc }
-            for (const location of placeObject.locations) {
-                const [visits, opinions, news] = await Promise.all([
-                    visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
-                    opinionService.getOpinionsBy({ locationId: location._id }),
-                    newsService.getNewsBy({ locationId: location._id })
-                ])
-                location.visits = visits.map(visit => visitDto(visit))
-                location.opinions = opinions.map(opinion => opinionDto(opinion))
-                location.news = news.map(news => newsDto(news))
-            }
-            return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(placeObject, uid) })
+            place = placeController.getVisitsNewsOpinions(place)
+            // const placeObject = { ...place._doc }
+            // for (const location of placeObject.locations) {
+            //     const [visits, opinions, news] = await Promise.all([
+            //         visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
+            //         opinionService.getOpinionsBy({ locationId: location._id }),
+            //         newsService.getNewsBy({ locationId: location._id })
+            //     ])
+            //     location.visits = visits.map(visit => visitDto(visit))
+            //     location.opinions = opinions.map(opinion => opinionDto(opinion))
+            //     location.news = news.map(news => newsDto(news))
+            // }
+            return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(place, uid) })
         }
         catch (err) {
             return next(err)
@@ -244,7 +247,10 @@ const placeController = {
         const { cookies } = req
         const { uid } = cookies
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
+            let places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
+            places = await Promise.all(places.map(async (place) => {
+                return placeController.getVisitsNewsOpinions(place, uid)
+            }))
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -258,8 +264,10 @@ const placeController = {
         if (!favIds) return res.status(200).json([])
         favIds = favIds.split(',')
         try {
-            const places = await placeService.getFavoritePlaces(favIds)
-            console.log(places)
+            let places = await placeService.getFavoritePlaces(favIds)
+            places = await Promise.all(places.map(async (place) => {
+                return placeController.getVisitsNewsOpinions(place, uid)
+            }))
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -273,8 +281,10 @@ const placeController = {
         const { cookies } = req
         const { uid } = cookies
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
-            // return res.status(200).json(places)
+            let places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
+            places = await Promise.all(places.map(async (place) => {
+                return placeController.getVisitsNewsOpinions(place, uid)
+            }))
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -286,7 +296,10 @@ const placeController = {
         const { cookies } = req
         const { uid } = cookies
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
+            let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
+            places = await Promise.all(places.map(async (place) => {
+                return placeController.getVisitsNewsOpinions(place, uid)
+            }))
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)

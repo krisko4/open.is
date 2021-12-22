@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../API/user/user_controller')
 const jwtController = require('../API/jwt/jwt_controller')
-const { body, validationResult, param } = require('express-validator');
+const { body, cookie, validationResult, param } = require('express-validator');
 const imageValidator = require('../request_validators/image_validator')
 const fileUpload = require('express-fileupload');
 const validateRequest = require('../request_validators/express_validator')
@@ -33,6 +33,14 @@ router.get('/:id',
     validateRequest,
     (req, res, next) => {
         userController.getUserById(req, res, next)
+    })
+
+router.post('/:id/subscriptions',
+    body('locationId').notEmpty().isMongoId(),
+    cookie('uid').notEmpty().isMongoId(),
+    validateRequest,
+    (req, res, next) => {
+        userController.addSubscription(req, res, next)
     })
 
 router.delete('/:id',

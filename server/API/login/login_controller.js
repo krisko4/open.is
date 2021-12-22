@@ -1,5 +1,6 @@
 const loginService = require('./login_service')
 const { addDays } = require('date-fns')
+const ApiError = require('../../errors/ApiError')
 
 const loginController = {
     login: async (req, res, next) => {
@@ -42,7 +43,7 @@ const loginController = {
         res.clearCookie('refresh_token')
         res.clearCookie('email')
         res.clearCookie('uid')
-        if (!uid) return res.status(400).json('uid not found in cookies.')
+        if (!uid) return next(ApiError.badRequest('uid not found in cookies.'))
         try {
             await loginService.logout(uid)
             res.status(200).json('User logged out successfully.')

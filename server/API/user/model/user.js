@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const {NameString, Email, Password, DefaultBoolean, Image} = require('./field_types')
+const { NameString, Email, Password, DefaultBoolean, Image, Subscription } = require('./field_types')
 const uniqueValidator = require('mongoose-unique-validator');
 mongoose.set('useCreateIndex', true)
 
@@ -12,7 +12,17 @@ const UserSchema = new mongoose.Schema({
     email: Email,
     password: Password,
     isActive: DefaultBoolean,
-    img: Image
+    img: Image,
+    subscriptions: [{
+        place: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Place'
+        },
+        locationId : {
+            type : mongoose.Schema.Types.ObjectId
+        }
+    }
+    ]
 })
 
 UserSchema.plugin(uniqueValidator);

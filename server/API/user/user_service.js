@@ -17,6 +17,19 @@ const userService = {
     //     return duplicateUser
     // },
 
+    addSubscription: async (locationId, placeId, uid) => {
+        const user = await User.findById(uid).lean().exec()
+        console.log(user)
+        if (!user) throw ApiError.internal(`User with uid: ${uid} not found.`)
+        const { subscriptions } = user
+        const subs = subscriptions ? [...subscriptions] : []
+        const isAlreadySubscribed = subs.some(sub => sub.place.toString() === placeId)
+        if(isAlreadySubscribed) throw ApiError.internal('User is already a subscriber of this location')
+        subs.push({place: placeId, locationId: locationId})
+        console.log(subs)
+        return User.findByIdAndUpdate(uid, { 'subscriptions': subs }, { new: true, upsert: true }).populate('subscriptions.place').exec()
+    },
+
     validateLoggedUser: async (userData) => {
         const foundUser = await User.findOne({ email: userData['email'] }).exec()
         if (!foundUser) throw ApiError.internal(INVALID_CREDENTIALS_MSG)
