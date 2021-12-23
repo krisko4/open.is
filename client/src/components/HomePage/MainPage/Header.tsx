@@ -88,25 +88,7 @@ const Header: FC = () => {
 
     const { setLoginOpen } = useAuthContext()
     const {isUserLoggedIn, setUserLoggedIn, setEmail} = useLoginContext()
-    // const isUserLoggedIn = useAuthSelector()
-    // const dispatch = useDispatch()
-
     const appBarRef = useRef<'transparentAppBar' | 'solidAppBar' | 'elevatedAppBar'>('transparentAppBar')
-
-    const signOut = async () => {
-        await authAxios.get('/logout', { withCredentials: true })
-        setUserLoggedIn(false)
-        setEmail('')
-        localStorage.removeItem('uid')
-        localStorage.removeItem('fullName')
-        localStorage.removeItem('email')
-        localStorage.removeItem('img')
-        enqueueSnackbar('You have signed out.', {
-            variant: 'success'
-        })
-    }
-
-
 
 
     const handleScroll = () => {
@@ -161,8 +143,6 @@ const Header: FC = () => {
                                         color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
                                 }
                                 <SignOutButton variant="contained" color={appBarState.buttonColor}>Sign out</SignOutButton>
-                                {/* <Button variant="contained" onClick={() => signOut()} color={appBarState.buttonColor}>Sign
-                                    out</Button> */}
                             </div> :
                                 <Button variant="contained" onClick={() => setLoginOpen(true)}
                                     color={appBarState.buttonColor}>Sign

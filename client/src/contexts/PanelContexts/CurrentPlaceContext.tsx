@@ -40,7 +40,8 @@ export interface CurrentPlaceProps {
     },
     openingHours?: any,
     isActive?: boolean,
-    isUserOwner?: boolean
+    isUserOwner?: boolean,
+    isUserSubscriber?: boolean
 }
 
 interface NewsProps {
@@ -50,7 +51,7 @@ interface NewsProps {
 }
 
 export interface LocationProps {
-    _id? : string,
+    _id?: string,
     address: string,
     lat: number,
     lng: number,
@@ -74,6 +75,7 @@ export interface LocationProps {
     isActive?: boolean
     status?: Status,
     visitCount?: number,
+    isUserSubscriber?: boolean
 }
 
 interface OpinionProps {

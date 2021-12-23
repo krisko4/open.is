@@ -22,7 +22,8 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
             isUserOwner: currentPlace.isUserOwner,
             isActive: currentPlace.isActive,
             email: currentPlace.email,
-            status: currentPlace.status
+            status: currentPlace.status,
+            isUserSubscriber: currentPlace.isUserSubscriber
         }
     ]
     const rawPlaceData: RawPlaceDataProps = {

@@ -14,22 +14,15 @@ import TimelineDot from "@material-ui/lab/TimelineDot";
 import TimelineItem from "@material-ui/lab/TimelineItem";
 import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
 import { ClassNameMap } from "@material-ui/styles";
-import { format } from "date-fns";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { useSnackbar } from "notistack";
 import React, { FC, useRef, useState } from "react";
-
 import myAxios from "../../axios/axios";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
-import { useAuthSelector } from "../../store/selectors/AuthSelector";
 import { LoadingButton } from "./LoadingButton";
 
-interface NewsProps {
-    title: string,
-    date: string,
-    content: string
-}
+
 
 interface Props {
     classes: ClassNameMap<"paper" | "content" | "title" | "dialog" | "date">,

@@ -234,26 +234,30 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
 
     return (
         <Grid container>
-                <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
+            <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
             <Grid container item style={{ background: '#2C2C2C' }}>
                 <Toolbar style={{ flexGrow: 1 }} disableGutters>
                     <IconButton onClick={() => closePlaceDetails()} color="secondary">
                         <KeyboardReturn />
                     </IconButton>
                     <Grid container justify="flex-end" style={{ paddingRight: 20 }} item>
-                        <Tooltip title={!isUserLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
-                            <span>
-                                <Button
-                                    className={classes.subscribeButton}
-                                    disabled={!isUserLoggedIn || currentPlace.isUserOwner}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => setDialogOpen(true)}
-                                >
-                                    Subscribe
-                                </Button>
-                            </span>
-                        </Tooltip>
+                        {currentPlace.isUserSubscriber ? <Button color="primary">
+                            Subscribed
+                        </Button> :
+                            <Tooltip title={!isUserLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
+                                <span>
+                                    <Button
+                                        className={classes.subscribeButton}
+                                        disabled={!isUserLoggedIn || currentPlace.isUserOwner}
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => setDialogOpen(true)}
+                                    >
+                                        Subscribe
+                                    </Button>
+                                </span>
+                            </Tooltip>
+                        }
                     </Grid>
                 </Toolbar>
             </Grid>
