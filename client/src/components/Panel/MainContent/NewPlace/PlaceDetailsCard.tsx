@@ -13,7 +13,7 @@ import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/Curre
 import { Status } from "../../../../contexts/PanelContexts/PanelContext";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
-import { Opinions } from "../../../reusable/Opinions";
+import { Opinions } from "../../../reusable/Opinions/Opinions";
 
 
 
@@ -133,7 +133,7 @@ const useOpinionsStyles = makeStyles({
 
 export const PlaceDetailsCard: FC = () => {
 
-    const { currentPlace,  setCurrentPlace, opinionCount, setOpinionCount } = useCurrentPlaceContext()
+    const { currentPlace,  setCurrentPlace} = useCurrentPlaceContext()
 
     console.log('witam')
     const newsClasses = useNewsStyles()
@@ -165,8 +165,6 @@ export const PlaceDetailsCard: FC = () => {
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
             classes={opinionClasses}
-            opinionCount={opinionCount}
-            setOpinionCount={setOpinionCount}
         />
 
     ]

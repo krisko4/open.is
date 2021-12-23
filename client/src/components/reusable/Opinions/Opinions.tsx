@@ -6,48 +6,37 @@ import { ClassNameMap } from "@material-ui/styles";
 import { format } from "date-fns";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
-import myAxios from "../../axios/axios";
-import { useAuthSelector } from "../../store/selectors/AuthSelector";
-import { LoadingButton } from "./LoadingButton";
+import myAxios from "../../../axios/axios";
+import { useAuthSelector } from "../../../store/selectors/AuthSelector";
+import { LoadingButton } from "../LoadingButton";
 import Alert from '@material-ui/lab/Alert';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
-import Scrollbars from "react-custom-scrollbars";
-import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
-import { useLoginContext } from "../../contexts/LoginContext";
+import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useLoginContext } from "../../../contexts/LoginContext";
+import {OpinionCard} from './OpinionCard'
 
 
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-interface OpinionProps {
-    author: string,
-    date: string,
-    content: string,
-    note: number,
-    averageNote: number,
-    authorImg: string
-}
 
 interface Props {
     classes: ClassNameMap<"opinionCard" | "author" | "date" | "content" | "dialog">,
     currentPlace: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<any>,
-    opinionCount: number,
-    setOpinionCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 
-export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) => {
+export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
 
 
-    const {isUserLoggedIn} = useLoginContext()
+    const { isUserLoggedIn } = useLoginContext()
     const { enqueueSnackbar } = useSnackbar()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [noteValue, setNoteValue] = useState<number | null>(null)
     const [opinionText, setOpinionText] = useState('')
     const [loading, setLoading] = useState(false)
-    const [elevation, setElevation] = useState(3)
 
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
@@ -75,7 +64,6 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) =
                 console.log(updatedPlace)
                 setCurrentPlace(updatedPlace)
                 setDialogOpen(false)
-                //  setOpinionCount(opinionCount => opinionCount + 1)
                 enqueueSnackbar('Your opinion has been added successfully', {
                     variant: 'success'
                 })
@@ -95,37 +83,20 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace}) =
 
     return (
 
-        <Grid container style={{height: '100%'}} justify="center">
-            <Grid container item xs={11} direction="column" style={{marginTop: 20, marginBottom: 20 }}>
+        <Grid container style={{ height: '100%' }} justify="center">
+            <Grid container item xs={11} direction="column" style={{ marginTop: 20, marginBottom: 20 }}>
                 {currentPlace.opinions && currentPlace.opinions.length > 0 ?
                     <div>
                         <Grid container justify="space-between" >
                             <Alert severity="info" variant="filled">{currentPlace.opinions?.length} {currentPlace.opinions && currentPlace.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
-                            {isUserLoggedIn && !currentPlace.isUserOwner  &&
+                            {isUserLoggedIn && !currentPlace.isUserOwner &&
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                             }
                         </Grid>
                         {
                             currentPlace.opinions.map((opinion, index) =>
                                 <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
-                                    <Card onMouseEnter={() => setElevation(10)} onMouseLeave={() => setElevation(3)} elevation={elevation} style={{ borderRadius: 10 }} className={classes.opinionCard} >
-                                        <CardContent>
-                                            <Grid container justify="space-around">
-                                                <Grid item xs={1}  container alignItems="center">
-                                                    <Avatar style={{width: 80, height: 80}} src={`${opinion.authorImg}`} alt={opinion.author} />
-                                                </Grid>
-                                                <Grid item xs={8}>
-                                                    <Typography variant="h6" className={classes.author}>{opinion.author}</Typography>
-                                                    <Typography variant="caption" className={classes.date}>{opinion.date}</Typography>
-                                                    <Typography variant="subtitle1" className={classes.content}>{opinion.content}</Typography>
-                                                </Grid>
-                                                <Rating
-                                                    readOnly={true}
-                                                    value={opinion.note}
-                                                />
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
+                                    <OpinionCard classes={classes} opinion={opinion} />
                                 </Grid>
                             )}
                     </div>

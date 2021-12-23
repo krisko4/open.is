@@ -1,4 +1,4 @@
-import { Avatar, Button, CardContent, CardMedia, styled, Tooltip } from "@material-ui/core";
+import { Avatar, Button, CardContent, styled, Tooltip } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -8,9 +8,7 @@ import { Rating } from "@material-ui/lab";
 import createStyles from "@material-ui/styles/createStyles";
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
-import { useMapContext } from "../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 
 
@@ -61,6 +59,7 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
     const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
     const {setChosenCriterias} = useAddressDetailsContext()
+    const [elevation, setElevation] = useState(0)
 
 
     useEffect(() => {
@@ -103,10 +102,11 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
     return (
         <Card
             className={classes.card}
+            elevation={elevation}
+            onMouseEnter={() => setElevation(10)}
+            onMouseLeave={() => setElevation(0)}
         >
             <CardContent>
-
-                
                 <Grid container justify="space-between">
                     <Grid item container alignItems="center" >
                         <Grid item>

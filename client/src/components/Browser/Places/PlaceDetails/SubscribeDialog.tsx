@@ -1,11 +1,16 @@
 import { DialogTitle, DialogContent, DialogActions, Dialog, SlideProps, Slide, Grid, Typography, CardMedia, Button } from "@material-ui/core"
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/styles"
-import React, { FC } from "react"
+import { useSnackbar } from "notistack";
+import React, { FC, useState } from "react"
+import { authAxios } from "../../../../axios/axios";
+import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { LoadingButton } from "../../../reusable/LoadingButton";
 
 interface Props {
     isDialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    currentPlace: CurrentPlaceProps
 }
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -18,11 +23,45 @@ const useStyles = makeStyles({
     },
     content: {
         color: 'grey'
+    },
+    alert: {
+        flexGrow: 1,
+        marginTop: 10,
+        '&& .MuiAlert-message': {
+            color: 'white'
+        }
     }
 })
 
-export const SubscribeDialog: FC<Props> = ({ isDialogOpen, setDialogOpen }) => {
+export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDialogOpen }) => {
     const classes = useStyles()
+    const { enqueueSnackbar } = useSnackbar()
+    const [loading, setLoading] = useState(false)
+
+
+    const setSubscription = async () => {
+        setLoading(true)
+        try {
+            const res = await authAxios.patch(`/users/${localStorage.getItem('uid')}/subscriptions`, {
+                locationId: currentPlace._id
+            })
+            enqueueSnackbar('You have subscribed to a new place', {
+                variant: 'success'
+            })
+            console.log(res.data)
+
+
+        } catch (err) {
+            enqueueSnackbar('Oops, something went wrong', {
+                variant: 'error'
+            })
+        }finally{
+            setLoading(false)
+        }
+
+    }
+
+
     return (
         <Dialog
             TransitionComponent={Transition}
@@ -56,23 +95,23 @@ export const SubscribeDialog: FC<Props> = ({ isDialogOpen, setDialogOpen }) => {
                 <Typography variant="h6" className={classes.title}>
                     You will:
                 </Typography>
-                <Grid container justify="center" style={{marginTop: 10}}>
-                    <Alert variant="outlined" style={{flexGrow: 1}}> 
+                <Grid container justify="center" >
+                    <Alert variant="outlined" className={classes.alert}>
                         receive notifications whenever a new event or important information is added
                     </Alert>
-                    <Alert variant="outlined" style={{flexGrow: 1, marginTop: 10}}> 
+                    <Alert variant="outlined" className={classes.alert}>
                         always be informed about bargains and special offers
                     </Alert>
-                    <Alert variant="outlined" style={{flexGrow: 1, marginTop: 10}}> 
-                        receive personal coupons and promo codes 
+                    <Alert variant="outlined" className={classes.alert}>
+                        receive personal coupons and promo codes
                     </Alert>
                 </Grid>
             </DialogContent>
 
             <DialogActions>
-                <Button color="primary">
+                <LoadingButton loading={loading} disabled={loading} onClick={() => setSubscription()} color="primary">
                     Subscribe
-                </Button>
+                </LoadingButton>
 
             </DialogActions>
         </Dialog>

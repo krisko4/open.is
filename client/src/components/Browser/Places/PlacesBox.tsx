@@ -2,7 +2,7 @@ import { Tab, Tabs } from "@material-ui/core";
 import Fade from '@material-ui/core/Fade';
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
-import { Favorite, FiberNew, Star, Timelapse } from "@material-ui/icons";
+import { Subscriptions, Favorite, FiberNew, Star, Timelapse } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -42,7 +42,8 @@ enum tabType {
     POPULAR = 0,
     RECENTLY_ADDED = 1,
     TOP_RATED = 2,
-    FAVORITE = 3
+    FAVORITE = 3,
+    SUBSCRIPTIONS = 4
 }
 
 const PlacesBox: FC = () => {
@@ -73,6 +74,9 @@ const PlacesBox: FC = () => {
                     break
                 case tabType.FAVORITE:
                     places = await getPlaces('/places/active/favorite')
+                    break
+                case tabType.SUBSCRIPTIONS:
+                    places = await getPlaces(`/users/${localStorage.getItem('uid')}/subscriptions`)
                     break
                 default:
                     places = []
@@ -136,7 +140,7 @@ const PlacesBox: FC = () => {
                         <MyTab icon={<Timelapse />} label="Recently added" />
                         <MyTab icon={<Star />} label="Top rated" />
                         <MyTab icon={<Favorite />} label="Favorite" />
-                        <MyTab icon={<Favorite />} label="Subscriptions" />
+                        <MyTab icon={<Subscriptions />} label="Subscriptions" />
                     </Tabs>
                 </Grid>
             }

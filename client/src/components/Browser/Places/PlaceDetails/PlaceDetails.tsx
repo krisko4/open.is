@@ -1,4 +1,4 @@
-import { Button, createStyles, Dialog, Divider, makeStyles, Toolbar, Tooltip } from "@material-ui/core";
+import { Button, createStyles, Divider, makeStyles, Toolbar, Tooltip } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
@@ -13,10 +13,10 @@ import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
-import { Opinions } from "../../../reusable/Opinions";
+import { Opinions } from "../../../reusable/Opinions/Opinions";
 import { ImagesCarousel } from './ImagesCarousel';
 import MainContent from "./MainContent";
-import {SubscribeDialog} from './SubscribeDialog'
+import { SubscribeDialog } from './SubscribeDialog';
 
 
 const useStyles = makeStyles(() =>
@@ -180,7 +180,6 @@ interface Props {
 
 export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
-    const [opinionCount, setOpinionCount] = useState(0)
     const { isUserLoggedIn } = useLoginContext()
     const [isDialogOpen, setDialogOpen] = useState(false)
 
@@ -215,8 +214,6 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
-            opinionCount={opinionCount}
-            setOpinionCount={setOpinionCount}
             classes={opinionsClasses}
         />
     ]
@@ -237,7 +234,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
 
     return (
         <Grid container>
-                <SubscribeDialog isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
+                <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
             <Grid container item style={{ background: '#2C2C2C' }}>
                 <Toolbar style={{ flexGrow: 1 }} disableGutters>
                     <IconButton onClick={() => closePlaceDetails()} color="secondary">
