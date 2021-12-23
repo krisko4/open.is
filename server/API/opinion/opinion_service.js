@@ -16,7 +16,6 @@ const opinionService = {
     },
 
     addNewOpinion: async (opinionData, session) => {
-        console.log(opinionData)
         const user = await userService.getUserById(opinionData.authorId)
         if (!user) throw ApiError.internal(`User with id ${opinionData.authorId} not found`)
         delete (opinionData['authorId'])
@@ -26,7 +25,7 @@ const opinionService = {
             author: user._id,
             date: new Date()
         }).save({session})
-    //    await placeService.updateNote(placeData.note, placeData.placeId)
+        console.log(opinion)
         return opinion.populate('author').execPopulate()
     },
 

@@ -40,19 +40,21 @@ const opinionController = {
     addNewOpinion: async (req, res, next) => {
         const { authorId, note, locationId } = req.body
         if (!authorId || !locationId || !note || note > 5 || note < 1) return next(ApiError.badRequest('Invalid request'))
+        const session = await mongoose.startSession()
+        session.startTransaction()
         try {
-            const session = await mongoose.startSession()
-            session.startTransaction()
-            const [opinion, updatedPlace] = await Promise.all([
-                opinionDto(await opinionService.addNewOpinion(req.body, session)),
+            const [opinion, averageNote] = await Promise.all([
+                opinionService.addNewOpinion(req.body, session),
                 placeService.updateNote(note, locationId, session)
             ])
-            console.log(opinion)
-            console.log(updatedPlace)
-            await session.endSession()
-            return res.status(200).json({ message: 'New opinion added successfully!', opinion, averageNote: updatedPlace.averageNote })
+
+            res.status(200).json({ message: 'New opinion added successfully!', opinion: opinionDto(opinion), averageNote: averageNote })
+            await session.commitTransaction()
         } catch (err) {
+            await session.abortTransaction()
             return next(err)
+        } finally {
+            await session.endSession()
         }
     },
 

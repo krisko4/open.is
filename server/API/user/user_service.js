@@ -23,7 +23,7 @@ const userService = {
         if (!user) throw ApiError.internal(`User with uid: ${uid} not found.`)
         const { subscriptions } = user
         const subs = subscriptions ? [...subscriptions] : []
-        const isAlreadySubscribed = subs.some(sub => sub.place.toString() === placeId)
+        const isAlreadySubscribed = subs.some(sub => sub.locationId.toString() === locationId)
         if(isAlreadySubscribed) throw ApiError.internal('User is already a subscriber of this location')
         subs.push({place: placeId, locationId: locationId})
         console.log(subs)

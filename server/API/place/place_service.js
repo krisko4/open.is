@@ -190,8 +190,9 @@ const placeService = {
 
 
     updateNote: async (note, locationId, session) => {
-        const place = await Place.findOne({ 'locations._id': locationId }, 'locations.averageNote').exec()
-        let averageNote = place.locations[0].averageNote
+        const place = await Place.findOne({ 'locations._id': locationId }).exec()
+        const location = place.locations.find(loc => loc._id.toString() === locationId)
+        let averageNote = location.averageNote
         averageNote = JSON.parse(JSON.stringify(averageNote))
         delete averageNote['average']
         const id = averageNote['_id']
@@ -217,7 +218,8 @@ const placeService = {
         const valueArray = Object.values(averageNote)
         averageNote['average'] = valueArray.reduce((a, b, index) => a + b * (index + 1)) / valueArray.reduce((a, b) => a + b)
         averageNote['_id'] = id
-        return Place.findOneAndUpdate({ 'locations._id': locationId }, { 'locations.$.averageNote': averageNote }, { new: true, session: session }).exec()
+        await Place.findOneAndUpdate({ 'locations._id': locationId }, { 'locations.$.averageNote': averageNote }, { new: true, session: session }).exec()
+        return averageNote
     }
 
 }

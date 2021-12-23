@@ -9,7 +9,7 @@ const newsService = {
         let {userId} = news
         const place = await placeService.findByLocationId(news.locationId)
         if(!place) throw ApiError.internal('Invalid location id.')
-        console.log(place)
+       
         if(place.userId != userId) throw ApiError.internal('Invalid uid.')
         return new News({
             _id: new mongoose.Types.ObjectId,

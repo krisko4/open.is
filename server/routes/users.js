@@ -35,7 +35,7 @@ router.get('/:id',
         userController.getUserById(req, res, next)
     })
 
-router.post('/:id/subscriptions',
+router.patch('/:id/subscriptions',
     body('locationId').notEmpty().isMongoId(),
     cookie('uid').notEmpty().isMongoId(),
     validateRequest,
