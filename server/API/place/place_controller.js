@@ -71,21 +71,29 @@ const placeController = {
 
     },
 
-
-    getVisitsNewsOpinions: async (place, uid) => {
+    getVisitsNewsOpinionsForPlace: async (place, uid) => {
         for (const location of place.locations) {
-            const [visits, opinions, news, isUserSubscriber] = await Promise.all([
+            const [visits, opinions, news] = await Promise.all([
                 visitService.getVisitsByLocationId(place._id, location._id, uid),
                 opinionService.getOpinionsBy({ locationId: location._id }),
                 newsService.getNewsBy({ locationId: location._id }),
-                userService.isUserSubscriber(location._id, uid)
             ])
             location.visits = visits && visits.map(visit => visitDto(visit))
             location.opinions = opinions.map(opinion => opinionDto(opinion))
             location.news = news.map(news => newsDto(news))
-            location.isUserSubscriber = isUserSubscriber
         }
         return place
+    },
+
+    getVisitsNewsOpinions: async (places, uid) => {
+        const subscribedLocations = await userService.getSubscribedLocations(uid)
+        places = await Promise.all(places.map(async (place) => {
+            place.locations.forEach(loc => {
+                loc['isUserSubscriber'] = subscribedLocations && subscribedLocations.some(location => location._id.toString() === loc._id.toString())
+            })
+            return placeController.getVisitsNewsOpinionsForPlace(place, uid)
+        }))
+        return places
     },
 
     getPlaces: async (req, res, next) => {
@@ -106,9 +114,7 @@ const placeController = {
                     let places
                     if (param === 'uid') {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
-                        places = await Promise.all(places.map(async (place) => {
-                            return placeController.getVisitsNewsOpinions(place, uid)
-                        }))
+                        places = await placeController.getVisitsNewsOpinions(places, uid)
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
@@ -155,7 +161,7 @@ const placeController = {
             const img = req.files && req.files.img
             if (img) placeData.img = img
             const place = await placeService.editPlace(placeData, user)
-            place = placeController.getVisitsNewsOpinions(place)
+            place = await placeController.getVisitsNewsOpinions(place, uid)[0]
             // const placeObject = { ...place._doc }
             // for (const location of placeObject.locations) {
             //     const [visits, opinions, news] = await Promise.all([
@@ -250,9 +256,7 @@ const placeController = {
         const { uid } = cookies
         try {
             let places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
-            places = await Promise.all(places.map(async (place) => {
-                return placeController.getVisitsNewsOpinions(place, uid)
-            }))
+            places = await placeController.getVisitsNewsOpinions(places, uid)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -267,9 +271,7 @@ const placeController = {
         favIds = favIds.split(',')
         try {
             let places = await placeService.getFavoritePlaces(favIds)
-            places = await Promise.all(places.map(async (place) => {
-                return placeController.getVisitsNewsOpinions(place, uid)
-            }))
+            places = await placeController.getVisitsNewsOpinions(places, uid)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -284,9 +286,8 @@ const placeController = {
         const { uid } = cookies
         try {
             let places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
-            places = await Promise.all(places.map(async (place) => {
-                return placeController.getVisitsNewsOpinions(place, uid)
-            }))
+            places = await placeController.getVisitsNewsOpinions(places, uid)
+            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -299,9 +300,8 @@ const placeController = {
         const { uid } = cookies
         try {
             let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
-            places = await Promise.all(places.map(async (place) => {
-                return placeController.getVisitsNewsOpinions(place, uid)
-            }))
+            places = await placeController.getVisitsNewsOpinions(places, uid)
+            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)

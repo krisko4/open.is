@@ -41,7 +41,7 @@ const placeService = {
     // getTop20PlacesSortedBy: (sortParam) => Place.aggregate(placeService.aggregateActiveLocations()).limit(20).exec(),
 
 
-    getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: mongoose.Types.ObjectId(userId) }).exec(),
+    getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: userId }).exec(),
 
     getFavoritePlaces: (favIds) => {
         favIds = favIds.map(el => mongoose.Types.ObjectId(el))

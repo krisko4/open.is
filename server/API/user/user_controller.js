@@ -14,6 +14,7 @@ const userController = {
         const { uid } = req.cookies
         try {
             const subscribedPlaces = await userService.getSubscriptions(uid)
+            console.log(subscribedPlaces)
             return res.status(200).json(subscribedPlaces.map(place => placeDto(place, uid)))
         } catch (err) {
             return next(err)

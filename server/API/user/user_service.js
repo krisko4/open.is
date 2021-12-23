@@ -76,18 +76,18 @@ const userService = {
         return user.save()
     },
     getSubscriptions: async (id) => {
-        const user = await User.findById(id).lean().populate('subscriptions.place').exec()
-        const subscriptions = user.subscriptions.map(subscription => {
+        const user = await User.findById(id).lean().populate('subscriptions.place').exec() 
+        const subscriptions = user.subscriptions && user.subscriptions.map(subscription => {
             const locations = subscription.place.locations.filter(location => subscription.subscribedLocations.some(id => id.toString() === location._id.toString()))
             subscription.place.locations = locations
             return { ...subscription.place }
-        })
+        }) || []
         return subscriptions
     },
     getSubscribedLocations: async (id) => {
         const user = await User.findById(id).lean().exec()
         let subscribedLocations = []
-        if(user.subscriptions){
+        if (user.subscriptions) {
             user.subscriptions.forEach(sub => subscribedLocations = subscribedLocations.concat(sub.subscribedLocations))
         }
         return subscribedLocations
