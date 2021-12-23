@@ -33,7 +33,7 @@ const placeController = {
             case 1:
                 let param = Object.keys(req.query)[0]
                 const paramValue = req.query[param]
-                if(param == 'address') param = 'locations.address'
+                if (param == 'address') param = 'locations.address'
                 let searchObj = {}
                 searchObj[param] = new RegExp(paramValue, 'i')
                 console.log(searchObj)
@@ -74,14 +74,16 @@ const placeController = {
 
     getVisitsNewsOpinions: async (place, uid) => {
         for (const location of place.locations) {
-            const [visits, opinions, news] = await Promise.all([
+            const [visits, opinions, news, isUserSubscriber] = await Promise.all([
                 visitService.getVisitsByLocationId(place._id, location._id, uid),
                 opinionService.getOpinionsBy({ locationId: location._id }),
-                newsService.getNewsBy({ locationId: location._id })
+                newsService.getNewsBy({ locationId: location._id }),
+                userService.isUserSubscriber(location._id, uid)
             ])
-            location.visits = visits.map(visit => visitDto(visit))
+            location.visits = visits && visits.map(visit => visitDto(visit))
             location.opinions = opinions.map(opinion => opinionDto(opinion))
             location.news = news.map(news => newsDto(news))
+            location.isUserSubscriber = isUserSubscriber
         }
         return place
     },

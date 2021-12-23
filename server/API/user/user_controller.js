@@ -6,21 +6,33 @@ const newsService = require('../news/news_service')
 const visitService = require('../visit/visit_service')
 const opinionService = require('../opinion/opinion_service')
 const userDto = require('./model/user_dto')
-
+const placeDto = require('../place/model/place_dto')
 
 const userController = {
 
+    getSubscribedPlaces: async (req, res, next) => {
+        const { uid } = req.cookies
+        try {
+            const subscribedPlaces = await userService.getSubscriptions(uid)
+            return res.status(200).json(subscribedPlaces.map(place => placeDto(place, uid)))
+        } catch (err) {
+            return next(err)
+        }
+
+
+    },
+
     addSubscription: async (req, res, next) => {
         const { locationId } = req.body
-        const {uid} = req.cookies
+        const { uid } = req.cookies
         try {
             const place = await placeService.findByLocationId(locationId)
             if (!place) throw ApiError.badRequest('Invalid placeId')
-            if(place.userId === uid) throw ApiError.internal('You cannot subscribe to your own place')
+            if (place.userId === uid) throw ApiError.internal('You cannot subscribe to your own place')
             const updatedUser = await userService.addSubscription(locationId, place._id, uid)
             console.log(updatedUser)
             return res.status(200).json(updatedUser)
-        }catch(err){
+        } catch (err) {
             return next(err)
         }
     },

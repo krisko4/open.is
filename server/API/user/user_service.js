@@ -19,15 +19,31 @@ const userService = {
 
     addSubscription: async (locationId, placeId, uid) => {
         const user = await User.findById(uid).lean().exec()
-        console.log(user)
         if (!user) throw ApiError.internal(`User with uid: ${uid} not found.`)
         const { subscriptions } = user
-        const subs = subscriptions ? [...subscriptions] : []
-        const isAlreadySubscribed = subs.some(sub => sub.locationId.toString() === locationId)
-        if(isAlreadySubscribed) throw ApiError.internal('User is already a subscriber of this location')
-        subs.push({place: placeId, locationId: locationId})
-        console.log(subs)
-        return User.findByIdAndUpdate(uid, { 'subscriptions': subs }, { new: true, upsert: true }).populate('subscriptions.place').exec()
+        let subs = []
+        if (!subscriptions) {
+            subs.push({
+                place: placeId,
+                subscribedLocations: [locationId]
+            })
+        }
+        else {
+            subs = [...subscriptions]
+            if (!subs.some(sub => sub.place.toString() === placeId.toString())) {
+                subs.push({
+                    place: placeId,
+                    subscribedLocations: [locationId]
+                })
+            }
+            else {
+                const isAlreadySubscribed = subs.some(sub => sub.subscribedLocations.some(loc => loc.toString() === locationId))
+                if (isAlreadySubscribed) throw ApiError.internal('User is already a subscriber of this location')
+                const { subscribedLocations } = subs.find(sub => sub.place.toString() === placeId.toString())
+                subscribedLocations.push(locationId)
+            }
+        }
+        return User.findByIdAndUpdate(uid, { 'subscriptions': subs }, { new: true, upsert: true }).exec()
     },
 
     validateLoggedUser: async (userData) => {
@@ -52,11 +68,37 @@ const userService = {
 
     },
 
+
     activateUser: async (userId) => {
         const user = await User.findById(userId).exec()
         if (!user) throw new Error(`Cannot activate user. User with id ${user._id} not found.`)
         user.isActive = true
         return user.save()
+    },
+    getSubscriptions: async (id) => {
+        const user = await User.findById(id).lean().populate('subscriptions.place').exec()
+        const subscriptions = user.subscriptions.map(subscription => {
+            const locations = subscription.place.locations.filter(location => subscription.subscribedLocations.some(id => id.toString() === location._id.toString()))
+            subscription.place.locations = locations
+            return { ...subscription.place }
+        })
+        return subscriptions
+    },
+    getSubscribedLocations: async (id) => {
+        const user = await User.findById(id).lean().exec()
+        let subscribedLocations = []
+        if(user.subscriptions){
+            user.subscriptions.forEach(sub => subscribedLocations = subscribedLocations.concat(sub.subscribedLocations))
+        }
+        return subscribedLocations
+    },
+
+    isUserSubscriber: async (locationId, uid) => {
+        if (uid) {
+            const subscribedLocations = await userService.getSubscribedLocations(uid)
+            return subscribedLocations && subscribedLocations.some(loc => loc._id.toString() === locationId.toString())
+        }
+        return false
     },
     getUsers: () => User.find().exec(),
     getUserById: (id) => User.findById(id).exec(),

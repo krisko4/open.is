@@ -35,7 +35,18 @@ router.get('/:id',
         userController.getUserById(req, res, next)
     })
 
+router.get('/:id/subscriptions',
+    param('id').notEmpty().isMongoId(),
+    cookie('uid').notEmpty().isMongoId(),
+    validateRequest,
+    (req, res, next) => {
+        userController.getSubscribedPlaces(req, res, next)
+    }
+
+)
+
 router.patch('/:id/subscriptions',
+    param('id').notEmpty().isMongoId(),
     body('locationId').notEmpty().isMongoId(),
     cookie('uid').notEmpty().isMongoId(),
     validateRequest,

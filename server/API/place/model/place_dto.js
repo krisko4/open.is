@@ -2,7 +2,7 @@
 const placeDto = (place, uid) => {
     const placeDto =  place._doc ? convertDoc({...place._doc}) : convertPlaceData(place)
     placeDto['img'] = `${process.env.CLOUDI_URL}/${placeDto['img']}`
-    uid && place.userId == uid ? placeDto['isUserOwner'] = true : placeDto['isUserOwner'] = false
+    placeDto['isUserOwner'] = uid && place.userId == uid 
     return placeDto
 }
 
