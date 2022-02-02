@@ -84,6 +84,18 @@ const placeController = {
         }
         return place
     },
+    getSubscribedPlaces: async (req, res, next) => {
+        const { uid } = req.cookies
+        try {
+            let places = await userService.getSubscribedPlaces(uid)
+            places = await Promise.all(places.map(async (place) => {
+                return placeController.getVisitsNewsOpinionsForPlace(place, uid)
+            }))
+            return res.status(200).json(places.map(place => placeDto(place, uid)))
+        } catch (err) {
+            return next(err)
+        }
+    },
 
     getVisitsNewsOpinions: async (places, uid) => {
         const subscribedLocations = await userService.getSubscribedLocations(uid)
@@ -301,7 +313,6 @@ const placeController = {
         try {
             let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
             places = await placeController.getVisitsNewsOpinions(places, uid)
-            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)

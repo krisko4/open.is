@@ -19,9 +19,10 @@ router.get('/active/favorite', (req, res, next) => {
     placeController.getFavoritePlaces(req, res, next)
 })
 
-router.get('/active', (req, res, next) => {
-    placeController.getActivePlaces(req, res, next)
-})
+router.get('/active',
+    (req, res, next) => {
+        placeController.getActivePlaces(req, res, next)
+    })
 
 router.get('/active/popular', (req, res, next) => {
     placeController.getPopularPlaces(req, res, next)
@@ -65,7 +66,7 @@ router.post('/',
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
     body('description').isString().isLength({ min: 1, max: 600 }),
     body('locations.*.phone').isMobilePhone().notEmpty(),
-    body('locations.*.email').isEmail().optional({nullable: true, checkFalsy: true}),
+    body('locations.*.email').isEmail().optional({ nullable: true, checkFalsy: true }),
     body('locations.*.website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
     body('locations.*.facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
     body('locations.*.instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
@@ -78,14 +79,20 @@ router.post('/',
     }
 )
 
+router.get('/active/subscribed',
+    cookie('uid').notEmpty().isMongoId(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getSubscribedPlaces(req, res, next)
+    }),
 
-// router.delete('/', (req, res, next) => {
-//     placeController.deleteAll(req, res, next)
-// })
+    // router.delete('/', (req, res, next) => {
+    //     placeController.deleteAll(req, res, next)
+    // })
 
-router.delete('/:placeId', (req, res, next) => {
-    placeController.deletePlace(req, res, next)
-})
+    router.delete('/:placeId', (req, res, next) => {
+        placeController.deletePlace(req, res, next)
+    })
 
 
 router.put('/',
@@ -106,7 +113,7 @@ router.put('/',
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
     body('description').isString().isLength({ min: 1, max: 600 }),
     body('phone').isMobilePhone().notEmpty(),
-    body('email').isEmail().optional({nullable: true, checkFalsy: true}),
+    body('email').isEmail().optional({ nullable: true, checkFalsy: true }),
     body('website').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'] }),
     body('facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
     body('instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),

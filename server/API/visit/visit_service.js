@@ -21,8 +21,6 @@ const visitService = {
     getVisitsByLocationId: async (placeId, locationId, userId) => {
         if (userId) {
             const place = await placeService.getPlaceByIdAndUserId(placeId, userId)
-            console.log('co jest')
-            console.log(place)
             if (!place) throw new Error('No place found for provided parameters')
             return Visit.find({ locationId: locationId }).sort({ date: 1 }).exec()
         }
