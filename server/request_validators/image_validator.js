@@ -14,6 +14,7 @@ const imageValidator = {
         req.files ? imageValidator.validateUploadedImage(req, res, next) : next()
     }
 
+    
 }
 
 module.exports = imageValidator
