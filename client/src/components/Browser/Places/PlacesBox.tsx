@@ -2,7 +2,7 @@ import { Tab, Tabs } from "@material-ui/core";
 import Fade from '@material-ui/core/Fade';
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
-import { Subscriptions, Favorite, FiberNew, Star, Timelapse } from "@material-ui/icons";
+import { Favorite, FiberNew, Star, Subscriptions, Timelapse } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -76,7 +76,7 @@ const PlacesBox: FC = () => {
                     places = await getPlaces('/places/active/favorite')
                     break
                 case tabType.SUBSCRIPTIONS:
-                    places = await getPlaces(`/users/${localStorage.getItem('uid')}/subscriptions`)
+                    places = await getPlaces(`/places/active/subscribed`)
                     break
                 default:
                     places = []

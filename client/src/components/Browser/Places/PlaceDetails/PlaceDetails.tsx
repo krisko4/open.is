@@ -5,18 +5,22 @@ import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import { KeyboardReturn } from "@material-ui/icons";
+import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import myAxios from "../../../../axios/axios";
 import { useLoginContext } from "../../../../contexts/LoginContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { LoadingButton } from "../../../reusable/LoadingButton";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
 import { ImagesCarousel } from './ImagesCarousel';
 import MainContent from "./MainContent";
 import { SubscribeDialog } from './SubscribeDialog';
+import { authAxios } from "../../../../axios/axios";
+
 
 
 const useStyles = makeStyles(() =>
@@ -171,7 +175,7 @@ const addVisit = async (place: CurrentPlaceProps) => {
 }
 
 interface Props {
-    currentPlace: any,
+    currentPlace: CurrentPlaceProps,
     popupIndex: number
 
 }
@@ -179,9 +183,13 @@ interface Props {
 
 
 export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
+
     const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
     const { isUserLoggedIn } = useLoginContext()
     const [isDialogOpen, setDialogOpen] = useState(false)
+    const [value, setValue] = useState(0)
+    const [loading, setLoading] = useState(false)
+    const { enqueueSnackbar } = useSnackbar()
 
 
     useEffect(() => {
@@ -201,13 +209,15 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const newsClasses = useNewsStyles()
     const opinionsClasses = useOpinionsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
-
     const history = useHistory()
-    const [value, setValue] = useState(0)
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
 
+    const MyTab = (props: any) => {
+        const { label, ...rest } = props
+        return <Tab {...rest} label={label} disableRipple className={classes.root} />
+    }
     const tabContents = [
         <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
         <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
@@ -227,10 +237,29 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
         })
     }
 
-    const MyTab = (props: any) => {
-        const { label, ...rest } = props
-        return <Tab {...rest} label={label} disableRipple className={classes.root} />
+
+    const unsubscribe = async () => {
+        setLoading(true)
+        try {
+            const res = await authAxios.delete(`/users/${localStorage.getItem('uid')}/subscriptions/${currentPlace._id}`,
+            )
+            enqueueSnackbar('You have cancelled your subscription', {
+                variant: 'info'
+            })
+            const newCurrentPlace = { ...currentPlace }
+            newCurrentPlace.isUserSubscriber = false
+            setCurrentPlace(newCurrentPlace)
+            console.log(res.data)
+        } catch (err) {
+            enqueueSnackbar('Oops, something went wrong', {
+                variant: 'error'
+            })
+        } finally {
+            setLoading(false)
+        }
+
     }
+
 
     return (
         <Grid container>
@@ -241,9 +270,19 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                         <KeyboardReturn />
                     </IconButton>
                     <Grid container justify="flex-end" style={{ paddingRight: 20 }} item>
-                        {currentPlace.isUserSubscriber ? <Button color="primary">
-                            Subscribed
-                        </Button> :
+                        {currentPlace.isUserSubscriber ?
+                            <Tooltip title={'Unsubscribe'} arrow >
+                                <span>
+                                    <LoadingButton
+                                        loading={loading}
+                                        color="primary"
+                                        onClick={() => unsubscribe()}
+                                    >
+                                        Subscribed
+                                    </LoadingButton>
+                                </span>
+                            </Tooltip>
+                            :
                             <Tooltip title={!isUserLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
                                 <span>
                                     <Button
@@ -262,7 +301,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                 </Toolbar>
             </Grid>
             <Grid container>
-                <ImagesCarousel address={currentPlace.address} img={currentPlace.img} />
+                <ImagesCarousel address={currentPlace.address} img={currentPlace.img as string} />
             </Grid>
             <MainContent place={currentPlace} />
             <Grid container style={{ marginTop: 10 }}>

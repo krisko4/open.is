@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/styles"
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react"
 import { authAxios } from "../../../../axios/axios";
+import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 
@@ -35,6 +36,7 @@ const useStyles = makeStyles({
 
 export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDialogOpen }) => {
     const classes = useStyles()
+    const {setCurrentPlace} = useMapContext()
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
 
@@ -48,17 +50,18 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
             enqueueSnackbar('You have subscribed to a new place', {
                 variant: 'success'
             })
-            console.log(res.data)
-
+            const newCurrentPlace = {...currentPlace}
+            newCurrentPlace.isUserSubscriber = true
+            setCurrentPlace(newCurrentPlace)
+            setDialogOpen(false)
 
         } catch (err) {
             enqueueSnackbar('Oops, something went wrong', {
                 variant: 'error'
             })
-        }finally{
+        } finally {
             setLoading(false)
         }
-
     }
 
 
