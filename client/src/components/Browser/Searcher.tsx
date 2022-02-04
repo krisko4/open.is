@@ -14,7 +14,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
 import { RawPlaceDataProps } from "../../contexts/PanelContexts/BusinessChainContext";
 import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
-import { getPlacesBySearchParams, getPlacesWithParams } from "../../requests/PlaceRequests";
+import { getPlacesByName, getPlacesBySearchParams } from "../../requests/PlaceRequests";
 import { convertToCurrentPlace } from "../../utils/place_data_utils";
 
 
@@ -100,7 +100,7 @@ const Searcher: FC = () => {
         }
         setLoading(true)
         const delaySearch = setTimeout(async () => {
-            const names = await getPlacesWithParams('/places/active/name', { name: inputValue })
+            const names = await getPlacesByName(inputValue) 
             if (names.length === 0) {
                 const result = await provider.search({ query: inputValue })
                 result.length > 0 ? setAvailableAddresses([{ name: inputValue, foundBy: 'address' }]) : setAvailableAddresses([])
@@ -114,21 +114,9 @@ const Searcher: FC = () => {
     }, [inputValue]
     )
 
-    // const fetchByAddress = async (place, criterias) => {
-    //     return new Promise((resolve) => {
-    //         getPlacesByAddress(place.label)
-    //             .then((response) => {
-    //                 console.log(response.data)
-    //                 for (const place of response.data) {
-    //                     criterias.push(place)
-    //                 }
-    //                 resolve()
-    //             })
-    //     })
-    // }
 
-    const selectPlace = async (searchParams : SearchParams[]) => {
-        const places : RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
+    const selectPlace = async (searchParams: SearchParams[]) => {
+        const places: RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
         let currentPlaces = places.map(place => convertToCurrentPlace(place))
         let chosenCriterias: CurrentPlaceProps[] = []
         currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
@@ -171,8 +159,6 @@ const Searcher: FC = () => {
                     }}
                 />}
             renderOption={(option: any, { inputValue }) => {
-                //    const label = isPlaceFoundByName.current ? option.name : option.label
-                // const label = isPlaceFoundByName.current ? option.name : option.label
                 const label = option.name
                 const matches = match(label, inputValue);
                 const parts = parse(label, matches);
@@ -201,26 +187,6 @@ const Searcher: FC = () => {
                             </Grid>
                         </Grid>
                     )
-
-                    // <Grid container>
-                    //     <Grid item>
-                    //         <Avatar style={{marginRight: 5}}
-                    //                 src={`${process.env.REACT_APP_BASE_URL}/images/places/${option.img}`}/>
-                    //     </Grid>
-                    //     <Grid item>
-                    //         {parts.map((part, index) => (
-                    //             <span key={index} style={{fontWeight: part.highlight ? 700 : 400}}>
-                    //     <span style={{color: 'white'}}>{part.text}</span>
-                    //         </span>
-                    //         ))}
-                    //         <div>
-                    //             <Typography style={{color: 'white'}} variant="overline">
-                    //                 {option.address}
-                    //             </Typography>
-                    //         </div>
-                    //     </Grid>
-                    // </Grid>
-
                 }
                 return (
                     <Grid container alignItems="center">
@@ -245,17 +211,6 @@ const Searcher: FC = () => {
                         </Grid>
                     </Grid>
                 )
-                // return (
-                // //     // <Grid container>
-                //     //     <Grid item>
-                //     //         {parts.map((part, index) => (
-                //     //             <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                //     //                 <span style={{ color: 'white' }}>{part.text}</span>
-                //     //             </span>
-                //     //         ))}
-                //     //     </Grid>
-                //     // </Grid>
-                // )
             }}
 
 

@@ -1,6 +1,5 @@
 
 import React, { createContext, FC, useContext, useEffect, useState } from "react";
-import { authAxios } from "../axios/axios";
 import { ContextProps } from "./ContextProps";
 
 export const LoginContext = createContext<LoginContextData | null>(null)
@@ -16,7 +15,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
     useEffect(() => {
         const authenticate = async () => {
             try {
-                await authAxios.get('/auth', { withCredentials: true })
+                await authenticate()
                 state.setUserLoggedIn(true)
                 state.setEmail(localStorage.getItem('email') || '')
                 state.setFullName(localStorage.getItem('fullName') || '')
@@ -24,7 +23,6 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
 
             } catch (err) {
                 if (state.isUserLoggedIn) {
-                    await authAxios.get('/logout', { withCredentials: true })
                     localStorage.removeItem('uid')
                     localStorage.removeItem('fullName')
                     localStorage.removeItem('email')

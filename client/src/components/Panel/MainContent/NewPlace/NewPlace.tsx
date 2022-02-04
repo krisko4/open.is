@@ -2,14 +2,13 @@ import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogCo
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { createUnzip } from "zlib";
+import { useHistory } from 'react-router-dom';
 import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../contexts/StepContext";
+import { registerNewPlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
-import { convertToRawPlaceData } from "../../../../utils/place_data_utils";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
@@ -53,12 +52,7 @@ export const NewPlace: FC = () => {
         let key: keyof typeof place
         for (key in place) formData.append(key, place[key])
         formData.append('locations', JSON.stringify(locations))
-        myAxios.post('/places', formData, {
-            withCredentials: true,
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(res => {
+        registerNewPlace(formData).then(res => {
             console.log(res.data)
             const newPlace = res.data.place
             newPlace.img = res.data.place.img

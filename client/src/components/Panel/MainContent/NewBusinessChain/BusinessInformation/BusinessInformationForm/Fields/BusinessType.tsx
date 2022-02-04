@@ -2,19 +2,18 @@ import { TextField } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import { useFormikContext } from "formik"
 import { useEffect, useState } from "react"
-import myAxios from "../../../../../../../axios/axios"
 import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { getBusinessTypes } from "../../../../../../../requests/BusinessTypeRequests"
 
 export const BusinessType = () => {
 
     const [businessTypes, setBusinessTypes] = useState<any>([])
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [type, setType] = useState<string | null>(currentPlace.type)
-    const {setFieldValue} = useFormikContext()
+    const { setFieldValue } = useFormikContext()
 
     useEffect(() => {
-        myAxios.get('/business_types')
-            .then(res => setBusinessTypes(res.data))
+        getBusinessTypes().then(res => setBusinessTypes(res.data))
             .catch(err => console.log(err))
     }, [])
 

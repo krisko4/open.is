@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import myAxios from "../../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status } from "../../../../../contexts/PanelContexts/PanelContext";
+import { setPlaceStatus } from "../../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
 import { convertToRawPlaceData } from "../../../../../utils/place_data_utils";
@@ -49,12 +50,10 @@ export const PlaceData: FC = () => {
     const location = useLocation()
 
 
-    const setPlaceStatus = async (status: Status) => {
+    const setStatus = async (status: Status) => {
         setLoading(true)
         try {
-            await myAxios.patch(`/places/${currentPlace._id}/status`, {
-                status: status
-            })
+            await setPlaceStatus(currentPlace._id as string, status)
             if (currentPlace) {
                 let oldPlace = places.find(place => place.locations.find(location => location._id = currentPlace._id))
                 console.log(oldPlace)
@@ -123,11 +122,11 @@ export const PlaceData: FC = () => {
                                         </Typography>
                                         <Grid container style={{ marginTop: 20 }} justify="space-between" alignItems="center">
                                             {currentPlace.status === Status.OPEN ? <>
-                                                <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setPlaceStatus(Status.CLOSED)} >Close</LoadingButton>
+                                                <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setStatus(Status.CLOSED)} >Close</LoadingButton>
                                                 <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
                                             </>
                                                 : <>
-                                                    <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setPlaceStatus(Status.OPEN)}>Open</LoadingButton>
+                                                    <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setStatus(Status.OPEN)}>Open</LoadingButton>
                                                     <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
                                                 </>
                                             }

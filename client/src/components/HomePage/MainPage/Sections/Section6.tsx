@@ -21,7 +21,7 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
                 <Grid container alignItems="center" style={{ marginTop: 40 }} direction="column">
                     <Grid item lg={6} style={{ textAlign: 'center' }} xs={10}>
                         <Typography variant="h5" style={{ color: 'white' }}>Watch your business grow using our dedicated panel</Typography>
-                        <Typography variant="subtitle1" style={{ color: 'lightgrey', textAlign: 'center' }}>
+                        <Typography variant="subtitle1" style={{ color: 'lightgrey', marginTop: 10, textAlign: 'center' }}>
                             Your success is our goal. For this reason we have built a platform where our users are able
                             to manage their places and keep track of all the activity related to their businesses.
                             Using interactive charts, you can observe the amount of people visiting your profile

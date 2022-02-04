@@ -1,6 +1,7 @@
-import myAxios from "../axios/axios";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
+import myAxios from "../axios/axios";
 import { SearchParams } from "../components/Browser/Searcher";
+import { Status } from "../contexts/PanelContexts/PanelContext";
 
 
 const provider = new OpenStreetMapProvider({
@@ -9,14 +10,14 @@ const provider = new OpenStreetMapProvider({
     }
 });
 
-export const findByAddress = async (inputValue : string) => {
+export const findByAddress = async (inputValue: string) => {
     const result = await provider.search({ query: inputValue })
     if (result) {
         const inputArray = inputValue.split(' ')
         const upperCasedInputArray = inputArray.map((input) => {
             return input.charAt(0).toUpperCase() + input.slice(1)
         })
-        result.forEach((address : any) => {
+        result.forEach((address: any) => {
             const addressArray = address.label.split(', ')
             const filteredAddressArray = addressArray.filter((address: any) => {
                 return !upperCasedInputArray.includes(address)
@@ -32,27 +33,25 @@ export const findByAddress = async (inputValue : string) => {
 
 
 export const getPlacesBySearchParams = async (searchParams: SearchParams[]) => {
-    const names : string[] = []
-    const addresses : string[] = []
+    const names: string[] = []
+    const addresses: string[] = []
     searchParams.forEach((param) => param.foundBy === 'name' ? names.push(param.name) : addresses.push(param.name))
-    const params : any = {}
+    const params: any = {}
     if (addresses.length > 0) params['address'] = addresses.join('|')
     if (names.length > 0) params['name'] = names.join('|')
     return getPlacesWithParams('/places/active', params)
 }
 
-export const getPlacesByAddress  = (address : string) => {
+export const getPlacesByAddress = (address: string) => {
     return myAxios.get('/places/active', {
-        withCredentials: true,
         params: {
             address: address
         }
     })
 }
 
-export const getPlaceByLatLng = (lat : number, lng : number) => {
+export const getPlaceByLatLng = (lat: number, lng: number) => {
     return myAxios.get('/places', {
-        withCredentials: true,
         params: {
             lat: lat,
             lng: lng
@@ -61,15 +60,13 @@ export const getPlaceByLatLng = (lat : number, lng : number) => {
 }
 
 
-export const incrementVisitCount = (placeId : string) => {
+export const incrementVisitCount = (placeId: string) => {
     return myAxios.patch(`/places/${placeId}/visit-count`)
 }
 
-export const getPlaces = async (url : string) => {
+export const getPlaces = async (url: string) => {
     try {
-        const response = await myAxios.get(url, {
-            withCredentials: true
-        })
+        const response = await myAxios.get(url)
         return response.data
     } catch (err) {
         console.log(err)
@@ -77,11 +74,35 @@ export const getPlaces = async (url : string) => {
 
 }
 
-export const getPlacesWithParams = async (url : string, params: any) => {
+export const registerNewPlace = (data: FormData) => myAxios.post('/places', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+})
+
+export const updatePlaceData = (data: FormData) => myAxios.put('/places', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+})
+
+export const setPlaceStatus = (placeId : string, status: Status) =>
+    myAxios.patch(`/places/${placeId}/status`, {
+        status: status
+    })
+
+export const deletePlace = (placeId: string) =>
+    myAxios.delete(`/places/${placeId}`)
+
+
+export const getPlacesByName = (name: string) => getPlacesWithParams('/places/active/name', { name: name })
+
+export const getPlacesByUserId = (uid: string) => getPlacesWithParams('/places', { uid: uid })
+
+const getPlacesWithParams = async (url: string, params: any) => {
     try {
         const response = await myAxios.get(url, {
             params: params,
-            withCredentials: true
         })
         return response.data
     } catch (err) {

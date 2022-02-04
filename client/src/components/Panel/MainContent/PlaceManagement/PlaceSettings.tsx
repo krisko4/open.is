@@ -6,16 +6,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useSnackbar } from "notistack";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ChosenOptions, usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { ChosenOptions } from "../../../../contexts/PanelContexts/PanelContext";
 import { StepContextProvider } from "../../../../contexts/StepContext";
+import { deletePlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
-import { useSelectedOptionSelector } from "../../../../store/selectors/SelectedOptionSelector";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { EditPlace } from "./EditPlace";
 
@@ -47,10 +46,10 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
         setOpen(false)
     }
 
-    const deletePlace = async () => {
+    const deleteMyPlace = async () => {
         setLoading(true)
         try {
-            await myAxios.delete(`/places/${currentPlace._id}`)
+            await deletePlace(currentPlace._id as string)
             enqueueSnackbar('You have successfully deleted your place', {
                 variant: 'success'
             })
@@ -100,7 +99,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
                         </DialogContent>
                         <DialogActions>
                             <Button color="primary" onClick={() => setDeleteOpen(false)}>Cancel</Button>
-                            <LoadingButton loading={loading} disabled={businessName !== currentPlace.name || loading} color="primary" onClick={() => deletePlace()}>Delete my place</LoadingButton>
+                            <LoadingButton loading={loading} disabled={businessName !== currentPlace.name || loading} color="primary" onClick={() => deleteMyPlace()}>Delete my place</LoadingButton>
                         </DialogActions>
                     </Dialog>
                 </Toolbar>

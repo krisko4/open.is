@@ -10,14 +10,14 @@ import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { login } from "../../../store/actions/login";
 import { LoadingButton } from "../../reusable/LoadingButton";
 import {setEmail} from "../../../store/actions/setEmail"
 import { useLoginContext } from "../../../contexts/LoginContext";
+import { login } from "../../../requests/AuthRequests";
 
-interface UserData {
+
+export interface UserData {
     email: string,
     password: string
 }
@@ -48,7 +48,7 @@ export const LoginForm = () => {
         setLoading(true)
         dispatch(setEmail(userData.email))
         try {
-            const response = await authAxios.post('/login', { ...userData }, { withCredentials: true })
+            const response = await login({...userData})
             console.log(response.data)
             localStorage.setItem('uid', response.data.uid)
             localStorage.setItem('fullName', response.data.fullName)

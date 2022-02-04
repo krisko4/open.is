@@ -1,9 +1,9 @@
-import { Button, CardMedia, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import React, { FC } from "react";
 import { useAuthContext } from "../../../../contexts/AuthContext";
-import { Parallax } from "react-parallax"
+import { useLoginContext } from "../../../../contexts/LoginContext";
 import { useAuthSelector } from "../../../../store/selectors/AuthSelector";
 
 
@@ -35,7 +35,7 @@ const Section2: FC = () => {
     const classes = useStyles()
 
     const { setLoginOpen } = useAuthContext()
-    const isUserLoggedIn = useAuthSelector()
+    const {isUserLoggedIn} = useLoginContext()
     return (
         
                 <Grid container

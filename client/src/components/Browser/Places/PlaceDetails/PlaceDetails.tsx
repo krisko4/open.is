@@ -12,6 +12,8 @@ import myAxios from "../../../../axios/axios";
 import { useLoginContext } from "../../../../contexts/LoginContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { removeSubscription } from "../../../../requests/SubscriptionRequests";
+import { addNewVisit } from "../../../../requests/VisitRequests";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
@@ -19,7 +21,6 @@ import { Opinions } from "../../../reusable/Opinions/Opinions";
 import { ImagesCarousel } from './ImagesCarousel';
 import MainContent from "./MainContent";
 import { SubscribeDialog } from './SubscribeDialog';
-import { authAxios } from "../../../../axios/axios";
 
 
 
@@ -163,10 +164,7 @@ const useOpeningHoursStyles = makeStyles({
 
 const addVisit = async (place: CurrentPlaceProps) => {
     try {
-        const response = await myAxios.post('/visits', {
-            date: new Date(),
-            placeId: place._id
-        })
+        const response = await addNewVisit(place._id as string) 
         return response.data
     } catch (err) {
         console.log(err)
@@ -241,8 +239,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const unsubscribe = async () => {
         setLoading(true)
         try {
-            const res = await authAxios.delete(`/users/${localStorage.getItem('uid')}/subscriptions/${currentPlace._id}`,
-            )
+            const res = await removeSubscription(currentPlace._id as string) 
             enqueueSnackbar('You have cancelled your subscription', {
                 variant: 'info'
             })

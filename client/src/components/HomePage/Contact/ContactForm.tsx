@@ -5,6 +5,7 @@ import React, { FC, useState } from "react";
 import myAxios from "../../../axios/axios";
 import { LoadingButton } from "../../reusable/LoadingButton";
 import * as Yup from 'yup'
+import { sendContactMessage } from "../../../requests/ContactRequests";
 
 
 const ContactSchema = Yup.object().shape({
@@ -13,7 +14,7 @@ const ContactSchema = Yup.object().shape({
     content: Yup.string().required().max(400)
 })
 
-const initialValues = {
+export const initialValues = {
     name: '',
     email: '',
     content: ''
@@ -32,12 +33,7 @@ export const ContactForm: FC = () => {
 
     const handleSubmit = (values: typeof initialValues) => {
         setLoading(true)
-        myAxios.post('/contact', 
-        {
-            ...values,
-            date: new Date()
-        })
-            .then(res => {
+            sendContactMessage(values).then(res => {
                 enqueueSnackbar('Thank you. We have received your message.', {
                     variant: 'success'
                 })

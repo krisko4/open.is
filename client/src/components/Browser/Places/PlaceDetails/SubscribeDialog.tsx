@@ -1,11 +1,11 @@
-import { DialogTitle, DialogContent, DialogActions, Dialog, SlideProps, Slide, Grid, Typography, CardMedia, Button } from "@material-ui/core"
+import { CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/styles";
 import { useSnackbar } from "notistack";
-import React, { FC, useState } from "react"
-import { authAxios } from "../../../../axios/axios";
+import React, { FC, useState } from "react";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { addSubscription } from "../../../../requests/SubscriptionRequests";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 
 interface Props {
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDialogOpen }) => {
     const classes = useStyles()
-    const {setCurrentPlace} = useMapContext()
+    const { setCurrentPlace } = useMapContext()
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
 
@@ -44,13 +44,11 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
     const setSubscription = async () => {
         setLoading(true)
         try {
-            const res = await authAxios.patch(`/users/${localStorage.getItem('uid')}/subscriptions`, {
-                locationId: currentPlace._id
-            })
-            enqueueSnackbar('You have subscribed to a new place', {
-                variant: 'success'
-            })
-            const newCurrentPlace = {...currentPlace}
+            const res = await addSubscription(currentPlace._id as string)
+                enqueueSnackbar('You have subscribed to a new place', {
+                    variant: 'success'
+                })
+            const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.isUserSubscriber = true
             setCurrentPlace(newCurrentPlace)
             setDialogOpen(false)

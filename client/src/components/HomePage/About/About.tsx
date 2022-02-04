@@ -1,13 +1,13 @@
+import { makeStyles } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
-import Carousel from 'react-material-ui-carousel'
-import { Paper, Button, Grid, Typography, createStyles, makeStyles } from '@material-ui/core'
+import Carousel from 'react-material-ui-carousel';
+import { useLocation } from 'react-router';
 import { AuthContextProvider } from '../../../contexts/AuthContext';
 import Header from '../MainPage/Header';
-import { Section1 } from "./Section1"
-import { Section2 } from "./Section2"
-import { Section3 } from "./Section3"
-import {Team} from "./Team"
-import { useLocation } from 'react-router';
+import { Section1 } from "./Section1";
+import { Section2 } from "./Section2";
+import { Section3 } from "./Section3";
+import { Team } from "./Team";
 
 const useSection1Styles = makeStyles({
     background: {
@@ -47,14 +47,8 @@ const useSection3Styles = makeStyles({
         color: 'white'
     }
 })
-export const About: FC = (props) => {
+export const About: FC = () => {
 
-
-    const location = useLocation()
-
-    useEffect(() => {
-        console.log(location.pathname)
-    }, [])
 
     const section1Classes = useSection1Styles()
     const section2Classes = useSection2Styles()
@@ -73,7 +67,6 @@ export const About: FC = (props) => {
             <Header />
             <Carousel navButtonsAlwaysVisible fullHeightHover={false}  autoPlay={false} indicators={false}>
                 {items.map((item, i) => <div key={i}>{item}</div>)
-                    // items.map((item, i) => <Grid container align)
                 }
             </Carousel>
             {currentSection === 2 && <Team/>}
@@ -81,21 +74,4 @@ export const About: FC = (props) => {
     )
 }
 
-// interface Props {
-//     item: {
-//         name: string,
-//         description: string,
-//         backgroundImage: string,
-//         content: any
-//     }
-// }
-
-// const Item: FC<Props> = ({ item }) => {
-//     return (
-//         <Grid container alignItems="center" className={item.} }}>
-//             { item.content }
-
-//         </Grid >
-//     )
-// }
 

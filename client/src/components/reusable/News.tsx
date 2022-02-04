@@ -17,16 +17,16 @@ import { ClassNameMap } from "@material-ui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { useSnackbar } from "notistack";
 import React, { FC, useRef, useState } from "react";
-import myAxios from "../../axios/axios";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
+import { addNews } from "../../requests/NewsRequests";
 import { LoadingButton } from "./LoadingButton";
 
 
 
 interface Props {
     classes: ClassNameMap<"paper" | "content" | "title" | "dialog" | "date">,
- 
+
     currentPlace: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<any>,
 
@@ -40,14 +40,14 @@ type OpenNews = {
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export const News: FC<Props> = ({classes, currentPlace, setCurrentPlace}) => {
+export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [newsTitle, setNewsTitle] = useState('')
     const [newsContent, setNewsContent] = useState('')
     const emojiSource = useRef<'title' | 'content'>('title')
-    const {isUserLoggedIn} = useLoginContext()
+    const { isUserLoggedIn } = useLoginContext()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
     const [openNews, setOpenNews] = useState<OpenNews>({
         isOpen: false,
@@ -57,36 +57,30 @@ export const News: FC<Props> = ({classes, currentPlace, setCurrentPlace}) => {
 
     const submitNews = () => {
         setLoading(true)
-        myAxios.post('/news', {
-            title: newsTitle,
-            content: newsContent,
-            locationId: currentPlace._id
-        }, {
-            withCredentials: true
-        }).then(res => {
-            
-            currentPlace.news = currentPlace.news && [res.data, ...currentPlace.news]
-            setCurrentPlace({...currentPlace})
-            enqueueSnackbar('News added successfully', {
-                variant: 'success'
-            })
+        addNews(newsTitle, newsContent, currentPlace._id as string)
+            .then(res => {
+                currentPlace.news = currentPlace.news && [res.data, ...currentPlace.news]
+                setCurrentPlace({ ...currentPlace })
+                enqueueSnackbar('News added successfully', {
+                    variant: 'success'
+                })
 
-            setDialogOpen(false)
-        }).catch(err => {
-            console.log(err)
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
+                setDialogOpen(false)
+            }).catch(err => {
+                console.log(err)
+                enqueueSnackbar('Oops, something went wrong', {
+                    variant: 'error'
+                })
+            }).finally(() => {
+                setLoading(false)
             })
-        }).finally(() => {
-            setLoading(false)
-        })
     }
 
     const handleEmoji = (emoji: IEmojiData) => {
         setEmojiPickerOpen(false)
         emojiSource.current === 'title' ? setNewsTitle(title => title + emoji.emoji) : setNewsContent(content => content + emoji.emoji)
     }
-    
+
     return (
         <Grid container direction="column" style={{ height: '100%' }}>
             {currentPlace.news && currentPlace.news.length > 0 ?

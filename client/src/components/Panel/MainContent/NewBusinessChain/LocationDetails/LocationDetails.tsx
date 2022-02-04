@@ -1,14 +1,13 @@
-import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Paper, Slide, SlideProps, Typography } from "@material-ui/core"
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Paper, Slide, SlideProps, Typography } from "@material-ui/core"
 import { useSnackbar } from "notistack"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { Location } from './Location'
-import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
-import { authAxios } from "../../../../../axios/axios"
-import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
-import { LoadingButton } from "../../../../reusable/LoadingButton"
 import { useHistory } from "react-router-dom"
+import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
+import { registerNewPlace } from "../../../../../requests/PlaceRequests"
+import { LoadingButton } from "../../../../reusable/LoadingButton"
+import { Location } from './Location'
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -60,12 +59,13 @@ export const LocationDetails: FC<Props> = ({setOpen, addressSubmitted, imageFile
         for (key in businessSummary) formData.append(key, businessSummary[key])
         formData.append('locations', JSON.stringify(locations))
         try {
-            const res = await authAxios.post('/places', formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+            // const res = await authAxios.post('/places', formData, {
+            //     withCredentials: true,
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data'
+            //     }
+            // })
+            const res = await registerNewPlace(formData)
             console.log(res.data)
             enqueueSnackbar('You have successfully registered your business chain', {
                 variant: 'success'

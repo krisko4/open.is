@@ -7,6 +7,7 @@ import LockIcon from '@material-ui/icons/Lock'
 import { KeyboardTimePicker } from "@material-ui/pickers"
 import { useSnackbar } from "notistack"
 import myAxios from "../../../axios/axios"
+import { changeOpeningHours } from "../../../requests/OpeningHoursRequests"
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const hours = ['10:00 - 17:00', 'closed', '10:00 - 17:00', '12:00 - 15:00', '7:30 - 18:50', 'closed', 'closed']
@@ -94,7 +95,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
 
     const submitForm = (values: any) => {
         setLoading(true)
-        const hours: any = {
+        const hours : any = {
             monday: {
                 startHour: values.mondayStart,
                 endHour: values.mondayEnd,
@@ -134,23 +135,22 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
         disabledIndices.forEach(index => {
             hours[Object.keys(hours)[index]].isOpen = false
         })
-        myAxios.patch(`/places/${currentPlace?._id}/opening-hours`, hours)
-            .then(res => {
-                console.log(res.data)
-                enqueueSnackbar('Opening hours changed successfully', {
-                    variant: 'success'
-                })
-                const newCurrentPlace = { ...currentPlace }
-                newCurrentPlace.openingHours = hours
-                setCurrentPlace(newCurrentPlace)
-                setDialogOpen(false)
+        changeOpeningHours(currentPlace._id as string, hours).then(res => {
+            console.log(res.data)
+            enqueueSnackbar('Opening hours changed successfully', {
+                variant: 'success'
+            })
+            const newCurrentPlace = { ...currentPlace }
+            newCurrentPlace.openingHours = hours
+            setCurrentPlace(newCurrentPlace)
+            setDialogOpen(false)
 
-            }).catch(err => {
-                console.log(err)
-                enqueueSnackbar('Oops, something went wrong', {
-                    variant: 'error'
-                })
-            }).finally(() => setLoading(false))
+        }).catch(err => {
+            console.log(err)
+            enqueueSnackbar('Oops, something went wrong', {
+                variant: 'error'
+            })
+        }).finally(() => setLoading(false))
     }
 
     return (
@@ -158,7 +158,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
             initialValues={{ ...startSchedule, ...endSchedule }}
             onSubmit={submitForm}
         >
-            {({initialValues}) => (
+            {({ initialValues }) => (
                 <Form>
                     <DialogContent>
                         <DialogContentText className="dialogContentText" style={{ textAlign: 'center' }}>
@@ -190,7 +190,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
                         </Grid>
                     </DialogContent>
                     <DialogActions style={{ marginTop: 30 }}>
-                        <LoadingButton type="submit" loading={loading}  disabled={disabledIndices.length > 6 || loading} color="primary">Submit</LoadingButton>
+                        <LoadingButton type="submit" loading={loading} disabled={disabledIndices.length > 6 || loading} color="primary">Submit</LoadingButton>
                     </DialogActions>
                 </Form>
 

@@ -1,20 +1,18 @@
-import { Avatar, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from '@material-ui/icons/Add';
-import { Rating } from "@material-ui/lab";
-import { ClassNameMap } from "@material-ui/styles";
-import { format } from "date-fns";
-import { useSnackbar } from "notistack";
-import React, { FC, useEffect, useState } from "react";
-import myAxios from "../../../axios/axios";
-import { useAuthSelector } from "../../../store/selectors/AuthSelector";
-import { LoadingButton } from "../LoadingButton";
-import Alert from '@material-ui/lab/Alert';
-import Picker, { IEmojiData } from 'emoji-picker-react';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
-import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { Rating } from "@material-ui/lab";
+import Alert from '@material-ui/lab/Alert';
+import { ClassNameMap } from "@material-ui/styles";
+import Picker, { IEmojiData } from 'emoji-picker-react';
+import { useSnackbar } from "notistack";
+import React, { FC, useState } from "react";
 import { useLoginContext } from "../../../contexts/LoginContext";
-import {OpinionCard} from './OpinionCard'
+import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { addOpinion } from "../../../requests/OpinionRequests";
+import { LoadingButton } from "../LoadingButton";
+import { OpinionCard } from './OpinionCard';
 
 
 
@@ -50,13 +48,13 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
         setLoading(true)
         if (noteValue) {
             const opinion = {
-                authorId: localStorage.getItem('uid'),
-                locationId: currentPlace._id,
+                authorId: localStorage.getItem('uid') as string,
+                locationId: currentPlace._id as string,
                 content: opinionText,
                 note: noteValue
             }
             try {
-                const res = await myAxios.post('/opinions', opinion)
+                const res = await addOpinion(opinion)
                 console.log(res.data)
                 const updatedPlace = { ...currentPlace }
                 updatedPlace.averageNote = res.data.averageNote

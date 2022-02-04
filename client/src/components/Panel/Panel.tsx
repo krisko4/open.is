@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/styles";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import myAxios from "../../axios/axios";
 import { useLoginContext } from "../../contexts/LoginContext";
+import { getPlacesByUserId } from "../../requests/PlaceRequests";
 import { setPlaces } from '../../store/actions/setPlaces';
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
@@ -33,12 +33,8 @@ export const Panel: FC = () => {
             return
         } (async function () {
             try {
-                const response = await myAxios.get('/places', {
-                    withCredentials: true,
-                    params: {
-                        uid: localStorage.getItem('uid')
-                    }
-                })
+                const uid : string = localStorage.getItem('uid') as string
+                const response = await getPlacesByUserId(uid)
                 console.log(response.data)
                 dispatch(setPlaces(response.data))
                 if (response.data.length === 0) {

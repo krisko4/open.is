@@ -3,6 +3,7 @@ import { FastField, Form, useFormikContext } from "formik"
 import { FC, useEffect, useState } from "react"
 import myAxios from "../../../../../../axios/axios"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { getBusinessTypes } from "../../../../../../requests/BusinessTypeRequests"
 import { LoadingButton } from "../../../../../reusable/LoadingButton"
 import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/BusinessType"
 import { Description } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Description"
@@ -17,8 +18,7 @@ export const PlaceDetailsForm: FC = () => {
     const [businessTypes, setBusinessTypes] = useState<any>([])
 
     useEffect(() => {
-        myAxios.get('/business_types')
-            .then(res => setBusinessTypes(res.data))
+        getBusinessTypes().then(res => setBusinessTypes(res.data))
             .catch(err => console.log(err))
     }, [])
 

@@ -8,29 +8,28 @@ import React, { FC, useState } from "react";
 import myAxios from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { LoadingButton } from "../../reusable/LoadingButton";
-import {useEmailSelector} from '../../../store/selectors/EmailSelector'
+import { useEmailSelector } from '../../../store/selectors/EmailSelector'
+import { resendConfirmationEmail } from "../../../requests/AuthRequests";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export const EmailConfirmation : FC = () => {
+export const EmailConfirmation: FC = () => {
 
-    const {confirmationOpen, setConfirmationOpen, setLoginOpen} = useAuthContext()
+    const { confirmationOpen, setConfirmationOpen, setLoginOpen } = useAuthContext()
     const email = useEmailSelector()
-    const {enqueueSnackbar} = useSnackbar()
+    const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
 
-    const resendEmail = async (email : string) => {
+    const resendEmail = async (email: string) => {
         setLoading(true)
-        try{
-            await myAxios.post('/registration/resend-email', {
-                email: email
-            })
+        try {
+            await resendConfirmationEmail(email)
             enqueueSnackbar('Confirmation e-mail sent successfully.', {
                 variant: 'success'
             })
-        }catch(err){
+        } catch (err) {
             console.error(err)
-        }finally{
+        } finally {
             setLoading(false)
         }
 
@@ -44,29 +43,29 @@ export const EmailConfirmation : FC = () => {
             fullWidth={true}
             maxWidth={'xs'}
         >
-            <Grid container style={{marginTop: 10}} justify="center">
-                <Grid item lg={6} style={{textAlign: 'center'}}>
+            <Grid container style={{ marginTop: 10 }} justify="center">
+                <Grid item lg={6} style={{ textAlign: 'center' }}>
                     <Typography variant="h4">
                         Thank you!
                     </Typography>
 
                 </Grid>
             </Grid>
-            <Grid container style={{marginTop: 20}} justify="center">
-                <Grid item lg={10} style={{textAlign: 'center'}}>
+            <Grid container style={{ marginTop: 20 }} justify="center">
+                <Grid item lg={10} style={{ textAlign: 'center' }}>
                     <Typography>
-                        Your account has been created, but is inactive. Activation message has been sent to your e-mail:<br/> <b>{email}</b><br/>
+                        Your account has been created, but is inactive. Activation message has been sent to your e-mail:<br /> <b>{email}</b><br />
                         To activate your account, please visit your e-mail. In case you've not received an e-mail, please press the button below.
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid container style={{marginTop: 20, marginBottom: 20}} justify="center">
+            <Grid container style={{ marginTop: 20, marginBottom: 20 }} justify="center">
                 <LoadingButton
-                variant="contained"
-                color="primary"
-                loading={loading}
-                disabled={loading}
-                onClick={() => resendEmail(email)}
+                    variant="contained"
+                    color="primary"
+                    loading={loading}
+                    disabled={loading}
+                    onClick={() => resendEmail(email)}
                 >
                     Resend confirmation e-mail
                 </LoadingButton>
@@ -76,9 +75,9 @@ export const EmailConfirmation : FC = () => {
                     Once confirmed, your account will be available to use.
                 </Typography>
             </Grid>
-            <Grid container style={{marginTop: 10}}>
-                <Grid item style={{marginLeft: 5, marginBottom: 5}}>
-                    <Button variant="text" color="primary" onClick={() => {setConfirmationOpen(false); setLoginOpen(true)}}>
+            <Grid container style={{ marginTop: 10 }}>
+                <Grid item style={{ marginLeft: 5, marginBottom: 5 }}>
+                    <Button variant="text" color="primary" onClick={() => { setConfirmationOpen(false); setLoginOpen(true) }}>
                         Return
                     </Button>
                 </Grid>

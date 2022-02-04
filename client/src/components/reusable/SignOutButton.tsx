@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import React, { FC } from 'react';
-import { authAxios } from '../../axios/axios';
 import { useLoginContext } from '../../contexts/LoginContext';
+import { signOut } from '../../requests/AuthRequests';
 
 
 export const SignOutButton: FC<any> = (props) => {
@@ -11,8 +11,8 @@ export const SignOutButton: FC<any> = (props) => {
     const { children } = props
 
 
-    const signOut = async () => {
-        await authAxios.get('/logout', { withCredentials: true })
+    const logout = async () => {
+        await signOut()
         setUserLoggedIn(false)
         setEmail('')
         localStorage.removeItem('uid')
@@ -24,6 +24,6 @@ export const SignOutButton: FC<any> = (props) => {
         })
     }
 
-    return <Button {...props} onClick={signOut}>{children}</Button>
+    return <Button {...props} onClick={logout}>{children}</Button>
 
 }

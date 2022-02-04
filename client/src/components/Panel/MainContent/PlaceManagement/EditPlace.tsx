@@ -6,6 +6,7 @@ import myAxios from "../../../../axios/axios";
 import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
+import { updatePlaceData } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils";
@@ -39,17 +40,12 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
         let key: keyof typeof changedPlace
         for (key in currentPlace) formData.append(key, changedPlace[key])
         try {
-            const res = await myAxios.put('/places', formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+            const res = await updatePlaceData(formData)
             console.log(res.data)
 
             const placeBeforeUpdate = places.find(place => place.locations.find(location => location._id === currentPlace._id))
             const rawPlaceDataAfterUpdate = res.data.place
-            if(placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
+            if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
             dispatch(setPlaces([...places]))
             setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
             enqueueSnackbar('You have successfully modified your place', {

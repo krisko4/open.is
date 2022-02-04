@@ -1,13 +1,10 @@
 import { Grid, Typography } from "@material-ui/core";
 import { Formik } from "formik";
-import React, { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import myAxios from "../../../../../../axios/axios";
+import React, { FC, useState } from "react";
+import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-import * as Yup from 'yup'
 import { PlaceDetailsForm } from "./PlaceDetailsForm";
-import {CoolForm} from './CoolForm'
 
 const PlaceDetailsSchema = Yup.object().shape({
     subtitle: Yup.string().required().max(100),

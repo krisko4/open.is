@@ -2,6 +2,7 @@ import { useSnackbar } from "notistack";
 import { FC, useEffect } from "react";
 import { useHistory, useParams } from "react-router";
 import myAxios from "../../axios/axios";
+import { confirmRegistrationToken } from "../../requests/AuthRequests";
 
 interface Params {
     token: string
@@ -14,8 +15,7 @@ export const Confirmation: FC = () => {
     const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
-        myAxios.get(`/confirmation/${token}`)
-            .then(() => {
+            confirmRegistrationToken(token).then(() => {
                 enqueueSnackbar(`Your account has been activated. You can sign in now.`, {
                     variant: 'info'
                 })

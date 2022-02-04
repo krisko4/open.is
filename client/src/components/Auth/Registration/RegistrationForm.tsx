@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -11,14 +11,11 @@ import * as React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import myAxios, { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { setEmail } from "../../../store/actions/setEmail";
 import { LoadingButton } from "../../reusable/LoadingButton";
-import { FacebookLoginButton } from "../FacebookLoginButton";
-import { GoogleLoginButton } from "../GoogleLoginButton";
 
-const registrationFields = {
+export const registrationFields = {
     firstName: '',
     lastName: '',
     email: '',
@@ -61,31 +58,26 @@ const SignupSchema = Yup.object().shape({
 
 export const RegistrationForm = () => {
 
-    const { setLoginOpen, setRegistrationOpen, setConfirmationOpen} = useAuthContext()
+    const { setLoginOpen, setRegistrationOpen, setConfirmationOpen } = useAuthContext()
     const [errorMessage, setErrorMessage] = useState('')
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
 
-    const signInWithFacebook = () => {
-        console.log('witam')
-        authAxios.get('/auth/facebook')
-    }
 
     const signUp = async (userData: typeof registrationFields) => {
         setLoading(true)
         setErrorMessage('')
         console.log(userData)
         try {
-            await myAxios.post('/registration', { ...userData })
-            // setEmail(userData['email'])
+            await signUp(userData)
             dispatch(setEmail(userData['email']))
             setRegistrationOpen(false)
             setConfirmationOpen(true)
             enqueueSnackbar('You have successfully registered', {
                 variant: 'success'
             })
-        } catch (err : any) {
+        } catch (err: any) {
             console.error(err)
             enqueueSnackbar('Registration failed', {
                 variant: 'error'
@@ -114,7 +106,7 @@ export const RegistrationForm = () => {
                                         <Typography variant="body2" style={{ color: 'grey' }}>Please sign up to
                                             continue</Typography>
                                     </Grid>
-                                    {errorMessage && <Typography variant="caption" style={{textAlign: 'center'}} color="secondary">{errorMessage}</Typography>}
+                                    {errorMessage && <Typography variant="caption" style={{ textAlign: 'center' }} color="secondary">{errorMessage}</Typography>}
                                     <Grid item container justify="space-between" lg={10} style={{ textAlign: 'center' }}>
                                         <Grid item lg={5} style={{ marginBottom: 10 }}>
                                             <Field as={TextField} onKeyDown={isLetter} fullWidth={true}

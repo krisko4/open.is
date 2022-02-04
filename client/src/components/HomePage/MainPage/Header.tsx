@@ -1,21 +1,14 @@
-import { Grow, IconButton } from "@material-ui/core";
+import { Grow } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import HomeIcon from '@material-ui/icons/Home';
 import { useSnackbar } from "notistack";
 import { FC, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import HomeIcon from '@material-ui/icons/Home';
 import { useHistory, useLocation } from 'react-router-dom';
-import { authAxios } from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { usePageContext } from "../../../contexts/PageContext";
-import { logout } from "../../../store/actions/logout";
-import { setEmail } from "../../../store/actions/setEmail";
-import { useAuthSelector } from "../../../store/selectors/AuthSelector";
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { SignOutButton } from "../../reusable/SignOutButton";
 const useStyles = makeStyles(() =>
