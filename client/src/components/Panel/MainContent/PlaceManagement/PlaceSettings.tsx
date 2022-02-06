@@ -15,6 +15,7 @@ import { deletePlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { EditPlace } from "./EditPlace";
 
@@ -32,7 +33,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
     const places = usePlacesSelector()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [initialPlaceData, setInitialPlaceData] = useState({ ...currentPlace })
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar, enqueueWarningSnackbar } = useCustomSnackbar()
     const [isDeleteOpen, setDeleteOpen] = useState(false)
     const [businessName, setBusinessName] = useState('')
     const [loading, setLoading] = useState(false)
@@ -40,9 +41,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
     const closeSettings = () => {
         setCurrentPlace(initialPlaceData)
-        enqueueSnackbar('Your changes have not been saved', {
-            variant: 'warning'
-        })
+        enqueueWarningSnackbar('Your changes have not been saved')
         setOpen(false)
     }
 
@@ -50,18 +49,14 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
         setLoading(true)
         try {
             await deletePlace(currentPlace._id as string)
-            enqueueSnackbar('You have successfully deleted your place', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have successfully deleted your place')
             setOpen(false)
             const croppedPlaces = places.filter(place => place._id !== currentPlace._id)
             dispatch(croppedPlaces.length === 0 ? setSelectedOption(ChosenOptions.NEW_PLACE) : setSelectedOption(ChosenOptions.DASHBOARD))
             dispatch(setPlaces(croppedPlaces))
 
         } catch (err) {
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }

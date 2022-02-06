@@ -2,10 +2,10 @@ import { Grid, TextField } from "@material-ui/core";
 import { FastField, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
-import myAxios from "../../../axios/axios";
-import { LoadingButton } from "../../reusable/LoadingButton";
-import * as Yup from 'yup'
+import * as Yup from 'yup';
 import { sendContactMessage } from "../../../requests/ContactRequests";
+import { useCustomSnackbar } from "../../../utils/snackbars";
+import { LoadingButton } from "../../reusable/LoadingButton";
 
 
 const ContactSchema = Yup.object().shape({
@@ -29,23 +29,19 @@ const isLetter = (e: React.KeyboardEvent) => {
 export const ContactForm: FC = () => {
 
     const [loading, setLoading] = useState(false)
-    const {enqueueSnackbar} = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const handleSubmit = (values: typeof initialValues) => {
         setLoading(true)
-            sendContactMessage(values).then(res => {
-                enqueueSnackbar('Thank you. We have received your message.', {
-                    variant: 'success'
-                })
-            })
+        sendContactMessage(values).then(res => {
+            enqueueSuccessSnackbar('Thank you. We have received your message.')
+        })
             .catch(err => {
                 console.log(err)
-                enqueueSnackbar('Oops, something went wrong', {
-                    variant: 'error'
-                })
+                enqueueErrorSnackbar()
             })
             .finally(() => setLoading(false))
-    
+
     }
 
     return (

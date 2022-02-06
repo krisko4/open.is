@@ -3,10 +3,11 @@ import { useSnackbar } from 'notistack';
 import React, { FC } from 'react';
 import { useLoginContext } from '../../contexts/LoginContext';
 import { signOut } from '../../requests/AuthRequests';
+import { useCustomSnackbar } from '../../utils/snackbars';
 
 
 export const SignOutButton: FC<any> = (props) => {
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const { setEmail, setUserLoggedIn } = useLoginContext()
     const { children } = props
 
@@ -19,9 +20,7 @@ export const SignOutButton: FC<any> = (props) => {
         localStorage.removeItem('fullName')
         localStorage.removeItem('email')
         localStorage.removeItem('img')
-        enqueueSnackbar('You have signed out.', {
-            variant: 'success'
-        })
+        enqueueSuccessSnackbar('You have signed out.')
     }
 
     return <Button {...props} onClick={logout}>{children}</Button>

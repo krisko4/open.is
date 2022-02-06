@@ -159,7 +159,7 @@ const PlacesBox: FC = () => {
                     </Switch>
                     {
                         chosenCriterias.map((place: any, index: number) => <div key={place._id}>
-                            {!isPlaceCardClicked &&
+                            {isPlaceCardClicked ||
                                 <Fade in={true} timeout={1000}>
                                     <ListItem
                                         style={{ marginTop: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}

@@ -1,13 +1,12 @@
-import { DialogContent, Button, DialogContentText, Grid, Typography, DialogActions } from "@material-ui/core"
-import { useFormikContext, Form, Field, Formik } from "formik"
-import { FC, useEffect, useState } from "react"
-import { LoadingButton } from "../LoadingButton"
-import LockOpenIcon from '@material-ui/icons/LockOpen'
+import { Button, DialogActions, DialogContent, DialogContentText, Grid, Typography } from "@material-ui/core"
 import LockIcon from '@material-ui/icons/Lock'
+import LockOpenIcon from '@material-ui/icons/LockOpen'
 import { KeyboardTimePicker } from "@material-ui/pickers"
-import { useSnackbar } from "notistack"
-import myAxios from "../../../axios/axios"
+import { Field, Form, Formik } from "formik"
+import { FC, useEffect, useState } from "react"
 import { changeOpeningHours } from "../../../requests/OpeningHoursRequests"
+import { useCustomSnackbar } from "../../../utils/snackbars"
+import { LoadingButton } from "../LoadingButton"
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const hours = ['10:00 - 17:00', 'closed', '10:00 - 17:00', '12:00 - 15:00', '7:30 - 18:50', 'closed', 'closed']
@@ -31,7 +30,7 @@ const HourPicker: FC<any> = ({ field, form, label, classes, disabled, ...other }
 export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace, setDialogOpen, setCurrentPlace }) => {
 
     const [loading, setLoading] = useState(false)
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [disabledIndices, setDisabledIndices] = useState<number[]>([])
 
     const startSchedule = openingHours ? {
@@ -95,7 +94,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
 
     const submitForm = (values: any) => {
         setLoading(true)
-        const hours : any = {
+        const hours: any = {
             monday: {
                 startHour: values.mondayStart,
                 endHour: values.mondayEnd,
@@ -137,9 +136,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
         })
         changeOpeningHours(currentPlace._id as string, hours).then(res => {
             console.log(res.data)
-            enqueueSnackbar('Opening hours changed successfully', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('Opening hours changed successfully')
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.openingHours = hours
             setCurrentPlace(newCurrentPlace)
@@ -147,9 +144,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
 
         }).catch(err => {
             console.log(err)
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         }).finally(() => setLoading(false))
     }
 

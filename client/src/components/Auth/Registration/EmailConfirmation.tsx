@@ -3,13 +3,12 @@ import Dialog from "@material-ui/core/Dialog";
 import Grid from "@material-ui/core/Grid";
 import Slide, { SlideProps } from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
-import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
-import myAxios from "../../../axios/axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { LoadingButton } from "../../reusable/LoadingButton";
-import { useEmailSelector } from '../../../store/selectors/EmailSelector'
 import { resendConfirmationEmail } from "../../../requests/AuthRequests";
+import { useEmailSelector } from '../../../store/selectors/EmailSelector';
+import { useCustomSnackbar } from "../../../utils/snackbars";
+import { LoadingButton } from "../../reusable/LoadingButton";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -17,16 +16,14 @@ export const EmailConfirmation: FC = () => {
 
     const { confirmationOpen, setConfirmationOpen, setLoginOpen } = useAuthContext()
     const email = useEmailSelector()
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [loading, setLoading] = useState(false)
 
     const resendEmail = async (email: string) => {
         setLoading(true)
         try {
             await resendConfirmationEmail(email)
-            enqueueSnackbar('Confirmation e-mail sent successfully.', {
-                variant: 'success'
-            })
+             enqueueSuccessSnackbar('Confirmation e-mail sent successfully.')
         } catch (err) {
             console.error(err)
         } finally {

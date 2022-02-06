@@ -6,15 +6,15 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import TextField from "@material-ui/core/TextField";
 import { Field, Form, Formik } from "formik";
-import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import { LoadingButton } from "../../reusable/LoadingButton";
-import {setEmail} from "../../../store/actions/setEmail"
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { login } from "../../../requests/AuthRequests";
+import { setEmail } from "../../../store/actions/setEmail";
+import { useCustomSnackbar } from "../../../utils/snackbars";
+import { LoadingButton } from "../../reusable/LoadingButton";
 
 
 export interface UserData {
@@ -39,7 +39,7 @@ export const LoginForm = () => {
     const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext()
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const dispatch = useDispatch()
     const {setUserLoggedIn, setFullName} = useLoginContext()
 
@@ -57,9 +57,7 @@ export const LoginForm = () => {
             setLoginOpen(false)
             setFullName(response.data.fullName)
             setUserLoggedIn(true)
-            enqueueSnackbar('You have signed in.', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have signed in.')
         } catch (err: any) {
             console.log(err)
             console.log(err.response.data)

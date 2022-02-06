@@ -5,11 +5,11 @@ import Grid from "@material-ui/core/Grid";
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Toolbar from "@material-ui/core/Toolbar";
 import HomeIcon from '@material-ui/icons/Home';
-import { useSnackbar } from "notistack";
 import { FC, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useLoginContext } from "../../../contexts/LoginContext";
+import { useCustomSnackbar } from "../../../utils/snackbars";
 import { SignOutButton } from "../../reusable/SignOutButton";
 const useStyles = makeStyles(() =>
     createStyles({
@@ -69,7 +69,7 @@ interface AppBarStateTypes {
 
 const Header: FC = () => {
 
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const history = useHistory()
     const location = useLocation()
 

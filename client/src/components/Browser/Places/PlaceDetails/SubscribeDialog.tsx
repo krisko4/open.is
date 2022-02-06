@@ -6,6 +6,7 @@ import React, { FC, useState } from "react";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { addSubscription } from "../../../../requests/SubscriptionRequests";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 
 interface Props {
@@ -39,24 +40,21 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
     const { setCurrentPlace } = useMapContext()
     const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
+    const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
 
 
     const setSubscription = async () => {
         setLoading(true)
         try {
-            const res = await addSubscription(currentPlace._id as string)
-                enqueueSnackbar('You have subscribed to a new place', {
-                    variant: 'success'
-                })
+            await addSubscription(currentPlace._id as string)
+            enqueueSuccessSnackbar('You have subscribed to a new place')
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.isUserSubscriber = true
             setCurrentPlace(newCurrentPlace)
             setDialogOpen(false)
 
         } catch (err) {
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }

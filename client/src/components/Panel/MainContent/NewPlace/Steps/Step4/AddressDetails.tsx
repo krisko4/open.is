@@ -1,11 +1,11 @@
 import { Fade, Grid, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { useSnackbar } from "notistack";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { useAddressDetailsContext } from "../../../../../../contexts/AddressDetailsContext";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useAddressDetailsContext } from "../../../../../../contexts/AddressDetailsContext";
 import { getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
+import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
 import { AddressSearcher } from "../../../../../reusable/AddressSearcher";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
@@ -19,7 +19,7 @@ interface Props {
 export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }) => {
 
     const { setPlaceCoords } = useMapContext()
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const [tileLayer, setTileLayer] = useState({
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -56,9 +56,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
             setAddressSubmitted && setAddressSubmitted(addressSubmitted => !addressSubmitted)
         } catch (err) {
             console.log(err)
-            enqueueSnackbar("Oops, something went wrong", {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         }
         finally {
             setSubmitLoading(false)

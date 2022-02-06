@@ -1,15 +1,13 @@
 import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
-import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import myAxios from "../../../../axios/axios";
 import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { updatePlaceData } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
@@ -30,7 +28,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
     const dispatch = useDispatch()
     const [isLoading, setLoading] = useState(false)
     const [isOpen, setOpen] = useState(false)
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const submitChanges = async () => {
         setLoading(true)
@@ -48,16 +46,12 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
             if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
             dispatch(setPlaces([...places]))
             setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
-            enqueueSnackbar('You have successfully modified your place', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have successfully modified your place')
             setDialogOpen(false)
 
         } catch (err) {
             console.log(err)
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }

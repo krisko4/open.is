@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/core';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { useLocation } from 'react-router';
 import { AuthContextProvider } from '../../../contexts/AuthContext';
 import Header from '../MainPage/Header';
 import { Section1 } from "./Section1";

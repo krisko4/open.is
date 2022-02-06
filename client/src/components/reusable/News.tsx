@@ -15,11 +15,11 @@ import TimelineItem from "@material-ui/lab/TimelineItem";
 import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
 import { ClassNameMap } from "@material-ui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
-import { useSnackbar } from "notistack";
 import React, { FC, useRef, useState } from "react";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
 import { addNews } from "../../requests/NewsRequests";
+import { useCustomSnackbar } from "../../utils/snackbars";
 import { LoadingButton } from "./LoadingButton";
 
 
@@ -53,7 +53,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
         isOpen: false,
         newsIndex: 0
     })
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const submitNews = () => {
         setLoading(true)
@@ -61,16 +61,11 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
             .then(res => {
                 currentPlace.news = currentPlace.news && [res.data, ...currentPlace.news]
                 setCurrentPlace({ ...currentPlace })
-                enqueueSnackbar('News added successfully', {
-                    variant: 'success'
-                })
-
+                enqueueSuccessSnackbar('News added successfully')
                 setDialogOpen(false)
             }).catch(err => {
                 console.log(err)
-                enqueueSnackbar('Oops, something went wrong', {
-                    variant: 'error'
-                })
+                enqueueErrorSnackbar()
             }).finally(() => {
                 setLoading(false)
             })

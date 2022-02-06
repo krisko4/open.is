@@ -4,17 +4,16 @@ import NoMeetingRoomIcon from '@material-ui/icons/NoMeetingRoom';
 import SettingsIcon from "@material-ui/icons/Settings";
 import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
-import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import myAxios from "../../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status } from "../../../../../contexts/PanelContexts/PanelContext";
 import { setPlaceStatus } from "../../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
 import { convertToRawPlaceData } from "../../../../../utils/place_data_utils";
+import { useCustomSnackbar } from "../../../../../utils/snackbars";
 import { LoadingButton } from "../../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../../NewPlace/PlaceDetailsCard";
 import { ActivityChart } from '../Charts/ActivityChart';
@@ -39,7 +38,7 @@ const useStyles = makeStyles({
 
 export const PlaceData: FC = () => {
 
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [loading, setLoading] = useState(false)
     const classes = useStyles()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
@@ -65,19 +64,12 @@ export const PlaceData: FC = () => {
                 setCurrentPlace(updatedPlace)
             }
             if (status === Status.OPEN) {
-                enqueueSnackbar('Your place is now open', {
-                    variant: 'success'
-                })
+                enqueueSuccessSnackbar('Your place is now open')
                 return
             }
-            enqueueSnackbar('Your place is now closed', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('Your place is now closed')
         } catch (err) {
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
-            console.log(err)
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }

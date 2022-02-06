@@ -8,12 +8,12 @@ import { KeyboardReturn } from "@material-ui/icons";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import myAxios from "../../../../axios/axios";
 import { useLoginContext } from "../../../../contexts/LoginContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { removeSubscription } from "../../../../requests/SubscriptionRequests";
 import { addNewVisit } from "../../../../requests/VisitRequests";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
@@ -21,8 +21,6 @@ import { Opinions } from "../../../reusable/Opinions/Opinions";
 import { ImagesCarousel } from './ImagesCarousel';
 import MainContent from "./MainContent";
 import { SubscribeDialog } from './SubscribeDialog';
-
-
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -187,7 +185,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [value, setValue] = useState(0)
     const [loading, setLoading] = useState(false)
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueInfoSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
 
     useEffect(() => {
@@ -240,17 +238,13 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
         setLoading(true)
         try {
             const res = await removeSubscription(currentPlace._id as string) 
-            enqueueSnackbar('You have cancelled your subscription', {
-                variant: 'info'
-            })
+            enqueueInfoSnackbar('You have cancelled your subscription')
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.isUserSubscriber = false
             setCurrentPlace(newCurrentPlace)
             console.log(res.data)
         } catch (err) {
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }

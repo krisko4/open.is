@@ -6,11 +6,11 @@ import { Rating } from "@material-ui/lab";
 import Alert from '@material-ui/lab/Alert';
 import { ClassNameMap } from "@material-ui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
-import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { addOpinion } from "../../../requests/OpinionRequests";
+import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../LoadingButton";
 import { OpinionCard } from './OpinionCard';
 
@@ -30,7 +30,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
 
 
     const { isUserLoggedIn } = useLoginContext()
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [noteValue, setNoteValue] = useState<number | null>(null)
     const [opinionText, setOpinionText] = useState('')
@@ -62,15 +62,11 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                 console.log(updatedPlace)
                 setCurrentPlace(updatedPlace)
                 setDialogOpen(false)
-                enqueueSnackbar('Your opinion has been added successfully', {
-                    variant: 'success'
-                })
+                enqueueSuccessSnackbar('Your opinion has been added successfully')
 
             } catch (err) {
                 console.log(err)
-                enqueueSnackbar('Oops, something went wrong', {
-                    variant: 'error'
-                })
+                enqueueErrorSnackbar()
 
             } finally {
                 setLoading(false)

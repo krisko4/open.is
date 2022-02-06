@@ -1,8 +1,7 @@
-import { useSnackbar } from "notistack";
 import { FC, useEffect } from "react";
 import { useHistory, useParams } from "react-router";
-import myAxios from "../../axios/axios";
 import { confirmEmailChange } from "../../requests/AuthRequests";
+import { useCustomSnackbar } from "../../utils/snackbars";
 
 interface Params {
     token: string,
@@ -13,25 +12,19 @@ export const EmailChangeConfirmation: FC = () => {
 
     const { email, token } = useParams<Params>()
     const history = useHistory()
-    const { enqueueSnackbar } = useSnackbar()
+    const {enqueueSuccessSnackbar, enqueueWarningSnackbar, enqueueErrorSnackbar} = useCustomSnackbar()
 
     useEffect(() => {
         console.log(email, token)
         confirmEmailChange(email, token).then(() => {
-            enqueueSnackbar(`You have successfully changed your e-mail address.`, {
-                variant: 'info'
-            })
+            enqueueSuccessSnackbar(`You have successfully changed your e-mail address.`)
         })
             .catch(err => {
                 if (err.response.data === `Provided token has expired.`) {
-                    enqueueSnackbar(`Your activation token has expired. Please try to change your e-mail again.`, {
-                        variant: 'warning'
-                    })
+                    enqueueWarningSnackbar(`Your activation token has expired. Please try to change your e-mail again.`)
                     return
                 }
-                enqueueSnackbar(`Oops, something went wrong`, {
-                    variant: 'error'
-                })
+                enqueueErrorSnackbar()
             }).finally(() => {
                 history.push('/')
             })

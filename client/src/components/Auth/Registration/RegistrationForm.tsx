@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { setEmail } from "../../../store/actions/setEmail";
+import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../../reusable/LoadingButton";
 
 export const registrationFields = {
@@ -60,7 +61,7 @@ export const RegistrationForm = () => {
 
     const { setLoginOpen, setRegistrationOpen, setConfirmationOpen } = useAuthContext()
     const [errorMessage, setErrorMessage] = useState('')
-    const { enqueueSnackbar } = useSnackbar()
+    const {enqueueSuccessSnackbar, enqueueErrorSnackbar} = useCustomSnackbar()
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
 
@@ -74,14 +75,10 @@ export const RegistrationForm = () => {
             dispatch(setEmail(userData['email']))
             setRegistrationOpen(false)
             setConfirmationOpen(true)
-            enqueueSnackbar('You have successfully registered', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have successfully registered')
         } catch (err: any) {
             console.error(err)
-            enqueueSnackbar('Registration failed', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
             setErrorMessage(err.response.data)
         } finally {
             setLoading(false)

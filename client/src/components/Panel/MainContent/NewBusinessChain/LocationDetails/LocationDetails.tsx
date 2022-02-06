@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
 import { registerNewPlace } from "../../../../../requests/PlaceRequests"
+import { useCustomSnackbar } from "../../../../../utils/snackbars"
 import { LoadingButton } from "../../../../reusable/LoadingButton"
 import { Location } from './Location'
 
@@ -27,12 +28,12 @@ export interface LocationDetails {
     lng: number
 }
 
-export const LocationDetails: FC<Props> = ({setOpen, addressSubmitted, imageFile }) => {
+export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFile }) => {
 
     const { currentPlace } = useCurrentPlaceContext()
     const isFirstRender = useRef(true)
     const [loading, setLoading] = useState(false)
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueInfoSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const history = useHistory()
     const { setSaveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
     const [businessSummary, setBusinessSummary] = useState({
@@ -59,26 +60,16 @@ export const LocationDetails: FC<Props> = ({setOpen, addressSubmitted, imageFile
         for (key in businessSummary) formData.append(key, businessSummary[key])
         formData.append('locations', JSON.stringify(locations))
         try {
-            // const res = await authAxios.post('/places', formData, {
-            //     withCredentials: true,
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // })
             const res = await registerNewPlace(formData)
             console.log(res.data)
-            enqueueSnackbar('You have successfully registered your business chain', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have successfully registered your business chain')
             setDialogOpen(false)
             setOpen(false)
             history.push('dashboard')
 
         } catch (err) {
             console.log(err)
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }
@@ -102,9 +93,7 @@ export const LocationDetails: FC<Props> = ({setOpen, addressSubmitted, imageFile
         console.log(currentPlace)
 
         if (selectedLocations.some(place => place.address === currentPlace.address)) {
-            enqueueSnackbar('You have already selected this location.', {
-                variant: 'info'
-            })
+            enqueueInfoSnackbar('You have already selected this location.')
             return
         }
         const newLocation = {

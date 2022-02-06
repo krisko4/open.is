@@ -2,12 +2,10 @@ import { Button, Card, CardActions, CardContent, Grid, Slide, TextField, Typogra
 import { FastField, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import { FC, useState } from "react";
-import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import myAxios from "../../../../axios/axios";
 import { useLoginContext } from "../../../../contexts/LoginContext";
-import { usePageContext } from "../../../../contexts/PageContext";
-import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
+import { updateUserData } from "../../../../requests/UserRequests";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { ImageUpload } from '../../../reusable/ImageUpload';
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PasswordChange } from './PasswordChange';
@@ -38,8 +36,8 @@ export const MyAccount: FC = () => {
 
     const [loading, setLoading] = useState(false)
     const [passwordChangeOpen, setPasswordChangeOpen] = useState(false)
-    const { enqueueSnackbar } = useSnackbar()
-    const {fullName, setFullName, img, setImg, email} = useLoginContext()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
+    const { fullName, setFullName, img, setImg, email } = useLoginContext()
     // const [img, setImg] = useState<any>(localStorage.getItem('img'))
     const [imageFile, setImageFile] = useState<any>(null)
 
@@ -68,14 +66,10 @@ export const MyAccount: FC = () => {
             const formData = new FormData()
             let key: keyof typeof userData
             for (key in userData) formData.append(key, userData[key])
-            const res = await myAxios.patch(`/users/${localStorage.getItem('uid')}`, formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+            const uid = localStorage.getItem('uid') as string
+            const res = await updateUserData(uid, formData)
             const { user } = res.data
-            if(user.img){
+            if (user.img) {
                 localStorage.setItem('img', user.img)
                 setImg(user.img)
             }
@@ -86,14 +80,10 @@ export const MyAccount: FC = () => {
                 localStorage.setItem('fullName', fullName)
                 setFullName(fullName)
             }
-            enqueueSnackbar('You have successfully changed your personal data', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have successfully changed your personal data')
         } catch (err) {
             console.error(err)
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         } finally {
             setLoading(false)
         }

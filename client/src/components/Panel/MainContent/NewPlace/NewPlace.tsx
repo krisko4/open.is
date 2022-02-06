@@ -1,14 +1,13 @@
 import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
-import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
-import myAxios from "../../../../axios/axios";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { registerNewPlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
@@ -25,7 +24,7 @@ export const NewPlace: FC = () => {
     const places = usePlacesSelector()
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
-    const { enqueueSnackbar } = useSnackbar()
+    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const registerPlace = () => {
         setLoading(true)
@@ -61,15 +60,11 @@ export const NewPlace: FC = () => {
             newPlace.news = []
             places.push(newPlace)
             dispatch(setPlaces(places))
-            enqueueSnackbar('You have successfully registered new place', {
-                variant: 'success'
-            })
+            enqueueSuccessSnackbar('You have successfully registered new place')
             history.push(`dashboard`)
         }).catch(err => {
             console.log(err)
-            enqueueSnackbar('Oops, something went wrong', {
-                variant: 'error'
-            })
+            enqueueErrorSnackbar()
         }).finally(() => {
             setLoading(false)
             setOpen(false)
