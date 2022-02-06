@@ -14,7 +14,8 @@ import { MainContent } from "./MainContent/MainContent";
 const useStyles = makeStyles({
     panel: {
         height: '100vh',
-        background: 'linear-gradient(20deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)',
+        // background: 'linear-gradient(20deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)',
+        background: '#0d1117',
     }
 })
 
