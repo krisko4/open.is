@@ -44,7 +44,7 @@ export const NewPlaceStepper: FC<Props> = ({isEditionMode}) => {
     return (
         <Grid container>
             <Grid item lg={12}>
-                <Stepper activeStep={activeStep} alternativeLabel>
+                <Stepper activeStep={activeStep} style={{background: '#18202b'}} alternativeLabel>
                     {steps.map((label, index) => {
                         const stepProps: { completed?: boolean } = {};
                         const labelProps: { optional?: React.ReactNode } = {};

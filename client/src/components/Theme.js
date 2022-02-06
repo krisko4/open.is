@@ -1,5 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import lightBlue from "@material-ui/core/colors/lightBlue";
+
+
+const { palette } = createMuiTheme()
 
 const theme = createMuiTheme({
     typography: {
@@ -28,6 +30,9 @@ const theme = createMuiTheme({
             main: '#ff5252',
             dark: '#A52A2A',
             contrastText: '#fff',
+        },
+        custom: {
+            main: '#ff5252'
         }
     },
     overrides: {
@@ -36,8 +41,9 @@ const theme = createMuiTheme({
         //         fontWeight: 200
         //     }
         // },
-    
-}});
+
+    }
+});
 
 
 export default theme

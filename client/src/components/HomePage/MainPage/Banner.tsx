@@ -20,7 +20,7 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     button: {
         minWidth: 250,
         minHeight: 60,
-        marginTop: 20
+        marginTop: 20,
     },
     // logo: {
     //     width: 600,
@@ -99,7 +99,7 @@ export const Banner: FC = () => {
 
                         </Collapse>
                         <Fade in={window.scrollY < 150} timeout={2000}>
-                            <Button className={classes.button} color="secondary" onClick={() => history.push('/search')}
+                            <Button color="secondary" className={classes.button} onClick={() => history.push('/search')}
                                 variant="contained">Get started</Button>
                         </Fade>
                     </Grid>

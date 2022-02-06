@@ -20,7 +20,6 @@ const Browser: FC = () => {
         url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
     }
 
-    console.log('hello')
 
     return (
         <Grid container direction="column" style={{ height: '100vh' }}>

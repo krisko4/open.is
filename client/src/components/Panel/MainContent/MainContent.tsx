@@ -1,11 +1,10 @@
 import Grid from "@material-ui/core/Grid";
 import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { Route, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { Route, useLocation, useRouteMatch } from "react-router-dom";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
-import { useSelectedOptionSelector } from '../../../store/selectors/SelectedOptionSelector';
 import Header from "../Header";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { MyAccount } from './MyAccount/MyAccount';
@@ -38,11 +37,11 @@ export const MainContent: FC = () => {
         <CurrentPlaceContextProvider>
           <Route
             path={`${match.url}/management/:id`}
-            component={(props : any) => <PlaceData {...props} />}
+            component={(props: any) => <PlaceData {...props} />}
           >
           </Route>
         </CurrentPlaceContextProvider>
-        
+
         <Route
           path={`${match.url}/dashboard`}
         >
@@ -57,6 +56,7 @@ export const MainContent: FC = () => {
           component={NewBusinessChain}
         />
       </Scrollbars>
+
     </Grid>
 
   )

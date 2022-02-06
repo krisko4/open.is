@@ -9,8 +9,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { usePageContext } from "../../contexts/PageContext";
-import { ChosenOptions, usePanelContext } from '../../contexts/PanelContexts/PanelContext';
+import { ChosenOptions } from '../../contexts/PanelContexts/PanelContext';
 import { setSelectedOption } from '../../store/actions/setSelectedOption';
 import { usePlacesSelector } from '../../store/selectors/PlacesSelector';
 
@@ -46,7 +45,7 @@ const Header: FC = () => {
 
     return (
         
-         <AppBar position="static" elevation={0} style={{backgroundColor: 'transparent', paddingTop: 20, paddingRight: 40, paddingBottom: 20}}>
+         <AppBar position="static" elevation={0} style={{backgroundColor: '#18202b', paddingTop: 20, paddingRight: 40, paddingBottom: 20}}>
             <Toolbar>
                 <Grid item container justify="flex-end"  alignItems="center">
                         <IconButton onClick={() => history.push('/')} color="inherit">

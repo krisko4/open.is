@@ -9,6 +9,7 @@ import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
+import { PanelCard } from "../../../reusable/PanelCard";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
 
@@ -81,8 +82,8 @@ export const NewPlace: FC = () => {
         <Grid container lg={activeStep > 0 ? 12 : 10} spacing={2} item style={{ marginBottom: 40, paddingLeft: 10 }} justify="space-evenly">
 
             <Grid item lg={activeStep > 0 ? 5 : 6}>
-                <Slide in={true} timeout={1000}>
-                    <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
+                {/* <Slide in={true} timeout={1000}> */}
+                    <PanelCard>
                         <CardContent>
                             <Typography variant="h5" >
                                 Business management
@@ -123,8 +124,11 @@ export const NewPlace: FC = () => {
                                 </Grid>
                             </CardActions>
                         }
-                    </Card>
-                </Slide>
+
+                    </PanelCard>
+                    {/* <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
+                    </Card> */}
+                {/* </Slide> */}
             </Grid>
             {activeStep > 0 &&
                 <Grid item lg={7} >

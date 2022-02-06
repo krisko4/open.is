@@ -1,4 +1,4 @@
-import { CardMedia, ListItemIcon, ListSubheader } from "@material-ui/core";
+import { CardMedia, ListItemIcon, ListSubheader, makeStyles } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -14,23 +14,62 @@ import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../../contexts/LoginContext";
+import { RawPlaceDataProps } from "../../../contexts/PanelContexts/BusinessChainContext";
 import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
-// interface Props {
-//     setChosenPlace: React.Dispatch<React.SetStateAction<PlaceProps | null>>
-// }
+
+const useStyles = makeStyles({
+    navigation: {
+        height: '100%',
+        background: '#18202b',
+        '& .MuiListItemText-secondary': {
+            color: 'white'
+        },
+        '& .MuiListItemText-primary': {
+            color: 'white'
+        },
+        '& .MuiListSubheader-root': {
+            color: 'white'
+        }
+    },
+})
+
+const generateNavigationButtons = (places : RawPlaceDataProps[]) => [
+    {
+        name: 'Dashboard',
+        icon: <DashboardIcon color="primary" />,
+        url: places.length > 0 ? `/dashboard` : ''
+    },
+    {
+        name: 'My account',
+        icon: <SettingsIcon color="primary" />,
+        url: `/account`
+
+    },
+    {
+        name: 'New place',
+        icon: <AddIcon color="primary" />,
+        url: `/new-place`
+    },
+    {
+        name: 'New business chain',
+        icon: <CloudCircle color="primary" />,
+        url: `/new-business-chain`
+    }
+]
 
 export const LeftNavigation: FC = () => {
 
+    const classes = useStyles()
     const places = usePlacesSelector()
     const dispatch = useDispatch()
     const history = useHistory()
     const match = useRouteMatch()
-    const {fullName, img} = useLoginContext()
+    const { fullName, img } = useLoginContext()
 
     return (
-        <Grid item lg={2} style={{ height: '100%' }}>
+        <Grid item lg={2} className={classes.navigation}>
             <Scrollbars autoHide>
                 <Grid container justify="center">
                     <CardMedia
@@ -49,7 +88,25 @@ export const LeftNavigation: FC = () => {
                 </ListItem>
                 <List>
                     <ListSubheader disableSticky>Settings</ListSubheader>
-                    <ListItem
+                    {
+                        generateNavigationButtons(places).map((button, index) =>
+                            <ListItem
+                                key={index}
+                                button
+                                onClick={() => history.push(`${match.url}${button.url}`)}
+                            >
+                                <ListItemIcon>
+                                    {button.icon}
+                                </ListItemIcon>
+                                <ListItemText
+                                    secondary={button.name}>
+                                </ListItemText>
+
+                            </ListItem>
+                        )
+                    }
+
+                    {/* <ListItem
                         button
                         onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
                     >
@@ -75,7 +132,7 @@ export const LeftNavigation: FC = () => {
                             <CloudCircle color="primary" />
                         </ListItemIcon>
                         <ListItemText secondary="New business chain" />
-                    </ListItem>
+                    </ListItem> */}
                     <MyPlaces />
                     <MyBusinessChains />
                 </List>
