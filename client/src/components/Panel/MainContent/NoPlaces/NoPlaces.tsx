@@ -29,7 +29,7 @@ export const NoPlaces: FC = () => {
 
     return (
         <Grow in={true} timeout={1000}>
-            <Grid container item style={{ height: '100%', marginTop: -100 }} alignItems="center">
+            <Grid container item style={{ height: '100%' }} alignItems="center">
                 <Grid item container lg={7} direction="column" style={{ marginRight: 10 }} spacing={4} alignItems="center">
                     <Typography variant="h2" style={{ color: 'white' }}>Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
                     <img style={{marginTop: 30, marginBottom: 30}} src={`https://c.tenor.com/jCmPqgkv0vQAAAAC/hello.gif`} />

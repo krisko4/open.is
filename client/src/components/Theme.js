@@ -30,9 +30,6 @@ const theme = createMuiTheme({
             main: '#ff5252',
             dark: '#A52A2A',
             contrastText: '#fff',
-        },
-        custom: {
-            main: '#ff5252'
         }
     },
     overrides: {

@@ -1,16 +1,10 @@
 
-import { Avatar, Collapse, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from "@material-ui/core"
-import { StarBorder } from "@material-ui/icons"
+import { ListSubheader } from "@material-ui/core"
 import { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
 import { RawPlaceDataProps } from "../../../../contexts/PanelContexts/BusinessChainContext"
-import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { setPlace } from "../../../../store/actions/setCurrentPlace"
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector"
-import { convertToCurrentPlace } from '../../../../utils/place_data_utils'
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
 import { BusinessChain } from './BusinessChain'
 
 export const MyBusinessChains: FC = () => {

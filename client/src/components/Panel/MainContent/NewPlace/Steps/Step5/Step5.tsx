@@ -38,7 +38,7 @@ export const Step5: FC = () => {
 
 
     return (
-        <Grid item lg={12} container justify="center" >
+        <Grid style={{marginTop: 20}} container justify="center" >
             <Grid item lg={12} style={{ textAlign: 'center' }}>
                 <Typography variant="h3">Step 5</Typography>
             </Grid>
@@ -59,6 +59,12 @@ export const Step5: FC = () => {
                         <Typography style={{ marginTop: 10 }} variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
                     </Grid>
                 </Grid>
+            </Grid>
+            <Grid item lg={9}>
+                <Typography style={{ marginTop: 20, textAlign: 'center' }} variant="subtitle1">
+                    You can also upload some pictures presenting your place indoors or outdoors. 
+                    If you don't want to do it now, you will be able to share your pictures later.
+                </Typography>
             </Grid>
         </Grid>
     )

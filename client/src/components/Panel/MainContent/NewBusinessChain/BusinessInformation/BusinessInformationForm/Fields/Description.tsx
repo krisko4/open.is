@@ -32,6 +32,8 @@ export const Description = () => {
             onChange={handleChange}
             rows={10}
             variant="outlined"
+            focused
+            placeholder="Describe your business in few words"
             rowsMax={10}
             helperText={`${description.length}/600`}
             inputProps={{

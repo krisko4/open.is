@@ -162,7 +162,7 @@ const useOpeningHoursStyles = makeStyles({
 
 const addVisit = async (place: CurrentPlaceProps) => {
     try {
-        const response = await addNewVisit(place._id as string) 
+        const response = await addNewVisit(place._id as string)
         return response.data
     } catch (err) {
         console.log(err)
@@ -237,7 +237,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const unsubscribe = async () => {
         setLoading(true)
         try {
-            const res = await removeSubscription(currentPlace._id as string) 
+            const res = await removeSubscription(currentPlace._id as string)
             enqueueInfoSnackbar('You have cancelled your subscription')
             const newCurrentPlace = { ...currentPlace }
             newCurrentPlace.isUserSubscriber = false

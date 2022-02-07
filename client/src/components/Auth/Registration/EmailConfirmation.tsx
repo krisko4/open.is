@@ -23,7 +23,7 @@ export const EmailConfirmation: FC = () => {
         setLoading(true)
         try {
             await resendConfirmationEmail(email)
-             enqueueSuccessSnackbar('Confirmation e-mail sent successfully.')
+            enqueueSuccessSnackbar('Confirmation e-mail sent successfully.')
         } catch (err) {
             console.error(err)
         } finally {

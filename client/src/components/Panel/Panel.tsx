@@ -16,6 +16,12 @@ const useStyles = makeStyles({
         height: '100vh',
         // background: 'linear-gradient(20deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)',
         background: '#0d1117',
+        '& .MuiTypography-root': {
+            color: 'white'
+        },
+        '& .MuiInputBase-root': {
+            color: 'white'
+        }
     }
 })
 
@@ -34,7 +40,7 @@ export const Panel: FC = () => {
             return
         } (async function () {
             try {
-                const uid : string = localStorage.getItem('uid') as string
+                const uid: string = localStorage.getItem('uid') as string
                 const places = await getPlacesByUserId(uid)
                 dispatch(setPlaces(places))
                 if (places.length === 0) {

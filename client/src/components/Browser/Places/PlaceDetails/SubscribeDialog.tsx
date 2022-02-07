@@ -38,7 +38,6 @@ const useStyles = makeStyles({
 export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDialogOpen }) => {
     const classes = useStyles()
     const { setCurrentPlace } = useMapContext()
-    const { enqueueSnackbar } = useSnackbar()
     const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
 

@@ -1,5 +1,5 @@
 import { Step, StepContent, StepLabel } from "@material-ui/core";
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useStepContext } from "../../../../../contexts/StepContext";
 import { PanelStepper } from "../../../../reusable/PanelStepper";
 
@@ -37,23 +37,29 @@ export const NewPlaceStepper: FC<any> = (props) => {
     const handleChange = (index: number) => {
         console.log(index)
         console.log(step)
-        if (orientation !== 'vertical' && index < step) {
-            setActiveStep(index)
-            setStep(index)
+        if (orientation !== 'vertical') {
+            if (index < step) {
+                setActiveStep(index)
+                // setStep(index)
+            }
             return
         }
         setStep(index)
     }
 
+    useEffect(() => {
+        setStep(activeStep)
+    }, [activeStep])
+
     const { children, orientation, ...rest } = props
 
 
     return (
-        <PanelStepper orientation={orientation} {...rest} style={{ background: '#18202b' }} activeStep={step}>
+        <PanelStepper orientation={orientation} {...rest} style={{ background: '#18202b', flexGrow: orientation === 'vertical' ? 0 : 1 }} activeStep={step}>
             {steps.map((step, index) => {
                 return (
                     <Step key={index} >
-                        <StepLabel onClick={() => handleChange(index)}>{step.title}</StepLabel>
+                        <StepLabel onMouseEnter={() => activeStep === 0 && handleChange(index)} onClick={() => handleChange(index)}>{step.title}</StepLabel>
                         {orientation === 'vertical' &&
                             <StepContent>
                                 {step.content}

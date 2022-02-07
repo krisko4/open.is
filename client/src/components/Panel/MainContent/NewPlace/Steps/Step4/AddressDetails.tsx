@@ -1,4 +1,4 @@
-import { Fade, Grid, Typography } from "@material-ui/core";
+import { Fade, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import React, { FC, useEffect, useState } from "react";
 import { useAddressDetailsContext } from "../../../../../../contexts/AddressDetailsContext";
@@ -15,6 +15,7 @@ interface Props {
     setAddressSubmitted?: React.Dispatch<React.SetStateAction<boolean>>,
 
 }
+
 
 export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }) => {
 
@@ -84,21 +85,21 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
 
     return (
         <Grid container justify="center">
+            <Grid container justify="center">
+                {selectedAddress.postcode && <Alert style={{ marginBottom: 20 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
+            </Grid>
+            <Grid item lg={12}>
+                <AddressSearcher setErrorMessage={setErrorMessage} />
+            </Grid>
             <Fade in={errorMessage !== ''}>
-                <Grid item lg={8} style={{ textAlign: 'center', marginBottom: 10 }}>
+                <Grid item lg={12} style={{ textAlign: 'center'}}>
                     <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
                 </Grid>
             </Fade>
-            <Grid container justify="center">
-                {selectedAddress.postcode && <Alert variant="outlined" style={{ marginBottom: 20 }} severity="info">Current address: {selectedAddress.label}</Alert>}
-            </Grid>
-            <Grid item lg={8}>
-                <AddressSearcher setErrorMessage={setErrorMessage} />
-            </Grid>
-            <Grid style={{ height: 400, marginTop: 20 }} container>
+            <Grid style={{ height: 500, marginTop: 20 }} container>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <LoadingButton loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10, marginBottom: 10 }} color="primary">Submit</LoadingButton>
+            <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10, marginBottom: 10 }} color="primary">Submit</LoadingButton>
         </Grid>
     )
 }

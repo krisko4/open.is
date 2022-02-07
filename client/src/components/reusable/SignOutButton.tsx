@@ -1,5 +1,4 @@
 import { Button } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
 import React, { FC } from 'react';
 import { useLoginContext } from '../../contexts/LoginContext';
 import { signOut } from '../../requests/AuthRequests';

@@ -6,11 +6,9 @@ import {ContactDetailsForm} from "./ContactDetailsForm"
 export const Step3: FC = ()  => {
 
     return (
-        <Grid item lg={12} container justify="center">
-            <Grid item lg={12} style={{textAlign: 'center'}}>
+        <Grid item style={{marginTop: 20}} container justify="center">
+            <Grid container direction="column" alignItems="center" style={{color: 'white'}}>
                 <Typography variant="h3">Step 3</Typography>
-            </Grid>
-            <Grid item lg={12} style={{textAlign: 'center'}}>
                 <Typography variant="subtitle1">Contact details</Typography>
             </Grid>
            <ContactDetailsForm />

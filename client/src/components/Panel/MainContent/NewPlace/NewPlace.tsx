@@ -1,5 +1,7 @@
 import { CardContent, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -15,6 +17,7 @@ import { Step2 } from "./Steps/Step2/Step2";
 import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
 import { Step5 } from "./Steps/Step5/Step5";
+import { PlaceDetailsCard } from "./PlaceDetailsCard";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -37,7 +40,7 @@ function getStepContent(step: number, isEditionMode: boolean) {
 
 export const NewPlace: FC = () => {
 
-    const { activeStep, imageFile, setActiveStep, currentStep} = useStepContext()
+    const { activeStep, imageFile, setActiveStep, currentStep } = useStepContext()
     const { currentPlace } = useCurrentPlaceContext()
     const dispatch = useDispatch()
     const history = useHistory()
@@ -100,15 +103,15 @@ export const NewPlace: FC = () => {
 
     return (
 
-        <Grid container spacing={2} item style={{ marginBottom: 40, paddingLeft: 10, height: '100%' }} alignItems="center" justify="space-evenly">
-            <Grid container item justify="space-evenly">
-                {activeStep > 0 &&
-                    <Grid container lg={10}>
+        <Grid container style={{ height: '100%' }} alignItems="center" justify="space-evenly">
+            <Grid container lg={11}  justify="space-evenly">
+                {activeStep > 0 && activeStep !== 3 &&
+                    <Grid container item>
                         <NewPlaceStepper />
                     </Grid>
                 }
-                <Grid item container lg={5}>
-                     {getStepContent(activeStep, false)}
+                <Grid container item lg={activeStep === 3 ? 6 : 5}>
+                    {getStepContent(activeStep, false)}
                 </Grid>
                 {/* <Grid item container lg={5}>
                 <Slide in={true} timeout={1000}>
@@ -159,30 +162,37 @@ export const NewPlace: FC = () => {
                     </div>
                 </Slide>
             </Grid> */}
-                {activeStep > 0 ?
-                    <Grid item lg={5} >
-                        {/* <TransformWrapper initialScale={0.5} minScale={0.5}>
+                {activeStep > 0 && activeStep !== 3 ?
+                    <Grid container item justify="center" style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                        <TransformWrapper limitToBounds={false} initialScale={0.9} minScale={0.5}>
                             <TransformComponent>
                                 <PlaceDetailsCard />
                             </TransformComponent>
-                        </TransformWrapper> */}
+                        </TransformWrapper>
                     </Grid>
                     :
                     <Grid container item lg={5}>
-                        <PanelCard>
-                            <CardContent>
-                                <Typography variant="h2">
-                                    Step 1
-                                </Typography>
-                                <Grid container style={{ marginTop: 10 }} lg={10}>
-                                    <Typography variant="body1">
-                                        The name of your business will be used in our search engines. Each user will be able to find your place in the browser
-                                        by entering the name of your business in the search bar.
-                                    </Typography>
-                                    <NewPlaceStepper orientation="vertical" />
-                                </Grid>
-                            </CardContent>
-                        </PanelCard>
+                        <Slide in={true} timeout={1000}>
+                            <div>
+                                <PanelCard>
+                                    <CardContent>
+                                        <Typography variant="h2">
+                                            Step {activeStep + 1}
+                                        </Typography>
+                                        <Grid container style={{ marginTop: 10 }} lg={10}>
+                                            <Typography variant="body1">
+                                                {activeStep === 0 ?
+                                                    'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
+                                                    'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
+                                                }
+                                            </Typography>
+                                            <NewPlaceStepper orientation="vertical" />
+                                        </Grid>
+                                    </CardContent>
+                                </PanelCard>
+                            </div>
+
+                        </Slide>
                     </Grid>
 
                 }

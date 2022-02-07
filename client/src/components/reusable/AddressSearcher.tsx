@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, TextField } from "@material-ui/core"
+import { CircularProgress, Grid, makeStyles, TextField } from "@material-ui/core"
 import { Autocomplete } from "@material-ui/lab"
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
@@ -12,10 +12,26 @@ interface Props {
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
+const useStyles = makeStyles({
+    input: {
+        '& .MuiInputBase-root, .MuiFormHelperText-root': {
+            color: 'white'
+        },
+
+    },
+    paper: {
+        color: 'white',
+        background: '#18202b'
+    },
+    clearIndicator: {
+        color: 'red'
+    }
+})
 export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
 
     const [open, setOpen] = useState(false)
     const { setPlaceCoords } = useMapContext()
+    const classes = useStyles()
 
     const { availableAddresses, setAvailableAddresses, setChosenCriterias, setSelectedAddress } = useAddressDetailsContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
@@ -83,6 +99,7 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
 
     return (
         <Autocomplete
+            classes={classes}
             freeSolo
             loading={loading}
             inputValue={inputValue}
@@ -116,6 +133,8 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
             renderInput={(params) =>
                 <TextField
                     {...params}
+                    variant="outlined"
+                    focused
                     placeholder="Enter the address of your place"
                     label="What is the address of your place?"
                     onChange={e => setInputValue(e.target.value)}

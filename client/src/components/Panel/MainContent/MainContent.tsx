@@ -22,40 +22,45 @@ export const MainContent: FC = () => {
 
 
   return (
-    <Grid container direction="row" style={{ height: '100%' }} item lg={10}>
-      <Scrollbars autoHide>
-        <Header />
-        <CurrentPlaceContextProvider>
-          <StepContextProvider>
-            {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
+    <Grid container style={{ height: '100%' }} item lg={10}>
+      <Grid container direction="column">
+        <Grid container style={{ height: '10%' }}>
+          <Header />
+        </Grid>
+        <Grid container style={{ height: '90%' }}>
+          <CurrentPlaceContextProvider>
+            <StepContextProvider>
+              {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
+              <Route
+                path={`${match.url}/new-place`}
+                component={NewPlace}
+              />
+            </StepContextProvider>
+          </CurrentPlaceContextProvider>
+          <CurrentPlaceContextProvider>
             <Route
-              path={`${match.url}/new-place`}
-              component={NewPlace}
-            />
-          </StepContextProvider>
-        </CurrentPlaceContextProvider>
-        <CurrentPlaceContextProvider>
-          <Route
-            path={`${match.url}/management/:id`}
-            component={(props: any) => <PlaceData {...props} />}
-          >
-          </Route>
-        </CurrentPlaceContextProvider>
+              path={`${match.url}/management/:id`}
+              component={(props: any) => <PlaceData {...props} />}
+            >
+            </Route>
+          </CurrentPlaceContextProvider>
 
-        <Route
-          path={`${match.url}/dashboard`}
-        >
-          <Dashboard />
-        </Route>
-        <Route
-          path={`${match.url}/account`}
-          component={MyAccount}
-        />
-        <Route
-          path={`${match.url}/new-business-chain`}
-          component={NewBusinessChain}
-        />
-      </Scrollbars>
+          <Route
+            path={`${match.url}/dashboard`}
+          >
+            <Dashboard />
+          </Route>
+          <Route
+            path={`${match.url}/account`}
+            component={MyAccount}
+          />
+          <Route
+            path={`${match.url}/new-business-chain`}
+            component={NewBusinessChain}
+          />
+
+        </Grid>
+      </Grid>
 
     </Grid>
 
