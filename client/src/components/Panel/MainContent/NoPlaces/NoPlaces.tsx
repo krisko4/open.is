@@ -1,23 +1,18 @@
+import AddIcon from '@mui/icons-material/Add';
 import {
     Button,
     CardContent,
     Grid,
     Grow,
-    StepButton,
-    Step,
-    StepContent,
-    StepLabel,
-    Stepper,
+    Stack
 } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
 import Typography from "@mui/material/Typography";
-import AddIcon from '@mui/icons-material/Add';
-import React, { FC, useState } from "react";
+import makeStyles from '@mui/styles/makeStyles';
+import React, { FC } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { PanelCard } from "../../../reusable/PanelCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
-import { HorizontalStepper } from "./HorizontalStepper";
 
 const useStyles = makeStyles({
     stepper: {
@@ -40,31 +35,35 @@ export const NoPlaces: FC = () => {
 
     return (
         <Grow in={true} timeout={1000}>
-            <Grid container item style={{ height: '100%' }} alignItems="center">
-                <Grid item container lg={7} direction="column" style={{ marginRight: 10 }} spacing={4} alignItems="center">
-                    <Typography variant="h2" style={{ color: 'white' }}>Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
-                    <img style={{marginTop: 30, marginBottom: 30}} src={`https://c.tenor.com/jCmPqgkv0vQAAAAC/hello.gif`} />
-                    <Grid item lg={8}>
-                        <Typography variant="subtitle1" style={{ color: 'white', textAlign: 'center' }}>
-                            It seems you have not registered any places yet.
-                            Please press the button below to add your business
-                            and take advantage of functionality provided by our panel.
-                        </Typography>
-                    </Grid>
-                    <Button variant="contained" startIcon={<AddIcon />} onClick={() => history.push(`${match.url}/new-place`)} size="large" color="primary">Add new place</Button>
-                </Grid>
-                <Grid item container lg={4} alignItems="center">
-                    <PanelCard>
-                        <CardContent>
-                            <Typography variant="h2" style={{ color: 'white' }}>How does it work?</Typography>
-                            <Grid style={{ marginTop: 10 }} container lg={10}>
-                                <Typography variant="body1">
-                                    In order to register your business, you will have to complete some simple steps:
+            <Grid container sx={{ height: '100%' }} alignItems="center">
+                <Grid container>
+                    <Grid item lg={7}>
+                        <Stack spacing={2} justifyContent="space-evenly" sx={{ marginRight: 10, height: '100%' }} alignItems="center">
+                            <Typography variant="h2">Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
+                            <img src={`https://c.tenor.com/jCmPqgkv0vQAAAAC/hello.gif`} />
+                            <Grid item lg={8}>
+                                <Typography variant="subtitle1" sx={{ color: 'white', textAlign: 'center' }}>
+                                    It seems you have not registered any places yet.
+                                    Please press the button below to add your business
+                                    and take advantage of functionality provided by our panel.
                                 </Typography>
-                                <NewPlaceStepper orientation="vertical"/>
                             </Grid>
-                        </CardContent>
-                    </PanelCard>
+                            <Button variant="contained" startIcon={<AddIcon />} onClick={() => history.push(`${match.url}/new-place`)} size="large" color="primary">Add new place</Button>
+                        </Stack>
+                    </Grid>
+                    <Grid item container lg={4} alignItems="center">
+                        <PanelCard>
+                            <CardContent>
+                                <Typography variant="h2" style={{ color: 'white' }}>How does it work?</Typography>
+                                <Grid style={{ marginTop: 10 }} container lg={10}>
+                                    <Typography variant="body1">
+                                        In order to register your business, you will have to complete some simple steps:
+                                    </Typography>
+                                    <NewPlaceStepper orientation="vertical" />
+                                </Grid>
+                            </CardContent>
+                        </PanelCard>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grow>

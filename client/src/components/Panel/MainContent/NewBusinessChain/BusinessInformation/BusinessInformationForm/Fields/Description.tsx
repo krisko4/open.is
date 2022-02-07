@@ -34,7 +34,6 @@ export const Description = () => {
             variant="outlined"
             focused
             placeholder="Describe your business in few words"
-            maxRows={10}
             helperText={`${description.length}/600`}
             inputProps={{
                 maxLength: 600

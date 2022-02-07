@@ -63,7 +63,14 @@ export const LeftNavigation: FC = () => {
     const { fullName, img } = useLoginContext()
 
     return (
-        <Grid item lg={2}>
+        <Grid
+         item
+          lg={2}
+          sx={{
+              backgroundColor: 'panelCard.main'
+          }}
+          >
+
             <Scrollbars autoHide>
                 <Grid container justifyContent="center">
                     <CardMedia

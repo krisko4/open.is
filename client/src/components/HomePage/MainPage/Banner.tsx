@@ -62,7 +62,7 @@ export const Banner: FC = () => {
 
                         </Collapse>
                         <Fade in={window.scrollY < 150} timeout={2000}>
-                            <Button color="primary" className={classes.button} onClick={() => history.push('/search')}
+                            <Button color="secondary" className={classes.button} onClick={() => history.push('/search')}
                                 variant="contained">Get started</Button>
                         </Fade>
                     </Grid>

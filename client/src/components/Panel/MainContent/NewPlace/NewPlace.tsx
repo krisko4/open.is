@@ -1,4 +1,4 @@
-import { CardContent, Grid, Slide, SlideProps, Typography } from "@mui/material";
+import { Box, CardContent, Grid, Slide, SlideProps, Typography } from "@mui/material";
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -103,9 +103,9 @@ export const NewPlace: FC = () => {
 
     return (
         <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
-            <Grid container lg={11}  justifyContent="space-evenly">
+            <Grid container lg={11} justifyContent="space-evenly">
                 {activeStep > 0 && activeStep !== 3 &&
-                    <Grid container item>
+                    <Grid container sx={{height: 120, backgroundColor: 'panelCard.main'}} alignItems="center">
                         <NewPlaceStepper />
                     </Grid>
                 }
@@ -196,6 +196,6 @@ export const NewPlace: FC = () => {
 
                 }
             </Grid>
-        </Grid>
+        </Grid >
     );
 }

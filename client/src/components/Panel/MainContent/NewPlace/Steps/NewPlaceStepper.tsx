@@ -1,7 +1,6 @@
-import { Step, StepContent, StepLabel } from "@mui/material";
+import { Step, StepContent, StepLabel, Stepper } from "@mui/material";
 import React, { FC, useEffect, useState } from 'react';
 import { useStepContext } from "../../../../../contexts/StepContext";
-import { PanelStepper } from "../../../../reusable/PanelStepper";
 
 
 const steps = [
@@ -55,7 +54,21 @@ export const NewPlaceStepper: FC<any> = (props) => {
 
 
     return (
-        <PanelStepper orientation={orientation} {...rest} style={{ background: '#18202b', flexGrow: orientation === 'vertical' ? 0 : 1 }} activeStep={step}>
+        <Stepper
+            orientation={orientation}
+            alternativeLabel={orientation !== 'vertical'}
+            {...rest}
+            sx={{
+                flexGrow: orientation === 'vertical' ? 0 : 1,
+                '& .MuiStepContent-root': {
+                    color: 'lightgrey',
+                },
+                '& .MuiStepLabel-label': {
+                    color: 'white'
+                },
+            }}
+            activeStep={step}
+        >
             {steps.map((step, index) => {
                 return (
                     <Step key={index} >
@@ -67,6 +80,6 @@ export const NewPlaceStepper: FC<any> = (props) => {
                     </Step>
                 );
             })}
-        </PanelStepper>
+        </Stepper>
     );
 }

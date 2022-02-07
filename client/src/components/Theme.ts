@@ -1,8 +1,32 @@
-import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
+declare module '@mui/material/Button' {
+    interface ButtonPropsColorOverrides {
+        neutral: true;
+    }
+}
+declare module '@mui/material/styles' {
 
+    interface Palette {
+        neutral: Palette['primary'],
+        panelBackground: Palette['primary'],
+        panelCard: Palette['primary']
+    }
+    interface PaletteOptions {
+        neutral: PaletteOptions['primary'],
+        panelCard: PaletteOptions['primary'],
+        panelBackground: PaletteOptions['primary'],
+    }
 
-const theme = createTheme((adaptV4Theme({
+    interface PaletteColor {
+        panelBackground?: string;
+    }
+    interface SimplePaletteColorOptions {
+        panelBackground?: string;
+    }
+}
+
+const theme = createTheme({
     typography: {
         fontFamily: [
             '-apple-system',
@@ -29,9 +53,24 @@ const theme = createTheme((adaptV4Theme({
             main: '#ff5252',
             dark: '#A52A2A',
             contrastText: '#fff',
+        },
+        neutral: {
+            main: 'purple',
+            contrastText: '#fff'
+        },
+        panelBackground: {
+            light: '',
+            main: '#0d1117',
+            dark: '#0d1117'
+        },
+        panelCard: {
+            light: '',
+            main: '#18202b',
+            dark: ''
         }
+
     },
-})));
+});
 
 
 export default theme

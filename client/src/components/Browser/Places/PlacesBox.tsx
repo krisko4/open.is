@@ -1,5 +1,5 @@
 import { FiberNew, Timelapse, Star, Favorite, Subscriptions } from "@mui/icons-material";
-import {Tab, Grid, Tabs, Fade, ListItem } from "@mui/material";
+import { Tab, Grid, Tabs, Fade, ListItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -117,8 +117,8 @@ const PlacesBox: FC = () => {
             {isPlaceCardClicked ||
                 <Grid container style={{ background: '#2C2C2C' }} justifyContent="flex-end" alignItems="center">
                     <Tabs
-                        selectionFollowsFocus
                         variant="scrollable"
+                        selectionFollowsFocus
                         scrollButtons
                         TabScrollButtonProps={
                             {
