@@ -1,5 +1,6 @@
-import { Fade, Grid, InputAdornment, makeStyles, TextField, Typography } from "@material-ui/core";
-import DoneIcon from "@material-ui/icons/Done";
+import { Fade, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import DoneIcon from "@mui/icons-material/Done";
 import React, { FC, useEffect, useState } from "react";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
@@ -11,9 +12,6 @@ const useStyles = makeStyles({
         '& .MuiInputBase-root, .MuiFormHelperText-root': {
             color: 'white'
         },
-        // '& .MuiFormHelperText-root' : {
-        //     color: 'white'
-        // }
         
     }
 })
@@ -42,7 +40,7 @@ export const Step1: FC = () => {
     }
     return (
         <Fade in={true} timeout={1500}>
-            <Grid item container direction="column" justify="space-between" style={{ textAlign: 'center' }}>
+            <Grid item container direction="column" justifyContent="space-between" style={{ textAlign: 'center' }}>
 
                 <Typography style={{ color: 'white' }} variant="h2">What is the name of your business?</Typography>
 
@@ -84,6 +82,5 @@ export const Step1: FC = () => {
                 </LoadingButton>
             </Grid >
         </Fade>
-
-    )
+    );
 }

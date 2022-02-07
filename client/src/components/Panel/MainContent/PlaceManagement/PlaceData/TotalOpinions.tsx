@@ -1,10 +1,10 @@
-import { Card, CardContent, Typography, Grid, Fade } from "@material-ui/core"
+import { Card, CardContent, Typography, Grid, Fade } from "@mui/material"
 import { isToday } from "date-fns"
 import { FC, useEffect, useState } from "react"
 import { TotalOpinionsChart } from "../Charts/TotalOpinionsChart"
-import TrendingDownIcon from "@material-ui/icons/TrendingDown";
-import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 
 export const TotalOpinions: FC<any> = ({ shadowCard }) => {
@@ -31,7 +31,7 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                     <Grid container style={{ marginTop: 5 }}>
-                        <Grid container item alignItems="center" justify="space-between">
+                        <Grid container item alignItems="center" justifyContent="space-between">
                             <Grid item style={{ flexGrow: 1 }}>
                                 <Grid container item alignItems="center">
                                     {opinionsDiff === 0 || (currentPlace.opinions && currentPlace.opinions.length === 0) ? <>
@@ -51,6 +51,5 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
                 </CardContent>
             </Card>
         </Fade>
-
-    )
+    );
 }

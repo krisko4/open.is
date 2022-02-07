@@ -1,5 +1,5 @@
-import { AppBar, Dialog, Grid, IconButton, Slide, SlideProps, Toolbar, Typography } from "@material-ui/core";
-import CloseIcon from '@material-ui/icons/Close';
+import { AppBar, Dialog, Grid, IconButton, Slide, SlideProps, Toolbar, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { CurrentPlaceContextProvider } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -8,7 +8,7 @@ import { BusinessInformation } from './BusinessInformation/BusinessInformation';
 import { LocationDetails } from './LocationDetails/LocationDetails';
 import { LocationSelection } from './LocationDetails/LocationSelection';
 import { LocationContextProvider } from '../../../../contexts/PanelContexts/LocationContext'
-import { SettingsInputComponentRounded } from "@material-ui/icons";
+import { SettingsInputComponentRounded } from "@mui/icons-material";
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 interface Props {
     open: boolean,
@@ -40,7 +40,12 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
         >
             <AppBar style={{ position: 'relative' }}>
                 <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={closeDialog} aria-label="close">
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        onClick={closeDialog}
+                        aria-label="close"
+                        size="large">
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" style={{ flexGrow: 1 }}>
@@ -62,7 +67,7 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                     <Grid item container lg={6}>
                         <Scrollbars>
                             {currentStep === Steps.BUSINESS_INFORMATION ?
-                                <Grid container justify="center">
+                                <Grid container justifyContent="center">
                                     <Grid item lg={11} style={{ marginTop: 20, marginBottom: 20 }}>
                                         <PlaceDetailsCard />
                                     </Grid>
@@ -77,6 +82,5 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                 </CurrentPlaceContextProvider>
             </Grid >
         </Dialog >
-
-    )
+    );
 }

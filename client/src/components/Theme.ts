@@ -1,9 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
 
-const { palette } = createMuiTheme()
 
-const theme = createMuiTheme({
+const theme = createTheme((adaptV4Theme({
     typography: {
         fontFamily: [
             '-apple-system',
@@ -32,15 +31,7 @@ const theme = createMuiTheme({
             contrastText: '#fff',
         }
     },
-    overrides: {
-        // MuiButton: {
-        //     root: {
-        //         fontWeight: 200
-        //     }
-        // },
-
-    }
-});
+})));
 
 
 export default theme

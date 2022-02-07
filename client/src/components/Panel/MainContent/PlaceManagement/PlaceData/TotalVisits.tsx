@@ -1,12 +1,12 @@
-import { Card, CardContent, Typography, Grid } from "@material-ui/core"
+import { Card, CardContent, Typography, Grid } from "@mui/material"
 import { isToday, isYesterday } from "date-fns"
 import React, { FC, useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { TotalVisitsChart } from "../Charts/TotalVisitsChart"
-import TrendingDownIcon from "@material-ui/icons/TrendingDown";
-import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import {Fade} from '@material-ui/core'
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import {Fade} from '@mui/material'
 
 export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }) => {
 
@@ -35,7 +35,7 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
                     <Grid container style={{ marginTop: 5 }}>
-                        <Grid item lg={6} container justify="center" direction="column">
+                        <Grid item lg={6} container justifyContent="center" direction="column">
                             <Grid container alignItems="center">
                                 {
                                     visitsDiff === 0 || totalVisits === 0 ?
@@ -53,13 +53,12 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
                                 {totalVisits}
                             </Typography>
                         </Grid>
-                        <Grid item lg={6} container justify="center">
+                        <Grid item lg={6} container justifyContent="center">
                             <TotalVisitsChart visits={currentPlace.visits} />
                         </Grid>
                     </Grid>
                 </CardContent>
             </Card>
         </Fade>
-
-    )
+    );
 }

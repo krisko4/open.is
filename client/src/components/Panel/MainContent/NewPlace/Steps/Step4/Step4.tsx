@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import AddressDetailsContextProvider from "../../../../../../contexts/AddressDetailsContext";
 import MapContextProvider from "../../../../../../contexts/MapContext/MapContext";
@@ -17,12 +17,12 @@ export const Step4 : FC<Props> = ({isEditionMode}) => {
     const {setActiveStep} = useStepContext()
     
     return (
-        <Grid item lg={12} container justify="center">
+        <Grid item lg={12} container justifyContent="center">
             <MapContextProvider isMarkerDraggable={true}>
                 <AddressDetailsContextProvider isEditionMode={isEditionMode}>
                     <AddressDetails setActiveStep={setActiveStep} />
                 </AddressDetailsContextProvider>
             </MapContextProvider>
         </Grid>
-    )
+    );
 }

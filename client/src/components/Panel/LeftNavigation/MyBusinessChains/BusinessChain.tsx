@@ -1,10 +1,10 @@
-import { Avatar, Collapse, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from "@material-ui/core"
-import { StarBorder } from "@material-ui/icons"
+import { Avatar, Collapse, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
+import { StarBorder } from "@mui/icons-material"
 import { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
 import { RawPlaceDataProps } from "../../../../contexts/PanelContexts/BusinessChainContext"
 import { LocationProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { setPlace } from "../../../../store/actions/setCurrentPlace"

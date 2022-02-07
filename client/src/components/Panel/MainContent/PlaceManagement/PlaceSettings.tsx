@@ -1,10 +1,10 @@
-import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, SlideProps, TextField, Typography } from "@material-ui/core";
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from "@material-ui/core/Dialog";
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import CloseIcon from '@material-ui/icons/Close';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, SlideProps, TextField, Typography } from "@mui/material";
+import AppBar from '@mui/material/AppBar';
+import Dialog from "@mui/material/Dialog";
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -65,43 +65,46 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
     }
 
 
-    return (
-        <>
-            <AppBar style={{ position: 'relative' }}>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={() => closeSettings()} aria-label="close">
-                        <CloseIcon />
-                    </IconButton>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
-                        Place settings
-                    </Typography>
-                    <Button startIcon={<DeleteIcon />} onClick={() => setDeleteOpen(true)} variant="contained" color="secondary">Delete</Button>
-                    <Dialog TransitionComponent={Transition} open={isDeleteOpen}>
-                        <DialogTitle>
-                            Place removal
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText style={{ textAlign: 'center' }}>
-                                Are you sure you would like to delete your place? Please provide your business name in the field below in order to confirm your decision.
-                                <TextField
-                                    style={{ marginTop: 10 }}
-                                    label="Business name"
-                                    value={businessName}
-                                    variant="outlined"
-                                    onChange={(e) => setBusinessName(e.target.value)}
-                                />
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button color="primary" onClick={() => setDeleteOpen(false)}>Cancel</Button>
-                            <LoadingButton loading={loading} disabled={businessName !== currentPlace.name || loading} color="primary" onClick={() => deleteMyPlace()}>Delete my place</LoadingButton>
-                        </DialogActions>
-                    </Dialog>
-                </Toolbar>
-            </AppBar>
-            <StepContextProvider>
-                <EditPlace setDialogOpen={setOpen} initialPlaceData={initialPlaceData} />
-            </StepContextProvider>
-        </>
-    )
+    return <>
+        <AppBar style={{ position: 'relative' }}>
+            <Toolbar>
+                <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={() => closeSettings()}
+                    aria-label="close"
+                    size="large">
+                    <CloseIcon />
+                </IconButton>
+                <Typography variant="h6" style={{ flexGrow: 1 }}>
+                    Place settings
+                </Typography>
+                <Button startIcon={<DeleteIcon />} onClick={() => setDeleteOpen(true)} variant="contained" color="secondary">Delete</Button>
+                <Dialog TransitionComponent={Transition} open={isDeleteOpen}>
+                    <DialogTitle>
+                        Place removal
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText style={{ textAlign: 'center' }}>
+                            Are you sure you would like to delete your place? Please provide your business name in the field below in order to confirm your decision.
+                            <TextField
+                                style={{ marginTop: 10 }}
+                                label="Business name"
+                                value={businessName}
+                                variant="outlined"
+                                onChange={(e) => setBusinessName(e.target.value)}
+                            />
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button color="primary" onClick={() => setDeleteOpen(false)}>Cancel</Button>
+                        <LoadingButton loading={loading} disabled={businessName !== currentPlace.name || loading} color="primary" onClick={() => deleteMyPlace()}>Delete my place</LoadingButton>
+                    </DialogActions>
+                </Dialog>
+            </Toolbar>
+        </AppBar>
+        <StepContextProvider>
+            <EditPlace setDialogOpen={setOpen} initialPlaceData={initialPlaceData} />
+        </StepContextProvider>
+    </>;
 }

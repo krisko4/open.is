@@ -1,12 +1,13 @@
-import { Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import HomeIcon from '@material-ui/icons/Home';
-import PlaceTwoToneIcon from '@material-ui/icons/PlaceTwoTone';
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import TextField from "@mui/material/TextField";
+import HomeIcon from '@mui/icons-material/Home';
+import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
+import Autocomplete from '@mui/material/Autocomplete';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { OpenStreetMapProvider } from "leaflet-geosearch";
@@ -169,7 +170,7 @@ const Searcher: FC = () => {
                             <Grid item>
                                 <HomeIcon style={{ marginRight: 10, color: '#2196f3' }} />
                             </Grid>
-                            <Grid item lg={11} container justify="space-between" alignItems="center">
+                            <Grid item lg={11} container justifyContent="space-between" alignItems="center">
                                 <Grid item>
                                     {
                                         parts.map((part, index) => (
@@ -186,14 +187,14 @@ const Searcher: FC = () => {
                                 <Button size="small" style={{ background: '#ff5252', color: 'white' }} variant="contained">Place</Button>
                             </Grid>
                         </Grid>
-                    )
+                    );
                 }
                 return (
                     <Grid container alignItems="center">
                         <Grid item>
                             <PlaceTwoToneIcon style={{ marginRight: 10, color: '#2196f3' }} />
                         </Grid>
-                        <Grid item lg={11} container justify="space-between" alignItems="center">
+                        <Grid item lg={11} container justifyContent="space-between" alignItems="center">
                             <Grid item>
                                 {
                                     parts.map((part, index) => (
@@ -210,12 +211,12 @@ const Searcher: FC = () => {
                             <Button size="small" variant="contained" color="secondary">Address</Button>
                         </Grid>
                     </Grid>
-                )
+                );
             }}
 
 
         />
-    )
+    );
 
 }
 

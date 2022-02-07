@@ -1,13 +1,13 @@
-import { CardMedia, Fade, IconButton, Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import LanguageIcon from '@material-ui/icons/Language';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import PhoneIcon from '@material-ui/icons/Phone';
-import { Alert } from "@material-ui/lab";
-import Rating from "@material-ui/lab/Rating";
+import { CardMedia, Fade, IconButton, Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import LanguageIcon from '@mui/icons-material/Language';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PhoneIcon from '@mui/icons-material/Phone';
+import { Alert } from '@mui/material';
+import Rating from '@mui/material/Rating';
 import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
 interface PlaceTypes {
@@ -40,7 +40,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
             <Grid container >
                 <Grid container item>
                     <Card elevation={10} style={{ flexGrow: 1, paddingBottom: 12, paddingTop: 12, paddingRight: 20, background: '#202020' }}>
-                            <Grid container justify="flex-end">
+                            <Grid container justifyContent="flex-end">
                                 <Grid item>
                                     {place.status === 'open' ? <Alert severity="success" variant="filled" >
                                         This place is now {place.status.toUpperCase()}
@@ -73,12 +73,12 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                         </Typography>
                         <Typography variant="body1" color="primary">{place.type}</Typography>
                         <div>
-                            <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
-                            <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
+                            <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
+                            <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
                         </div>
                     </Grid>
                 </Grid>
-                <Grid item container justify="center" style={{ marginTop: 20 }}>
+                <Grid item container justifyContent="center" style={{ marginTop: 20 }}>
                     <Grid item lg={10}>
                         <Card elevation={10} style={{ flexGrow: 1, background: '#2C2C2C' }}>
                             <CardContent>
@@ -91,13 +91,13 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                         <Divider style={{ width: '100%', background: 'red' }}></Divider>
                     </Grid>
                 </Grid>
-                <Grid item container lg={12} justify="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
+                <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
                     {icons.map((item, index) => {
                         return (
                             <Grid item lg={3} key={index}>
                                 <Card elevation={10} style={{ background: '#2C2C2C', borderRadius: 10 }}>
                                     <CardContent>
-                                        <Grid container justify="center">
+                                        <Grid container justifyContent="center">
                                             <Grid item lg={12} style={{ textAlign: 'center' }}>
                                                 {item.icon}
                                             </Grid>
@@ -108,7 +108,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                        )
+                        );
                     })}
                 </Grid>
             </Grid>

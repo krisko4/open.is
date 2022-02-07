@@ -1,5 +1,5 @@
-import { Avatar, Grid, Typography } from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+import { Avatar, Grid, Typography } from "@mui/material";
+import { Rating } from '@mui/material';
 import axios from "axios";
 import L from 'leaflet';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -88,7 +88,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
             draggable={isMarkerDraggable}
         >
             <Popup className={classes.popup}>
-                <Grid container justify="center" alignItems="center">
+                <Grid container justifyContent="center" alignItems="center">
                     <Avatar style={{ width: 60, height: 60 }} src={criterium.img as string} />
                     <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
                         <Typography variant="h6">
@@ -104,6 +104,6 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                 </Grid>
             </Popup>
         </Marker>
-    )
+    );
 
 }

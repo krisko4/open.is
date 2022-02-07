@@ -1,4 +1,6 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { ImageList, ImageListItem } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
@@ -38,7 +40,7 @@ export const Step5: FC = () => {
 
 
     return (
-        <Grid style={{marginTop: 20}} container justify="center" >
+        <Grid style={{marginTop: 20}} container justifyContent="center" >
             <Grid item lg={12} style={{ textAlign: 'center' }}>
                 <Typography variant="h3">Step 5</Typography>
             </Grid>
@@ -52,7 +54,7 @@ export const Step5: FC = () => {
                     Uploading a logo of your brand might be the best idea.
                 </Typography>
             </Grid>
-            <Grid item container justify="center" style={{ marginTop: 20 }} lg={12}>
+            <Grid item container justifyContent="center" style={{ marginTop: 20 }} lg={12}>
                 <Grid item lg={7}>
                     <ImageUpload img={img} setImg={setImg} setImageFile={setImageFile} />
                     <Grid item container direction="column" style={{ textAlign: 'center', marginTop: 10, marginBottom: 20 }}>
@@ -66,6 +68,11 @@ export const Step5: FC = () => {
                     If you don't want to do it now, you will be able to share your pictures later.
                 </Typography>
             </Grid>
+            <ImageList style={{width: 200, height: 200}}>
+                <ImageListItem>
+                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
+                </ImageListItem>
+            </ImageList>
         </Grid>
-    )
+    );
 }

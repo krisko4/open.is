@@ -1,4 +1,4 @@
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import React, { useEffect, useState } from "react";
 import Section1 from "./Sections/Section1";
 import Section2 from "./Sections/Section2";
@@ -39,7 +39,7 @@ const Content = () => {
 
 
     return (
-        <Grid container justify="center" style={{ background: 'black', paddingTop: 100 }}>
+        <Grid container justifyContent="center" style={{ background: 'black', paddingTop: 100 }}>
             <Section1 isVisible1={isVisible1} />
 
             <Section3 isVisible3={isVisible3} />
@@ -48,7 +48,7 @@ const Content = () => {
             <Section2 />
             <Section5 />
         </Grid >
-    )
+    );
 }
 
 export default Content

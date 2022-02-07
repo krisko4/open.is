@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core"
+import { Grid } from "@mui/material"
 import { FC, useState } from "react"
 import MapContextProvider from "../../../../../contexts/MapContext/MapContext"
 import AddressDetailsContextProvider from "../../../../../contexts/AddressDetailsContext"
@@ -13,7 +13,7 @@ export const LocationChooser: FC = () => {
     return (
         <MapContextProvider isMarkerDraggable={true}>
             <AddressDetailsContextProvider isEditionMode={true}>
-                <Grid container lg={8} justify="center">
+                <Grid container lg={8} justifyContent="center">
                     <AddressDetails />
                     <Grid style={{ height: 400, marginTop: 20 }} container>
                         <MapBox tileLayer={tileLayer} />
@@ -21,5 +21,5 @@ export const LocationChooser: FC = () => {
                 </Grid >
             </AddressDetailsContextProvider>
         </MapContextProvider>
-    )
+    );
 }

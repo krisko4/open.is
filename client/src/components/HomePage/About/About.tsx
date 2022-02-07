@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { FC, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { AuthContextProvider } from '../../../contexts/AuthContext';

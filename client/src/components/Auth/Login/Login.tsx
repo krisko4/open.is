@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Dialog from "@material-ui/core/Dialog";
-import { Slide, SlideProps, Typography } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import CardMedia from "@material-ui/core/CardMedia";
+import Dialog from "@mui/material/Dialog";
+import { Slide, SlideProps, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import CardMedia from "@mui/material/CardMedia";
 import { LoginForm } from "./LoginForm";
 import {  useAuthContext } from "../../../contexts/AuthContext";
 

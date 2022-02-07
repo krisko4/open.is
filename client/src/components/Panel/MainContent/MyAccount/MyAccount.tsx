@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Grid, Slide, TextField, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, Grid, Slide, TextField, Typography } from "@mui/material";
 import { FastField, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import { FC, useState } from "react";
@@ -93,7 +93,7 @@ export const MyAccount: FC = () => {
 
     return (
         <Slide in={true} timeout={1000}>
-            <Grid container item lg={10} alignItems="center" justify="center">
+            <Grid container item lg={10} alignItems="center" justifyContent="center">
                 <Grid item lg={7}>
                     <Card style={{ boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px', borderRadius: 15 }}>
                         <Formik initialValues={initialValues} validationSchema={AccountDetailsSchema} validateOnMount onSubmit={handleSubmit}>
@@ -107,17 +107,17 @@ export const MyAccount: FC = () => {
                                         <Typography variant="subtitle2">
                                             Manage your personal data
                                         </Typography>
-                                        <Grid container justify="space-evenly" alignItems="center">
+                                        <Grid container justifyContent="space-evenly" alignItems="center">
                                             <Grid item lg={5} container direction="column">
-                                                <Grid container alignItems="center" justify="space-between">
+                                                <Grid container alignItems="center" justifyContent="space-between">
                                                     <Typography variant="overline">First name: </Typography>
                                                     <FastField as={TextField} error={errors.firstName} helperText={errors.firstName} variant="outlined" name="firstName" onKeyDown={isLetter} label="First name" />
                                                 </Grid>
-                                                <Grid container alignItems="center" justify="space-between" style={{ marginTop: 10 }}>
+                                                <Grid container alignItems="center" justifyContent="space-between" style={{ marginTop: 10 }}>
                                                     <Typography variant="overline">Last name: </Typography>
                                                     <FastField as={TextField} error={errors.lastName} helperText={errors.lastName} variant="outlined" name="lastName" onKeyDown={isLetter} label="Last name" />
                                                 </Grid>
-                                                <Grid container alignItems="center" justify="space-between" style={{ marginTop: 10 }}>
+                                                <Grid container alignItems="center" justifyContent="space-between" style={{ marginTop: 10 }}>
                                                     <Typography variant="overline">E-mail: </Typography>
                                                     <FastField as={TextField} error={errors.email} helperText={errors.email} variant="outlined" name="email" label="E-mail address" />
                                                 </Grid>
@@ -134,7 +134,7 @@ export const MyAccount: FC = () => {
                                         </Grid>
                                     </CardContent>
                                     <CardActions>
-                                        <Grid container justify="flex-end">
+                                        <Grid container justifyContent="flex-end">
                                             <LoadingButton type="submit" loading={loading} disabled={(loading || !isValid || !dirty) && img === localStorage.getItem('img')} color="primary">Submit changes</LoadingButton>
                                         </Grid>
                                     </CardActions>
@@ -149,6 +149,5 @@ export const MyAccount: FC = () => {
                 </Grid>
             </Grid >
         </Slide >
-
-    )
+    );
 }

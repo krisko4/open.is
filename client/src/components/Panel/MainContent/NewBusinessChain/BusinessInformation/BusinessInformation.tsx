@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@mui/material'
 import { Formik } from 'formik'
 import React, { FC, useState } from 'react'
 import * as Yup from 'yup'

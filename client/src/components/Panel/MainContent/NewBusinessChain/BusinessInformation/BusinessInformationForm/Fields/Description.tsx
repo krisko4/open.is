@@ -1,5 +1,5 @@
 
-import { TextField } from "@material-ui/core"
+import { TextField } from "@mui/material"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
@@ -34,12 +34,11 @@ export const Description = () => {
             variant="outlined"
             focused
             placeholder="Describe your business in few words"
-            rowsMax={10}
+            maxRows={10}
             helperText={`${description.length}/600`}
             inputProps={{
                 maxLength: 600
             }}
         />
-
-    )
+    );
 }

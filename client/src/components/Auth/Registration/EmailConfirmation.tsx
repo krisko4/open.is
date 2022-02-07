@@ -1,8 +1,8 @@
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import Grid from "@material-ui/core/Grid";
-import Slide, { SlideProps } from "@material-ui/core/Slide";
-import Typography from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import Grid from "@mui/material/Grid";
+import Slide, { SlideProps } from "@mui/material/Slide";
+import Typography from "@mui/material/Typography";
 import React, { FC, useState } from "react";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { resendConfirmationEmail } from "../../../requests/AuthRequests";
@@ -40,7 +40,7 @@ export const EmailConfirmation: FC = () => {
             fullWidth={true}
             maxWidth={'xs'}
         >
-            <Grid container style={{ marginTop: 10 }} justify="center">
+            <Grid container style={{ marginTop: 10 }} justifyContent="center">
                 <Grid item lg={6} style={{ textAlign: 'center' }}>
                     <Typography variant="h4">
                         Thank you!
@@ -48,7 +48,7 @@ export const EmailConfirmation: FC = () => {
 
                 </Grid>
             </Grid>
-            <Grid container style={{ marginTop: 20 }} justify="center">
+            <Grid container style={{ marginTop: 20 }} justifyContent="center">
                 <Grid item lg={10} style={{ textAlign: 'center' }}>
                     <Typography>
                         Your account has been created, but is inactive. Activation message has been sent to your e-mail:<br /> <b>{email}</b><br />
@@ -56,7 +56,7 @@ export const EmailConfirmation: FC = () => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid container style={{ marginTop: 20, marginBottom: 20 }} justify="center">
+            <Grid container style={{ marginTop: 20, marginBottom: 20 }} justifyContent="center">
                 <LoadingButton
                     variant="contained"
                     color="primary"
@@ -67,7 +67,7 @@ export const EmailConfirmation: FC = () => {
                     Resend confirmation e-mail
                 </LoadingButton>
             </Grid>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
                 <Typography>
                     Once confirmed, your account will be available to use.
                 </Typography>

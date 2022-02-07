@@ -1,4 +1,4 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemText, ListSubheader } from "@material-ui/core"
+import { ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material"
 import { FC } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"

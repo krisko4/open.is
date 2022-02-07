@@ -1,6 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, Typography } from "@material-ui/core"
-import { ExpandMore } from "@material-ui/icons"
-import DeleteIcon from '@material-ui/icons/Delete'
+import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, Typography } from "@mui/material"
+import { ExpandMore } from "@mui/icons-material"
+import DeleteIcon from '@mui/icons-material/Delete'
 import { FC } from "react"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
 import { LocationDetails } from "./LocationDetails"
@@ -34,16 +34,16 @@ export const Location: FC<Props> = ({location}) => {
             <AccordionSummary
                 expandIcon={<ExpandMore />}
             >
-                <Grid container justify="space-between" alignItems="center">
+                <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item lg={11}>
                         <Typography variant="subtitle2">{location.address}</Typography>
                     </Grid>
-                    <IconButton onClick={deleteLocation}><DeleteIcon color="secondary" /></IconButton>
+                    <IconButton onClick={deleteLocation} size="large"><DeleteIcon color="secondary" /></IconButton>
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
                 <TestForm location={location}/>
             </AccordionDetails>
         </Accordion >
-    )
+    );
 }

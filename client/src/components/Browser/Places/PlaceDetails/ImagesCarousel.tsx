@@ -1,4 +1,5 @@
-import { Avatar, Button, CardMedia, Grid, makeStyles, Paper, Typography } from "@material-ui/core"
+import { Avatar, Button, CardMedia, Grid, Paper, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { FC } from "react"
 import Carousel from "react-material-ui-carousel"
 import { useMapContext } from "../../../../contexts/MapContext/MapContext"
@@ -48,13 +49,12 @@ export const ImagesCarousel: FC<Props> = ({ address, img }) => {
                     key={i}
                 >
                     <CardMedia className={classes.media} image={item.img}>
-                        <Grid alignItems="center" justify="center" container className={classes.bottomText}>
+                        <Grid alignItems="center" justifyContent="center" container className={classes.bottomText}>
                             <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{address}</Typography>
                         </Grid>
                     </CardMedia>
                 </div>)
             }
         </Carousel >
-
-    )
+    );
 }

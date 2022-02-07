@@ -1,4 +1,5 @@
-import { makeStyles, Stepper, Step, StepLabel, StepContent } from "@material-ui/core"
+import { Stepper, Step, StepLabel, StepContent } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { FC, useState } from "react"
 import { PanelStepper } from "../../../reusable/PanelStepper"
 

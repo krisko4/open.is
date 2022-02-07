@@ -1,7 +1,7 @@
-import { Grow, Paper } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { Grow, Paper } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { FC } from "react";
 
 
@@ -38,15 +38,13 @@ const Section5: FC = () => {
 
 
     return (
-
-
         <Grid
             container
             style={{ background: 'white' }}
-            justify="center"
+            justifyContent="center"
 
         >
-            <Grid container justify="center" style={{ marginTop: 100, marginBottom: 100 }}>
+            <Grid container justifyContent="center" style={{ marginTop: 100, marginBottom: 100 }}>
                 <Grid item xs={12} style={{ textAlign: 'center' }}>
                     <Grow in={true}>
                         <Typography variant="h3" style={{ color: '#3c4858' }} >
@@ -61,9 +59,9 @@ const Section5: FC = () => {
                         Below you can find some of them:
                     </Typography>
                 </Grid>
-                <Grid container style={{ marginTop: 100 }} justify="space-around">
+                <Grid container style={{ marginTop: 100 }} justifyContent="space-around">
                     {opinions.map((opinion, i) => <Grid item lg={3} key={i}>
-                        <Grid container justify="center">
+                        <Grid container justifyContent="center">
                             <Avatar
                                 src={opinion.image}
                                 style={{ height: 100, width: 100, objectFit: 'cover', boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px' }} />
@@ -78,7 +76,7 @@ const Section5: FC = () => {
 
             </Grid>
         </Grid>
-    )
+    );
 }
 
 export default Section5

@@ -1,10 +1,12 @@
-import { Chip, createStyles, makeStyles, Theme } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
-import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
+import { Chip, Theme } from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import AppBar from "@mui/material/AppBar";
+import Grid from "@mui/material/Grid";
+import Toolbar from "@mui/material/Toolbar";
 import React, { FC, HTMLAttributes, useEffect, useState } from "react";
 import Searcher from "./Searcher";
-import { Fastfood, ShoppingCart, LocalBar, AccountBalance, LocalPharmacy, LocalGasStation, LocalMall } from '@material-ui/icons'
+import { Fastfood, ShoppingCart, LocalBar, AccountBalance, LocalPharmacy, LocalGasStation, LocalMall } from '@mui/icons-material'
 
 
 const businessTypes = [
@@ -89,7 +91,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         marginTop: 10,
         marginBottom: 10,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
         secondHeader: {
             justifyContent: 'center',
         },
@@ -122,7 +124,7 @@ export const SecondHeader: FC = () => {
                     <Grid item xs={10} sm={9} md={8} lg={5} style={{paddingLeft: 5, paddingRight: 5}}>
                         <Searcher />
                     </Grid>
-                    <Grid justify="center" container lg={7} item alignItems="center">
+                    <Grid justifyContent="center" container lg={7} item alignItems="center">
                         {businessTypes.map((type, index) =>
                             <CustomChip setSelectedTypes={setSelectedTypes} className={classes.chip} type={type} key={index} />
                         )}
@@ -130,5 +132,5 @@ export const SecondHeader: FC = () => {
                 </Grid>
             </Toolbar>
         </AppBar>
-    )
+    );
 }

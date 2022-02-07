@@ -1,7 +1,6 @@
-import { Button, DialogActions, DialogContent, DialogContentText, Grid, Typography } from "@material-ui/core"
-import LockIcon from '@material-ui/icons/Lock'
-import LockOpenIcon from '@material-ui/icons/LockOpen'
-import { KeyboardTimePicker } from "@material-ui/pickers"
+import { Button, DialogActions, DialogContent, DialogContentText, Grid, Typography } from "@mui/material"
+import LockIcon from '@mui/icons-material/Lock'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
 import { Field, Form, Formik } from "formik"
 import { FC, useEffect, useState } from "react"
 import { changeOpeningHours } from "../../../requests/OpeningHoursRequests"
@@ -13,19 +12,19 @@ const hours = ['10:00 - 17:00', 'closed', '10:00 - 17:00', '12:00 - 15:00', '7:3
 
 const HourPicker: FC<any> = ({ field, form, label, classes, disabled, ...other }) => {
 
-    return (
-        <KeyboardTimePicker
-            ampm={false}
-            label={label}
-            disabled={disabled}
-            name={field.name}
-            value={field.value}
-            InputLabelProps={{ className: classes.inputLabel }}
-            InputProps={{ className: classes.hourPicker }}
-            InputAdornmentProps={{ className: classes.calendarIcon }}
-            onChange={(date: any) => form.setFieldValue(field.name, date, false)}
-        />
-    )
+    return ( <></>
+    //     <KeyboardTimePicker
+    //         ampm={false}
+    //         label={label}
+    //         disabled={disabled}
+    //         name={field.name}
+    //         value={field.value}
+    //         InputLabelProps={{ className: classes.inputLabel }}
+    //         InputProps={{ className: classes.hourPicker }}
+    //         InputAdornmentProps={{ className: classes.calendarIcon }}
+    //         onChange={(date: any) => form.setFieldValue(field.name, date, false)}
+    //     />
+     )
 }
 export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace, setDialogOpen, setCurrentPlace }) => {
 
@@ -159,7 +158,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
                         <DialogContentText className="dialogContentText" style={{ textAlign: 'center' }}>
                             Manage the opening state of your place by either providing hours using keyboard or by pressing the calendar attached to each text field.
                         </DialogContentText>
-                        <Grid container justify="space-evenly" style={{ marginTop: 20 }}>
+                        <Grid container justifyContent="space-evenly" style={{ marginTop: 20 }}>
                             <Grid container item lg={2} direction="column">
                                 {days.map((day, index) =>
                                     <Typography key={index} style={{ marginTop: 26 }} variant="subtitle2" className="dialogContentText">{day.toUpperCase()} </Typography>
@@ -169,7 +168,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
                                 {Object.keys(startSchedule).map((day, index) => <Field key={index} disabled={disabledIndices.includes(index)} classes={classes} label="Start hour" component={HourPicker} name={day} />)}
                             </Grid>
                             <Grid container item lg={5} direction="column">
-                                {Object.keys(endSchedule).map((day, index) => <Grid key={index} container justify="space-between" style={{ alignItems: 'end' }}>
+                                {Object.keys(endSchedule).map((day, index) => <Grid key={index} container justifyContent="space-between" style={{ alignItems: 'end' }}>
                                     <Grid item lg={7}>
                                         <Field key={index} label="End hour" classes={classes} disabled={disabledIndices.includes(index)} component={HourPicker} name={day} />
                                     </Grid>
@@ -191,5 +190,5 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
 
             )}
         </Formik>
-    )
+    );
 }

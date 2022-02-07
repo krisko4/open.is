@@ -1,10 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Typography } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import AddIcon from '@material-ui/icons/Add';
-import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
-import { Rating } from "@material-ui/lab";
-import Alert from '@material-ui/lab/Alert';
-import { ClassNameMap } from "@material-ui/styles";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import AddIcon from '@mui/icons-material/Add';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import { Rating } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import { ClassNameMap } from "@mui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from "react";
 import { useLoginContext } from "../../../contexts/LoginContext";
@@ -76,12 +76,11 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
     }
 
     return (
-
-        <Grid container style={{ height: '100%' }} justify="center">
+        <Grid container style={{ height: '100%' }} justifyContent="center">
             <Grid container item xs={11} direction="column" style={{ marginTop: 20, marginBottom: 20 }}>
                 {currentPlace.opinions && currentPlace.opinions.length > 0 ?
                     <div>
-                        <Grid container justify="space-between" >
+                        <Grid container justifyContent="space-between" >
                             <Alert severity="info" variant="filled">{currentPlace.opinions?.length} {currentPlace.opinions && currentPlace.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
                             {isUserLoggedIn && !currentPlace.isUserOwner &&
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
@@ -94,7 +93,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                                 </Grid>
                             )}
                     </div>
-                    : <Grid container direction="column" justify="center" style={{ height: '100%' }} alignItems="center">
+                    : <Grid container direction="column" justifyContent="center" style={{ height: '100%' }} alignItems="center">
                         <Typography variant="h6" className={classes.content}>This place doesn't have any opinions yet.</Typography>
                         {isUserLoggedIn && !currentPlace.isUserOwner ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
@@ -123,7 +122,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                                 If you are disappointed with services provided by this business, please try
                                 to share your mind using kind words.
                             </DialogContentText>
-                            <Grid container justify="center">
+                            <Grid container justifyContent="center">
                                 <Rating
                                     value={noteValue}
                                     name="rating"
@@ -139,13 +138,13 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                                     onChange={(e) => setOpinionText(e.target.value)}
                                     rows={10}
                                     variant="outlined"
-                                    rowsMax={10}
+                                    maxRows={10}
                                     className="opinionArea"
                                     InputProps={{
                                         className: 'input',
                                         endAdornment:
                                             <InputAdornment position="end">
-                                                <IconButton onClick={() => setEmojiPickerOpen(current => !current)}>
+                                                <IconButton onClick={() => setEmojiPickerOpen(current => !current)} size="large">
                                                     <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
                                                 </IconButton>
                                             </InputAdornment>
@@ -169,7 +168,5 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
             </Grid >
 
         </Grid >
-
-
-    )
+    );
 }

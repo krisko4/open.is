@@ -1,8 +1,6 @@
-import { Button, Dialog, DialogTitle, Slide, SlideProps } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import AddIcon from '@material-ui/icons/Add';
-import { ClassNameMap } from '@material-ui/styles';
+import { SlideProps, Slide, Grid, Typography, Dialog, DialogTitle, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { ClassNameMap } from '@mui/styles';
 import React, { FC, useState } from 'react';
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -29,7 +27,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes
     return (
         <Grid container direction="column" style={{ height: '100%' }} alignItems="center">
             {currentPlace?.isUserOwner && isUserLoggedIn && openingHours &&
-                <Grid container justify="flex-end" >
+                <Grid container justifyContent="flex-end" >
                     <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                     </Grid>
@@ -43,14 +41,14 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes
 
                     : <>
                         {currentPlace?.isUserOwner ?
-                            <Grid justify="center" style={{ height: '100%' }} direction="column" alignItems="center" container>
+                            <Grid justifyContent="center" style={{ height: '100%' }} direction="column" alignItems="center" container>
                                 <Typography variant="h6">This place has not set opening hours yet.</Typography>
                                 <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                             </Grid>
 
                             :
-                            <Grid style={{ height: '100%' }} container justify="center" alignItems="center">
+                            <Grid style={{ height: '100%' }} container justifyContent="center" alignItems="center">
                                 {/* <Grid item lg={5}>
                                     <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
                                         <CardContent>

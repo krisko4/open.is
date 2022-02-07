@@ -1,11 +1,11 @@
-import { Button, Grid, InputAdornment, TextField, Tooltip } from "@material-ui/core";
+import { Button, Grid, InputAdornment, TextField, Tooltip } from "@mui/material";
 import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import PhoneIcon from '@material-ui/icons/Phone'
-import MailIcon from '@material-ui/icons/Mail'
-import LanguageIcon from '@material-ui/icons/Language'
-import FacebookIcon from '@material-ui/icons/Facebook'
-import InstagramIcon from '@material-ui/icons/Instagram'
+import PhoneIcon from '@mui/icons-material/Phone'
+import MailIcon from '@mui/icons-material/Mail'
+import LanguageIcon from '@mui/icons-material/Language'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import InstagramIcon from '@mui/icons-material/Instagram'
 import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext";
 import { LocationDetails } from "../LocationDetails";
 
@@ -49,7 +49,7 @@ export const TestForm: FC<Props> = ({location}) => {
 
     return (
         <form style={{ flexGrow: 1 }} onSubmit={handleSubmit(onSubmit)} >
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -74,7 +74,7 @@ export const TestForm: FC<Props> = ({location}) => {
                     />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -96,7 +96,7 @@ export const TestForm: FC<Props> = ({location}) => {
                     />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -119,7 +119,7 @@ export const TestForm: FC<Props> = ({location}) => {
                     />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -141,7 +141,7 @@ export const TestForm: FC<Props> = ({location}) => {
                     />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -164,5 +164,5 @@ export const TestForm: FC<Props> = ({location}) => {
                 </Grid>
             </Grid>
         </form>
-    )
+    );
 }

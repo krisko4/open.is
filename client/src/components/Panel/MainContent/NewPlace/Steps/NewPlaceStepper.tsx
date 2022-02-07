@@ -1,4 +1,4 @@
-import { Step, StepContent, StepLabel } from "@material-ui/core";
+import { Step, StepContent, StepLabel } from "@mui/material";
 import React, { FC, useEffect, useState } from 'react';
 import { useStepContext } from "../../../../../contexts/StepContext";
 import { PanelStepper } from "../../../../reusable/PanelStepper";

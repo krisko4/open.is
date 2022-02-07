@@ -1,19 +1,19 @@
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, InputAdornment, Slide, SlideProps, TextField } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import AddIcon from '@material-ui/icons/Add';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
-import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
-import Timeline from "@material-ui/lab/Timeline";
-import TimelineConnector from "@material-ui/lab/TimelineConnector";
-import TimelineContent from "@material-ui/lab/TimelineContent";
-import TimelineDot from "@material-ui/lab/TimelineDot";
-import TimelineItem from "@material-ui/lab/TimelineItem";
-import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
-import { ClassNameMap } from "@material-ui/styles";
+import AddIcon from '@mui/icons-material/Add';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import Timeline from "@mui/lab/Timeline";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, InputAdornment, Slide, SlideProps, TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import { ClassNameMap } from "@mui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useRef, useState } from "react";
 import { useLoginContext } from "../../contexts/LoginContext";
@@ -82,12 +82,12 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                 <>
                     {
                         isUserLoggedIn && currentPlace.isUserOwner &&
-                        <Grid container style={{ marginTop: 20, paddingRight: 30 }} justify="flex-end">
+                        <Grid container style={{ marginTop: 20, paddingRight: 30 }} justifyContent="flex-end">
                             <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} color="primary">Add news</Button>
                         </Grid>
                     }
                     <Grid container>
-                        <Timeline align="alternate">
+                        <Timeline position="alternate">
                             {currentPlace.news.map((item, index) => <TimelineItem key={index}>
                                 <TimelineSeparator>
                                     <TimelineDot>
@@ -154,7 +154,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                 </>
                 :
 
-                <Grid justify="center" style={{ height: 500 }} direction="column" alignItems="center" container >
+                <Grid justifyContent="center" style={{ height: 500 }} direction="column" alignItems="center" container >
                     <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
                     {isUserLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
                         <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>
@@ -191,7 +191,9 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                     className: 'input',
                                     endAdornment:
                                         <InputAdornment position="end">
-                                            <IconButton onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'title' }}>
+                                            <IconButton
+                                                onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'title' }}
+                                                size="large">
                                                 <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
                                             </IconButton>
                                         </InputAdornment>
@@ -210,13 +212,15 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                 multiline
                                 rows={10}
                                 variant="outlined"
-                                rowsMax={10}
+                                maxRows={10}
                                 className="opinionArea"
                                 InputProps={{
                                     className: 'input',
                                     endAdornment:
                                         <InputAdornment position="end">
-                                            <IconButton onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'content' }}>
+                                            <IconButton
+                                                onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'content' }}
+                                                size="large">
                                                 <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
                                             </IconButton>
                                         </InputAdornment>
@@ -238,7 +242,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                 </Dialog>
             }
         </Grid>
-    )
+    );
 
 
 }

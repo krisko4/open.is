@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import React, { FC } from 'react';
 import { useLoginContext } from '../../contexts/LoginContext';
 import { signOut } from '../../requests/AuthRequests';

@@ -1,4 +1,4 @@
-import { Grid, TextField } from "@material-ui/core";
+import { Grid, TextField } from "@mui/material";
 import { FastField, Form, Formik } from "formik";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
@@ -73,7 +73,7 @@ export const ContactForm: FC = () => {
                                 maxLength: 400
                             }}
                         />
-                        <Grid item container justify="flex-end">
+                        <Grid item container justifyContent="flex-end">
                             <LoadingButton loading={loading} disabled={loading || !dirty || !isValid} color="primary" type="submit" variant="contained">Submit</LoadingButton>
                         </Grid>
                     </Form>
@@ -81,5 +81,5 @@ export const ContactForm: FC = () => {
 
             </Formik>
         </Grid>
-    )
+    );
 }

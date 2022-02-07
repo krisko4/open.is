@@ -1,4 +1,4 @@
-import { Grid, Typography, TextField, Button } from "@material-ui/core"
+import { Grid, Typography, TextField, Button } from "@mui/material"
 import { useFormikContext, Form, Field } from "formik"
 import { FC, useState } from "react"
 
@@ -27,7 +27,7 @@ export const LocationDetailsForm: FC = () => {
 
     return (
         <Form style={{ flexGrow: 1, marginBottom: 10 }}>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Button
                         size="small"
@@ -42,7 +42,7 @@ export const LocationDetailsForm: FC = () => {
                     <Field as={TextField} label="Phone number" name="phone" fullWidth />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Button
                         size="small"
@@ -57,7 +57,7 @@ export const LocationDetailsForm: FC = () => {
                     <Field as={TextField} label="example@mail.com" name="email" fullWidth />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Button
                         size="small"
@@ -72,7 +72,7 @@ export const LocationDetailsForm: FC = () => {
                     <Field as={TextField} label="https://example.com" name="website" fullWidth />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Button
                         // color={clickedButtons.includes(Buttons.FACEBOOK) ? "primary" : "default"}
@@ -87,7 +87,7 @@ export const LocationDetailsForm: FC = () => {
                     <Field as={TextField} label="https://facebook.com/my-profile" name="facebook" fullWidth />
                 </Grid>
             </Grid>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item lg={5}>
                     <Button
                         // color={clickedButtons.includes(Buttons.INSTAGRAM) ? "primary" : "default"}
@@ -104,6 +104,5 @@ export const LocationDetailsForm: FC = () => {
             </Grid>
 
         </Form>
-
-    )
+    );
 }

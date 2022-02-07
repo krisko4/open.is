@@ -1,14 +1,8 @@
-import { CardMedia, ListItemIcon, ListSubheader, makeStyles } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import AddIcon from '@material-ui/icons/Add';
-import CloudCircle from '@material-ui/icons/CloudCircle';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import CloudCircle from '@mui/icons-material/CloudCircle';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
 import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from 'react-redux';
@@ -19,21 +13,21 @@ import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
 
-const useStyles = makeStyles({
-    navigation: {
-        height: '100%',
-        background: '#18202b',
-        '& .MuiListItemText-secondary': {
-            color: 'white'
-        },
-        '& .MuiListItemText-primary': {
-            color: 'white'
-        },
-        '& .MuiListSubheader-root': {
-            color: 'white'
-        }
-    },
-})
+// const useStyles = makeStyles({
+//     navigation: {
+//         height: '100%',
+//         background: '#18202b',
+//         '& .MuiListItemText-secondary': {
+//             color: 'white'
+//         },
+//         '& .MuiListItemText-primary': {
+//             color: 'white'
+//         },
+//         '& .MuiListSubheader-root': {
+//             color: 'white'
+//         }
+//     },
+// })
 
 const generateNavigationButtons = (places : RawPlaceDataProps[]) => [
     {
@@ -61,7 +55,7 @@ const generateNavigationButtons = (places : RawPlaceDataProps[]) => [
 
 export const LeftNavigation: FC = () => {
 
-    const classes = useStyles()
+    // const classes = useStyles()
     const places = usePlacesSelector()
     const dispatch = useDispatch()
     const history = useHistory()
@@ -69,9 +63,9 @@ export const LeftNavigation: FC = () => {
     const { fullName, img } = useLoginContext()
 
     return (
-        <Grid item lg={2} className={classes.navigation}>
+        <Grid item lg={2}>
             <Scrollbars autoHide>
-                <Grid container justify="center">
+                <Grid container justifyContent="center">
                     <CardMedia
                         image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
                         style={{ height: 190, width: 180 }}

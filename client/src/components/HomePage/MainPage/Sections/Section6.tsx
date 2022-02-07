@@ -1,7 +1,7 @@
 
-import { CardMedia, Collapse, Fade, Slide, Zoom } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { CardMedia, Collapse, Fade, Slide, Zoom } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { FC } from "react";
 
 interface Props {
@@ -14,11 +14,9 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
 
 
     return (
-
-
-        <Grid justify="center" container style={{ overflowX: 'clip', background: 'linear-gradient(0deg, rgba(248,248,248,1) 4%, rgba(0,0,0,1) 20%)' }}>
+        <Grid justifyContent="center" container style={{ overflowX: 'clip', background: 'linear-gradient(0deg, rgba(248,248,248,1) 4%, rgba(0,0,0,1) 20%)' }}>
             <Collapse in={isVisible6} timeout={2000}>
-                <Grid container alignItems="center" style={{ marginTop: 40 }} direction="column">
+                <Grid container justifyContent="center" style={{ marginTop: 40 }}>
                     <Grid item lg={6} style={{ textAlign: 'center' }} xs={10}>
                         <Typography variant="h5" style={{ color: 'white' }}>Watch your business grow using our dedicated panel</Typography>
                         <Typography variant="subtitle1" style={{ color: 'lightgrey', marginTop: 10, textAlign: 'center' }}>
@@ -55,7 +53,7 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
 
             </Grid>
         </Grid >
-    )
+    );
 }
 
 export default Section6

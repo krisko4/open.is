@@ -1,13 +1,13 @@
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Toolbar from "@mui/material/Toolbar";
 import { FC } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useAuthSelector } from "../../store/selectors/AuthSelector";
 import { Auth } from "../Auth/Auth";
-import HomeIcon from '@material-ui/icons/Home';
-import { IconButton } from "@material-ui/core";
+import HomeIcon from '@mui/icons-material/Home';
+import { IconButton } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { SignOutButton } from "../reusable/SignOutButton";
 import { useLoginContext } from "../../contexts/LoginContext";
@@ -28,9 +28,9 @@ const FirstHeader: FC = () => {
         }}
         >
             <Toolbar>
-                <Grid container alignItems="center" justify="flex-end">
+                <Grid container alignItems="center" justifyContent="flex-end">
                     <Grid item>
-                        <IconButton onClick={() => history.push('/')} color="inherit">
+                        <IconButton onClick={() => history.push('/')} color="inherit" size="large">
                             <HomeIcon />
                         </IconButton>
                     </Grid>
@@ -43,7 +43,7 @@ const FirstHeader: FC = () => {
             </Toolbar>
             <Auth />
         </AppBar>
-    )
+    );
 }
 
 export default FirstHeader

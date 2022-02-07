@@ -1,5 +1,5 @@
-import { Card, CardContent, Grid, Avatar, Typography } from "@material-ui/core"
-import { Rating } from "@material-ui/lab"
+import { Card, CardContent, Grid, Avatar, Typography } from "@mui/material"
+import { Rating } from '@mui/material';
 import { FC, useState } from "react"
 
 export const OpinionCard: FC<any> = ({classes, opinion}) => {
@@ -7,7 +7,7 @@ export const OpinionCard: FC<any> = ({classes, opinion}) => {
     return (
         <Card onMouseEnter={() => setElevation(10)} onMouseLeave={() => setElevation(3)} elevation={elevation} style={{ borderRadius: 10 }} className={classes.opinionCard} >
             <CardContent>
-                <Grid container justify="space-around">
+                <Grid container justifyContent="space-around">
                     <Avatar style={{ width: 80, height: 80 }} src={`${opinion.authorImg}`} alt={opinion.author} />
                     <Grid item xs={8}>
                         <Typography variant="h6" className={classes.author}>{opinion.author}</Typography>
@@ -21,6 +21,5 @@ export const OpinionCard: FC<any> = ({classes, opinion}) => {
                 </Grid>
             </CardContent>
         </Card>
-
-    )
+    );
 }

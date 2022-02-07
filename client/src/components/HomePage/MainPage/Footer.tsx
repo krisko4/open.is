@@ -1,8 +1,8 @@
 
-import { IconButton } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { IconButton } from "@mui/material";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { FC } from "react";
 import { useHistory } from "react-router";
 import { SocialIcon } from "react-social-icons";
@@ -31,17 +31,16 @@ const Footer: FC<Props> = ({ classes }) => {
 
             </Grid>
             <div>
-                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
-                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
-                <IconButton><SocialIcon bgColor={"grey"} target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://github.com" /></IconButton>
-                <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://linkedin.com" /></IconButton>
+                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
+                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
+                <IconButton size="large"><SocialIcon bgColor={"grey"} target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://github.com" /></IconButton>
+                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://linkedin.com" /></IconButton>
             </div>
             <Typography className={classes.text}>
                 {new Date().getFullYear()} - <strong>Krzysztof Wyszyński</strong>
             </Typography>
         </Grid>
-
-    )
+    );
 }
 
 export default Footer

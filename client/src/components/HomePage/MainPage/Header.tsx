@@ -1,66 +1,63 @@
-import { Grow } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Toolbar from "@material-ui/core/Toolbar";
-import HomeIcon from '@material-ui/icons/Home';
+import HomeIcon from '@mui/icons-material/Home';
+import { AppBar, Button, Grid, Grow, Toolbar } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { FC, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { useCustomSnackbar } from "../../../utils/snackbars";
 import { SignOutButton } from "../../reusable/SignOutButton";
-const useStyles = makeStyles(() =>
-    createStyles({
-        root: {
-            flexGrow: 1,
+
+
+const useStyles = makeStyles({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        fontFamily: '-apple-system',
+    },
+    elevatedAppBar: {
+        transition: 'all .5s ease 0s',
+        backgroundColor: 'transparent',
+        '& .aboutButton': {
+            marginRight: 10,
+            color: 'white',
+            borderColor: 'white'
         },
-        menuButton: {
-            fontFamily: '-apple-system',
-        },
-        elevatedAppBar: {
-            transition: 'all .5s ease 0s',
-            backgroundColor: 'transparent',
-            '& .aboutButton': {
-                marginRight: 10,
-                color: 'white',
-                borderColor: 'white'
-            },
-            '& .contactButton': {
-                marginRight: 10,
-                color: 'white'
-            }
-        },
-        transparentAppBar: {
-            transition: 'all .5s ease 0s',
-            backgroundColor: 'transparent',
-            paddingTop: 20,
-            '& .aboutButton': {
-                marginRight: 10,
-                color: 'white',
-                borderColor: 'white'
-            },
-            '& .contactButton': {
-                marginRight: 10,
-                color: 'white'
-            }
-        },
-        solidAppBar: {
-            backgroundColor: 'transparent',
-            transition: 'all .5s ease 0s',
-            '& .aboutButton': {
-                color: '#2196f3',
-                marginRight: 10,
-                borderColor: '#2196f3'
-            },
-            '& .contactButton': {
-                marginRight: 10,
-                color: '#2196f3'
-            }
+        '& .contactButton': {
+            marginRight: 10,
+            color: 'white'
         }
-    }),
-);
+    },
+    transparentAppBar: {
+        transition: 'all .5s ease 0s',
+        backgroundColor: 'transparent',
+        paddingTop: 20,
+        '& .aboutButton': {
+            marginRight: 10,
+            color: 'white',
+            borderColor: 'white'
+        },
+        '& .contactButton': {
+            marginRight: 10,
+            color: 'white'
+        }
+    },
+    solidAppBar: {
+        backgroundColor: 'transparent',
+        transition: 'all .5s ease 0s',
+        '& .aboutButton': {
+            color: '#2196f3',
+            marginRight: 10,
+            borderColor: '#2196f3'
+        },
+        '& .contactButton': {
+            marginRight: 10,
+            color: '#2196f3'
+        }
+    }
+})
+
 
 interface AppBarStateTypes {
     elevation: number,
@@ -72,6 +69,7 @@ const Header: FC = () => {
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const history = useHistory()
     const location = useLocation()
+    const classes = useStyles()
 
 
     const [appBarState, setAppBarState] = useState<AppBarStateTypes>({
@@ -80,7 +78,7 @@ const Header: FC = () => {
     })
 
     const { setLoginOpen } = useAuthContext()
-    const {isUserLoggedIn, setUserLoggedIn, setEmail} = useLoginContext()
+    const { isUserLoggedIn, setUserLoggedIn, setEmail } = useLoginContext()
     const appBarRef = useRef<'transparentAppBar' | 'solidAppBar' | 'elevatedAppBar'>('transparentAppBar')
 
 
@@ -108,12 +106,11 @@ const Header: FC = () => {
         }
     }, [])
 
-    const classes = useStyles();
     return (
 
         <AppBar elevation={appBarState.elevation} className={classes[appBarRef.current]}>
-            <Grid container justify="center">
-                <Grid item style={{flexGrow: 1}} />
+            <Grid container justifyContent="center">
+                <Grid item style={{ flexGrow: 1 }} />
                 <Grid item lg={4}>
                     <Grow in={true} timeout={2000} >
                         <Toolbar>
@@ -144,7 +141,7 @@ const Header: FC = () => {
                             }
                         </Toolbar>
 
-                    </Grow> 
+                    </Grow>
                 </Grid>
             </Grid>
         </AppBar>

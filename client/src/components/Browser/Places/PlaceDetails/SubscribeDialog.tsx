@@ -1,6 +1,6 @@
-import { CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/styles";
+import { CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Slide, SlideProps, Typography } from "@mui/material";
+import { Alert } from '@mui/material';
+import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
@@ -81,7 +81,7 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
                     </Typography>
                 </Grid>
             </DialogTitle>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
                 <Typography variant="h6" className={classes.title}>
                     Why should I subscribe?
                 </Typography>
@@ -93,7 +93,7 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
                 <Typography variant="h6" className={classes.title}>
                     You will:
                 </Typography>
-                <Grid container justify="center" >
+                <Grid container justifyContent="center" >
                     <Alert variant="outlined" className={classes.alert}>
                         receive notifications whenever a new event or important information is added
                     </Alert>
@@ -113,5 +113,5 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
 
             </DialogActions>
         </Dialog>
-    )
+    );
 }

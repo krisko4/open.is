@@ -1,10 +1,10 @@
-import { Button, Grid, InputAdornment, TextField, Typography } from "@material-ui/core";
-import FacebookIcon from '@material-ui/icons/Facebook';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import LanguageIcon from '@material-ui/icons/Language';
-import MailIcon from '@material-ui/icons/Mail';
-import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
-import { ErrorMessage, FastField, Form, Formik } from "formik";
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LanguageIcon from '@mui/icons-material/Language';
+import MailIcon from '@mui/icons-material/Mail';
+import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
+import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { ErrorMessage, FastField, Formik } from "formik";
 import React, { FC, useState } from "react";
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -61,7 +61,7 @@ export const ContactDetailsForm: FC = () => {
             {({ isValid, values }) => {
                 return (
                     <PanelForm style={{ flexGrow: 1 }}>
-                        <Grid container direction="column" style={{ marginTop: 10 }} justify="space-evenly">
+                        <Grid container direction="column" style={{ marginTop: 10 }} justifyContent="space-evenly">
                             <Grid container style={{ marginBottom: 15 }}>
                                 <FastField
                                     fullWidth={true}
@@ -201,10 +201,10 @@ export const ContactDetailsForm: FC = () => {
                             </Button>
                         </Grid>
                     </PanelForm>
-                )
+                );
             }}
 
         </Formik >
-    )
+    );
 
 }

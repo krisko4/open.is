@@ -1,4 +1,5 @@
-import { makeStyles, Stepper } from "@material-ui/core"
+import { Stepper } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { FC } from "react"
 
 const useStyles = makeStyles({

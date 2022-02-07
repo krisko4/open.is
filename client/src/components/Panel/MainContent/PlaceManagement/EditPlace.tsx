@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -59,7 +59,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
 
 
     return (
-        <Grid container style={{ paddingTop: 50, paddingBottom: 50 }} justify="space-evenly">
+        <Grid container style={{ paddingTop: 50, paddingBottom: 50 }} justifyContent="space-evenly">
             <Grid item lg={activeStep > 0 ? 5 : 4}>
                 <Slide in={true}>
                     <Card style={{ boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px', borderRadius: 15 }}>
@@ -74,7 +74,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                         </CardContent>
                         {activeStep > 0 &&
                             <CardActions>
-                                <Grid container justify="space-between">
+                                <Grid container justifyContent="space-between">
                                     <Button variant="text" color="primary" onClick={() => setActiveStep((currentStep) => currentStep - 1)}>Return</Button>
                                     {activeStep === 4 &&
                                         <div>
@@ -111,5 +111,5 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                 </Grid>
             }
         </Grid>
-    )
+    );
 }

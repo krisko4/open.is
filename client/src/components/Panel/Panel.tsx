@@ -1,6 +1,6 @@
-import { CircularProgress } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/styles";
+import { CircularProgress } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -59,7 +59,7 @@ export const Panel: FC = () => {
         <div>
             <Grid container direction="column" className={classes.panel}>
                 {loading ?
-                    <Grid container style={{ height: '100%' }} justify="center" alignItems="center">
+                    <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
                         <CircularProgress style={{ color: 'white' }} />
                     </Grid> :
                     <Grid container direction="row" style={{ flex: '1 1 auto' }}>
@@ -69,5 +69,5 @@ export const Panel: FC = () => {
                 }
             </Grid>
         </div>
-    )
+    );
 }

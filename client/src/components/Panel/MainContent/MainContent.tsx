@@ -1,4 +1,4 @@
-import Grid from "@material-ui/core/Grid";
+import { Grid } from "@mui/material";
 import React, { FC } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { Route, useLocation, useRouteMatch } from "react-router-dom";

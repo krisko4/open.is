@@ -1,11 +1,22 @@
-import { Card, CardContent, CardMedia, IconButton, makeStyles, Paper, Slide, Tab, Tabs, Typography } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import LanguageIcon from "@material-ui/icons/Language";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import PhoneIcon from "@material-ui/icons/Phone";
-import { Alert } from "@material-ui/lab";
-import Rating from "@material-ui/lab/Rating";
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    IconButton,
+    Paper,
+    Slide,
+    Tab,
+    Tabs,
+    Typography,
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import LanguageIcon from "@mui/icons-material/Language";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import PhoneIcon from "@mui/icons-material/Phone";
+import { Alert } from '@mui/material';
+import Rating from '@mui/material/Rating';
 import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
@@ -184,7 +195,7 @@ export const PlaceDetailsCard: FC = () => {
                         <Typography variant="subtitle2">
                             Your place profile will look similar to this template in a browser
                         </Typography>
-                        <Grid container style={{ marginTop: 10 }} alignItems="center" justify="space-evenly">
+                        <Grid container style={{ marginTop: 10 }} alignItems="center" justifyContent="space-evenly">
                             <Grid item lg={5} style={{ textAlign: 'center' }}>
                                 <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
                             </Grid>
@@ -211,11 +222,11 @@ export const PlaceDetailsCard: FC = () => {
                                 />
                                 <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>
                                 <div>
-                                    <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.facebook ? currentPlace.facebook : "http://facebook.com"} /></IconButton>
-                                    <IconButton><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.instagram ? currentPlace.instagram : "http://instagram.com"} /></IconButton>
+                                    <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.facebook ? currentPlace.facebook : "http://facebook.com"} /></IconButton>
+                                    <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.instagram ? currentPlace.instagram : "http://instagram.com"} /></IconButton>
                                 </div>
                             </Grid>
-                            <Grid item container lg={12} style={{ marginTop: 20 }} justify="center">
+                            <Grid item container lg={12} style={{ marginTop: 20 }} justifyContent="center">
                                 <Grid item lg={10} style={{ textAlign: 'center' }}>
                                     <Typography variant="body1">
                                         {currentPlace.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
@@ -225,13 +236,13 @@ export const PlaceDetailsCard: FC = () => {
                                     <Divider style={{ width: '100%', background: '#2196f3' }} />
                                 </Grid>
                             </Grid>
-                            <Grid item container lg={12} justify="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
+                            <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
                                 {icons.map((item, index) => {
                                     return (
                                         <Grid item lg={3} key={index}>
                                             <Card elevation={10} style={{ borderRadius: 10 }}>
                                                 <CardContent>
-                                                    <Grid container justify="center">
+                                                    <Grid container justifyContent="center">
                                                         <Grid item lg={12} style={{ textAlign: 'center' }}>
                                                             {item.icon}
                                                         </Grid>
@@ -242,7 +253,7 @@ export const PlaceDetailsCard: FC = () => {
                                                 </CardContent>
                                             </Card>
                                         </Grid>
-                                    )
+                                    );
                                 })}
                             </Grid>
                         </Grid>
@@ -274,5 +285,5 @@ export const PlaceDetailsCard: FC = () => {
                 </div>
 
                 </Slide >
-                )
+    );
 }

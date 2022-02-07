@@ -1,4 +1,4 @@
-import { Avatar, CardMedia, Fade, Slide, Grid, Typography } from "@material-ui/core"
+import { Avatar, CardMedia, Fade, Slide, Grid, Typography } from "@mui/material"
 import React, { FC, useEffect, useState } from "react"
 
 
@@ -58,10 +58,10 @@ export const Team: FC = () => {
 
     return (
         <div style={{ overflow: 'hidden' }}>
-            <Grid container justify="space-evenly" style={{ paddingTop: 40, paddingBottom: 40 }}>
+            <Grid container justifyContent="space-evenly" style={{ paddingTop: 40, paddingBottom: 40 }}>
 
                 <Fade in={isVisible1} timeout={2000}>
-                    <Grid item container lg={5} justify="center" alignItems="center" direction="column">
+                    <Grid item container lg={5} justifyContent="center" alignItems="center" direction="column">
                         <Typography variant="h3" style={{ textAlign: 'center' }}>Krzysztof Wyszyński</Typography>
                         <Typography variant="h5" style={{ fontStyle: 'italic' }}>CEO</Typography>
                         <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
@@ -74,13 +74,13 @@ export const Team: FC = () => {
                     <CardMedia image={`${process.env.REACT_APP_BASE_URL}/images/ja.jpg`} style={{ height: 600, width: 500, backgroundSize: 'contain ' }} />
                 </Slide>
             </Grid>
-            <Grid container justify="space-evenly" style={{ paddingTop: 40, paddingBottom: 40, background: 'whitesmoke' }}>
+            <Grid container justifyContent="space-evenly" style={{ paddingTop: 40, paddingBottom: 40, background: 'whitesmoke' }}>
                 <Slide in={isVisible2} timeout={1000} direction="right">
                     <Avatar src={`https://i.pinimg.com/564x/27/24/9e/27249e6089986d6d7bdd8adf7578a75d.jpg`} style={{ height: 500, width: 500 }} />
                 </Slide>
                 <Fade in={isVisible2} timeout={2000}>
                     {/* <CardMedia style={{ height: 600, width: 600 }} image={`https://i.pinimg.com/564x/27/24/9e/27249e6089986d6d7bdd8adf7578a75d.jpg`} /> */}
-                    <Grid item container lg={5} justify="center" alignItems="center" direction="column">
+                    <Grid item container lg={5} justifyContent="center" alignItems="center" direction="column">
                         <Typography variant="h3" style={{textAlign: 'center'}}>Christopher Cononovitz</Typography>
                         <Typography variant="h5" style={{ fontStyle: 'italic', marginTop: 10 }}>Development manager</Typography>
                         <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
@@ -92,9 +92,9 @@ export const Team: FC = () => {
                     </Grid>
                 </Fade>
             </Grid>
-            <Grid container justify="space-evenly" style={{ paddingTop: 20 }}>
+            <Grid container justifyContent="space-evenly" style={{ paddingTop: 20 }}>
                 <Fade in={isVisible3} timeout={2000}>
-                    <Grid item container lg={5} justify="center" alignItems="center" direction="column">
+                    <Grid item container lg={5} justifyContent="center" alignItems="center" direction="column">
                         <Typography variant="h3" style={{textAlign: 'center'}}>George Suchodolsky</Typography>
                         <Typography variant="h5" style={{ fontStyle: 'italic', marginTop: 10 }}>Promotion manager</Typography>
                         <Typography variant="h6" style={{ textAlign: 'center', marginTop: 20 }}>
@@ -111,5 +111,5 @@ export const Team: FC = () => {
                 </Slide>
             </Grid>
         </div>
-    )
+    );
 }

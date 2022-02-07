@@ -1,8 +1,10 @@
-import Grid from "@material-ui/core/Grid";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 import React, { FC } from "react";
-import { Fade, Grow, makeStyles } from "@material-ui/core";
+import { Fade, Grow } from "@mui/material";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 interface Props {
     isVisible1: boolean
@@ -19,7 +21,7 @@ const Section1: FC<Props> = ({ isVisible1 }) => {
 
     return (
         <div style={{ height: 1200, background: 'black' }}>
-            <Grid container direction="column" style={{ marginTop: 80, marginBottom: 80 }} alignItems="center" justify="center">
+            <Grid container  style={{ marginTop: 80, marginBottom: 80 }} alignItems="center" justifyContent="center">
                 <Grid item lg={6} md={9} sm={9} xs={10} style={{ textAlign: 'center' }}>
                     <Fade in={isVisible1} timeout={1000}>
                         <Typography variant="h5" style={{ color: 'white' }}>Find open places in your neighbourhood using our software</Typography>
@@ -43,7 +45,7 @@ const Section1: FC<Props> = ({ isVisible1 }) => {
                 </Grow>
             </Grid>
         </div>
-    )
+    );
 }
 
 export default Section1

@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core"
+import { Button, Grid, Typography } from "@mui/material"
 import { Form, useFormikContext } from "formik"
 import { FC, useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
@@ -30,7 +30,7 @@ export const BusinessInformationForm: FC<Props> = ({setImageFile}) => {
 
     return (
         <Form>
-            <Grid container style={{ marginTop: 20 }} alignItems="center" justify="center">
+            <Grid container style={{ marginTop: 20 }} alignItems="center" justifyContent="center">
                 <Grid item lg={5} >
                     <Typography variant="subtitle2">What is the name of your business chain?</Typography>
                 </Grid>
@@ -70,11 +70,11 @@ export const BusinessInformationForm: FC<Props> = ({setImageFile}) => {
                 <Grid item lg={5}>
                     <ImageUpload img={img} setImg={setImg} setImageFile={setImageFile} />
                 </Grid>
-                <Grid item container lg={11} style={{ marginTop: 40, marginBottom: 20 }} justify="flex-end">
+                <Grid item container lg={11} style={{ marginTop: 40, marginBottom: 20 }} justifyContent="flex-end">
                     <Button color="primary" type="submit" disabled={!isValid || !img}>Continue</Button>
                 </Grid>
             </Grid>
 
         </Form>
-    )
+    );
 }

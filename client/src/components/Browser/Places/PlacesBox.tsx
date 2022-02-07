@@ -1,9 +1,6 @@
-import { Tab, Tabs } from "@material-ui/core";
-import Fade from '@material-ui/core/Fade';
-import Grid from "@material-ui/core/Grid";
-import ListItem from "@material-ui/core/ListItem";
-import { Favorite, FiberNew, Star, Subscriptions, Timelapse } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
+import { FiberNew, Timelapse, Star, Favorite, Subscriptions } from "@mui/icons-material";
+import {Tab, Grid, Tabs, Fade, ListItem } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
@@ -118,11 +115,11 @@ const PlacesBox: FC = () => {
     return (
         <Grid container direction="column" style={{ height: '100%' }} >
             {isPlaceCardClicked ||
-                <Grid container style={{ background: '#2C2C2C' }} justify="flex-end" alignItems="center">
+                <Grid container style={{ background: '#2C2C2C' }} justifyContent="flex-end" alignItems="center">
                     <Tabs
                         selectionFollowsFocus
                         variant="scrollable"
-                        scrollButtons="on"
+                        scrollButtons
                         TabScrollButtonProps={
                             {
                                 style: {

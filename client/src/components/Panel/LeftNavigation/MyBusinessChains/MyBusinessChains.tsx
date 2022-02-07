@@ -1,5 +1,5 @@
 
-import { ListSubheader } from "@material-ui/core"
+import { ListSubheader } from "@mui/material"
 import { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"

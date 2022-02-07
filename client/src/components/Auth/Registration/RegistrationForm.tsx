@@ -1,10 +1,10 @@
-import { Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import TextField from "@material-ui/core/TextField";
+import { Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
 import { Field, Form, Formik } from "formik";
 import * as React from "react";
 import { useState } from "react";
@@ -96,14 +96,14 @@ export const RegistrationForm = () => {
                     <DialogContent>
                         <Card elevation={6} style={{ marginBottom: 10 }}>
                             <CardContent>
-                                <Grid container justify="center" style={{ marginBottom: 10 }}>
+                                <Grid container justifyContent="center" style={{ marginBottom: 10 }}>
                                     <Grid item lg={10} style={{ marginBottom: 10 }}>
                                         <Typography variant="h6" style={{ fontWeight: 'bold' }}>Hello!</Typography>
                                         <Typography variant="body2" style={{ color: 'grey' }}>Please sign up to
                                             continue</Typography>
                                     </Grid>
                                     {errorMessage && <Typography variant="caption" style={{ textAlign: 'center' }} color="secondary">{errorMessage}</Typography>}
-                                    <Grid item container justify="space-between" lg={10} style={{ textAlign: 'center' }}>
+                                    <Grid item container justifyContent="space-between" lg={10} style={{ textAlign: 'center' }}>
                                         <Grid item lg={5} style={{ marginBottom: 10 }}>
                                             <Field as={TextField} onKeyDown={isLetter} fullWidth={true}
                                                 label="First name *"
@@ -200,6 +200,6 @@ export const RegistrationForm = () => {
             )
             }
         </Formik >
-    )
+    );
 }
 

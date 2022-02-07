@@ -1,7 +1,7 @@
-import { Grow, Zoom, Fade } from "@material-ui/core";
-import CardMedia from "@material-ui/core/CardMedia";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { Grow, Zoom, Fade } from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import React, { FC } from "react";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 const Section3: FC<Props> = ({ isVisible3 }) => {
     return (
-        <Grid container justify="space-evenly">
+        <Grid container justifyContent="space-evenly">
 
             <Grid item container lg={5} md={8} xs={10} alignItems="center" >
                 <Grow
@@ -24,7 +24,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
                             Find out about upcoming events, bargains or parties. Order food from your favourite
                             restaurant via UberEats or book a visit to a hairdresser.
                         </Typography>
-                        <Grid container style={{ marginTop: 20 }} justify="center">
+                        <Grid container style={{ marginTop: 20 }} justifyContent="center">
                             <Grid item xs={4}>
                                 <img
                                     src="/images/ubereats.png"
@@ -87,7 +87,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
 
 
         </Grid>
-    )
+    );
 }
 
 export default Section3

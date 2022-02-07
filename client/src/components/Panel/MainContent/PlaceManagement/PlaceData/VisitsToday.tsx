@@ -1,8 +1,8 @@
-import { Card, CardContent, Typography, Grid, CardMedia, Fade } from "@material-ui/core"
+import { Card, CardContent, Typography, Grid, CardMedia, Fade } from "@mui/material"
 import { FC, useEffect, useState } from "react"
-import TrendingDownIcon from "@material-ui/icons/TrendingDown";
-import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { isToday, isYesterday } from "date-fns";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 
@@ -28,7 +28,7 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
                     <Grid container style={{ marginTop: 5 }}>
-                        <Grid item lg={6} container justify="center" direction="column">
+                        <Grid item lg={6} container justifyContent="center" direction="column">
                             <Grid container alignItems="center">
                                 {
                                     visitsToday === visitsYesterday || totalVisits === 0 ? <>
@@ -48,12 +48,12 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
                                 {visitsToday}
                             </Typography>
                         </Grid>
-                        <Grid item lg={6} container justify="center">
+                        <Grid item lg={6} container justifyContent="center">
                             <CardMedia style={{ height: 100, width: 120 }} image="https://s38357.pcdn.co/wp-content/uploads/2020/04/Site-visit-Icon.png" />
                         </Grid>
                     </Grid>
                 </CardContent>
             </Card>
         </Fade>
-    )
+    );
 }

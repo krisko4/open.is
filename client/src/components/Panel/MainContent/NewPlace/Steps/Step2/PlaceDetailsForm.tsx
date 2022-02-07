@@ -1,4 +1,5 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core"
+import { Grid, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { Form, useFormikContext } from "formik"
 import { FC, useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
@@ -50,7 +51,7 @@ export const PlaceDetailsForm: FC = () => {
 
     return (
         <PanelForm>
-            <Grid item container justify="space-evenly">
+            <Grid item container justifyContent="space-evenly">
                 <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
                     <BusinessType />
                 </Grid>
@@ -72,5 +73,5 @@ export const PlaceDetailsForm: FC = () => {
                 </LoadingButton>
             </Grid>
         </PanelForm>
-    )
+    );
 }

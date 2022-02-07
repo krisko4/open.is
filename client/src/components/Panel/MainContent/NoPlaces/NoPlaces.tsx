@@ -1,6 +1,17 @@
-import { Button, CardContent, Grid, Grow, makeStyles, StepButton, Step, StepContent, StepLabel, Stepper } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import AddIcon from '@material-ui/icons/Add';
+import {
+    Button,
+    CardContent,
+    Grid,
+    Grow,
+    StepButton,
+    Step,
+    StepContent,
+    StepLabel,
+    Stepper,
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import Typography from "@mui/material/Typography";
+import AddIcon from '@mui/icons-material/Add';
 import React, { FC, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";

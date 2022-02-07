@@ -1,4 +1,5 @@
-import { Card, makeStyles } from "@material-ui/core"
+import { Card } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { FC } from "react"
 
 const useStyles = makeStyles({

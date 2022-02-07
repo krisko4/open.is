@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import { Formik } from "formik";
 import React, { FC, useState } from "react";
 import * as Yup from 'yup';
@@ -34,7 +34,7 @@ export const Step2: FC = () => {
 
 
     return (
-        <Grid item container justify="center" style={{marginTop: 20}}>
+        <Grid item container justifyContent="center" style={{marginTop: 20}}>
             <Grid container direction="column" alignItems="center" style={{color: 'white'}}>
                 <Typography variant="h3">Step 2</Typography>
                 <Typography variant="subtitle1">Business details</Typography>
@@ -44,5 +44,5 @@ export const Step2: FC = () => {
             </Formik>
             {/* <CoolForm /> */}
         </Grid >
-    )
+    );
 }

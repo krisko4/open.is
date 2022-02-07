@@ -1,8 +1,8 @@
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import CardMedia from "@material-ui/core/CardMedia";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import CardMedia from "@mui/material/CardMedia";
 import React, { FC } from "react";
-import { Fade, Grow, Slide, Zoom } from "@material-ui/core";
+import { Fade, Grow, Slide, Zoom } from "@mui/material";
 
 interface Props {
     isVisible4: boolean
@@ -10,11 +10,10 @@ interface Props {
 
 const Section4: FC<Props> = ({ isVisible4 }) => {
     return (
-
         <Grid
             container
             style={{ background: '#F8F8F8', height: 700,  paddingTop: 50 }}
-            justify="center"
+            justifyContent="center"
 
         >
             <Grow
@@ -68,7 +67,7 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
                 />
             </Grid> */}
         </Grid >
-    )
+    );
 }
 
 export default Section4

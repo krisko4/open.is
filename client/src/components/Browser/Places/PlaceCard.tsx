@@ -1,11 +1,7 @@
-import { Avatar, Button, CardContent, styled, Tooltip } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
-import { Favorite, FavoriteBorder } from "@material-ui/icons";
-import { Rating } from "@material-ui/lab";
-import createStyles from "@material-ui/styles/createStyles";
+import styled from '@emotion/styled';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import {Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
@@ -13,19 +9,18 @@ import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceC
 
 
 
-const useStyles = makeStyles(() =>
-    createStyles({
-        card: {
-            backgroundColor: '#2C2C2C',
-            // borderRadius: 20,
-            width: '100%',
-            height: '100%'
-        },
-        image: {
-            height: 80,
-            width: 80
-        }
-    })
+const useStyles = makeStyles({
+    card: {
+        backgroundColor: '#2C2C2C',
+        // borderRadius: 20,
+        width: '100%',
+        height: '100%'
+    },
+    image: {
+        height: 80,
+        width: 80
+    }
+}
 )
 
 
@@ -36,7 +31,7 @@ enum tabType {
     FAVORITE = 3
 }
 interface PlaceProps {
-    tabIndex: number ,
+    tabIndex: number,
     currentPlace: CurrentPlaceProps
 }
 
@@ -55,10 +50,10 @@ const StyledRating = styled(Rating)({
 
 
 
-export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
+export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
     const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
-    const {setChosenCriterias} = useAddressDetailsContext()
+    const { setChosenCriterias } = useAddressDetailsContext()
     const [elevation, setElevation] = useState(0)
 
 
@@ -67,7 +62,7 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
         isFavorite ? setValue(1) : setValue(null)
     }, [])
 
-   
+
 
     const setFavoritePlace = (newValue: number | null) => {
         let favIds = Cookies.get('favIds')
@@ -84,7 +79,7 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
         if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
         if (index !== -1) {
             favIdsArray.splice(index, 1)
-            tabIndex === tabType.FAVORITE && setChosenCriterias((criterias : any) => criterias.filter((criterium : any) => currentPlace._id !== criterium._id ))
+            tabIndex === tabType.FAVORITE && setChosenCriterias((criterias: any) => criterias.filter((criterium: any) => currentPlace._id !== criterium._id))
             if (favIdsArray.length === 0) {
                 Cookies.remove('favIds')
                 return
@@ -107,7 +102,7 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
             onMouseLeave={() => setElevation(0)}
         >
             <CardContent>
-                <Grid container justify="space-between">
+                <Grid container justifyContent="space-between">
                     <Grid item container alignItems="center" >
                         <Grid item>
                             <Avatar style={{ width: 80, height: 80 }} src={currentPlace.img as string} alt={currentPlace.name} />
@@ -143,7 +138,7 @@ export const PlaceCard: FC<PlaceProps> = ({tabIndex, currentPlace}) => {
                             </Typography>
                         </Grid>
                         <Grid item style={{ flexGrow: 1, color: 'white' }}>
-                            <Grid container justify="flex-end" style={{ height: '100%' }} alignItems="center">
+                            <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
                                 {currentPlace.status === 'open' ?
                                     <Tooltip title="This place is now open">
                                         <Button variant="contained" size="small" style={{ background: '#4caf50', color: 'white' }}>Open</Button>

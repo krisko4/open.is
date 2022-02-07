@@ -1,10 +1,12 @@
-import { Button, createStyles, Divider, makeStyles, Toolbar, Tooltip } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
-import Paper from "@material-ui/core/Paper";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import { KeyboardReturn } from "@material-ui/icons";
+import { Button, Divider, Toolbar, Tooltip } from "@mui/material";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import { KeyboardReturn } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -257,10 +259,10 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
             <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
             <Grid container item style={{ background: '#2C2C2C' }}>
                 <Toolbar style={{ flexGrow: 1 }} disableGutters>
-                    <IconButton onClick={() => closePlaceDetails()} color="secondary">
+                    <IconButton onClick={() => closePlaceDetails()} color="secondary" size="large">
                         <KeyboardReturn />
                     </IconButton>
-                    <Grid container justify="flex-end" style={{ paddingRight: 20 }} item>
+                    <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
                         {currentPlace.isUserSubscriber ?
                             <Tooltip title={'Unsubscribe'} arrow >
                                 <span>
@@ -318,5 +320,5 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
             </Grid>
 
         </Grid>
-    )
+    );
 }

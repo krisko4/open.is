@@ -1,5 +1,6 @@
-import { Fade, Grid, makeStyles, Typography } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { Fade, Grid, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Alert } from '@mui/material';
 import React, { FC, useEffect, useState } from "react";
 import { useAddressDetailsContext } from "../../../../../../contexts/AddressDetailsContext";
 import { useMapContext } from "../../../../../../contexts/MapContext/MapContext";
@@ -84,8 +85,8 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
     }, [])
 
     return (
-        <Grid container justify="center">
-            <Grid container justify="center">
+        <Grid container justifyContent="center">
+            <Grid container justifyContent="center">
                 {selectedAddress.postcode && <Alert style={{ marginBottom: 20 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
             </Grid>
             <Grid item lg={12}>
@@ -101,5 +102,5 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
             </Grid>
             <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10, marginBottom: 10 }} color="primary">Submit</LoadingButton>
         </Grid>
-    )
+    );
 }

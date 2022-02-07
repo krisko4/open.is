@@ -1,4 +1,4 @@
-import { Fade, Slide, Grid, Typography } from "@material-ui/core";
+import { Fade, Slide, Grid, Typography } from "@mui/material";
 import React, { FC, useEffect } from "react";
 
 export const Section2: FC<any> = ({ classes, setCurrentSection }) => {
@@ -9,7 +9,7 @@ export const Section2: FC<any> = ({ classes, setCurrentSection }) => {
     return (
         <Grid container alignItems="center" className={classes.background}>
             <Grid container>
-                <Grid item container justify="center" lg={5} style={{ textAlign: 'center', marginLeft: 150, marginBottom: 150 }}>
+                <Grid item container justifyContent="center" lg={5} style={{ textAlign: 'center', marginLeft: 150, marginBottom: 150 }}>
                     <Fade in={true} timeout={3000}>
                         <Typography style={{ color: 'white' }} variant="h2">What is our mission?</Typography>
                     </Fade>
@@ -24,6 +24,5 @@ export const Section2: FC<any> = ({ classes, setCurrentSection }) => {
                 </Grid>
             </Grid>
         </Grid>
-
-    )
+    );
 }

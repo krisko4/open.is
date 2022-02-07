@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Paper, Slide, SlideProps, Typography } from "@material-ui/core"
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Paper, Slide, SlideProps, Typography } from "@mui/material"
 import { useSnackbar } from "notistack"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
@@ -124,8 +124,8 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
         <Grid container style={{ height: '100%', borderLeftStyle: 'solid', borderWidth: 1, borderColor: 'lightgrey' }}>
             {selectedLocations.length === 0 ?
                 <Fade in={true} timeout={1000}>
-                    <Grid container style={{ height: '100%' }} justify="center" alignItems="center">
-                        <Grid container item justify="center" lg={10}>
+                    <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
+                        <Grid container item justifyContent="center" lg={10}>
                             <Typography variant="h3">Waiting for the first location...</Typography>
                             <Grid item lg={8} style={{ marginTop: 10 }}>
                                 <img src={`${process.env.REACT_APP_BASE_URL}/images/location.gif`} style={{ width: '100%' }} />
@@ -152,7 +152,7 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
                     </Grid>
                     <Grid container style={{ height: '10%' }}>
                         <Paper elevation={5} style={{ flexGrow: 1 }}>
-                            <Grid container style={{ height: '100%' }} alignItems="center" justify="flex-end">
+                            <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
                                 <Button style={{ marginRight: 20 }} onClick={handleSaveButtonClick} variant="contained" color="primary">Register my business</Button>
                             </Grid>
                         </Paper>
@@ -173,8 +173,5 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
             }
 
         </Grid >
-
-
-
-    )
+    );
 }

@@ -1,6 +1,4 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { ThemeProvider } from "@material-ui/styles";
+import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -17,37 +15,52 @@ import { PanelContextProvider } from './contexts/PanelContexts/PanelContext';
 
 
 
+
+
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+
+
+
+
+
+
 function App() {
 
 
 
     return <>
-        <ThemeProvider theme={theme}>
-            <SnackbarProvider maxSnack={3}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <div className="App">
-                        <Router>
-                            <Switch>
-                                <LoginContextProvider >
-                                    <Route exact path="/" component={HomePage} />
-                                    <Route path="/about" exact component={About} />
-                                    <Route path="/contact" exact component={Contact} />
-                                    <Route path="/panel">
-                                        <PanelContextProvider>
-                                            <Panel />
-                                        </PanelContextProvider>
-                                    </Route>
-                                    <Route path="/search" component={Browser} />
-                                    <Route path="/confirm/:token" exact component={Confirmation} />
-                                    <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
-                                </LoginContextProvider >
-                            </Switch>
-                        </Router>
-                    </div>
-                </MuiPickersUtilsProvider>
-            </SnackbarProvider>
-        </ThemeProvider>
-    </>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+                <SnackbarProvider maxSnack={3}>
+                        <div className="App">
+                            <Router>
+                                <Switch>
+                                    <LoginContextProvider >
+                                        <Route exact path="/" component={HomePage} />
+                                        <Route path="/about" exact component={About} />
+                                        <Route path="/contact" exact component={Contact} />
+                                        <Route path="/panel">
+                                            <PanelContextProvider>
+                                                <Panel />
+                                            </PanelContextProvider>
+                                        </Route>
+                                        <Route path="/search" component={Browser} />
+                                        <Route path="/confirm/:token" exact component={Confirmation} />
+                                        <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
+                                    </LoginContextProvider >
+                                </Switch>
+                            </Router>
+                        </div>
+                </SnackbarProvider>
+            </ThemeProvider>
+        </StyledEngineProvider>
+    </>;
 }
 
 export default App;

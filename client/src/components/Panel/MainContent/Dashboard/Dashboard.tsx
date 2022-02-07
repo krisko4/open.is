@@ -1,19 +1,20 @@
-import { Avatar, Button, Fade, makeStyles, Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import AddIcon from "@material-ui/icons/Add";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
-import TrendingFlatIcon from "@material-ui/icons/TrendingFlat";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import { Rating } from "@material-ui/lab";
+import { Avatar, Button, Fade, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import AddIcon from "@mui/icons-material/Add";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { Rating } from '@mui/material';
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router";
 import { RawPlaceDataProps } from "../../../../contexts/PanelContexts/BusinessChainContext";
-import { CurrentPlaceProps} from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ChosenOptions} from "../../../../contexts/PanelContexts/PanelContext";
+import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { ChosenOptions } from "../../../../contexts/PanelContexts/PanelContext";
 import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { ActivityChart } from './Charts/ActivityChart';
@@ -67,14 +68,14 @@ export const Dashboard: FC = () => {
     // }, [places])
 
     return (
-        <Grid container justify="center" style={{ paddingBottom: 50 }}>
+        <Grid container justifyContent="center" style={{ paddingBottom: 50 }}>
             <Grid item lg={11}>
                 <Typography variant="h3" >
                     <Grid container>
                         <Grid item lg={10}>
                             Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
                         </Grid>
-                        <Grid item container justify="flex-end" lg={2} >
+                        <Grid item container justifyContent="flex-end" lg={2} >
                             <Grid item style={{ marginRight: 5 }}>
                                 <Button onClick={() => history.push(`new-place`)} startIcon={<AddIcon />} variant="contained" color="secondary">
                                     New place
@@ -84,7 +85,7 @@ export const Dashboard: FC = () => {
                     </Grid>
                 </Typography>
                 <Typography variant="body1" >welcome to your personal dashboard</Typography>
-                <Grid container style={{ marginTop: 20 }} spacing={2} justify="space-between">
+                <Grid container style={{ marginTop: 20 }} spacing={2} justifyContent="space-between">
                     <Grid item lg={6}>
                         <Fade in={true} timeout={2000}>
                             <Card elevation={3} className={classes.shadowCard}>
@@ -150,7 +151,7 @@ export const Dashboard: FC = () => {
                                     <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
                                         The following chart represents historical data of user activity in your places
                                     </Typography>
-                                    {totalVisits && <ActivityChart series={activityChartSeries} /> }
+                                    {totalVisits && <ActivityChart series={activityChartSeries} />}
                                 </CardContent>
                             </Card>
                         </Fade>
@@ -173,7 +174,7 @@ export const Dashboard: FC = () => {
                                         <Typography variant="h6" style={{ textAlign: 'center' }} >
                                             {mostPopularPlace?.subtitle}
                                         </Typography>
-                                        <Grid container style={{ marginTop: 20 }} justify="space-evenly">
+                                        <Grid container style={{ marginTop: 20 }} justifyContent="space-evenly">
                                             <Grid item lg={4}>
                                                 <Card style={{ flexGrow: 1, marginRight: 10 }}>
                                                     <CardContent>
@@ -207,7 +208,7 @@ export const Dashboard: FC = () => {
                                                 <Card style={{ flexGrow: 1 }}>
                                                     <CardContent>
                                                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Average note</Typography>
-                                                        <Grid style={{ height: 80 }} container alignItems="center" justify="center" direction="column">
+                                                        <Grid style={{ height: 80 }} container alignItems="center" justifyContent="center" direction="column">
 
                                                             {/* <Rating value={mostPopularPlace?.locations[0].averageNote.average || 0} readOnly /> */}
 
@@ -225,6 +226,5 @@ export const Dashboard: FC = () => {
                 </Grid>
             </Grid>
         </Grid>
-
-    )
+    );
 }

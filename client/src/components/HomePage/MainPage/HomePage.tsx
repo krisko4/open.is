@@ -1,5 +1,6 @@
-import { CircularProgress, Fade, makeStyles } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { CircularProgress, Fade } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import Grid from "@mui/material/Grid";
 import { FC, useEffect, useState } from "react";
 import { AuthContextProvider } from "../../../contexts/AuthContext";
 import { Auth } from "../../Auth/Auth";

@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Divider, Grid } from "@material-ui/core"
+import { Card, CardContent, Typography, Divider, Grid } from "@mui/material"
 import { format } from "date-fns"
 import { FC, useEffect } from "react"
 
@@ -16,7 +16,7 @@ export const OpeningHoursCard: FC<any> = ({ classes, openingHours }) => {
             <CardContent>
                 <Typography variant="h5" className={classes.title}>Opening hours</Typography>
                 <Divider className={classes.divider} />
-                <Grid container justify="center">
+                <Grid container justifyContent="center">
                     <Grid item className={classes.days} lg={6}>
                         {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
                     </Grid>
@@ -33,6 +33,5 @@ export const OpeningHoursCard: FC<any> = ({ classes, openingHours }) => {
                 </Grid>
             </CardContent>
         </Card>
-
-    )
+    );
 }
