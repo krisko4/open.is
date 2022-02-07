@@ -25,9 +25,9 @@ export const MainContent: FC = () => {
     <Grid container direction="row" style={{ height: '100%' }} item lg={10}>
       <Scrollbars autoHide>
         <Header />
-        {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
         <CurrentPlaceContextProvider>
           <StepContextProvider>
+            {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
             <Route
               path={`${match.url}/new-place`}
               component={NewPlace}

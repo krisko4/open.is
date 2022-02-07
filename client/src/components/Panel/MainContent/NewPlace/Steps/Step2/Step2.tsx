@@ -35,12 +35,12 @@ export const Step2: FC = () => {
 
     return (
         <Grid item lg={12} container justify="center">
-            <Grid item lg={12} style={{ textAlign: 'center' }}>
+            {/* <Grid item lg={12} style={{ textAlign: 'center' }}>
                 <Typography variant="h3">Step 2</Typography>
             </Grid>
             <Grid item lg={12} style={{ textAlign: 'center' }}>
                 <Typography variant="subtitle1">Business details</Typography>
-            </Grid>
+            </Grid> */}
             <Formik initialValues={initialValues} onSubmit={handleSubmit} validateOnMount validationSchema={PlaceDetailsSchema}>
                 <PlaceDetailsForm />
             </Formik>
