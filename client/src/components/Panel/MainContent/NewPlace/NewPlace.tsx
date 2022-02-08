@@ -1,4 +1,5 @@
-import { Box, CardContent, Grid, Slide, SlideProps, Typography } from "@mui/material";
+import { Box, Button, CardActions, CardContent, Divider, Grid, Slide, SlideProps, Typography } from "@mui/material";
+import { PhotoCamera } from "@mui/icons-material";
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
@@ -32,8 +33,8 @@ function getStepContent(step: number, isEditionMode: boolean) {
             return <Step3 />
         case 3:
             return <Step4 isEditionMode={isEditionMode} />
-        case 4:
-            return <Step5 />
+        // case 4:
+        //     return <Step5 />
         default:
             return 'Unknown step';
     }
@@ -99,21 +100,25 @@ export const NewPlace: FC = () => {
 
     useEffect(() => {
         console.log(currentPlace)
-        setActiveStep(0)
+        setActiveStep(4)
     }, [])
 
     return (
         <Scrollbars>
             <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
-                <Grid container lg={11} style={{paddingTop: 30, paddingBottom: 30}} justifyContent="space-evenly">
+                <Grid container lg={11} style={{ paddingTop: 30, paddingBottom: 30 }} justifyContent="space-evenly">
                     {activeStep > 0 && activeStep !== 3 &&
-                        <Grid container sx={{ height: 120, backgroundColor: 'panelCard.main' }} alignItems="center">
+                        <Grid container sx={{ height: 120, backgroundColor: 'background.paper' }} alignItems="center">
+                            <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
                             <NewPlaceStepper />
+                            <Button color="primary" disabled variant="outlined" sx={{ mr: '30px' }}>Next</Button>
                         </Grid>
                     }
-                    <Grid container item lg={activeStep === 3 ? 6 : 5}>
-                        {getStepContent(activeStep, false)}
-                    </Grid>
+                    {activeStep !== 4 &&
+                        <Grid container item lg={activeStep === 3 ? 6 : 5}>
+                            {getStepContent(activeStep, false)}
+                        </Grid>
+                    }
                     {/* <Grid item container lg={5}>
                 <Slide in={true} timeout={1000}>
                     <div>
@@ -163,7 +168,43 @@ export const NewPlace: FC = () => {
                     </div>
                 </Slide>
             </Grid> */}
-                    {activeStep > 0 && activeStep !== 3 ?
+                    {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ mt: '20px' }}>
+                        <Grid container lg={5}>
+                            <PlaceDetailsCard />
+                        </Grid>
+                        <Grid container lg={5}>
+                            <Slide in={true} timeout={1000}>
+                                <div>
+                                    <PanelCard>
+                                        <CardContent>
+                                            <Typography variant="h2">
+                                                Step {activeStep + 1} - Final
+                                            </Typography>
+                                            <Grid container sx={{ mt: '10px', mb: '10px' }} lg={11}>
+                                                <Typography variant="body1" sx={{ mb: '10px' }}>
+                                                    This is the final step of the registration process. On the left side, you can see your place card.
+                                                    You have filled it with your data - now you can make it beautiful by uploading images presenting your place.
+                                                </Typography>
+                                                <Typography variant="caption">
+                                                    <span style={{color: 'red'}}>*</span> Uploading a logo picture is required.
+                                                </Typography>
+                                                <Divider sx={{width: '100%', mt: 1, mb: 1}}/>
+                                                <NewPlaceStepper orientation="vertical" />
+                                            </Grid>
+                                            <Grid container sx={{mt: 2}}>
+                                                <Button fullWidth variant="contained" disabled size="large"> Finish registration
+                                                </Button>
+                                            </Grid>
+                                        </CardContent>
+                                    </PanelCard>
+                                </div>
+
+                            </Slide>
+                        </Grid>
+                    </Grid>
+
+                    }
+                    {activeStep === 1 || activeStep === 2 ?
                         <Grid container item justifyContent="center" style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
                             <TransformWrapper limitToBounds={false} initialScale={0.9} minScale={0.5}>
                                 <TransformComponent>
@@ -171,7 +212,7 @@ export const NewPlace: FC = () => {
                                 </TransformComponent>
                             </TransformWrapper>
                         </Grid>
-                        :
+                        : activeStep !== 4 &&
                         <Grid container item lg={5}>
                             <Slide in={true} timeout={1000}>
                                 <div>

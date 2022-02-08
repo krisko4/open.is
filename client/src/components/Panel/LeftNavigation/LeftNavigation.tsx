@@ -14,7 +14,7 @@ import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
 
 
-const generateNavigationButtons = (places : RawPlaceDataProps[]) => [
+const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
     {
         name: 'Dashboard',
         icon: <DashboardIcon color="primary" />,
@@ -48,12 +48,12 @@ export const LeftNavigation: FC = () => {
 
     return (
         <Grid
-         item
-          lg={2}
-          sx={{
-              backgroundColor: 'panelCard.main'
-          }}
-          >
+            item
+            lg={2}
+            sx={{
+                backgroundColor: 'background.paper'
+            }}
+        >
 
             <Scrollbars autoHide>
                 <Grid container justifyContent="center">

@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { Autocomplete } from '@mui/material';
 import { useFormikContext } from "formik"
@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     clearIndicator: {
         color: 'red'
     },
-    paper:{
+    paper: {
         color: 'white',
         background: '#18202b'
     }
@@ -22,6 +22,7 @@ export const BusinessType = () => {
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [type, setType] = useState<string | null>(currentPlace.type)
     const { setFieldValue } = useFormikContext()
+    const [firstAttempt, setFirstAttempt] = useState(true)
     const classes = useStyles()
 
     useEffect(() => {
@@ -30,6 +31,7 @@ export const BusinessType = () => {
     }, [])
 
     const submitAutocomplete = (value: string | null) => {
+        setFirstAttempt(false)
         const newCurrentPlace = { ...currentPlace }
         if (value) newCurrentPlace.type = value
         setCurrentPlace(newCurrentPlace)
@@ -37,17 +39,23 @@ export const BusinessType = () => {
         setType(value)
     }
 
+
     return (
-        <Autocomplete
-            freeSolo
-            classes={classes}
-            options={businessTypes}
-            fullWidth={true}
-
-            value={type}
-            onChange={(e, value) => submitAutocomplete(value)}
-            renderInput={(params) => <TextField placeholder="Select your business type"  variant="outlined" color="primary" focused {...params} label="Business type" />}
-        />
-
+            <Autocomplete
+                freeSolo
+                classes={classes}
+                options={businessTypes}
+                fullWidth={true}
+                value={type}
+                onChange={(e, value) => submitAutocomplete(value)}
+                renderInput={(params) => <TextField
+                    placeholder="Select your business type"
+                    error={!firstAttempt && type === null}
+                    helperText={!firstAttempt && type === null && <span style={{ color: 'red' }}>Please choose a correct business type</span>}
+                    variant="outlined"
+                    color="primary"
+                    focused {...params}
+                    label="Business type" />}
+            />
     )
 }

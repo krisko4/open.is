@@ -69,7 +69,7 @@ export const ContactDetailsForm: FC = () => {
                                     onKeyDown={isNumber}
                                     name="phone"
 
-                                    label="Phone number"
+                                    label={<span>Phone number <span style={{color: 'red'}}>*</span></span>}
                                     placeholder="Phone number"
                                     maxLength={7}
                                     variant="outlined"

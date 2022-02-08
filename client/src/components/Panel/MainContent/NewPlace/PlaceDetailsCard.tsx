@@ -1,35 +1,33 @@
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    IconButton,
-    Paper,
-    Slide,
-    Tab,
-    Tabs,
-    Toolbar,
-    Tooltip,
-    Typography,
-} from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
+import { PhotoCamera } from "@mui/icons-material";
 import LanguageIcon from "@mui/icons-material/Language";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { Alert } from '@mui/material';
+import { LoadingButton } from "@mui/lab";
+import {
+    Alert, Card,
+    CardContent, CardMedia,
+    IconButton, Paper,
+    Slide, Tab,
+    Tabs,
+    Toolbar,
+    Tooltip,
+    Typography
+} from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 import Rating from '@mui/material/Rating';
-import React, { FC, useState } from "react";
+import makeStyles from '@mui/styles/makeStyles';
+import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { Status } from "../../../../contexts/PanelContexts/PanelContext";
+import { useStepContext } from "../../../../contexts/StepContext";
+import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
+import { ImageUpload } from "../../../reusable/ImageUpload";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
 import { PanelCard } from "../../../reusable/PanelCard";
-import { LoadingButton } from "@mui/lab";
-import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImagesCarousel";
 
 
 
@@ -147,9 +145,18 @@ const useOpinionsStyles = makeStyles({
     }
 })
 
+const MyTab = (props: any) => {
+    const { label, ...rest } = props
+    return <Tab {...rest} label={label} disableRipple />
+}
+
 export const PlaceDetailsCard: FC = () => {
 
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const [isHover, setHover] = useState(true)
+    const { imageFile, setImageFile } = useStepContext()
+    const [logo, setLogo] = useState(currentPlace.img)
+
 
     const newsClasses = useNewsStyles()
     const openingHoursClasses = useOpeningHoursStyles()
@@ -158,6 +165,19 @@ export const PlaceDetailsCard: FC = () => {
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        console.log('d00psko')
+        const newCurrentPlace = { ...currentPlace }
+        newCurrentPlace.img = logo
+        setCurrentPlace(newCurrentPlace)
+    }, [logo])
+
+    useEffect(() => {
+
+        console.log('hejj')
+    }, [imageFile])
+
     const icons = [
         {
             icon: <PhoneIcon color="primary" />,
@@ -184,10 +204,6 @@ export const PlaceDetailsCard: FC = () => {
 
     ]
 
-    const MyTab = (props: any) => {
-        const { label, ...rest } = props
-        return <Tab {...rest} label={label} disableRipple />
-    }
     return (
         <Slide in={true} timeout={1000}>
             <div>
@@ -225,9 +241,19 @@ export const PlaceDetailsCard: FC = () => {
                             </Card>
                         </Grid>
                     </Grid>
-                    <Grid container item style={{ marginTop: 10 }}>
-                        <Grid item style={{ marginLeft: 20 }}>
-                            <CardMedia style={{ height: 100, width: 100, marginTop: 10, borderRadius: 20 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
+                    <Grid container item sx={{ mt: '20px' }}>
+                        <Grid item lg={3} style={{ marginLeft: 20 }}>
+                            <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
+                                <Slide direction="up" in={isHover} appear>
+                                    <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
+                                        <ImageUpload name="logo-upload" img={logo} setImg={setLogo} setImageFile={setImageFile}>
+                                            <IconButton color="primary" component="span">
+                                                <PhotoCamera />
+                                            </IconButton>
+                                        </ImageUpload>
+                                    </Grid>
+                                </Slide>
+                            </CardMedia>
                             <Rating
                                 style={{ marginTop: 20 }}
                                 name="simple-controlled"
@@ -235,25 +261,25 @@ export const PlaceDetailsCard: FC = () => {
                                 readOnly
                             />
                         </Grid>
-                        <Grid item lg={9} style={{ marginLeft: 20 }}>
+                        <Grid item lg={8} sx={{ ml: '30px' }}>
                             <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
                                 {currentPlace.name || 'This is the name of your business'}
                             </Typography>
-                            <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
+                            <Typography variant="h6" style={{ color: 'lightgrey' }}>
                                 {currentPlace.subtitle || 'This is a subtitle of your business'}
                             </Typography>
-                            <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>
+                            <Typography variant="body1">{currentPlace.type || 'Business type'}</Typography>
                             <div>
                                 <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
                                 <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
                             </div>
                         </Grid>
                     </Grid>
-                    <Grid item container justifyContent="center" style={{ marginTop: 20 }}>
+                    <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
                         <Grid item lg={10}>
-                            <Card elevation={10} style={{ flexGrow: 1, background: '#2C2C2C' }}>
+                            <Card elevation={10} style={{ flexGrow: 1 }}>
                                 <CardContent>
-                                    <Typography variant="body1" style={{ color: 'white' }}>
+                                    <Typography variant="body1" >
                                         {currentPlace.description || 'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
                                     </Typography>
                                 </CardContent>
@@ -261,14 +287,14 @@ export const PlaceDetailsCard: FC = () => {
 
                         </Grid>
                         <Grid item lg={10} style={{ marginTop: 20 }}>
-                            <Divider color="primary" style={{ width: '100%' }}></Divider>
+                            <Divider sx={{ width: '100%' }}></Divider>
                         </Grid>
                     </Grid>
-                    <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
+                    <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
                         {icons.map((item, index) => {
                             return (
                                 <Grid item lg={3} key={index}>
-                                    <Card elevation={10} sx={{ backgroundColor: 'panelBackground.main', borderRadius: 10 }}>
+                                    <Card elevation={10} sx={{ borderRadius: 10 }}>
                                         <CardContent>
                                             <Grid container justifyContent="center">
                                                 <Grid item lg={12} style={{ textAlign: 'center' }}>

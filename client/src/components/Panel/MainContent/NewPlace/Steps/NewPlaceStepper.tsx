@@ -1,4 +1,4 @@
-import { Step, StepContent, StepLabel, Stepper } from "@mui/material";
+import { Grid, Step, StepContent, StepLabel, Stepper } from "@mui/material";
 import React, { FC, useEffect, useState } from 'react';
 import { useStepContext } from "../../../../../contexts/StepContext";
 
@@ -21,8 +21,8 @@ const steps = [
         content: 'Provide the address of your business in order to appear in our search engines',
     },
     {
-        title: 'Representative image',
-        content: 'Your visual business card',
+        title: 'Image upload',
+        content: 'Represent your business with images',
     },
 ]
 
@@ -60,12 +60,6 @@ export const NewPlaceStepper: FC<any> = (props) => {
             {...rest}
             sx={{
                 flexGrow: orientation === 'vertical' ? 0 : 1,
-                '& .MuiStepContent-root': {
-                    color: 'lightgrey',
-                },
-                '& .MuiStepLabel-label, .MuiStepLabel-label.Mui-active': {
-                    color: 'white'
-                },
             }}
             activeStep={step}
         >

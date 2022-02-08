@@ -14,21 +14,10 @@ import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext
 import { PanelCard } from "../../../reusable/PanelCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 
-const useStyles = makeStyles({
-    stepper: {
-        background: 'inherit',
-        '& .MuiStepContent-root': {
-            color: 'lightgrey',
-
-        }
-
-    }
-})
 
 
 export const NoPlaces: FC = () => {
 
-    const classes = useStyles()
     const { setSelectedOption } = usePanelContext()
     const history = useHistory()
     const match = useRouteMatch()

@@ -25,7 +25,7 @@ const Header: FC = () => {
 
 
     return (
-        <AppBar position="static" elevation={0} style={{ backgroundColor: '#18202b', paddingTop: 20, paddingRight: 40, paddingBottom: 20 }}>
+        <AppBar position="static"  elevation={0} sx={{backgroundColor: 'background.paper', paddingTop: '20px', paddingRight: '40px', paddingBottom: '20px' }}>
             <Toolbar>
                 <Grid item container justifyContent="flex-end" alignItems="center">
                     <IconButton onClick={() => history.push('/')} color="inherit" size="large">

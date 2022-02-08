@@ -1,13 +1,12 @@
+import { KeyboardReturn } from "@mui/icons-material";
 import { Button, Divider, Toolbar, Tooltip } from "@mui/material";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { KeyboardReturn } from "@mui/icons-material";
-import { useSnackbar } from "notistack";
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import React, { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useLoginContext } from "../../../../contexts/LoginContext";
@@ -20,7 +19,7 @@ import { LoadingButton } from "../../../reusable/LoadingButton";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
-import { ImagesCarousel } from './ImagesCarousel';
+import { ImagesCarousel } from './ImageCarousel/ImagesCarousel';
 import MainContent from "./MainContent";
 import { SubscribeDialog } from './SubscribeDialog';
 

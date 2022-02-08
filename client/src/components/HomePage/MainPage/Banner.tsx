@@ -56,7 +56,7 @@ export const Banner: FC = () => {
                 <Grid item container lg={8} justifyContent="center">
                     <Grid item lg={7} md={7} sm={7} style={{ textAlign: 'center', marginBottom: 200 }}>
                         <Collapse in={window.scrollY < 150} timeout={1500}>
-                            <Typography variant="h3" style={{ color: 'white', fontWeight: 200 }}>
+                            <Typography variant="h3" style={{ fontWeight: 200 }}>
                                 An easy way to track open destinations all over the world
                             </Typography>
 

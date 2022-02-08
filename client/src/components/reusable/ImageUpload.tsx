@@ -1,55 +1,66 @@
-import { Button, Card, CardMedia, Grid, IconButton } from "@mui/material"
-import React, { FC, useRef, useState } from "react"
-import ClearIcon from '@mui/icons-material/Clear';
-import UploadIcon from "@mui/icons-material/CloudUpload"
+import React, { FC, useRef, useState } from "react";
 
 interface Props {
-    img: any,
-    setImg: any,
-    setImageFile: any
+    img: string | File | ArrayBuffer | null,
+    setImageFile?: any,
+    name: string,
+    setImg: React.Dispatch<React.SetStateAction<string | File | ArrayBuffer | null>>
 }
 
-export const ImageUpload: FC<Props> = ({ img, setImg, setImageFile }) => {
+export const ImageUpload: FC<Props> = ({ img, name, children, setImg, setImageFile }) => {
 
     const uploadRef = useRef<HTMLInputElement>(null)
     const [inputKey, setInputKey] = useState<any>()
 
-    
     const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const image = event.target.files[0]
-            setImageFile(image)
+            if (setImageFile) {
+                setImageFile(image)
+            }
             const fileReader = new FileReader()
             fileReader.readAsDataURL(image)
-            fileReader.onload = e => e.target && setImg(e.target.result)        
+            fileReader.onload = e => {
+                if (e.target) {
+                    setImg(e.target.result)
+                }
+            }
+
         }
 
     }
 
-    const clearImage = () => {
-        setImg(null)
-        setImageFile(null)
-        setInputKey(Date.now())
-    }
+
+    // const clearImage = () => {
+    //     setImg('')
+    //     setImageFile(null)
+    //     setInputKey(Date.now())
+    // }
     return <>
-        <Card variant="outlined">
-            <CardMedia style={{ height: 300, backgroundSize: 'contain' }} image={img || `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
-                {img && <Grid container justifyContent="flex-end">
+        {/* <Card variant="outlined"> */}
+        {/* <CardMedia style={{ height: 300, backgroundSize: 'contain' }} image={img || `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} > */}
+        {/* {img && <Grid container justifyContent="flex-end">
                     <IconButton onClick={() => clearImage()} className="uploader" size="large">
                         <ClearIcon color="secondary" />
                     </IconButton>
-                </Grid>}
-                <input
-                    type="file"
-                    accept="image/*"
-                    ref={uploadRef}
-                    style={{ display: 'none' }}
-                    onChange={e => uploadImage(e)}
-                    key={inputKey}
-                >
-                </input>
-            </CardMedia>
+                </Grid>} */}
+        <label htmlFor={name}>
+            <input
+                type="file"
+                id={name}
+                accept="image/*"
+                ref={uploadRef}
+                style={{ display: 'none' }}
+                onChange={e => uploadImage(e)}
+                key={inputKey}
+            />
+            {children}
+            {/* <IconButton color="primary" component="span">
+                <PhotoCamera style={{ width: '100px', height: '100px' }} />
+            </IconButton> */}
+        </label>
+        {/* </CardMedia>
         </Card>
-        <Button startIcon={<UploadIcon/>}style={{ marginTop: 10 }} fullWidth variant="contained" onClick={() => uploadRef.current && uploadRef.current.click()} color="primary">Upload</Button>
+        <Button startIcon={<UploadIcon/>}style={{ marginTop: 10 }} fullWidth variant="contained" onClick={() => uploadRef.current && uploadRef.current.click()} color="primary">Upload</Button> */}
     </>;
 }

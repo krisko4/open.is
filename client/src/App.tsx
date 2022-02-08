@@ -1,4 +1,5 @@
-import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -9,9 +10,11 @@ import { About } from "./components/HomePage/About/About";
 import { Contact } from './components/HomePage/Contact/Contact';
 import HomePage from './components/HomePage/MainPage/HomePage';
 import { Panel } from './components/Panel/Panel';
-import theme from './components/Theme';
 import { LoginContextProvider } from './contexts/LoginContext';
 import { PanelContextProvider } from './contexts/PanelContexts/PanelContext';
+import browserTheme from "./themes/BrowserTheme";
+import mainTheme from "./themes/MainTheme";
+import panelTheme from "./themes/PanelTheme";
 
 
 
@@ -29,36 +32,42 @@ import { PanelContextProvider } from './contexts/PanelContexts/PanelContext';
 
 
 
-
 function App() {
 
 
 
     return <>
         <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={theme}>
-                <SnackbarProvider maxSnack={3}>
-                        <div className="App">
-                            <Router>
-                                <Switch>
-                                    <LoginContextProvider >
-                                        <Route exact path="/" component={HomePage} />
-                                        <Route path="/about" exact component={About} />
-                                        <Route path="/contact" exact component={Contact} />
-                                        <Route path="/panel">
+            <SnackbarProvider maxSnack={3}>
+                <div className="App">
+                    <ThemeProvider theme={mainTheme}>
+                        <Router>
+                            <Switch>
+                                <LoginContextProvider >
+                                    <Route exact path="/" component={HomePage} />
+                                    <Route path="/about" exact component={About} />
+                                    <Route path="/contact" exact component={Contact} />
+                                    <Route path="/panel">
+                                        <ThemeProvider theme={panelTheme}>
+                                            <CssBaseline/>
                                             <PanelContextProvider>
                                                 <Panel />
                                             </PanelContextProvider>
-                                        </Route>
-                                        <Route path="/search" component={Browser} />
-                                        <Route path="/confirm/:token" exact component={Confirmation} />
-                                        <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
-                                    </LoginContextProvider >
-                                </Switch>
-                            </Router>
-                        </div>
-                </SnackbarProvider>
-            </ThemeProvider>
+                                        </ThemeProvider>
+                                    </Route>
+                                    <Route path="/search">
+                                        <ThemeProvider theme={browserTheme}>
+                                            <Browser />
+                                        </ThemeProvider>
+                                    </Route>
+                                    <Route path="/confirm/:token" exact component={Confirmation} />
+                                    <Route path="/:email/confirm/:token" exact component={EmailChangeConfirmation} />
+                                </LoginContextProvider >
+                            </Switch>
+                        </Router>
+                    </ThemeProvider>
+                </div>
+            </SnackbarProvider>
         </StyledEngineProvider>
     </>;
 }

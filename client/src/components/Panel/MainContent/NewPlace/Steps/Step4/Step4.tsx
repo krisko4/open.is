@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Fade, Grid, Typography } from "@mui/material";
 import React, { FC } from "react";
 import AddressDetailsContextProvider from "../../../../../../contexts/AddressDetailsContext";
 import MapContextProvider from "../../../../../../contexts/MapContext/MapContext";
@@ -8,21 +8,23 @@ import { AddressDetails } from "./AddressDetails";
 
 
 
-interface Props{
+interface Props {
     isEditionMode: boolean
 }
 
-export const Step4 : FC<Props> = ({isEditionMode}) => {
+export const Step4: FC<Props> = ({ isEditionMode }) => {
 
-    const {setActiveStep} = useStepContext()
-    
+    const { setActiveStep } = useStepContext()
+
     return (
-        <Grid item lg={12} container justifyContent="center">
-            <MapContextProvider isMarkerDraggable={true}>
-                <AddressDetailsContextProvider isEditionMode={isEditionMode}>
-                    <AddressDetails setActiveStep={setActiveStep} />
-                </AddressDetailsContextProvider>
-            </MapContextProvider>
-        </Grid>
+        <Fade in={true} timeout={1500}>
+            <Grid item lg={12} container justifyContent="center">
+                <MapContextProvider isMarkerDraggable={true}>
+                    <AddressDetailsContextProvider isEditionMode={isEditionMode}>
+                        <AddressDetails setActiveStep={setActiveStep} />
+                    </AddressDetailsContextProvider>
+                </MapContextProvider>
+            </Grid>
+        </Fade>
     );
 }

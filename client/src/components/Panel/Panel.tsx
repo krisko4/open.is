@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { getPlacesByUserId } from "../../requests/PlaceRequests";
 import { setPlaces } from '../../store/actions/setPlaces';
+import panelTheme from "../../themes/PanelTheme";
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 
@@ -40,17 +41,9 @@ export const Panel: FC = () => {
     }, [])
 
     return (
-        <div>
             <Grid
                 sx={{
-                    backgroundColor: 'panelBackground.main',
                     height: '100vh',
-                    '& .MuiTypography-root': {
-                        color: 'white'
-                    },
-                    '& .MuiInputBase-root': {
-                        color: 'white'
-                    }
                 }}
                 container direction="column">
                 {loading ?
@@ -63,6 +56,5 @@ export const Panel: FC = () => {
                     </Grid>
                 }
             </Grid>
-        </div>
     );
 }

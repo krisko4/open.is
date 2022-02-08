@@ -128,7 +128,7 @@ export const MyAccount: FC = () => {
                                                 </Grid>
                                             </Grid>
                                             <Grid item lg={5}>
-                                                <ImageUpload setImageFile={setImageFile} img={img} setImg={setImg} />
+                                                {/* <ImageUpload setImageFile={setImageFile} img={img} setImg={setImg} /> */}
                                             </Grid>
 
                                         </Grid>

@@ -68,7 +68,7 @@ export const BusinessInformationForm: FC<Props> = ({setImageFile}) => {
                     </Typography>
                 </Grid>
                 <Grid item lg={5}>
-                    <ImageUpload img={img} setImg={setImg} setImageFile={setImageFile} />
+                    <ImageUpload name="business-info" img={img} setImg={setImg} setImageFile={setImageFile} />
                 </Grid>
                 <Grid item container lg={11} style={{ marginTop: 40, marginBottom: 20 }} justifyContent="flex-end">
                     <Button color="primary" type="submit" disabled={!isValid || !img}>Continue</Button>

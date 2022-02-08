@@ -7,21 +7,20 @@ import { useStepContext } from "../../../../../../contexts/StepContext";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
 
-const useStyles = makeStyles({
-    input: {
-        '& .MuiInputBase-root, .MuiFormHelperText-root': {
-            color: 'white'
-        },
+// const useStyles = makeStyles({
+//     input: {
+//         '& .MuiInputBase-root, .MuiFormHelperText-root': {
+//             color: 'white'
+//         },
         
-    }
-})
+//     }
+// })
 
 export const Step1: FC = () => {
 
     const { setCurrentStep, setActiveStep } = useStepContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [input, setInput] = useState('')
-    const classes = useStyles()
 
     useEffect(() => {
         setCurrentStep(0)
@@ -41,15 +40,12 @@ export const Step1: FC = () => {
     return (
         <Fade in={true} timeout={1500}>
             <Grid item container direction="column" justifyContent="space-between" style={{ textAlign: 'center' }}>
-
                 <Typography style={{ color: 'white' }} variant="h2">What is the name of your business?</Typography>
-
                 <TextField
                     style={{ marginTop: 10 }}
                     label="Business name"
                     fullWidth={true}
                     value={input}
-                    className={classes.input}
                     color="primary"
                     placeholder="This is the name of my business!"
                     variant="outlined"
