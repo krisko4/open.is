@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, TextField } from "@mui/material";
+import { CircularProgress, Grid, Paper, Popper, TextField } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { Autocomplete } from '@mui/material';
 import match from 'autosuggest-highlight/match'
@@ -8,6 +8,7 @@ import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext"
 import { useMapContext } from "../../contexts/MapContext/MapContext"
 import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
 import { findByAddress } from "../../requests/PlaceRequests"
+import { styled } from "@mui/styles";
 
 interface Props {
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>
@@ -18,7 +19,6 @@ const useStyles = makeStyles({
         '& .MuiInputBase-root, .MuiFormHelperText-root': {
             color: 'white'
         },
-
     },
     paper: {
         color: 'white',
@@ -26,8 +26,15 @@ const useStyles = makeStyles({
     },
     clearIndicator: {
         color: 'red'
+    },
+    loading: {
+        color: 'white'
     }
 })
+
+
+
+
 export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
 
     const [open, setOpen] = useState(false)
@@ -91,7 +98,6 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
         }
         const delaySearch = setTimeout(async () => {
             const addresses = await findByAddress(inputValue)
-            console.log(addresses)
             setAvailableAddresses(addresses)
             setLoading(false)
         }, 500)
@@ -113,24 +119,24 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
             }}
             options={availableAddresses}
             onChange={(event, value) => selectPlace(value)}
-            getOptionLabel={(option: any) => option && option.name}
+            getOptionLabel={(option: any) => option.name || ''}
             noOptionsText="No options"
-            renderOption={(option: any, { inputValue }) => {
-                const label = option.label
-                const matches = match(label, inputValue);
-                const parts = parse(label, matches);
-                return (
-                    <Grid container>
-                        <Grid item>
-                            {parts.map((part, index) => (
-                                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                                    <span>{part.text}</span>
-                                </span>
-                            ))}
-                        </Grid>
-                    </Grid>
-                )
-            }}
+            // renderOption={(option: any) => {
+            //     const label = option.key
+            //     const matches = match(label, inputValue);
+            //     const parts = parse(label, matches);
+            //     return <h4 style={{marginLeft: 10, marginRight: 10}}>
+            //         {label}
+            //         {
+            //             parts.map((part, index) => (
+            //                 <span key={index} style={{ marginBottom: 10, fontWeight: part.highlight ? 700 : 400 }}>
+            //                     <span >{part.text}</span>
+            //                 </span>
+            //             ))
+            //         }
+
+            //     </h4>
+            // }}
             renderInput={(params) =>
                 <TextField
                     {...params}

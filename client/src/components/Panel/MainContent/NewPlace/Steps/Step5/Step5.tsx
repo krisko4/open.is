@@ -68,7 +68,16 @@ export const Step5: FC = () => {
                     If you don't want to do it now, you will be able to share your pictures later.
                 </Typography>
             </Grid>
-            <ImageList style={{width: 200, height: 200}}>
+            <ImageList style={{height: 200}}>
+                <ImageListItem>
+                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
+                </ImageListItem>
+                <ImageListItem>
+                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
+                </ImageListItem>
+                <ImageListItem>
+                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
+                </ImageListItem>
                 <ImageListItem>
                     <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
                 </ImageListItem>

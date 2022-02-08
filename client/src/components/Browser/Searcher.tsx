@@ -102,7 +102,6 @@ const Searcher: FC = () => {
         setLoading(true)
         const delaySearch = setTimeout(async () => {
             const names = await getPlacesByName(inputValue) 
-            console.log(names)
             if (names.length === 0) {
                 const result = await provider.search({ query: inputValue })
                 result.length > 0 ? setAvailableAddresses([{ name: inputValue, foundBy: 'address' }]) : setAvailableAddresses([])
@@ -165,7 +164,6 @@ const Searcher: FC = () => {
                 const matches = match(label, inputValue);
                 const parts = parse(label, matches);
                 if (option.foundBy === "name") {
-
                     return (
                         <Grid container alignItems="center">
                             <Grid item>

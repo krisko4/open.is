@@ -63,7 +63,7 @@ export const NewPlaceStepper: FC<any> = (props) => {
                 '& .MuiStepContent-root': {
                     color: 'lightgrey',
                 },
-                '& .MuiStepLabel-label': {
+                '& .MuiStepLabel-label, .MuiStepLabel-label.Mui-active': {
                     color: 'white'
                 },
             }}

@@ -18,6 +18,7 @@ import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
 import { Step5 } from "./Steps/Step5/Step5";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
+import Scrollbars from "react-custom-scrollbars";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -102,17 +103,18 @@ export const NewPlace: FC = () => {
     }, [])
 
     return (
-        <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
-            <Grid container lg={11} justifyContent="space-evenly">
-                {activeStep > 0 && activeStep !== 3 &&
-                    <Grid container sx={{height: 120, backgroundColor: 'panelCard.main'}} alignItems="center">
-                        <NewPlaceStepper />
+        <Scrollbars>
+            <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
+                <Grid container lg={11} style={{paddingTop: 30, paddingBottom: 30}} justifyContent="space-evenly">
+                    {activeStep > 0 && activeStep !== 3 &&
+                        <Grid container sx={{ height: 120, backgroundColor: 'panelCard.main' }} alignItems="center">
+                            <NewPlaceStepper />
+                        </Grid>
+                    }
+                    <Grid container item lg={activeStep === 3 ? 6 : 5}>
+                        {getStepContent(activeStep, false)}
                     </Grid>
-                }
-                <Grid container item lg={activeStep === 3 ? 6 : 5}>
-                    {getStepContent(activeStep, false)}
-                </Grid>
-                {/* <Grid item container lg={5}>
+                    {/* <Grid item container lg={5}>
                 <Slide in={true} timeout={1000}>
                     <div>
                         <PanelCard>
@@ -161,41 +163,42 @@ export const NewPlace: FC = () => {
                     </div>
                 </Slide>
             </Grid> */}
-                {activeStep > 0 && activeStep !== 3 ?
-                    <Grid container item justifyContent="center" style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
-                        <TransformWrapper limitToBounds={false} initialScale={0.9} minScale={0.5}>
-                            <TransformComponent>
-                                <PlaceDetailsCard />
-                            </TransformComponent>
-                        </TransformWrapper>
-                    </Grid>
-                    :
-                    <Grid container item lg={5}>
-                        <Slide in={true} timeout={1000}>
-                            <div>
-                                <PanelCard>
-                                    <CardContent>
-                                        <Typography variant="h2">
-                                            Step {activeStep + 1}
-                                        </Typography>
-                                        <Grid container style={{ marginTop: 10 }} lg={10}>
-                                            <Typography variant="body1">
-                                                {activeStep === 0 ?
-                                                    'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
-                                                    'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
-                                                }
+                    {activeStep > 0 && activeStep !== 3 ?
+                        <Grid container item justifyContent="center" style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                            <TransformWrapper limitToBounds={false} initialScale={0.9} minScale={0.5}>
+                                <TransformComponent>
+                                    <PlaceDetailsCard />
+                                </TransformComponent>
+                            </TransformWrapper>
+                        </Grid>
+                        :
+                        <Grid container item lg={5}>
+                            <Slide in={true} timeout={1000}>
+                                <div>
+                                    <PanelCard>
+                                        <CardContent>
+                                            <Typography variant="h2">
+                                                Step {activeStep + 1}
                                             </Typography>
-                                            <NewPlaceStepper orientation="vertical" />
-                                        </Grid>
-                                    </CardContent>
-                                </PanelCard>
-                            </div>
+                                            <Grid container style={{ marginTop: 10 }} lg={10}>
+                                                <Typography variant="body1">
+                                                    {activeStep === 0 ?
+                                                        'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
+                                                        'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
+                                                    }
+                                                </Typography>
+                                                <NewPlaceStepper orientation="vertical" />
+                                            </Grid>
+                                        </CardContent>
+                                    </PanelCard>
+                                </div>
 
-                        </Slide>
-                    </Grid>
+                            </Slide>
+                        </Grid>
 
-                }
-            </Grid>
-        </Grid >
+                    }
+                </Grid>
+            </Grid >
+        </Scrollbars>
     );
 }

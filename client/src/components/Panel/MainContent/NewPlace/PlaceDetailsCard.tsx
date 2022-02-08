@@ -7,6 +7,8 @@ import {
     Slide,
     Tab,
     Tabs,
+    Toolbar,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
@@ -26,6 +28,8 @@ import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
 import { PanelCard } from "../../../reusable/PanelCard";
+import { LoadingButton } from "@mui/lab";
+import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImagesCarousel";
 
 
 
@@ -187,15 +191,107 @@ export const PlaceDetailsCard: FC = () => {
     return (
         <Slide in={true} timeout={1000}>
             <div>
-                <PanelCard elevation={3}>
-                    <CardContent>
-                        <Typography variant="h5">
+                <PanelCard elevation={3} sx={{ minWidth: 800 }}>
+                    <Grid container item sx={{ backgroundColor: 'panelCard.main' }}>
+                        <Toolbar style={{ flexGrow: 1 }} disableGutters>
+                            <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
+                                <Tooltip title={'Your users will be able to subscribe to your business'} arrow >
+                                    <span>
+                                        <LoadingButton
+                                            color="primary"
+                                        // onClick={() => unsubscribe()}
+                                        >
+                                            Subscribed
+                                        </LoadingButton>
+                                    </span>
+                                </Tooltip>
+                            </Grid>
+                        </Toolbar>
+                    </Grid>
+                    <Grid container>
+                        <ImagesCarousel address={currentPlace.address || 'This is an address of your business'} img={currentPlace.img as string} />
+                    </Grid>
+                    <Grid container >
+                        <Grid container item>
+                            <Card elevation={10}
+                                sx={{ flexGrow: 1, paddingBottom: '12px', paddingTop: '12px', paddingRight: '20px', backgroundColor: 'panelCard.main' }}>
+                                <Grid container justifyContent="flex-end">
+                                    <Grid item>
+                                        <Alert severity="success" variant="filled" >
+                                            This place is now OPEN
+                                        </Alert>
+                                    </Grid>
+                                </Grid>
+                            </Card>
+                        </Grid>
+                    </Grid>
+                    <Grid container item style={{ marginTop: 10 }}>
+                        <Grid item style={{ marginLeft: 20 }}>
+                            <CardMedia style={{ height: 100, width: 100, marginTop: 10, borderRadius: 20 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
+                            <Rating
+                                style={{ marginTop: 20 }}
+                                name="simple-controlled"
+                                value={currentPlace.averageNote?.average}
+                                readOnly
+                            />
+                        </Grid>
+                        <Grid item lg={9} style={{ marginLeft: 20 }}>
+                            <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
+                                {currentPlace.name || 'This is the name of your business'}
+                            </Typography>
+                            <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
+                                {currentPlace.subtitle || 'This is a subtitle of your business'}
+                            </Typography>
+                            <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>
+                            <div>
+                                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
+                                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item container justifyContent="center" style={{ marginTop: 20 }}>
+                        <Grid item lg={10}>
+                            <Card elevation={10} style={{ flexGrow: 1, background: '#2C2C2C' }}>
+                                <CardContent>
+                                    <Typography variant="body1" style={{ color: 'white' }}>
+                                        {currentPlace.description || 'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+
+                        </Grid>
+                        <Grid item lg={10} style={{ marginTop: 20 }}>
+                            <Divider color="primary" style={{ width: '100%' }}></Divider>
+                        </Grid>
+                    </Grid>
+                    <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
+                        {icons.map((item, index) => {
+                            return (
+                                <Grid item lg={3} key={index}>
+                                    <Card elevation={10} sx={{ backgroundColor: 'panelBackground.main', borderRadius: 10 }}>
+                                        <CardContent>
+                                            <Grid container justifyContent="center">
+                                                <Grid item lg={12} style={{ textAlign: 'center' }}>
+                                                    {item.icon}
+                                                </Grid>
+                                                <Grid item style={{ color: 'white' }}>
+                                                    {item.text}
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                    {/* <CardContent> */}
+                    {/* <Typography variant="h5">
                             Place card
                         </Typography>
                         <Typography variant="subtitle2">
                             Your place profile will look similar to this template in a browser
-                        </Typography>
-                        <Grid container style={{ marginTop: 10 }} alignItems="center" justifyContent="space-evenly">
+                        </Typography> */}
+                    {/* <Grid container style={{ marginTop: 10 }} alignItems="center" justifyContent="space-evenly">
                             <Grid item lg={5} style={{ textAlign: 'center' }}>
                                 <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
                             </Grid>
@@ -257,7 +353,7 @@ export const PlaceDetailsCard: FC = () => {
                                 })}
                             </Grid>
                         </Grid>
-                    </CardContent>
+                    </CardContent> */}
 
                     <Grid container item lg={12} style={{ marginTop: 10, }}>
                         <Divider style={{ width: '100%', backgroundColor: '#2196f3' }} />
@@ -282,8 +378,8 @@ export const PlaceDetailsCard: FC = () => {
                     </Grid>
 
                 </PanelCard>
-                </div>
+            </div>
 
-                </Slide >
+        </Slide >
     );
 }

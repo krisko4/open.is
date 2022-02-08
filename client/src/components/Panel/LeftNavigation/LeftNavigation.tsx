@@ -13,21 +13,6 @@ import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
 
-// const useStyles = makeStyles({
-//     navigation: {
-//         height: '100%',
-//         background: '#18202b',
-//         '& .MuiListItemText-secondary': {
-//             color: 'white'
-//         },
-//         '& .MuiListItemText-primary': {
-//             color: 'white'
-//         },
-//         '& .MuiListSubheader-root': {
-//             color: 'white'
-//         }
-//     },
-// })
 
 const generateNavigationButtons = (places : RawPlaceDataProps[]) => [
     {
@@ -55,7 +40,6 @@ const generateNavigationButtons = (places : RawPlaceDataProps[]) => [
 
 export const LeftNavigation: FC = () => {
 
-    // const classes = useStyles()
     const places = usePlacesSelector()
     const dispatch = useDispatch()
     const history = useHistory()

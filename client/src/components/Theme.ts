@@ -12,6 +12,7 @@ declare module '@mui/material/styles' {
         panelBackground: Palette['primary'],
         panelCard: Palette['primary']
     }
+    
     interface PaletteOptions {
         neutral: PaletteOptions['primary'],
         panelCard: PaletteOptions['primary'],

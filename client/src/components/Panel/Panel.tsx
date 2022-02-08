@@ -1,7 +1,5 @@
 import { CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
-import { styled } from "@mui/system";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -12,24 +10,8 @@ import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 
 
-
-const useStyles = makeStyles({
-    panel: {
-        height: '100vh',
-        // background: 'linear-gradient(20deg, rgba(0,0,0,0) 27%, rgba(24,131,217,1) 100%)',
-        // background: 'panelBackground',
-        '& .MuiTypography-root': {
-            color: 'white'
-        },
-        '& .MuiInputBase-root': {
-            color: 'white'
-        }
-    }
-})
-
 export const Panel: FC = () => {
 
-    const classes = useStyles()
     const [loading, setLoading] = useState(true)
     const { isUserLoggedIn } = useLoginContext()
     const history = useHistory()
