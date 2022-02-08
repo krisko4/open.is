@@ -17,12 +17,12 @@ interface Props {
 export const BusinessInformationForm: FC<Props> = ({setImageFile}) => {
 
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const [img, setImg] = useState<any>(currentPlace.img)
+    const [img, setImg] = useState<any>(currentPlace.logo)
     const { isValid, values } = useFormikContext<any>()
 
     useEffect(() => {
         const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.img = img
+        newCurrentPlace.logo = img
         setCurrentPlace(newCurrentPlace)
     }, [img])
 

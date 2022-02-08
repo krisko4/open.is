@@ -1,15 +1,38 @@
 import { PhotoCamera } from "@mui/icons-material"
 import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { ImageUpload } from "../../../../reusable/ImageUpload"
 
-interface Props {
-    image: string,
-    address: string
+
+interface Image {
+    img: string,
+    file: File | null
 }
-export const ImageCarouselItem: FC<Props> = ({ image, address }) => {
+
+interface Props {
+    item: Image,
+    address: string,
+    setImages: React.Dispatch<React.SetStateAction<Image[]>>,
+    index: number,
+    isEditable?: boolean
+}
+export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address, setImages }) => {
     const [isHover, setHover] = useState(true)
-    const [img, setImg] = useState<any>(image)
+    const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
+    const [imageFile, setImageFile] = useState<File | null>(null)
+
+    useEffect(() => {
+        setImages(currentImages => {
+            const images = [...currentImages]
+            images[index] = {
+                img: img as string,
+                file: imageFile
+            }
+            return images
+        })
+
+    }, [img])
+
     return (
         <CardMedia
             onMouseEnter={() => setHover(true)}
@@ -22,17 +45,19 @@ export const ImageCarouselItem: FC<Props> = ({ image, address }) => {
                 },
                 transition: '.5s',
             }}
-            image={img}
+            image={img as string}
         >
-            <Slide in={isHover} appear>
-                <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                    <ImageUpload name={img} img={img} setImg={setImg} >
-                        <IconButton color="primary" component="span">
-                            <PhotoCamera style={{ width: '100px', height: '100px' }} />
-                        </IconButton>
-                    </ImageUpload>
-                </Grid>
-            </Slide>
+            {isEditable &&
+                <Slide in={isHover} appear>
+                    <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
+                        <ImageUpload name={img as string} img={img} setImageFile={setImageFile} setImg={setImg} >
+                            <IconButton color="primary" component="span">
+                                <PhotoCamera style={{ width: '100px', height: '100px' }} />
+                            </IconButton>
+                        </ImageUpload>
+                    </Grid>
+                </Slide>
+            }
             <Grid alignItems="center" justifyContent="center" container
                 sx={{
                     position: 'absolute',

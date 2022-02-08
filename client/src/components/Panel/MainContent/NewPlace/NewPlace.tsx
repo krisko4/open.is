@@ -52,55 +52,56 @@ export const NewPlace: FC = () => {
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const registerPlace = () => {
-        setLoading(true)
-        const place = {
-            img: imageFile as File,
-            name: currentPlace.name,
-            subtitle: currentPlace.subtitle,
-            description: currentPlace.description,
-            type: currentPlace.type,
-        }
-        const locations = [
-            {
-                address: currentPlace.address,
-                lat: currentPlace.lat,
-                lng: currentPlace.lng,
-                phone: currentPlace.phone,
-                email: currentPlace.email,
-                website: currentPlace.website,
-                facebook: currentPlace.facebook,
-                instagram: currentPlace.instagram
-            }
-        ]
-        const formData = new FormData()
-        let key: keyof typeof place
-        for (key in place) formData.append(key, place[key])
-        formData.append('locations', JSON.stringify(locations))
-        registerNewPlace(formData).then(res => {
-            console.log(res.data)
-            const newPlace = res.data.place
-            newPlace.img = res.data.place.img
-            newPlace.visits = []
-            newPlace.opinions = []
-            newPlace.news = []
-            places.push(newPlace)
-            dispatch(setPlaces(places))
-            enqueueSuccessSnackbar('You have successfully registered new place')
-            history.push(`dashboard`)
-        }).catch(err => {
-            console.log(err)
-            enqueueErrorSnackbar()
-        }).finally(() => {
-            setLoading(false)
-            setOpen(false)
-        }
-        )
+        console.log(currentPlace)
+        // setLoading(true)
+        // const place = {
+        //     img: imageFile as File,
+        //     name: currentPlace.name,
+        //     subtitle: currentPlace.subtitle,
+        //     description: currentPlace.description,
+        //     type: currentPlace.type,
+        // }
+        // const locations = [
+        //     {
+        //         address: currentPlace.address,
+        //         lat: currentPlace.lat,
+        //         lng: currentPlace.lng,
+        //         phone: currentPlace.phone,
+        //         email: currentPlace.email,
+        //         website: currentPlace.website,
+        //         facebook: currentPlace.facebook,
+        //         instagram: currentPlace.instagram
+        //     }
+        // ]
+        // const formData = new FormData()
+        // let key: keyof typeof place
+        // for (key in place) formData.append(key, place[key])
+        // formData.append('locations', JSON.stringify(locations))
+        // registerNewPlace(formData).then(res => {
+        //     console.log(res.data)
+        //     const newPlace = res.data.place
+        //     newPlace.img = res.data.place.img
+        //     newPlace.visits = []
+        //     newPlace.opinions = []
+        //     newPlace.news = []
+        //     places.push(newPlace)
+        //     dispatch(setPlaces(places))
+        //     enqueueSuccessSnackbar('You have successfully registered new place')
+        //     history.push(`dashboard`)
+        // }).catch(err => {
+        //     console.log(err)
+        //     enqueueErrorSnackbar()
+        // }).finally(() => {
+        //     setLoading(false)
+        //     setOpen(false)
+        // }
+        // )
     }
 
 
     useEffect(() => {
         console.log(currentPlace)
-        setActiveStep(4)
+        setActiveStep(0)
     }, [])
 
     return (
@@ -138,7 +139,7 @@ export const NewPlace: FC = () => {
                                         <Button variant="text" color="primary" onClick={() => setActiveStep((currentStep) => currentStep - 1)}>Return</Button>
                                         {activeStep === 4 &&
                                             <div>
-                                                <Button variant="text" disabled={!currentPlace.img} color="primary" onClick={() => setOpen(true)}>Finish registration</Button>
+                                                <Button variant="text" disabled={!currentPlace.logo} color="primary" onClick={() => setOpen(true)}>Finish registration</Button>
                                                 <Dialog
                                                     open={isOpen}
                                                     TransitionComponent={Transition}
@@ -170,7 +171,7 @@ export const NewPlace: FC = () => {
             </Grid> */}
                     {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ mt: '20px' }}>
                         <Grid container lg={5}>
-                            <PlaceDetailsCard />
+                            <PlaceDetailsCard isEditable />
                         </Grid>
                         <Grid container lg={5}>
                             <Slide in={true} timeout={1000}>
@@ -186,13 +187,20 @@ export const NewPlace: FC = () => {
                                                     You have filled it with your data - now you can make it beautiful by uploading images presenting your place.
                                                 </Typography>
                                                 <Typography variant="caption">
-                                                    <span style={{color: 'red'}}>*</span> Uploading a logo picture is required.
+                                                    <span style={{ color: 'red' }}>*</span> Uploading a logo picture is required.
                                                 </Typography>
-                                                <Divider sx={{width: '100%', mt: 1, mb: 1}}/>
+                                                <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
                                                 <NewPlaceStepper orientation="vertical" />
                                             </Grid>
-                                            <Grid container sx={{mt: 2}}>
-                                                <Button fullWidth variant="contained" disabled size="large"> Finish registration
+                                            <Grid container sx={{ mt: 2 }}>
+                                                <Button
+                                                    fullWidth
+                                                    variant="contained"
+                                                    disabled={!currentPlace.logo}
+                                                    size="large"
+                                                    onClick={() => registerPlace()}
+
+                                                > Finish registration
                                                 </Button>
                                             </Grid>
                                         </CardContent>

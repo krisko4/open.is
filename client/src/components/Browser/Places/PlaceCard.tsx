@@ -105,7 +105,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                 <Grid container justifyContent="space-between">
                     <Grid item container alignItems="center" >
                         <Grid item>
-                            <Avatar style={{ width: 80, height: 80 }} src={currentPlace.img as string} alt={currentPlace.name} />
+                            <Avatar style={{ width: 80, height: 80 }} src={currentPlace.logo as string} alt={currentPlace.name} />
                         </Grid>
                         <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
                             <Typography variant="h6" style={{ color: 'white' }}>

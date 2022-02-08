@@ -8,6 +8,10 @@ export enum Status {
     CLOSED = 'closed'
 }
 
+export interface Image {
+    img: string,
+    file : File | null
+}
 
 export interface CurrentPlaceProps {
     status?: Status,
@@ -15,14 +19,15 @@ export interface CurrentPlaceProps {
     _id?: string,
     name: string,
     address: string,
-    type: string,
+    type: string | null,
     lat: number,
     lng: number,
     description: string,
     subtitle: string,
     phone: string,
-    img: string | ArrayBuffer | null | File,
+    logo: string | ArrayBuffer | null | File,
     email: string,
+    images: Image[],
     website: string,
     instagram: string,
     news?: NewsProps[],
@@ -105,13 +110,14 @@ export const CurrentPlaceContextProvider: FC = ({ children }) => {
 export const clearPlace = {
     name: '',
     address: '',
-    type: '',
+    type: null,
     lat: 0,
     lng: 0,
     description: '',
     subtitle: '',
     phone: '',
-    img: '',
+    logo: '',
+    images: [],
     email: '',
     website: '',
     instagram: '',

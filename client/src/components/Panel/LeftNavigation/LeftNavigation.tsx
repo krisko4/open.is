@@ -54,7 +54,6 @@ export const LeftNavigation: FC = () => {
                 backgroundColor: 'background.paper'
             }}
         >
-
             <Scrollbars autoHide>
                 <Grid container justifyContent="center">
                     <CardMedia

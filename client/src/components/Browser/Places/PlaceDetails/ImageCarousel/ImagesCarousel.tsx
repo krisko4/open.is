@@ -1,7 +1,7 @@
 import { PhotoCamera } from "@mui/icons-material";
 import { CardMedia, Grid, IconButton, Slide, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../contexts/StepContext";
@@ -38,28 +38,46 @@ const useStyles = makeStyles({
 })
 interface Props {
     address: string,
-    img: string
+    img: string,
+    isEditable? : boolean
 }
+
+interface Image {
+    img: string,
+    file: File | null
+}
+
 
 const items = [
     { img: 'https://www.24opole.pl/res/cache/news/1024.768.20210716143309_biedra_0.jpg' },
     { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg' }
 ]
-export const ImagesCarousel: FC<Props> = ({ address, img }) => {
+export const ImagesCarousel: FC<Props> = ({ address, img, isEditable }) => {
     const classes = useStyles()
-
-
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const { imageFile, setImageFile } = useStepContext()
-    const [image, setImage] = useState<any>(currentPlace.img)
+    const [images, setImages] = useState<Image[]>([
+        { img: 'https://www.24opole.pl/res/cache/news/1024.768.20210716143309_biedra_0.jpg', file: null },
+        { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg', file: null },
+        { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg', file: null },
+        { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg', file: null },
+    ])
 
-    const [isHover, setHover] = useState(true)
+    useEffect(() => {
+        const place = {...currentPlace}
+        place.images = images
+        setCurrentPlace(place)
+    
+    }, [images])
+
+
+
+
 
     return (
         <Carousel stopAutoPlayOnHover autoPlay={false} indicators={false} interval={10000} animation="slide" className={classes.carousel}>
-            {items.map((item, i) =>
+            {images.map((item, index) =>
                 <div
-                    key={i}
+                    key={index}
                 >
                     {/* <CardMedia
                         onMouseEnter={() => setHover(true)}
@@ -80,7 +98,7 @@ export const ImagesCarousel: FC<Props> = ({ address, img }) => {
                             <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{address}</Typography>
                         </Grid>
                     </CardMedia> */}
-                   <ImageCarouselItem image={item.img} address={address} />
+                    <ImageCarouselItem isEditable={isEditable} index={index} item={item} setImages={setImages} address={address} />
 
                 </div>)
             }

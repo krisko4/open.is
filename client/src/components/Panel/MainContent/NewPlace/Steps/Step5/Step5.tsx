@@ -27,12 +27,12 @@ export const Step5: FC = () => {
 
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const { imageFile, setImageFile } = useStepContext()
-    const [img, setImg] = useState<any>(currentPlace.img)
+    const [img, setImg] = useState<any>(currentPlace.logo)
 
 
     useEffect(() => {
         const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.img = img
+        newCurrentPlace.logo = img
         setCurrentPlace(newCurrentPlace)
     }, [img])
 

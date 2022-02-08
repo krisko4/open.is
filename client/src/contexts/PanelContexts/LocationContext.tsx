@@ -45,7 +45,7 @@ const useProviderSettings = () => {
     //     subtitle: currentPlace.subtitle,
     //     type: currentPlace.type,
     //     description: currentPlace.description,
-    //     img: currentPlace.img,
+    //     img: currentPlace.logo,
     //     locations: selectedPlaces
     // })
 

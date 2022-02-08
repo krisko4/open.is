@@ -41,7 +41,7 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
         subtitle: currentPlace.subtitle,
         type: currentPlace.type,
         description: currentPlace.description,
-        img: currentPlace.img,
+        img: currentPlace.logo,
         locations: selectedLocations
     })
 

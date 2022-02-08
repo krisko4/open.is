@@ -34,7 +34,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
         setLoading(true)
         const formData = new FormData()
         const changedPlace = { ...currentPlace }
-        if (imageFile) changedPlace.img = imageFile
+        if (imageFile) changedPlace.logo = imageFile
         let key: keyof typeof changedPlace
         for (key in currentPlace) formData.append(key, changedPlace[key])
         try {
@@ -78,7 +78,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                                     <Button variant="text" color="primary" onClick={() => setActiveStep((currentStep) => currentStep - 1)}>Return</Button>
                                     {activeStep === 4 &&
                                         <div>
-                                            <Button variant="text" disabled={!currentPlace.img} color="primary" onClick={() => setOpen(true)}>Finish modifications</Button>
+                                            <Button variant="text" disabled={!currentPlace.logo} color="primary" onClick={() => setOpen(true)}>Finish modifications</Button>
                                             <Dialog
                                                 open={isOpen}
                                                 TransitionComponent={Transition}

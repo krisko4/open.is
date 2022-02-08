@@ -164,7 +164,7 @@ export const Dashboard: FC = () => {
                                     <Grid container direction="column" alignItems="center">
                                         <Avatar
                                             // src="https://static.gazetka-24.pl/image/shop/auchan/logo_512.png"
-                                            src={`${mostPopularPlace?.img}`}
+                                            src={`${mostPopularPlace?.logo}`}
                                             alt={mostPopularPlace?.name}
                                             style={{ height: 100, width: 100 }}
                                         />

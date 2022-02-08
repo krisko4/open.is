@@ -293,7 +293,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                 </Toolbar>
             </Grid>
             <Grid container>
-                <ImagesCarousel address={currentPlace.address} img={currentPlace.img as string} />
+                <ImagesCarousel address={currentPlace.address} img={currentPlace.logo as string} />
             </Grid>
             <MainContent place={currentPlace} />
             <Grid container style={{ marginTop: 10 }}>

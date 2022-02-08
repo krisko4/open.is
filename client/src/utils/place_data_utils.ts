@@ -27,7 +27,8 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
         }
     ]
     const rawPlaceData: RawPlaceDataProps = {
-        img: currentPlace.img,
+        logo: currentPlace.logo,
+        images: currentPlace.images,
         userId: currentPlace.userId,
         name: currentPlace.name,
         subtitle: currentPlace.subtitle,
@@ -51,7 +52,8 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
             type: place.type,
             description: place.description,
             subtitle: place.subtitle,
-            img: place.img,
+            logo: place.logo,
+            images: place.images,
             userId: place.userId,
             isUserOwner: place.isUserOwner
 

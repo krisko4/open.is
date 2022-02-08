@@ -150,12 +150,16 @@ const MyTab = (props: any) => {
     return <Tab {...rest} label={label} disableRipple />
 }
 
-export const PlaceDetailsCard: FC = () => {
+interface Props {
+    isEditable?: boolean
+}
+
+export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
 
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [isHover, setHover] = useState(true)
     const { imageFile, setImageFile } = useStepContext()
-    const [logo, setLogo] = useState(currentPlace.img)
+    const [logo, setLogo] = useState(currentPlace.logo)
 
 
     const newsClasses = useNewsStyles()
@@ -167,16 +171,11 @@ export const PlaceDetailsCard: FC = () => {
     };
 
     useEffect(() => {
-        console.log('d00psko')
         const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.img = logo
+        newCurrentPlace.logo = logo
         setCurrentPlace(newCurrentPlace)
     }, [logo])
 
-    useEffect(() => {
-
-        console.log('hejj')
-    }, [imageFile])
 
     const icons = [
         {
@@ -215,7 +214,6 @@ export const PlaceDetailsCard: FC = () => {
                                     <span>
                                         <LoadingButton
                                             color="primary"
-                                        // onClick={() => unsubscribe()}
                                         >
                                             Subscribed
                                         </LoadingButton>
@@ -225,7 +223,7 @@ export const PlaceDetailsCard: FC = () => {
                         </Toolbar>
                     </Grid>
                     <Grid container>
-                        <ImagesCarousel address={currentPlace.address || 'This is an address of your business'} img={currentPlace.img as string} />
+                        <ImagesCarousel isEditable={isEditable} address={currentPlace.address || 'This is an address of your business'} img={currentPlace.logo as string} />
                     </Grid>
                     <Grid container >
                         <Grid container item>
@@ -243,16 +241,19 @@ export const PlaceDetailsCard: FC = () => {
                     </Grid>
                     <Grid container item sx={{ mt: '20px' }}>
                         <Grid item lg={3} style={{ marginLeft: 20 }}>
-                            <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
-                                <Slide direction="up" in={isHover} appear>
-                                    <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                                        <ImageUpload name="logo-upload" img={logo} setImg={setLogo} setImageFile={setImageFile}>
-                                            <IconButton color="primary" component="span">
-                                                <PhotoCamera />
-                                            </IconButton>
-                                        </ImageUpload>
-                                    </Grid>
-                                </Slide>
+                            <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.logo ? `${currentPlace.logo}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
+                                {isEditable &&
+                                    <Slide direction="up" in={isHover} appear>
+                                        <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
+                                            <ImageUpload name="logo-upload" img={logo} setImg={setLogo} setImageFile={setImageFile}>
+                                                <IconButton color="primary" component="span">
+                                                    <PhotoCamera />
+                                                </IconButton>
+                                            </ImageUpload>
+                                        </Grid>
+                                    </Slide>
+
+                                }
                             </CardMedia>
                             <Rating
                                 style={{ marginTop: 20 }}
@@ -319,7 +320,7 @@ export const PlaceDetailsCard: FC = () => {
                         </Typography> */}
                     {/* <Grid container style={{ marginTop: 10 }} alignItems="center" justifyContent="space-evenly">
                             <Grid item lg={5} style={{ textAlign: 'center' }}>
-                                <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.img ? `${currentPlace.img}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
+                                <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.logo ? `${currentPlace.logo}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
                             </Grid>
                             <Grid item lg={5} container direction="column" alignItems="center" style={{ textAlign: 'center', marginLeft: 10 }}>
                                 <Typography variant="h3" style={{ fontWeight: 'bold' }}>

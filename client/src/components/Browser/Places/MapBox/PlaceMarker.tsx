@@ -29,7 +29,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
     const firstRender = useRef(true)
     const history = useHistory()
     const match = useRouteMatch()
-    const img = criterium.img as string
+    const img = criterium.logo as string
     const myIcon = L.icon({
         // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
         iconUrl: img || `https://image.flaticon.com/icons/png/512/149/149059.png`,
@@ -89,7 +89,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
         >
             <Popup className={classes.popup}>
                 <Grid container justifyContent="center" alignItems="center">
-                    <Avatar style={{ width: 60, height: 60 }} src={criterium.img as string} />
+                    <Avatar style={{ width: 60, height: 60 }} src={criterium.logo as string} />
                     <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
                         <Typography variant="h6">
                             {criterium.name}
