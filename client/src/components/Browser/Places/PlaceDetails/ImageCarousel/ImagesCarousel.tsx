@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 interface Props {
     address: string,
     img: string,
-    isEditable? : boolean
+    isEditable?: boolean
 }
 
 interface Image {
@@ -55,18 +55,13 @@ const items = [
 export const ImagesCarousel: FC<Props> = ({ address, img, isEditable }) => {
     const classes = useStyles()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const [images, setImages] = useState<Image[]>([
-        { img: 'https://www.24opole.pl/res/cache/news/1024.768.20210716143309_biedra_0.jpg', file: null },
-        { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg', file: null },
-        { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg', file: null },
-        { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg', file: null },
-    ])
+    const [images, setImages] = useState<Image[]>(currentPlace.images)
 
     useEffect(() => {
-        const place = {...currentPlace}
+        const place = { ...currentPlace }
         place.images = images
         setCurrentPlace(place)
-    
+
     }, [images])
 
 
@@ -74,32 +69,20 @@ export const ImagesCarousel: FC<Props> = ({ address, img, isEditable }) => {
 
 
     return (
-        <Carousel stopAutoPlayOnHover autoPlay={false} indicators={false} interval={10000} animation="slide" className={classes.carousel}>
+        <Carousel
+            stopAutoPlayOnHover
+            autoPlay={false}
+            indicators={false}
+            interval={10000}
+            swipe={false}
+            animation="slide"
+            className={classes.carousel}
+        >
             {images.map((item, index) =>
                 <div
                     key={index}
                 >
-                    {/* <CardMedia
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        className={classes.media}
-                        image={item.img}
-                    >
-                        <Slide in={isHover} appear>
-                            <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                                <ImageUpload name={i.toString()} img={image} setImg={setImage} setImageFile={setImageFile}>
-                                    <IconButton color="primary" component="span">
-                                        <PhotoCamera style={{ width: '100px', height: '100px' }} />
-                                    </IconButton>
-                                </ImageUpload>
-                            </Grid>
-                        </Slide>
-                        <Grid alignItems="center" justifyContent="center" container className={classes.bottomText}>
-                            <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{address}</Typography>
-                        </Grid>
-                    </CardMedia> */}
                     <ImageCarouselItem isEditable={isEditable} index={index} item={item} setImages={setImages} address={address} />
-
                 </div>)
             }
         </Carousel >

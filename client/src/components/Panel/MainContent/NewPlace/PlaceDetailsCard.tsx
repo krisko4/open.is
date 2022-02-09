@@ -231,8 +231,8 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                                 sx={{ flexGrow: 1, paddingBottom: '12px', paddingTop: '12px', paddingRight: '20px', backgroundColor: 'panelCard.main' }}>
                                 <Grid container justifyContent="flex-end">
                                     <Grid item>
-                                        <Alert severity="success" variant="filled" >
-                                            This place is now OPEN
+                                        <Alert severity="error" variant="filled" >
+                                            This place is now CLOSED
                                         </Alert>
                                     </Grid>
                                 </Grid>
@@ -240,7 +240,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Grid>
                     </Grid>
                     <Grid container item sx={{ mt: '20px' }}>
-                        <Grid item lg={3} style={{ marginLeft: 20 }}>
+                        <Grid item lg={3}  style={{ textAlign: 'center', marginLeft: 20 }}>
                             <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.logo ? `${currentPlace.logo}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
                                 {isEditable &&
                                     <Slide direction="up" in={isHover} appear>
@@ -258,7 +258,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             <Rating
                                 style={{ marginTop: 20 }}
                                 name="simple-controlled"
-                                value={currentPlace.averageNote?.average}
+                                value={currentPlace.averageNote?.average || 5}
                                 readOnly
                             />
                         </Grid>
@@ -280,9 +280,11 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         <Grid item lg={10}>
                             <Card elevation={10} style={{ flexGrow: 1 }}>
                                 <CardContent>
-                                    <Typography variant="body1" >
-                                        {currentPlace.description || 'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
-                                    </Typography>
+                                    <div style={{display: 'inline-block'}}>
+                                        <Typography variant="body1" >
+                                            {currentPlace.description || 'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
+                                        </Typography>
+                                    </div>
                                 </CardContent>
                             </Card>
 

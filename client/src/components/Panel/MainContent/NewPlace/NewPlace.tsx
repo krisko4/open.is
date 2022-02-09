@@ -1,4 +1,4 @@
-import { Box, Button, CardActions, CardContent, Divider, Grid, Slide, SlideProps, Typography } from "@mui/material";
+import { Box, Button, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, SlideProps, Tooltip, Typography } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
@@ -20,6 +20,8 @@ import { Step4 } from "./Steps/Step4/Step4";
 import { Step5 } from "./Steps/Step5/Step5";
 import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import Scrollbars from "react-custom-scrollbars";
+import { tooltip } from "leaflet";
+import { LoadingButton } from "@mui/lab";
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -49,53 +51,67 @@ export const NewPlace: FC = () => {
     const places = usePlacesSelector()
     const [isOpen, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
+    const [tooltipOpen, setTooltipOpen] = useState(false)
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
+    const handleClose = () => {
+        setTooltipOpen(false)
+    }
+
+    const handleOpen = () => {
+        if (!currentPlace.logo) {
+            setTooltipOpen(true)
+        }
+    }
+
     const registerPlace = () => {
-        console.log(currentPlace)
-        // setLoading(true)
-        // const place = {
-        //     img: imageFile as File,
-        //     name: currentPlace.name,
-        //     subtitle: currentPlace.subtitle,
-        //     description: currentPlace.description,
-        //     type: currentPlace.type,
-        // }
-        // const locations = [
-        //     {
-        //         address: currentPlace.address,
-        //         lat: currentPlace.lat,
-        //         lng: currentPlace.lng,
-        //         phone: currentPlace.phone,
-        //         email: currentPlace.email,
-        //         website: currentPlace.website,
-        //         facebook: currentPlace.facebook,
-        //         instagram: currentPlace.instagram
-        //     }
-        // ]
-        // const formData = new FormData()
-        // let key: keyof typeof place
-        // for (key in place) formData.append(key, place[key])
-        // formData.append('locations', JSON.stringify(locations))
-        // registerNewPlace(formData).then(res => {
-        //     console.log(res.data)
-        //     const newPlace = res.data.place
-        //     newPlace.img = res.data.place.img
-        //     newPlace.visits = []
-        //     newPlace.opinions = []
-        //     newPlace.news = []
-        //     places.push(newPlace)
-        //     dispatch(setPlaces(places))
-        //     enqueueSuccessSnackbar('You have successfully registered new place')
-        //     history.push(`dashboard`)
-        // }).catch(err => {
-        //     console.log(err)
-        //     enqueueErrorSnackbar()
-        // }).finally(() => {
-        //     setLoading(false)
-        //     setOpen(false)
-        // }
-        // )
+        setLoading(true)
+        const images: any = currentPlace.images.filter(image => image.file !== null).map(image => image.file)
+        const place = {
+            logo: imageFile as File,
+            name: currentPlace.name,
+            subtitle: currentPlace.subtitle,
+            description: currentPlace.description,
+            type: currentPlace.type as string,
+        }
+        const locations = [
+            {
+                address: currentPlace.address,
+                lat: currentPlace.lat,
+                lng: currentPlace.lng,
+                phone: currentPlace.phone,
+                email: currentPlace.email,
+                website: currentPlace.website,
+                facebook: currentPlace.facebook,
+                instagram: currentPlace.instagram
+            }
+        ]
+        const formData = new FormData()
+        let key: keyof typeof place
+        for (key in place) formData.append(key, place[key])
+        formData.append('locations', JSON.stringify(locations))
+        for (const image of images) {
+            formData.append('images', image)
+        }
+        registerNewPlace(formData).then(res => {
+            console.log(res.data)
+            const newPlace = res.data.place
+            newPlace.img = res.data.place.img
+            newPlace.visits = []
+            newPlace.opinions = []
+            newPlace.news = []
+            places.push(newPlace)
+            dispatch(setPlaces(places))
+            enqueueSuccessSnackbar('You have successfully registered new place')
+            history.push(`dashboard`)
+        }).catch(err => {
+            console.log(err)
+            enqueueErrorSnackbar()
+        }).finally(() => {
+            setLoading(false)
+            setOpen(false)
+        }
+        )
     }
 
 
@@ -120,55 +136,6 @@ export const NewPlace: FC = () => {
                             {getStepContent(activeStep, false)}
                         </Grid>
                     }
-                    {/* <Grid item container lg={5}>
-                <Slide in={true} timeout={1000}>
-                    <div>
-                        <PanelCard>
-                            <CardContent>
-                                <Typography variant="h5" >
-                                    Business management
-                                </Typography>
-                                <Typography variant="subtitle2">
-                                    Add new place to your place assembly
-                                </Typography>
-                                <NewPlaceStepper isEditionMode={false} />
-                            </CardContent>
-                            {activeStep > 0 &&
-                                <CardActions>
-                                    <Grid container justify="space-between">
-                                        <Button variant="text" color="primary" onClick={() => setActiveStep((currentStep) => currentStep - 1)}>Return</Button>
-                                        {activeStep === 4 &&
-                                            <div>
-                                                <Button variant="text" disabled={!currentPlace.logo} color="primary" onClick={() => setOpen(true)}>Finish registration</Button>
-                                                <Dialog
-                                                    open={isOpen}
-                                                    TransitionComponent={Transition}
-                                                >
-                                                    <DialogTitle>Summary</DialogTitle>
-                                                    <DialogContent>
-                                                        <DialogContentText>
-                                                            Are you sure you would like to finish registration and save your place?
-                                                        </DialogContentText>
-                                                    </DialogContent>
-                                                    <DialogActions>
-                                                        <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
-                                                            Cancel
-                                                        </Button>
-                                                        <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={registerPlace}>Yes, I am sure</LoadingButton>
-                                                    </DialogActions>
-                                                </Dialog>
-
-                                            </div>
-                                        }
-
-                                    </Grid>
-                                </CardActions>
-                            }
-
-                        </PanelCard>
-                    </div>
-                </Slide>
-            </Grid> */}
                     {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ mt: '20px' }}>
                         <Grid container lg={5}>
                             <PlaceDetailsCard isEditable />
@@ -187,21 +154,42 @@ export const NewPlace: FC = () => {
                                                     You have filled it with your data - now you can make it beautiful by uploading images presenting your place.
                                                 </Typography>
                                                 <Typography variant="caption">
-                                                    <span style={{ color: 'red' }}>*</span> Uploading a logo picture is required.
+                                                    <span style={{ color: 'red' }}>*</span> Uploading a logo picture is required.<br />
+                                                    <span style={{ color: 'red' }}>*</span> You can upload up to 5 pictures.<br />
                                                 </Typography>
                                                 <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
                                                 <NewPlaceStepper orientation="vertical" />
                                             </Grid>
                                             <Grid container sx={{ mt: 2 }}>
-                                                <Button
-                                                    fullWidth
-                                                    variant="contained"
-                                                    disabled={!currentPlace.logo}
-                                                    size="large"
-                                                    onClick={() => registerPlace()}
+                                                <Dialog
+                                                    open={isOpen}
+                                                    TransitionComponent={Transition}
+                                                >
+                                                    <DialogTitle>Summary</DialogTitle>
+                                                    <DialogContent>
+                                                        <DialogContentText>
+                                                            Are you sure you would like to finish registration and save your place?
+                                                        </DialogContentText>
+                                                    </DialogContent>
+                                                    <DialogActions>
+                                                        <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
+                                                            Cancel
+                                                        </Button>
+                                                        <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={registerPlace}>Yes, I am sure</LoadingButton>
+                                                    </DialogActions>
+                                                </Dialog>
 
-                                                > Finish registration
-                                                </Button>
+                                                <Tooltip open={tooltipOpen} onClose={handleClose} onOpen={handleOpen} title="Please upload a logo picture">
+                                                    <Button
+                                                        fullWidth
+                                                        variant="contained"
+                                                        disabled={!currentPlace.logo}
+                                                        size="large"
+                                                        onClick={() => setOpen(true)}
+
+                                                    > Finish registration
+                                                    </Button>
+                                                </Tooltip>
                                             </Grid>
                                         </CardContent>
                                     </PanelCard>

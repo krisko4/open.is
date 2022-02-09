@@ -10,7 +10,7 @@ export enum Status {
 
 export interface Image {
     img: string,
-    file : File | null
+    file: File | null
 }
 
 export interface CurrentPlaceProps {
@@ -117,7 +117,12 @@ export const clearPlace = {
     subtitle: '',
     phone: '',
     logo: '',
-    images: [],
+    images: [
+        { img: '', file: null },
+        { img: '', file: null },
+        { img: '', file: null },
+        { img: '', file: null },
+    ],
     email: '',
     website: '',
     instagram: '',

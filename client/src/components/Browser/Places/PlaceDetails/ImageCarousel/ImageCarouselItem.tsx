@@ -1,4 +1,5 @@
 import { PhotoCamera } from "@mui/icons-material"
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
 import { FC, useEffect, useState } from "react"
 import { ImageUpload } from "../../../../reusable/ImageUpload"
@@ -19,7 +20,7 @@ interface Props {
 export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address, setImages }) => {
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
-    const [imageFile, setImageFile] = useState<File | null>(null)
+    const [imageFile, setImageFile] = useState<File | null>(item.file)
 
     useEffect(() => {
         setImages(currentImages => {
@@ -33,6 +34,11 @@ export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address,
 
     }, [img])
 
+    const clearImage = () => {
+        setImg(null)
+        setImageFile(null)
+    }
+
     return (
         <CardMedia
             onMouseEnter={() => setHover(true)}
@@ -45,16 +51,21 @@ export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address,
                 },
                 transition: '.5s',
             }}
-            image={img as string}
+            image={img as string || `https://www.2bhappynow.com/wp-content/themes/thunder/skins/images/preview.png`}
         >
             {isEditable &&
                 <Slide in={isHover} appear>
                     <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                        <ImageUpload name={img as string} img={img} setImageFile={setImageFile} setImg={setImg} >
+                        <ImageUpload name={index.toString()} img={img} setImageFile={setImageFile} setImg={setImg} >
                             <IconButton color="primary" component="span">
                                 <PhotoCamera style={{ width: '100px', height: '100px' }} />
                             </IconButton>
                         </ImageUpload>
+                        {img &&
+                            <IconButton color="secondary" onClick={() => clearImage()} component="span">
+                                <DeleteForeverIcon style={{ width: '100px', height: '100px' }} />
+                            </IconButton>
+                        }
                     </Grid>
                 </Slide>
             }
