@@ -4,13 +4,27 @@ const placeController = require('../API/place/place_controller')
 const userService = require('../API/user/user_service')
 const { body, validationResult, cookie } = require('express-validator');
 const ApiError = require('../errors/ApiError')
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const jwtController = require('../API/jwt/jwt_controller')
 const placeValidator = require('../request_validators/place_validator')
 const imageValidator = require('../request_validators/image_validator')
 const validateRequest = require('../request_validators/express_validator')
-
-
+const multer = require('multer')
+const upload = multer(
+    {
+        dest: '/tmp/',
+        limits: {
+            fileSize: 2000000
+        },
+        fileFilter: function (req, file, callback) {
+            console.log(file)
+            const mimetype = file.mimetype
+            if (mimetype !== 'image/jpeg' && mimetype !== 'image/x-icon') {
+                return callback(new Error('Only images are allowed'))
+            }
+            callback(null, true)
+        },
+    })
 router.get('/active/name', (req, res, next) => {
     placeController.findPlaceNames(req, res, next)
 })
@@ -51,16 +65,10 @@ const parseLocations = (req, res, next) => {
 
 router.post('/',
     jwtController.authenticateAccessToken,
-    fileUpload({
-        safeFileNames: true,
-        limits: { fileSize: 500000 },
-        abortOnLimit: true,
-        useTempFiles: true,
-        tempFileDir: '/tmp/'
-    }),
+    upload.fields([{ name: 'logo', maxCount: 1 }, { name: 'images', maxCount: 4 }]),
     parseLocations,
     placeValidator.validatePlaceAddress,
-    imageValidator.validateUploadedImage,
+    // imageValidator.validateUploadedImages,
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 50 }),
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
@@ -74,7 +82,6 @@ router.post('/',
     body('locations.*.lng').isFloat().notEmpty(),
     validateRequest,
     (req, res, next) => {
-
         placeController.addPlace(req, res, next)
     }
 )
@@ -96,14 +103,14 @@ router.get('/active/subscribed',
 
 
 router.put('/',
-    fileUpload({
-        safeFileNames: true,
-        limits: { fileSize: 500000 },
-        abortOnLimit: true,
-        useTempFiles: true,
-        tempFileDir: '/tmp/'
+    // fileUpload({
+    //     safeFileNames: true,
+    //     limits: { fileSize: 500000 },
+    //     abortOnLimit: true,
+    //     useTempFiles: true,
+    //     tempFileDir: '/tmp/'
 
-    }),
+    // }),
     jwtController.authenticateAccessToken,
     body('address').isString().notEmpty(),
     placeValidator.validatePlaceAddress,

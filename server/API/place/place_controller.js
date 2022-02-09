@@ -221,14 +221,16 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            const { img } = req.files
-            if (!img) throw ApiError.badRequest('Image file is required')
+            const {logo, images} = req.files
+            if (!logo || !images) throw ApiError.badRequest('Request is missing necessary upload files')
+            if(logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
             const placeData = {
                 name: reqBody.name,
                 type: reqBody.type,
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
-                img: img,
+                logo: logo[0],
+                images: images,
                 locations: reqBody.locations,
                 userId: user._id,
             }

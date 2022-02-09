@@ -79,7 +79,8 @@ const PlaceSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: ReqString,
     type: ReqString,
-    img: ReqString,
+    logo: ReqString,
+    images: [ReqString],
     description: ReqString,
     createdAt: {
         type: Date,

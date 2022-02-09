@@ -51,7 +51,7 @@ const placeService = {
             .match({
                 'locations._id': {
                     $in: favIds
-                }, 
+                },
                 'locations.isActive': true
             })
             .group({
@@ -135,7 +135,7 @@ const placeService = {
 
 
     addPlace: async (placeData) => {
-        const { img, locations } = placeData
+        const { logo, images, locations } = placeData
         for (const location of locations) {
             const { lat, lng } = location
             const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
@@ -145,12 +145,18 @@ const placeService = {
         const session = await mongoose.startSession()
         let newPlace
         await session.withTransaction(async () => {
-            if (img) {
-                const uploadResponse = await cloudinary.uploader.upload(img.tempFilePath, {
+            const uploadResponse = await cloudinary.uploader.upload(logo.path, {
+                upload_preset: 'place_logos'
+            })
+            const urlImages = []
+            for(const image of images) {
+                const res = await cloudinary.uploader.upload(image.path, {
                     upload_preset: 'place_images'
                 })
-                placeData.img = uploadResponse.public_id
+                urlImages.push(res.public_id)
             }
+            placeData.images = urlImages
+            placeData.logo = uploadResponse.public_id
             newPlace = await new Place({
                 _id: new mongoose.Types.ObjectId,
                 ...placeData
