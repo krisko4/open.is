@@ -83,7 +83,7 @@ export const LeftNavigation: FC = () => {
                                     {button.icon}
                                 </ListItemIcon>
                                 <ListItemText
-                                    secondary={button.name}>
+                                    primary={button.name}>
                                 </ListItemText>
 
                             </ListItem>

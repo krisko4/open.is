@@ -48,9 +48,9 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
                                 {visitsToday}
                             </Typography>
                         </Grid>
-                        <Grid item lg={6} container justifyContent="center">
-                            <CardMedia style={{ height: 100, width: 120 }} image="https://s38357.pcdn.co/wp-content/uploads/2020/04/Site-visit-Icon.png" />
-                        </Grid>
+                        {/* <Grid item lg={6} container justifyContent="center">
+                            <CardMedia style={{ height: 100, width: 120 }} />
+                        </Grid> */}
                     </Grid>
                 </CardContent>
             </Card>

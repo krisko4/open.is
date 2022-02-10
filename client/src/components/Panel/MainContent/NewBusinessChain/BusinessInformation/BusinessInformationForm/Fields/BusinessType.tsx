@@ -41,21 +41,22 @@ export const BusinessType = () => {
 
 
     return (
-            <Autocomplete
-                freeSolo
-                classes={classes}
-                options={businessTypes}
-                fullWidth={true}
-                value={type}
-                onChange={(e, value) => submitAutocomplete(value)}
-                renderInput={(params) => <TextField
-                    placeholder="Select your business type"
-                    error={!firstAttempt && type === null}
-                    helperText={!firstAttempt && type === null && <span style={{ color: 'red' }}>Please choose a correct business type</span>}
-                    variant="outlined"
-                    color="primary"
-                    focused {...params}
-                    label="Business type" />}
-            />
+        <Autocomplete
+            freeSolo
+            options={businessTypes}
+            fullWidth={true}
+            classes={classes}
+            value={type}
+            onChange={(e, value) => submitAutocomplete(value)}
+            renderInput={(params) => <TextField
+                placeholder="Select your business type"
+                error={!firstAttempt && type === null}
+                helperText={!firstAttempt && type === null && <span style={{ color: 'red' }}>Please choose a correct business type</span>}
+                variant="outlined"
+                color="primary"
+                // focused
+                {...params}
+                label="Business type" />}
+        />
     )
 }

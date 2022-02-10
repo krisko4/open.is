@@ -49,7 +49,7 @@ export const Step1: FC = () => {
                     color="primary"
                     placeholder="This is the name of my business!"
                     variant="outlined"
-                    focused
+                    
                     onChange={(e) => setInput(e.target.value)}
                     helperText={`${input.length}/60`}
                     inputProps={{ maxLength: 60 }}

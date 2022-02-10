@@ -1,5 +1,6 @@
 
 import React, { createContext, FC, useContext, useEffect, useState } from "react";
+import { auth } from "../requests/AuthRequests";
 import { ContextProps } from "./ContextProps";
 
 export const LoginContext = createContext<LoginContextData | null>(null)
@@ -15,7 +16,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
     useEffect(() => {
         const authenticate = async () => {
             try {
-                await authenticate()
+                await auth()
                 state.setUserLoggedIn(true)
                 state.setEmail(localStorage.getItem('email') || '')
                 state.setFullName(localStorage.getItem('fullName') || '')

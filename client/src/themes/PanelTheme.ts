@@ -57,15 +57,16 @@ import { createTheme } from '@mui/material/styles';
 // });
 
 const panelTheme = createTheme({
-    
+     
     components: {
-        MuiButton: {
-            styleOverrides: {
-                containedPrimary: '#2196f3'
-            }
-        }
+        // MuiButton: {
+        //     styleOverrides: {
+        //         containedPrimary: '#2196f3'
+        //     }
+        // }
     },
     palette: {
+        mode: 'dark',
         primary: {
             light: '#757ce8',
             main: '#2196f3',
@@ -88,8 +89,8 @@ const panelTheme = createTheme({
         },
         divider: '#fff',
         // action: {
-        //     disabledBackground: 'white',
-        //     disabled: 'white'
+        //     disabledBackground: '#18202b',
+        //     disabled: '#2F3640'
         // }
         
         

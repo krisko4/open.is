@@ -26,9 +26,10 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
             isUserSubscriber: currentPlace.isUserSubscriber
         }
     ]
+    const images = currentPlace.images.map(image => image.img)
     const rawPlaceData: RawPlaceDataProps = {
         logo: currentPlace.logo,
-        images: currentPlace.images,
+        images: images,
         userId: currentPlace.userId,
         name: currentPlace.name,
         subtitle: currentPlace.subtitle,
@@ -43,8 +44,13 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
 
 export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
 
-    console.log(place)
     const { locations } = place
+    const images = place.images.map(image => {
+        return {
+            img: image,
+            file: null
+        }
+    })
     const currentPlaces = locations.map(location => {
         return {
             ...location,
@@ -53,11 +59,12 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
             description: place.description,
             subtitle: place.subtitle,
             logo: place.logo,
-            images: place.images,
+            images: images,
             userId: place.userId,
             isUserOwner: place.isUserOwner
 
         }
     })
+    console.log(currentPlaces)
     return currentPlaces
 }

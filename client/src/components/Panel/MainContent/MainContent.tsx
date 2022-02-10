@@ -7,6 +7,7 @@ import { StepContextProvider } from "../../../contexts/StepContext";
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import Header from "../Header";
 import { Dashboard } from "./Dashboard/Dashboard";
+import { AccountSettings } from "./MyAccount/AccountSettings";
 import { MyAccount } from './MyAccount/MyAccount';
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
 import { NewPlace } from "./NewPlace/NewPlace";
@@ -28,15 +29,16 @@ export const MainContent: FC = () => {
           <Header />
         </Grid>
         <Grid container style={{ height: '90%' }}>
-          <CurrentPlaceContextProvider>
-            <StepContextProvider>
-              {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
-              <Route
-                path={`${match.url}/new-place`}
-                component={NewPlace}
-              />
-            </StepContextProvider>
-          </CurrentPlaceContextProvider>
+          {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
+          <Route
+            path={`${match.url}/new-place`}
+          >
+            <CurrentPlaceContextProvider>
+              <StepContextProvider>
+                <NewPlace />
+              </StepContextProvider>
+            </CurrentPlaceContextProvider>
+          </Route>
           <CurrentPlaceContextProvider>
             <Route
               path={`${match.url}/management/:id`}
@@ -52,7 +54,7 @@ export const MainContent: FC = () => {
           </Route>
           <Route
             path={`${match.url}/account`}
-            component={MyAccount}
+            component={AccountSettings}
           />
           <Route
             path={`${match.url}/new-business-chain`}

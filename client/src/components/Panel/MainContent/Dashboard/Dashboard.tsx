@@ -68,7 +68,7 @@ export const Dashboard: FC = () => {
     // }, [places])
 
     return (
-        <Grid container justifyContent="center" style={{ paddingBottom: 50 }}>
+        <Grid container justifyContent="center" sx={{ pb: '50px', pt: '50px' }}>
             <Grid item lg={11}>
                 <Typography variant="h3" >
                     <Grid container>
@@ -88,7 +88,7 @@ export const Dashboard: FC = () => {
                 <Grid container style={{ marginTop: 20 }} spacing={2} justifyContent="space-between">
                     <Grid item lg={6}>
                         <Fade in={true} timeout={2000}>
-                            <Card elevation={3} className={classes.shadowCard}>
+                            <Card elevation={3} >
                                 <CardContent>
                                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
                                     <Grid container style={{ marginTop: 5 }}>
@@ -115,7 +115,7 @@ export const Dashboard: FC = () => {
                     </Grid>
                     <Grid item lg={6}>
                         <Fade in={true} timeout={2000}>
-                            <Card elevation={3} className={classes.shadowCard}>
+                            <Card elevation={3} >
                                 <CardContent>
                                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                                     <Grid container style={{ marginTop: 5 }}>
@@ -143,7 +143,7 @@ export const Dashboard: FC = () => {
 
                     <Grid item lg={6}>
                         <Fade in={true} timeout={1000}>
-                            <Card className={classes.shadowCard} style={{ flexGrow: 1 }}>
+                            <Card sx={{ flexGrow: 1 }}>
                                 <CardContent>
                                     <Typography variant="h5">
                                         Activity
@@ -158,7 +158,7 @@ export const Dashboard: FC = () => {
                     </Grid>
                     <Grid item lg={6}>
                         <Fade in={true} timeout={2000}>
-                            <Card style={{ flexGrow: 1 }} className={classes.shadowCard}>
+                            <Card style={{ flexGrow: 1 }} >
                                 <CardContent>
                                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Most popular</Typography>
                                     <Grid container direction="column" alignItems="center">

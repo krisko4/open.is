@@ -1,6 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import {
     Button,
+    Slide,
+    Card,
     CardContent,
     Grid,
     Grow,
@@ -23,9 +25,9 @@ export const NoPlaces: FC = () => {
     const match = useRouteMatch()
 
     return (
-        <Grow in={true} timeout={1000}>
-            <Grid container sx={{ height: '100%' }} alignItems="center">
-                <Grid container>
+        <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center">
+            <Grid container>
+                <Grow in={true} timeout={1200}>
                     <Grid item lg={7}>
                         <Stack spacing={2} justifyContent="space-evenly" sx={{ marginRight: 10, height: '100%' }} alignItems="center">
                             <Typography variant="h2">Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
@@ -40,8 +42,10 @@ export const NoPlaces: FC = () => {
                             <Button variant="contained" startIcon={<AddIcon />} onClick={() => history.push(`${match.url}/new-place`)} size="large" color="primary">Add new place</Button>
                         </Stack>
                     </Grid>
-                    <Grid item container lg={4} alignItems="center">
-                        <PanelCard>
+                </Grow >
+                <Grid item container lg={4} alignItems="center">
+                    <Slide in={true} timeout={1000} direction="left">
+                        <Card>
                             <CardContent>
                                 <Typography variant="h2" style={{ color: 'white' }}>How does it work?</Typography>
                                 <Grid style={{ marginTop: 10 }} container lg={10}>
@@ -51,11 +55,11 @@ export const NoPlaces: FC = () => {
                                     <NewPlaceStepper orientation="vertical" />
                                 </Grid>
                             </CardContent>
-                        </PanelCard>
-                    </Grid>
+                        </Card>
+                    </Slide>
                 </Grid>
             </Grid>
-        </Grow>
+        </Grid>
 
     )
 }

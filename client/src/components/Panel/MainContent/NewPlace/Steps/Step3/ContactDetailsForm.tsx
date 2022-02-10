@@ -1,28 +1,31 @@
+import { TouchAppRounded } from '@mui/icons-material';
+import InputMask from "react-input-mask";
+
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LanguageIcon from '@mui/icons-material/Language';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import { ErrorMessage, FastField, Formik } from "formik";
+import { ErrorMessage, FastField, Field, Form, Formik } from "formik";
 import React, { FC, useState } from "react";
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { PanelForm } from "../../../../../reusable/PanelForm";
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/
-const facebookRegExp = /(?:https?:\/\/)(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig
-const instagramRegExp = /^\s*(https?:\/\/)instagram\.com\/[a-z\d-_]{1,255}\s*$/i
+const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
+const facebookRegExp = /(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
+const instagramRegExp = /^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/ 
+const urlRegExp = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/ 
 
 
 const ContactDetailsSchema = Yup.object().shape({
     phone: Yup.string().required('Phone number is required').matches(phoneRegExp, 'Phone number is invalid'),
     email: Yup.string().email('This is not a valid e-mail address'),
-    website: Yup.string().url('This is not a valid URL'),
+    website: Yup.string().matches(urlRegExp, 'This is not a valid URL'),
     facebook: Yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
-    instagram: Yup.string().matches(instagramRegExp, 'This is not a valid instagram URL')
+    instagram: Yup.string().matches(instagramRegExp, 'This is not a valid instagram URL'),
 })
-
 
 
 const isNumber = (e: React.KeyboardEvent) => {
@@ -41,7 +44,7 @@ export const ContactDetailsForm: FC = () => {
         email: currentPlace.email,
         website: currentPlace.website,
         facebook: currentPlace.facebook,
-        instagram: currentPlace.instagram
+        instagram: currentPlace.instagram,
     })
 
 
@@ -58,9 +61,9 @@ export const ContactDetailsForm: FC = () => {
             onSubmit={handleSubmit}
             validateOnMount
         >
-            {({ isValid, values }) => {
+            {({ isValid, errors, touched, handleChange, handleBlur, values }) => {
                 return (
-                    <PanelForm style={{ flexGrow: 1 }}>
+                    <Form style={{ flexGrow: 1 }}>
                         <Grid container direction="column" style={{ marginTop: 10 }} justifyContent="space-evenly">
                             <Grid container style={{ marginBottom: 15 }}>
                                 <FastField
@@ -68,8 +71,8 @@ export const ContactDetailsForm: FC = () => {
                                     as={TextField}
                                     onKeyDown={isNumber}
                                     name="phone"
-
-                                    label={<span>Phone number <span style={{color: 'red'}}>*</span></span>}
+                                    error={errors.phone && touched.phone}
+                                    label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
                                     placeholder="Phone number"
                                     maxLength={7}
                                     variant="outlined"
@@ -91,9 +94,10 @@ export const ContactDetailsForm: FC = () => {
                                 <FastField
                                     as={TextField}
                                     variant="outlined"
-                                    focused
+                                    // focused
                                     label="example@mail.com"
                                     placeholder="E-mail address"
+                                    error={errors.email && touched.email}
                                     name="email"
                                     type="email"
                                     fullWidth={true}
@@ -114,10 +118,11 @@ export const ContactDetailsForm: FC = () => {
                                 <FastField
                                     as={TextField}
                                     variant="outlined"
-                                    focused
+                                    // focused
                                     label="http://example.com"
                                     placeholder="Personal website"
                                     name="website"
+                                    error={errors.website}
                                     fullWidth={true}
                                     inputProps={{
                                         maxLength: 50
@@ -135,13 +140,13 @@ export const ContactDetailsForm: FC = () => {
                             <Grid item style={{ marginBottom: 15 }}>
                                 <FastField
                                     as={TextField}
-
-                                    label="http://facebook.com/my-profile"
+                                    label="http://facebook.com/my_profile"
                                     name="facebook"
                                     fullWidth={true}
                                     variant="outlined"
-                                    focused
-                                    placeholder="my-profile"
+                                    // focused
+                                    error={errors.facebook}
+                                    placeholder="my_profile"
                                     inputProps={{
                                         maxLength: 50
                                     }}
@@ -164,15 +169,16 @@ export const ContactDetailsForm: FC = () => {
                             <Grid item style={{ marginBottom: 15 }}>
                                 <FastField
                                     as={TextField}
-                                    label="http://instagram.com/my-profile"
+                                    label="http://instagram.com/my_profile"
                                     name="instagram"
+                                    error={errors.instagram}
                                     fullWidth={true}
                                     variant="outlined"
-                                    placeholder="my-profile"
+                                    placeholder="my_profile"
                                     inputProps={{
                                         maxLength: 50
                                     }}
-                                    focused
+                                    // focused
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
@@ -188,6 +194,19 @@ export const ContactDetailsForm: FC = () => {
                                 />
                                 <ErrorMessage name="instagram">{msg => <Typography variant="caption" style={{ color: 'red' }}>{msg}</Typography>}</ErrorMessage>
                             </Grid>
+                            {/* <Field
+                                name="test"
+                            >
+                                {({ field } : any) => (
+                                    <InputMask
+                                        mask="http://f/a/cebook.com/"
+                                        {...field}
+                                    >
+                                        {(innerProps : any) => <TextField {...innerProps}  />}
+                                    </InputMask>
+
+                                )}
+                            </Field> */}
                             <Button
                                 fullWidth={true}
                                 variant="contained"
@@ -200,7 +219,7 @@ export const ContactDetailsForm: FC = () => {
                                 Submit
                             </Button>
                         </Grid>
-                    </PanelForm>
+                    </Form>
                 );
             }}
 

@@ -144,6 +144,7 @@ interface VisitProps {
 const useProviderSettings = () => {
 
     const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps>(clearPlace)
+    const [imageFile, setImageFile] = useState<File | null>(null)
     // const [news, setNews] = useState<NewsProps[]>(defaultNews)
     // const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
     const [visits, setVisits] = useState<VisitProps[]>([])
@@ -155,7 +156,9 @@ const useProviderSettings = () => {
         opinionCount,
         setOpinionCount,
         visits,
-        setVisits
+        setVisits,
+        imageFile,
+        setImageFile
     }
 }
 

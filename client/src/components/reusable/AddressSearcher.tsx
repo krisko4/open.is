@@ -141,7 +141,7 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
                 <TextField
                     {...params}
                     variant="outlined"
-                    focused
+                    // focused
                     placeholder="Enter the address of your place"
                     label="What is the address of your place?"
                     onChange={e => setInputValue(e.target.value)}

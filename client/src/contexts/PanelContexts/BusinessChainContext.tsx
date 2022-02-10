@@ -7,10 +7,6 @@ export enum Status {
     CLOSED = 'closed'
 }
 
-interface Image {
-    img: string,
-    file : File | null
-}
 
 export interface RawPlaceDataProps {
     _id?: string,
@@ -19,7 +15,7 @@ export interface RawPlaceDataProps {
     description: string,
     subtitle: string,
     logo: string | ArrayBuffer | null | File,
-    images: Image[]
+    images: string[]
     locations: LocationProps[],
     userId?: string,
     isUserOwner?: boolean

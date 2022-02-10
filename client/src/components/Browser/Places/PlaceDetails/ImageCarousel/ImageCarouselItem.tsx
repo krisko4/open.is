@@ -1,7 +1,8 @@
 import { PhotoCamera } from "@mui/icons-material"
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
+import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { ImageUpload } from "../../../../reusable/ImageUpload"
 
 
@@ -13,25 +14,29 @@ interface Image {
 interface Props {
     item: Image,
     address: string,
-    setImages: React.Dispatch<React.SetStateAction<Image[]>>,
     index: number,
     isEditable?: boolean
 }
-export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address, setImages }) => {
+export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address}) => {
+   
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
     const [imageFile, setImageFile] = useState<File | null>(item.file)
+    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
+    const isFirstRender = useRef(true)
 
     useEffect(() => {
-        setImages(currentImages => {
-            const images = [...currentImages]
-            images[index] = {
-                img: img as string,
-                file: imageFile
-            }
-            return images
-        })
-
+        if(isFirstRender.current){
+            isFirstRender.current = false
+            return
+        }
+        const place = {...currentPlace}
+        place.images[index] = {
+            img: img as string,
+            file: imageFile
+        }
+        console.log(place)
+        setCurrentPlace(place)
     }, [img])
 
     const clearImage = () => {
@@ -51,7 +56,7 @@ export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address,
                 },
                 transition: '.5s',
             }}
-            image={img as string || `https://www.2bhappynow.com/wp-content/themes/thunder/skins/images/preview.png`}
+            image={item.img as string || `https://www.2bhappynow.com/wp-content/themes/thunder/skins/images/preview.png`}
         >
             {isEditable &&
                 <Slide in={isHover} appear>

@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Autocomplete, Grid, TextField, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { Form, useFormikContext } from "formik"
 import { FC, useEffect, useState } from "react"
@@ -50,8 +50,15 @@ export const PlaceDetailsForm: FC = () => {
 
 
     return (
-        <PanelForm>
-            <Grid item container justifyContent="space-evenly">
+        <Form style={{ flexGrow: 1 }}>
+            <Grid item container>
+                {/* <Autocomplete
+                    fullWidth
+                    disablePortal
+                    id="combo-box-demo"
+                    options={['first', 'second']}
+                    renderInput={(params) => <TextField {...params} focused label="Movie" />}
+                /> */}
                 <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
                     <BusinessType />
                 </Grid>
@@ -72,6 +79,6 @@ export const PlaceDetailsForm: FC = () => {
                     Submit
                 </LoadingButton>
             </Grid>
-        </PanelForm>
+        </Form>
     );
 }

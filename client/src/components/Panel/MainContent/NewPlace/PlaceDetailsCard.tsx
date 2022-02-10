@@ -4,6 +4,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { LoadingButton } from "@mui/lab";
 import {
+    Stack,
     Alert, Card,
     CardContent, CardMedia,
     IconButton, Paper,
@@ -17,7 +18,7 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Rating from '@mui/material/Rating';
 import makeStyles from '@mui/styles/makeStyles';
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -156,10 +157,10 @@ interface Props {
 
 export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
 
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const { currentPlace, setImageFile, setCurrentPlace } = useCurrentPlaceContext()
     const [isHover, setHover] = useState(true)
-    const { imageFile, setImageFile } = useStepContext()
     const [logo, setLogo] = useState(currentPlace.logo)
+    const isFirstRender = useRef(true)
 
 
     const newsClasses = useNewsStyles()
@@ -171,6 +172,10 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
     };
 
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false
+            return
+        }
         const newCurrentPlace = { ...currentPlace }
         newCurrentPlace.logo = logo
         setCurrentPlace(newCurrentPlace)
@@ -206,7 +211,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
     return (
         <Slide in={true} timeout={1000}>
             <div>
-                <PanelCard elevation={3} sx={{ minWidth: 800 }}>
+                <Card elevation={3} sx={{ minWidth: 800 }}>
                     <Grid container item sx={{ backgroundColor: 'panelCard.main' }}>
                         <Toolbar style={{ flexGrow: 1 }} disableGutters>
                             <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
@@ -223,7 +228,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Toolbar>
                     </Grid>
                     <Grid container>
-                        <ImagesCarousel isEditable={isEditable} address={currentPlace.address || 'This is an address of your business'} img={currentPlace.logo as string} />
+                        <ImagesCarousel isEditable={isEditable} address={currentPlace.address || 'This is an address of your business'} />
                     </Grid>
                     <Grid container >
                         <Grid container item>
@@ -231,17 +236,19 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                                 sx={{ flexGrow: 1, paddingBottom: '12px', paddingTop: '12px', paddingRight: '20px', backgroundColor: 'panelCard.main' }}>
                                 <Grid container justifyContent="flex-end">
                                     <Grid item>
-                                        <Alert severity="error" variant="filled" >
-                                            This place is now CLOSED
-                                        </Alert>
+                                        <Tooltip title={'This is a current status of your place'}>
+                                            <Alert severity="error" variant="filled" >
+                                                This place is now <b>{currentPlace.status?.toUpperCase() || 'CLOSED'}</b>
+                                            </Alert>
+                                        </Tooltip>
                                     </Grid>
                                 </Grid>
                             </Card>
                         </Grid>
                     </Grid>
                     <Grid container item sx={{ mt: '20px' }}>
-                        <Grid item lg={3}  style={{ textAlign: 'center', marginLeft: 20 }}>
-                            <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.logo ? `${currentPlace.logo}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} >
+                        <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
+                            <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.logo ? `${currentPlace.logo}` : `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`} >
                                 {isEditable &&
                                     <Slide direction="up" in={isHover} appear>
                                         <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
@@ -262,7 +269,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                                 readOnly
                             />
                         </Grid>
-                        <Grid item lg={8} sx={{ ml: '30px' }}>
+                        <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
                             <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
                                 {currentPlace.name || 'This is the name of your business'}
                             </Typography>
@@ -280,7 +287,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         <Grid item lg={10}>
                             <Card elevation={10} style={{ flexGrow: 1 }}>
                                 <CardContent>
-                                    <div style={{display: 'inline-block'}}>
+                                    <div style={{ display: 'inline-block', overflowWrap: 'break-word' }}>
                                         <Typography variant="body1" >
                                             {currentPlace.description || 'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
                                         </Typography>
@@ -406,7 +413,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Grid>
                     </Grid>
 
-                </PanelCard>
+                </Card>
             </div>
 
         </Slide >

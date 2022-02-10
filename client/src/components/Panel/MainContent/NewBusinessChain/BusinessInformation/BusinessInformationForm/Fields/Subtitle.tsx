@@ -27,7 +27,7 @@ export const Subtitle = () => {
         <TextField
             value={subtitle}
             variant="outlined"
-            focused
+            // focused
             placeholder="Please enter a short subtitle"
             helperText={`${subtitle.length}/100`}
             onChange={handleChange}

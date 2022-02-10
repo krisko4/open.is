@@ -1,7 +1,7 @@
 import { PhotoCamera } from "@mui/icons-material";
 import { CardMedia, Grid, IconButton, Slide, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../contexts/StepContext";
@@ -38,7 +38,6 @@ const useStyles = makeStyles({
 })
 interface Props {
     address: string,
-    img: string,
     isEditable?: boolean
 }
 
@@ -47,26 +46,21 @@ interface Image {
     file: File | null
 }
 
-
-const items = [
-    { img: 'https://www.24opole.pl/res/cache/news/1024.768.20210716143309_biedra_0.jpg' },
-    { img: 'https://galeria.bankier.pl/p/5/4/741fef50805a49-948-568-366-468-1512-907.jpg' }
-]
-export const ImagesCarousel: FC<Props> = ({ address, img, isEditable }) => {
+export const ImagesCarousel: FC<Props> = ({ address, isEditable }) => {
     const classes = useStyles()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const [images, setImages] = useState<Image[]>(currentPlace.images)
+    const {currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    // const [images, setImages] = useState<Image[]>(currentPlace.images)
+    const isFirstRender = useRef(true)
 
-    useEffect(() => {
-        const place = { ...currentPlace }
-        place.images = images
-        setCurrentPlace(place)
-
-    }, [images])
-
-
-
-
+    // useEffect(() => {
+    //     if(isFirstRender.current){
+    //         isFirstRender.current = false
+    //         return
+    //     }
+    //     const place = { ...currentPlace }
+    //     place.images = images
+    //     setCurrentPlace(place)
+    // }, [images])
 
     return (
         <Carousel
@@ -78,11 +72,11 @@ export const ImagesCarousel: FC<Props> = ({ address, img, isEditable }) => {
             animation="slide"
             className={classes.carousel}
         >
-            {images.map((item, index) =>
+            {currentPlace.images.map((item, index) =>
                 <div
                     key={index}
                 >
-                    <ImageCarouselItem isEditable={isEditable} index={index} item={item} setImages={setImages} address={address} />
+                    <ImageCarouselItem isEditable={isEditable} index={index} item={item} address={address} />
                 </div>)
             }
         </Carousel >

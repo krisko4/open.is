@@ -16,11 +16,10 @@ export const MyPlaces: FC = () => {
 
     const choosePlace = (place: RawPlaceDataProps) => {
         const currentPlace = convertToCurrentPlace(place)[0]
-        console.log(currentPlace)
         dispatch(setPlace(currentPlace))
         history.push({
             pathname: `${match.url}/management/${currentPlace._id}`,
-            state: {place: currentPlace}
+            state: { place: currentPlace }
         }
         )
     }
@@ -36,8 +35,7 @@ export const MyPlaces: FC = () => {
                         <ListItemAvatar>
                             <Avatar
                                 alt={place.name}
-                                // @ts-ignore
-                                src={place.img} />
+                                src={place.logo as string} />
                         </ListItemAvatar>
                         <ListItemText
                             primary={place.name}

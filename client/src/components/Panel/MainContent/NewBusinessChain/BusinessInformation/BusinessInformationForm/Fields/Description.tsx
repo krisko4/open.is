@@ -32,7 +32,7 @@ export const Description = () => {
             onChange={handleChange}
             rows={10}
             variant="outlined"
-            focused
+            // focused
             placeholder="Describe your business in few words"
             helperText={`${description.length}/600`}
             inputProps={{

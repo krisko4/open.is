@@ -1,4 +1,4 @@
-import { Grid, Step, StepContent, StepLabel, Stepper } from "@mui/material";
+import { Button, Grid, Step, StepContent, StepLabel, Stepper, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from 'react';
 import { useStepContext } from "../../../../../contexts/StepContext";
 
@@ -6,7 +6,7 @@ import { useStepContext } from "../../../../../contexts/StepContext";
 const steps = [
     {
         title: 'Name your place',
-        content: 'Provide the name of your business. Users will use it to find your place in the browser',
+        content: 'Provide the name of your business. Your visitors will use it to find your place in the browser',
     },
     {
         title: 'Place details',
@@ -69,8 +69,16 @@ export const NewPlaceStepper: FC<any> = (props) => {
                         <StepLabel onMouseEnter={() => activeStep === 0 && handleChange(index)} onClick={() => handleChange(index)}>{step.title}</StepLabel>
                         {orientation === 'vertical' &&
                             <StepContent>
-                                {step.content}
-                            </StepContent>}
+                                <Typography>
+                                    {step.content}
+                                </Typography>
+                                {
+                                    index < activeStep &&
+                                    <Button variant="contained" onClick={() => setActiveStep(index)} sx={{ mt: 1 }}>Jump to step</Button>
+                                }
+                                {/* <Button variant="contained" sx={{ mt: 1, ml: 1 }}>Continue</Button> */}
+                            </StepContent>
+                        }
                     </Step>
                 );
             })}

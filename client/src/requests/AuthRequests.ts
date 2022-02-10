@@ -13,7 +13,7 @@ export const signOut = () =>
 export const signUp = (userData: typeof registrationFields) =>
     myAxios.post('/registration', { ...userData })
 
-export const authenticate = () =>
+export const auth = () =>
     myAxios.get('/auth')
 
 export const confirmEmailChange = (email: string, token: string) =>

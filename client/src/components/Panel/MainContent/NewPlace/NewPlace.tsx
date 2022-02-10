@@ -44,8 +44,8 @@ function getStepContent(step: number, isEditionMode: boolean) {
 
 export const NewPlace: FC = () => {
 
-    const { activeStep, imageFile, setActiveStep, currentStep } = useStepContext()
-    const { currentPlace } = useCurrentPlaceContext()
+    const { activeStep, setActiveStep, currentStep } = useStepContext()
+    const { imageFile, currentPlace } = useCurrentPlaceContext()
     const dispatch = useDispatch()
     const history = useHistory()
     const places = usePlacesSelector()
@@ -82,8 +82,8 @@ export const NewPlace: FC = () => {
                 phone: currentPlace.phone,
                 email: currentPlace.email,
                 website: currentPlace.website,
-                facebook: currentPlace.facebook,
-                instagram: currentPlace.instagram
+                facebook: `https://facebook.com/${currentPlace.facebook}`,
+                instagram: `https://instagram.com/${currentPlace.instagram}`,
             }
         ]
         const formData = new FormData()
@@ -114,9 +114,7 @@ export const NewPlace: FC = () => {
         )
     }
 
-
     useEffect(() => {
-        console.log(currentPlace)
         setActiveStep(0)
     }, [])
 
@@ -128,7 +126,6 @@ export const NewPlace: FC = () => {
                         <Grid container sx={{ height: 120, backgroundColor: 'background.paper' }} alignItems="center">
                             <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
                             <NewPlaceStepper />
-                            <Button color="primary" disabled variant="outlined" sx={{ mr: '30px' }}>Next</Button>
                         </Grid>
                     }
                     {activeStep !== 4 &&
@@ -201,8 +198,17 @@ export const NewPlace: FC = () => {
 
                     }
                     {activeStep === 1 || activeStep === 2 ?
-                        <Grid container item justifyContent="center" style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
-                            <TransformWrapper limitToBounds={false} initialScale={0.9} minScale={0.5}>
+                        <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                            <TransformWrapper
+                                limitToBounds={false}
+                                doubleClick={{
+                                    disabled: true
+                                }}
+                                initialPositionY={-370}
+                                initialPositionX={70}
+                                initialScale={0.93}
+                                minScale={0.5}
+                            >
                                 <TransformComponent>
                                     <PlaceDetailsCard />
                                 </TransformComponent>
