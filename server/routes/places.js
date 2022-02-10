@@ -19,7 +19,7 @@ const upload = multer(
         fileFilter: function (req, file, callback) {
             console.log(file)
             const mimetype = file.mimetype
-            if (mimetype !== 'image/jpeg' && mimetype !== 'image/x-icon') {
+            if (!mimetype.startsWith('image/')) {
                 return callback(new Error('Only images are allowed'))
             }
             callback(null, true)
@@ -82,6 +82,7 @@ router.post('/',
     body('locations.*.lng').isFloat().notEmpty(),
     validateRequest,
     (req, res, next) => {
+        console.log(req.files)
         placeController.addPlace(req, res, next)
     }
 )
