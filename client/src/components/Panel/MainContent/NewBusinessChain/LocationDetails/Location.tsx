@@ -38,7 +38,7 @@ export const Location: FC<Props> = ({location}) => {
                     <Grid item lg={11}>
                         <Typography variant="subtitle2">{location.address}</Typography>
                     </Grid>
-                    <IconButton onClick={deleteLocation} size="large"><DeleteIcon color="secondary" /></IconButton>
+                    <IconButton onClick={deleteLocation} size="large"><DeleteIcon color="error" /></IconButton>
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>

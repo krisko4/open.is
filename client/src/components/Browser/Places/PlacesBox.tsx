@@ -130,7 +130,7 @@ const PlacesBox: FC = () => {
                         value={tabIndex}
                         style={{ marginTop: 10 }}
                         indicatorColor="secondary"
-                        textColor="secondary"
+                        // textColor="se"
                         onChange={(e, newIndex) => setTabIndex(newIndex)}
                     >
                         <MyTab icon={<FiberNew />} label="Popular" />

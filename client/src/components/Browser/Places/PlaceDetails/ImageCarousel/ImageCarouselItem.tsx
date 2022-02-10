@@ -67,7 +67,7 @@ export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address}
                             </IconButton>
                         </ImageUpload>
                         {img &&
-                            <IconButton color="secondary" onClick={() => clearImage()} component="span">
+                            <IconButton color="error" onClick={() => clearImage()} component="span">
                                 <DeleteForeverIcon style={{ width: '100px', height: '100px' }} />
                             </IconButton>
                         }

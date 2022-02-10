@@ -77,7 +77,7 @@ const CustomChip = (props: ChipProps) => {
             {...rest}
             onClick={() => setSelected(selected => !selected)}
             style={{ marginRight: 2 }}
-            color={selected ? "secondary" : "default"}
+            color={selected ? "error" : "default"}
             clickable
             label={type.label}
             icon={type.icon}

@@ -6,7 +6,6 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { getPlacesByUserId } from "../../requests/PlaceRequests";
 import { setPlaces } from '../../store/actions/setPlaces';
-import panelTheme from "../../themes/PanelTheme";
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 

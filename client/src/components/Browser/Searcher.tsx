@@ -207,7 +207,7 @@ const Searcher: FC = () => {
                                     <Typography variant="overline" style={{ color: 'lightgrey' }}>Found by address</Typography>
                                 </div>
                             </Grid>
-                            <Button size="small" variant="contained" color="secondary">Address</Button>
+                            <Button size="small" variant="contained" color="error">Address</Button>
                         </Grid>
                     </Grid>
                 );

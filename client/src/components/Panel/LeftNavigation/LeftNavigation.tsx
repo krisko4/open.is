@@ -1,4 +1,4 @@
-import { Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
+import { AppBar, Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloudCircle from '@mui/icons-material/CloudCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -51,76 +51,76 @@ export const LeftNavigation: FC = () => {
             item
             lg={2}
             sx={{
-                backgroundColor: 'background.paper'
+                backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
             }}
         >
-            <Scrollbars autoHide>
-                <Grid container justifyContent="center">
-                    <CardMedia
-                        image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
-                        style={{ height: 190, width: 180 }}
-                    />
-                </Grid>
-                <ListItem style={{ marginBottom: 20, }}>
-                    <ListItemAvatar>
-                        <Avatar alt={fullName} src={img} />
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={fullName}
-                        secondary="Standard user"
-                    />
-                </ListItem>
-                <List>
-                    <ListSubheader disableSticky>Settings</ListSubheader>
-                    {
-                        generateNavigationButtons(places).map((button, index) =>
-                            <ListItem
-                                key={index}
-                                button
-                                onClick={() => history.push(`${match.url}${button.url}`)}
-                            >
-                                <ListItemIcon>
-                                    {button.icon}
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary={button.name}>
-                                </ListItemText>
+                <Scrollbars autoHide>
+                    <Grid container justifyContent="center">
+                        <CardMedia
+                            image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
+                            style={{ height: 190, width: 180 }}
+                        />
+                    </Grid>
+                    <ListItem style={{ marginBottom: 20, }}>
+                        <ListItemAvatar>
+                            <Avatar alt={fullName} src={img} />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={fullName}
+                            secondary="Standard user"
+                        />
+                    </ListItem>
+                    <List>
+                        <ListSubheader disableSticky>Settings</ListSubheader>
+                        {
+                            generateNavigationButtons(places).map((button, index) =>
+                                <ListItem
+                                    key={index}
+                                    button
+                                    onClick={() => history.push(`${match.url}${button.url}`)}
+                                >
+                                    <ListItemIcon>
+                                        {button.icon}
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary={button.name}>
+                                    </ListItemText>
 
-                            </ListItem>
-                        )
-                    }
+                                </ListItem>
+                            )
+                        }
 
-                    {/* <ListItem
+                        {/* <ListItem
                         button
                         onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
                     >
                         <ListItemIcon>
                             <DashboardIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText secondary="Dashboard" />
+                        <ListItemText error="Dashboard" />
                     </ListItem>
                     <ListItem button onClick={() => history.push(`${match.url}/account`)}>
                         <ListItemIcon>
                             <SettingsIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText secondary="My account" />
+                        <ListItemText error="My account" />
                     </ListItem>
                     <ListItem button onClick={() => history.push(`${match.url}/new-place`)}>
                         <ListItemIcon>
                             <AddIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText secondary="New place" />
+                        <ListItemText error="New place" />
                     </ListItem>
                     <ListItem button onClick={() => history.push(`${match.url}/new-business-chain`)}>
                         <ListItemIcon>
                             <CloudCircle color="primary" />
                         </ListItemIcon>
-                        <ListItemText secondary="New business chain" />
+                        <ListItemText error="New business chain" />
                     </ListItem> */}
-                    <MyPlaces />
-                    <MyBusinessChains />
-                </List>
-            </Scrollbars>
+                        <MyPlaces />
+                        <MyBusinessChains />
+                    </List>
+                </Scrollbars>
         </Grid >
     )
 }

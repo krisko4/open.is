@@ -1,27 +1,23 @@
-import { Box, Button, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, SlideProps, Tooltip, Typography } from "@mui/material";
-import { PhotoCamera } from "@mui/icons-material";
-import React, { FC, Fragment, useEffect, useState } from "react";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
+import { LoadingButton } from "@mui/lab";
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, SlideProps, Tooltip, Typography } from "@mui/material";
+import React, { FC, useEffect, useState } from "react";
+import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { registerNewPlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
-import { PanelCard } from "../../../reusable/PanelCard";
+import { PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
 import { Step1 } from "./Steps/Step1/Step1";
 import { Step2 } from "./Steps/Step2/Step2";
 import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
-import { Step5 } from "./Steps/Step5/Step5";
-import { PlaceDetailsCard } from "./PlaceDetailsCard";
-import Scrollbars from "react-custom-scrollbars";
-import { tooltip } from "leaflet";
-import { LoadingButton } from "@mui/lab";
+
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -140,7 +136,7 @@ export const NewPlace: FC = () => {
                         <Grid container lg={5}>
                             <Slide in={true} timeout={1000}>
                                 <div>
-                                    <PanelCard>
+                                    <Card>
                                         <CardContent>
                                             <Typography variant="h2">
                                                 Step {activeStep + 1} - Final
@@ -189,7 +185,7 @@ export const NewPlace: FC = () => {
                                                 </Tooltip>
                                             </Grid>
                                         </CardContent>
-                                    </PanelCard>
+                                    </Card>
                                 </div>
 
                             </Slide>
@@ -218,7 +214,7 @@ export const NewPlace: FC = () => {
                         <Grid container item lg={5}>
                             <Slide in={true} timeout={1000}>
                                 <div>
-                                    <PanelCard>
+                                    <Card>
                                         <CardContent>
                                             <Typography variant="h2">
                                                 Step {activeStep + 1}
@@ -233,7 +229,7 @@ export const NewPlace: FC = () => {
                                                 <NewPlaceStepper orientation="vertical" />
                                             </Grid>
                                         </CardContent>
-                                    </PanelCard>
+                                    </Card>
                                 </div>
 
                             </Slide>

@@ -40,7 +40,7 @@ export const Step1: FC = () => {
     return (
         <Fade in={true} timeout={1500}>
             <Grid item container direction="column" justifyContent="space-between" style={{ textAlign: 'center' }}>
-                <Typography style={{ color: 'white' }} variant="h2">What is the name of your business?</Typography>
+                <Typography variant="h2">What is the name of your business?</Typography>
                 <TextField
                     style={{ marginTop: 10 }}
                     label="Business name"

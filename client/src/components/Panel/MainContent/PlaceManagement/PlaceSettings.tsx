@@ -79,7 +79,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
                 <Typography variant="h6" style={{ flexGrow: 1 }}>
                     Place settings
                 </Typography>
-                <Button startIcon={<DeleteIcon />} onClick={() => setDeleteOpen(true)} variant="contained" color="secondary">Delete</Button>
+                <Button startIcon={<DeleteIcon />} onClick={() => setDeleteOpen(true)} variant="contained" color="error">Delete</Button>
                 <Dialog TransitionComponent={Transition} open={isDeleteOpen}>
                     <DialogTitle>
                         Place removal

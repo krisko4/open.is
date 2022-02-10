@@ -1,19 +1,14 @@
 import AddIcon from '@mui/icons-material/Add';
 import {
-    Button,
-    Slide,
-    Card,
+    Button, Card,
     CardContent,
     Grid,
-    Grow,
-    Stack
+    Grow, Slide, Stack
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
 import React, { FC } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
-import { PanelCard } from "../../../reusable/PanelCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 
 

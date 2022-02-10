@@ -10,11 +10,12 @@ import { About } from "./components/HomePage/About/About";
 import { Contact } from './components/HomePage/Contact/Contact';
 import HomePage from './components/HomePage/MainPage/HomePage';
 import { Panel } from './components/Panel/Panel';
+import { ColorModeContextProvider } from "./contexts/ColorModeContext";
 import { LoginContextProvider } from './contexts/LoginContext';
 import { PanelContextProvider } from './contexts/PanelContexts/PanelContext';
 import browserTheme from "./themes/BrowserTheme";
 import mainTheme from "./themes/MainTheme";
-import panelTheme from "./themes/PanelTheme";
+import { PanelTheme } from "./themes/PanelTheme";
 
 
 
@@ -35,7 +36,6 @@ import panelTheme from "./themes/PanelTheme";
 function App() {
 
 
-
     return <>
         <StyledEngineProvider injectFirst>
             <SnackbarProvider maxSnack={3}>
@@ -48,12 +48,21 @@ function App() {
                                     <Route path="/about" exact component={About} />
                                     <Route path="/contact" exact component={Contact} />
                                     <Route path="/panel">
-                                        <ThemeProvider theme={panelTheme}>
-                                            <CssBaseline/>
+                                        <ColorModeContextProvider>
+                                            <PanelTheme>
+                                                <CssBaseline enableColorScheme />
+                                                <PanelContextProvider>
+                                                    <Panel />
+                                                </PanelContextProvider>
+
+                                            </PanelTheme>
+                                        </ColorModeContextProvider>
+                                        {/* <ThemeProvider theme={panelTheme}>
+                                            <CssBaseline enableColorScheme />
                                             <PanelContextProvider>
                                                 <Panel />
                                             </PanelContextProvider>
-                                        </ThemeProvider>
+                                        </ThemeProvider> */}
                                     </Route>
                                     <Route path="/search">
                                         <ThemeProvider theme={browserTheme}>

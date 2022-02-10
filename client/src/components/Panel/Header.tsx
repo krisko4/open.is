@@ -1,13 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import HomeIcon from "@mui/icons-material/Home";
-import { IconButton } from '@mui/material';
+import { IconButton, Switch } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Grid from "@mui/material/Grid";
 import Toolbar from '@mui/material/Toolbar';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useColorMode } from "../../contexts/ColorModeContext";
 import { ChosenOptions } from '../../contexts/PanelContexts/PanelContext';
 import { setSelectedOption } from '../../store/actions/setSelectedOption';
 import { usePlacesSelector } from '../../store/selectors/PlacesSelector';
@@ -21,13 +22,25 @@ const Header: FC = () => {
     const places = usePlacesSelector()
     const dispatch = useDispatch()
     const history = useHistory()
+    const { toggleColorMode } = useColorMode()
+    const [checked, setChecked] = useState(false)
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        toggleColorMode()
+        setChecked(event.target.checked)
+    }
 
 
 
     return (
-        <AppBar position="static"  elevation={0} sx={{backgroundColor: 'background.paper', paddingTop: '20px', paddingRight: '40px', paddingBottom: '20px' }}>
+        <AppBar position="static" sx={{ pt: '20px', pr: '40px' }}>
             <Toolbar>
                 <Grid item container justifyContent="flex-end" alignItems="center">
+                    <Switch
+                        checked={checked}
+                        onChange={handleChange}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                   
                     <IconButton onClick={() => history.push('/')} color="inherit" size="large">
                         <HomeIcon />
                     </IconButton>

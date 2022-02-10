@@ -102,7 +102,7 @@ export const RegistrationForm = () => {
                                         <Typography variant="body2" style={{ color: 'grey' }}>Please sign up to
                                             continue</Typography>
                                     </Grid>
-                                    {errorMessage && <Typography variant="caption" style={{ textAlign: 'center' }} color="secondary">{errorMessage}</Typography>}
+                                    {errorMessage && <Typography variant="caption" style={{ textAlign: 'center' }} color="error">{errorMessage}</Typography>}
                                     <Grid item container justifyContent="space-between" lg={10} style={{ textAlign: 'center' }}>
                                         <Grid item lg={5} style={{ marginBottom: 10 }}>
                                             <Field as={TextField} onKeyDown={isLetter} fullWidth={true}
@@ -110,7 +110,7 @@ export const RegistrationForm = () => {
                                                 name="firstName" />
                                             {errors.firstName && touched.firstName ? (
                                                 <Typography variant="caption"
-                                                    color="secondary">{errors.firstName}</Typography>
+                                                    color="error">{errors.firstName}</Typography>
                                             ) : null}
                                         </Grid>
                                         <Grid item lg={5} style={{ marginBottom: 10 }}>
@@ -118,7 +118,7 @@ export const RegistrationForm = () => {
                                                 label="Last name *" />
                                             {errors.lastName && touched.lastName ? (
                                                 <Typography variant="caption"
-                                                    color="secondary">{errors.lastName}</Typography>
+                                                    color="error">{errors.lastName}</Typography>
                                             ) : null}
                                         </Grid>
                                     </Grid>
@@ -127,7 +127,7 @@ export const RegistrationForm = () => {
                                             type="email" name="email" />
                                         {errors.email && touched.email ? (
                                             <Typography variant="caption"
-                                                color="secondary">{errors.email}</Typography>
+                                                color="error">{errors.email}</Typography>
                                         ) : null}
                                     </Grid>
                                     <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
@@ -136,7 +136,7 @@ export const RegistrationForm = () => {
                                             type="email" name="confirmEmail" />
                                         {errors.confirmEmail && touched.confirmEmail ? (
                                             <Typography variant="caption"
-                                                color="secondary">{errors.confirmEmail}</Typography>
+                                                color="error">{errors.confirmEmail}</Typography>
                                         ) : null}
                                     </Grid>
                                     <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }} >
@@ -144,7 +144,7 @@ export const RegistrationForm = () => {
                                             type="password" name="password" />
                                         {errors.password && touched.password ? (
                                             <Typography variant="caption"
-                                                color="secondary">{errors.password}</Typography>
+                                                color="error">{errors.password}</Typography>
                                         ) : null}
                                     </Grid>
                                     <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
@@ -153,7 +153,7 @@ export const RegistrationForm = () => {
                                             type="password" name="confirmPassword" />
                                         {errors.confirmPassword && touched.confirmPassword ? (
                                             <Typography variant="caption"
-                                                color="secondary">{errors.confirmPassword}</Typography>
+                                                color="error">{errors.confirmPassword}</Typography>
                                         ) : null}
                                     </Grid>
                                     <Grid item lg={10}>
@@ -163,7 +163,7 @@ export const RegistrationForm = () => {
                                             type="submit"
                                             size="large"
                                             loading={loading}
-                                            color="secondary"
+                                            color="error"
                                             variant="contained"
                                         >
                                             Sign up

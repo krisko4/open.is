@@ -4,7 +4,6 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { LoadingButton } from "@mui/lab";
 import {
-    Stack,
     Alert, Card,
     CardContent, CardMedia,
     IconButton, Paper,
@@ -22,13 +21,11 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useStepContext } from "../../../../contexts/StepContext";
 import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
 import { ImageUpload } from "../../../reusable/ImageUpload";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
-import { PanelCard } from "../../../reusable/PanelCard";
 
 
 

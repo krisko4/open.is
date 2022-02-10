@@ -175,7 +175,7 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
                                     <Grid item lg={3}>
                                         {disabledIndices.includes(index) ? <Button startIcon={<LockOpenIcon />} onClick={() => enableIndex(index)} color="primary" size="small" variant="contained">Open</Button>
                                             :
-                                            <Button startIcon={<LockIcon />} onClick={() => disableIndex(index)} color="secondary" size="small" variant="contained">Close</Button>
+                                            <Button startIcon={<LockIcon />} onClick={() => disableIndex(index)} color="error" size="small" variant="contained">Close</Button>
                                         }
                                     </Grid>
                                 </Grid>

@@ -77,7 +77,7 @@ export const Dashboard: FC = () => {
                         </Grid>
                         <Grid item container justifyContent="flex-end" lg={2} >
                             <Grid item style={{ marginRight: 5 }}>
-                                <Button onClick={() => history.push(`new-place`)} startIcon={<AddIcon />} variant="contained" color="secondary">
+                                <Button onClick={() => history.push(`new-place`)} startIcon={<AddIcon />} variant="contained" color="error">
                                     New place
                                 </Button>
                             </Grid>

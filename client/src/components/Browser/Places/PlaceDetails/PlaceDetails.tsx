@@ -258,7 +258,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
             <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
             <Grid container item style={{ background: '#2C2C2C' }}>
                 <Toolbar style={{ flexGrow: 1 }} disableGutters>
-                    <IconButton onClick={() => closePlaceDetails()} color="secondary" size="large">
+                    <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
                         <KeyboardReturn />
                     </IconButton>
                     <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
@@ -281,7 +281,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                                         className={classes.subscribeButton}
                                         disabled={!isUserLoggedIn || currentPlace.isUserOwner}
                                         variant="contained"
-                                        color="secondary"
+                                        color="error"
                                         onClick={() => setDialogOpen(true)}
                                     >
                                         Subscribe

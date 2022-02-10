@@ -74,7 +74,7 @@ const Header: FC = () => {
 
     const [appBarState, setAppBarState] = useState<AppBarStateTypes>({
         elevation: 0,
-        buttonColor: 'secondary'
+        buttonColor: 'error'
     })
 
     const { setLoginOpen } = useAuthContext()
@@ -92,11 +92,11 @@ const Header: FC = () => {
         }
         if (isElevated) {
             appBarRef.current = 'elevatedAppBar'
-            setAppBarState({ elevation: 10, buttonColor: 'secondary' })
+            setAppBarState({ elevation: 10, buttonColor: 'error' })
             return
         }
         appBarRef.current = 'transparentAppBar'
-        setAppBarState({ elevation: 0, buttonColor: 'secondary' })
+        setAppBarState({ elevation: 0, buttonColor: 'error' })
     }
 
     useEffect(() => {

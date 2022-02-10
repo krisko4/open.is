@@ -35,9 +35,9 @@ const FirstHeader: FC = () => {
                         </IconButton>
                     </Grid>
                     <Grid item style={{ textAlign: 'end' }}>
-                        {!isUserLoggedIn ? <Button color="secondary" onClick={() => setLoginOpen(true)} variant="contained">
+                        {!isUserLoggedIn ? <Button color="error" onClick={() => setLoginOpen(true)} variant="contained">
                             Sign in
-                        </Button> : <SignOutButton color="secondary" variant="contained">Sign out</SignOutButton>}
+                        </Button> : <SignOutButton color="error" variant="contained">Sign out</SignOutButton>}
                     </Grid>
                 </Grid>
             </Toolbar>

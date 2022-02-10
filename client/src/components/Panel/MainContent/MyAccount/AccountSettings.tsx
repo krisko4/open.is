@@ -1,5 +1,6 @@
 import { LoadingButton } from "@mui/lab"
-import { Fade, Slide, Button, Card, CardActions, CardContent, CardMedia, Grid, TextField, Typography, Avatar } from "@mui/material"
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Fade, Slide, Button, Card, CardActions, CardContent, CardMedia, Grid, TextField, Typography, Avatar, List, ListItem, ListItemIcon, ListItemText } from "@mui/material"
 import { Formik, Form, FastField } from "formik"
 import { FC, useState } from "react"
 import { useLoginContext } from "../../../../contexts/LoginContext"
@@ -8,6 +9,7 @@ import { useCustomSnackbar } from "../../../../utils/snackbars"
 import { initialValues } from "../../../HomePage/Contact/ContactForm"
 import { PasswordChange } from "./PasswordChange"
 import * as Yup from 'yup'
+import { match } from "react-router-dom"
 
 const AccountDetailsSchema = Yup.object().shape({
     email: Yup.string().email('This is not a valid e-mail address').required('E-mail address is required'),
@@ -88,15 +90,14 @@ export const AccountSettings: FC = () => {
     return (
         <Grid container sx={{ overflow: 'hidden' }}>
             <Fade in={true} timeout={1500}>
-                <Grid container item lg={7} justifyContent="center" alignItems="center">
-                    <Grid item container alignItems="center" direction="column">
-                        <Typography variant="h2">Account settings</Typography>
+                <Grid container item lg={7} direction="column" justifyContent="space-evenly" alignItems="center">
+                    <Grid item sx={{ textAlign: 'center' }}>
+                        <Typography variant="h2">Account credentials</Typography>
                         <Typography variant="h6">Manage your personal data</Typography>
                     </Grid>
                     <Formik initialValues={initialValues} validationSchema={AccountDetailsSchema} validateOnMount onSubmit={handleSubmit}>
                         {({ dirty, errors, isValid, values, setFieldValue }) => (
-                            <Form style={{ flexGrow: 1 }}>
-
+                            <Form >
                                 <Grid container justifyContent="center">
                                     <Grid container item rowSpacing={2} lg={8}>
                                         <Grid item container>
@@ -108,15 +109,17 @@ export const AccountSettings: FC = () => {
                                         <Grid container item>
                                             <FastField fullWidth as={TextField} error={errors.email} helperText={errors.email} variant="outlined" name="email" label="E-mail address" />
                                         </Grid>
+                                        <Grid container item>
+                                            <Button color="primary" onClick={() => setPasswordChangeOpen(true)} variant="outlined" >Change password</Button>
+                                            <PasswordChange errors={errors} setPasswordChangeOpen={setPasswordChangeOpen} passwordChangeOpen={passwordChangeOpen} />
+                                        </Grid>
+
                                         <Grid item container>
                                             <LoadingButton size="large" fullWidth variant="contained" type="submit" loading={loading} disabled={(loading || !isValid || !dirty) && img === localStorage.getItem('img')} color="primary">Submit changes</LoadingButton>
                                         </Grid>
                                     </Grid>
-
-
                                 </Grid>
                             </Form>
-
                         )}
                     </Formik>
                 </Grid>
@@ -124,23 +127,56 @@ export const AccountSettings: FC = () => {
             </Fade>
 
             <Slide direction="left" timeout={1500} in={true}>
-                <Grid container item justifyContent="center" sx={{ backgroundColor: 'background.paper' }}  lg={5}>
-                    <Grid justifyContent="center" container>
+                <Grid container
+                    lg={5}
+                    direction="column"
+                    justifyContent="space-evenly"
+                    alignItems="center"
+                    sx={
+                        {
+                            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
+
+                        }
+                    }>
+                    <Grid item container direction="column" alignItems="center">
                         <Avatar
                             src={img}
                             alt={fullName}
-                            sx={{ width: 300, height: 300 }}
+                            sx={{ width: 200, height: 200 }}
                         />
-                        <Typography variant="h2">
+                        <Typography variant="h2" sx={{ textAlign: 'center', mt: 3 }}>
                             {fullName}
                         </Typography>
-
+                        <Typography variant="h6">
+                            {email}
+                        </Typography>
                     </Grid>
+                    <Grid container justifyContent="center">
+                        <Grid item lg={8}>
+                            <List style={{ flexGrow: 1 }}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <SettingsIcon color="primary" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Account credentials" />
+                                </ListItem>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <SettingsIcon color="primary" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="My subscriptions" />
+                                </ListItem>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <SettingsIcon color="primary" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="My places" />
+                                </ListItem>
+                            </List>
 
-                    {/* <CardMedia sx={{ width: '400px', height: '400px' }} image={`https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`}>
 
-                    </CardMedia> */}
-
+                        </Grid>
+                    </Grid>
                 </Grid>
 
             </Slide>

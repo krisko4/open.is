@@ -105,7 +105,7 @@ export const LoginForm = () => {
                                             fullWidth={true}
 
                                             type="submit"
-                                            color="secondary"
+                                            color="error"
                                             variant="contained"
                                             disabled={(!(isValid && dirty) || loading)}
                                         >

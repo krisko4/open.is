@@ -40,8 +40,7 @@ export const BusinessChain: FC<Props> = ({ place }) => {
             <ListItemAvatar>
                 <Avatar
                     alt={place.name}
-                    // @ts-ignore
-                    src={place.img} />
+                    src={place.logo as string} />
             </ListItemAvatar>
             <ListItemText
                 primary={place.name}
