@@ -10,6 +10,7 @@ import { AccountSettings } from "./MyAccount/AccountSettings";
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
 import { NewPlace } from "./NewPlace/NewPlace";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
+import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
 import { PlaceData } from "./PlaceManagement/PlaceData/PlaceData";
 
 export const MainContent: FC = () => {
@@ -21,11 +22,11 @@ export const MainContent: FC = () => {
 
 
   return (
-    <Grid container style={{ height: '100%' }} item lg={10}>
-      <Grid container style={{ height: '10%' }}>
+    <Grid container style={{ height: '100%' }} direction="column" item lg={10}>
+      <Grid container>
         <Header />
       </Grid>
-      <Grid container style={{ height: '90%' }}>
+      <Grid container style={{ flexGrow : 1}}>
         {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
         <Route
           path={`${match.url}/new-place`}
@@ -39,7 +40,7 @@ export const MainContent: FC = () => {
         <CurrentPlaceContextProvider>
           <Route
             path={`${match.url}/management/:id`}
-            component={(props: any) => <PlaceData {...props} />}
+            component={(props: any) => <PlaceBoard {...props} />}
           >
           </Route>
         </CurrentPlaceContextProvider>

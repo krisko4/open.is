@@ -1,4 +1,5 @@
 import {
+    AppBar,
     Button,
     Card,
     CardContent,
@@ -7,6 +8,9 @@ import {
     Grid,
     Slide,
     SlideProps,
+    Tab,
+    Tabs,
+    Toolbar,
     Typography,
 } from "@mui/material";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -47,6 +51,8 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 //     }
 // })
 
+
+
 export const PlaceData: FC = () => {
 
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
@@ -84,36 +90,36 @@ export const PlaceData: FC = () => {
         }
     }
 
-    useEffect(() => {
-        //@ts-ignore
-        setCurrentPlace(location.state.place)
-    }, [])
+    // useEffect(() => {
+    //     //@ts-ignore
+    //     setCurrentPlace(location.state.place)
+    // }, [])
 
 
 
     return <>
         <Scrollbars>
-            <Grid container style={{ height: '100%', paddingTop: 40, paddingLeft: 40, paddingRight: 40 }} justifyContent="center">
-                <Grid container justifyContent="space-around" spacing={2}>
-                    <Grid item lg={4}>
-                        <TotalVisits totalVisits={totalVisits} setTotalVisits={setTotalVisits} />
+            <Grid container direction="column">
+                <Grid container sx={{ pt: '30px', pb: '30px', pl: '30px', pr: '30px' }}>
+                    <Grid container justifyContent="space-around" spacing={2}>
+                        <Grid item lg={4}>
+                            <TotalVisits totalVisits={totalVisits} setTotalVisits={setTotalVisits} />
+                        </Grid>
+                        <Grid item lg={4}>
+                            <VisitsToday totalVisits={totalVisits} />
+                        </Grid>
+                        <Grid item lg={4}>
+                            <TotalOpinions />
+                        </Grid>
+                        <Grid item lg={12} sx={{mb: 2}}>
+                            {currentPlace.status === Status.CLOSED && <Alert variant="filled" severity="error">Your place is now closed.</Alert>}
+                            {!currentPlace.openingHours ?
+                                <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
+                                :
+                                <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
+                            }
+                        </Grid>
                     </Grid>
-                    <Grid item lg={4}>
-                        <VisitsToday totalVisits={totalVisits} />
-                    </Grid>
-                    <Grid item lg={4}>
-                        <TotalOpinions />
-                    </Grid>
-                    <Grid item lg={12}>
-                        {currentPlace.status === Status.CLOSED && <Alert variant="filled" severity="error">Your place is now closed.</Alert>}
-                        {!currentPlace.openingHours ?
-                            <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
-                            :
-                            <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
-                        }
-                    </Grid>
-                </Grid>
-                <Grid container style={{ marginTop: 20 }}>
                     <Grid item container direction="column" lg={5} style={{ paddingRight: 10 }}>
                         <Grid container spacing={2}>
                             <Grid item lg={6}>
@@ -158,7 +164,7 @@ export const PlaceData: FC = () => {
                             </Grid>
                             <Grid item container>
                                 <Fade in={true} timeout={2000}>
-                                    <Card sx={{flexGrow: 1}} elevation={3}>
+                                    <Card sx={{ flexGrow: 1 }} elevation={3}>
                                         <CardContent>
                                             <Typography variant="h5">
                                                 Rating
@@ -181,7 +187,7 @@ export const PlaceData: FC = () => {
                                 </Fade>
                             </Grid>
                             <Grid item container>
-                                <Card elevation={3} sx={{flexGrow: 1}}>
+                                <Card elevation={3} sx={{ flexGrow: 1 }}>
                                     <CardContent>
                                         <Typography variant="h5">
                                             Activity
@@ -195,11 +201,10 @@ export const PlaceData: FC = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid style={{ marginBottom: 20 }} item lg={7}>
+                    <Grid item lg={7}>
                         <PlaceDetailsCard />
                     </Grid>
                 </Grid>
-
             </Grid>
         </Scrollbars>
     </>;

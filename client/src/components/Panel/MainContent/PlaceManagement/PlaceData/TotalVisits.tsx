@@ -31,7 +31,7 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
 
     return (
         <Fade in={true} timeout={2000}>
-            <Card className={shadowCard}>
+            <Card>
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
                     <Grid container style={{ marginTop: 5 }}>
@@ -53,9 +53,9 @@ export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }
                                 {totalVisits}
                             </Typography>
                         </Grid>
-                        <Grid item lg={6} container justifyContent="center">
+                        {/* <Grid item lg={6} container justifyContent="center">
                             <TotalVisitsChart visits={currentPlace.visits} />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </CardContent>
             </Card>

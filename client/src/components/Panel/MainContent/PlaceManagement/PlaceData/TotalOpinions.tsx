@@ -27,7 +27,7 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
 
     return (
         <Fade in={true} timeout={2500}>
-            <Card className={shadowCard}>
+            <Card>
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                     <Grid container style={{ marginTop: 5 }}>
@@ -45,7 +45,7 @@ export const TotalOpinions: FC<any> = ({ shadowCard }) => {
                                 </Grid>
                                 <Typography variant="h3">{currentPlace.opinions?.length}</Typography>
                             </Grid>
-                            <TotalOpinionsChart />
+                            {/* <TotalOpinionsChart /> */}
                         </Grid>
                     </Grid>
                 </CardContent>

@@ -137,14 +137,10 @@ export const AccountSettings: FC = () => {
                 firstName: values.firstName,
                 lastName: values.lastName,
                 password: values.password,
-                img: imageFile,
                 email: values.email
             }
-            const formData = new FormData()
-            let key: keyof typeof updatedUserData
-            for (key in updatedUserData) formData.append(key, updatedUserData[key])
             const uid = localStorage.getItem('uid') as string
-            const res = await updateUserData(uid, formData)
+            const res = await updateUserData(uid, updatedUserData)
             const { user } = res.data
             const uData = { ...userData }
             if (user.img) {
@@ -169,7 +165,7 @@ export const AccountSettings: FC = () => {
     }
 
     return (
-        <Grid container sx={{ overflow: 'hidden' }}>
+        <Grid container sx={{ overflow: 'hidden', flexGrow: 1}}>
             <Backdrop
                 open={backdropOpen}
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
