@@ -10,11 +10,37 @@ const placeDto = require('../place/model/place_dto')
 
 const userController = {
 
+    updateProfilePicture: async (req, res, next) => {
+        const { uid } = req.cookies
+        const { id } = req.params
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        const newImage = req.file
+        try {
+            const updatedUser = await userService.updateProfilePicture(uid, newImage)
+            return res.status(200).json(updatedUser)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+    removeProfilePicture: async (req, res, next) => {
+        const { uid } = req.cookies
+        const { id } = req.params
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        try {
+            const updatedUser = await userService.removeProfilePicture(uid)
+            return res.status(200).json(updatedUser)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
 
     removeSubscription: async (req, res, next) => {
         const { locationId, id } = req.params
         const { uid } = req.cookies
-        if(uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
         try {
             const place = await placeService.findByLocationId(locationId)
             if (!place) throw ApiError.badRequest('Invalid placeId')
@@ -27,12 +53,12 @@ const userController = {
     },
 
     addSubscription: async (req, res, next) => {
-        const {id} = req.params
-        const { locationId} = req.body
+        const { id } = req.params
+        const { locationId } = req.body
         const { uid } = req.cookies
         console.log(uid)
         console.log(id)
-        if(uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
         try {
             const place = await placeService.findByLocationId(locationId)
             if (!place) throw ApiError.badRequest('Invalid placeId')

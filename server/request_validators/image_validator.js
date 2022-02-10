@@ -13,7 +13,7 @@ const imageValidator = {
         next()
     },
     validateImageOnEdit: async (req, res, next) => {
-        req.files ? imageValidator.validateUploadedImage(req, res, next) : next()
+        req.files ? imageValidator.validateUploadedImages(req, res, next) : next()
     }
 
 

@@ -18,6 +18,28 @@ const userService = {
     //     return duplicateUser
     // },
 
+    removeProfilePicture: async (uid) => {
+        const user = await User.findById(uid).lean().exec()
+        if (!user) throw ApiError.internal(`User not found.`)
+        if (!user.img) throw ApiError.internal(`User has no profile image to delete`)
+        await cloudinary.uploader.destroy(user.img)
+        return User.findByIdAndUpdate(uid, { $unset: { 'img': user.img } }, { new: true, upsert: true }).exec()
+
+    },
+
+    updateProfilePicture: async (uid, img) => {
+        const user = await User.findById(uid).lean().exec()
+        if (!user) throw ApiError.internal(`User with uid: ${uid} not found.`)
+        if (user.img) {
+            await cloudinary.uploader.destroy(user.img)
+        }
+        const uploadResponse = await cloudinary.uploader.upload(img.path, {
+            upload_preset: 'user_images'
+        })
+        const newImg = uploadResponse.public_id
+        return User.findByIdAndUpdate(uid, { 'img': newImg }, { new: true, upsert: true }).exec()
+    },
+
     getSubscriptions: async (uid) => {
         const user = await User.findById(uid).lean().exec()
         if (!user) throw ApiError.internal(`User with uid: ${uid} not found.`)
@@ -69,7 +91,7 @@ const userService = {
 
     getSubscribedPlaces: async (uid) => {
         const user = await User.findById(uid).lean().populate('subscriptions.place').exec()
-        if(!user) throw ApiError.internal(`User with uid: ${uid} not found`);
+        if (!user) throw ApiError.internal(`User with uid: ${uid} not found`);
         const subscribedPlaces = user.subscriptions && user.subscriptions.map(subscription => {
             const locations = subscription.place.locations.filter(location => {
                 if (subscription.subscribedLocations.some(id => id.toString() === location._id.toString())) {
