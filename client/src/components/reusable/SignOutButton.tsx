@@ -7,14 +7,19 @@ import { useCustomSnackbar } from '../../utils/snackbars';
 
 export const SignOutButton: FC<any> = (props) => {
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    const { setEmail, setUserLoggedIn } = useLoginContext()
+    const { setUserData } = useLoginContext()
     const { children } = props
 
 
     const logout = async () => {
         await signOut()
-        setUserLoggedIn(false)
-        setEmail('')
+        setUserData(data => (
+            {
+                ...data,
+                email: '',
+                isLoggedIn: false
+            }
+        ))
         localStorage.removeItem('uid')
         localStorage.removeItem('fullName')
         localStorage.removeItem('email')

@@ -1,6 +1,5 @@
 import { Grid } from "@mui/material";
 import React, { FC } from "react";
-import Scrollbars from "react-custom-scrollbars";
 import { Route, useLocation, useRouteMatch } from "react-router-dom";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
@@ -8,7 +7,6 @@ import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import Header from "../Header";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { AccountSettings } from "./MyAccount/AccountSettings";
-import { MyAccount } from './MyAccount/MyAccount';
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
 import { NewPlace } from "./NewPlace/NewPlace";
 import { NoPlaces } from "./NoPlaces/NoPlaces";

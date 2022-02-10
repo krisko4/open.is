@@ -78,7 +78,7 @@ const Header: FC = () => {
     })
 
     const { setLoginOpen } = useAuthContext()
-    const { isUserLoggedIn, setUserLoggedIn, setEmail } = useLoginContext()
+    const { userData} = useLoginContext()
     const appBarRef = useRef<'transparentAppBar' | 'solidAppBar' | 'elevatedAppBar'>('transparentAppBar')
 
 
@@ -127,7 +127,7 @@ const Header: FC = () => {
                                 <Button variant="text" className="contactButton" onClick={() => history.push('/contact')}>Contact</Button>
 
                             }
-                            {isUserLoggedIn ? <div>
+                            {userData.isLoggedIn ? <div>
                                 {location.pathname === '/' &&
                                     <Button variant="contained" onClick={() => history.push('/panel')}
                                         color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>

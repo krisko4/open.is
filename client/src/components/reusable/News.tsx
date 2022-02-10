@@ -47,7 +47,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
     const [newsTitle, setNewsTitle] = useState('')
     const [newsContent, setNewsContent] = useState('')
     const emojiSource = useRef<'title' | 'content'>('title')
-    const { isUserLoggedIn } = useLoginContext()
+    const { userData } = useLoginContext()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
     const [openNews, setOpenNews] = useState<OpenNews>({
         isOpen: false,
@@ -81,7 +81,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
             {currentPlace.news && currentPlace.news.length > 0 ?
                 <>
                     {
-                        isUserLoggedIn && currentPlace.isUserOwner &&
+                        userData.isLoggedIn && currentPlace.isUserOwner &&
                         <Grid container style={{ marginTop: 20, paddingRight: 30 }} justifyContent="flex-end">
                             <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} color="primary">Add news</Button>
                         </Grid>
@@ -156,14 +156,14 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
 
                 <Grid justifyContent="center" style={{ height: 500 }} direction="column" alignItems="center" container >
                     <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
-                    {isUserLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
+                    {userData.isLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
                         <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} style={{ marginTop: 10 }} variant="contained" color="primary">Add news</Button>
                     </Grid>
                     }
                 </Grid>
             }
-            {isUserLoggedIn &&
+            {userData.isLoggedIn &&
                 <Dialog
                     open={dialogOpen}
                     TransitionComponent={Transition}

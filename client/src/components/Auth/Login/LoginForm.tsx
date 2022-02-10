@@ -17,7 +17,7 @@ import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../../reusable/LoadingButton";
 
 
-export interface UserData {
+export interface LoginData {
     email: string,
     password: string
 }
@@ -41,22 +41,26 @@ export const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const dispatch = useDispatch()
-    const {setUserLoggedIn, setFullName} = useLoginContext()
+    const {userData, setUserData} = useLoginContext()
 
-    const signIn = async (userData: UserData) => {
+    const signIn = async (loginData:LoginData) => {
         setErrorMessage('')
         setLoading(true)
         dispatch(setEmail(userData.email))
         try {
-            const response = await login({...userData})
+            const response = await login({...loginData})
             console.log(response.data)
             localStorage.setItem('uid', response.data.uid)
             localStorage.setItem('fullName', response.data.fullName)
-            localStorage.setItem('email', userData.email)
+            localStorage.setItem('email', loginData.email)
             response.data.img && localStorage.setItem('img', response.data.img)
             setLoginOpen(false)
-            setFullName(response.data.fullName)
-            setUserLoggedIn(true)
+            setUserData({
+                fullName: response.data.fullName,
+                email: loginData.email,
+                img: response.data.img,
+                isLoggedIn: true
+            })
             enqueueSuccessSnackbar('You have signed in.')
         } catch (err: any) {
             console.log(err)

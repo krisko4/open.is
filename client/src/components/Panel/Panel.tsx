@@ -13,13 +13,13 @@ import { MainContent } from "./MainContent/MainContent";
 export const Panel: FC = () => {
 
     const [loading, setLoading] = useState(true)
-    const { isUserLoggedIn } = useLoginContext()
+    const { userData } = useLoginContext()
     const history = useHistory()
     const match = useRouteMatch()
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!isUserLoggedIn) {
+        if (!userData.isLoggedIn) {
             history.push('/')
             return
         } (async function () {

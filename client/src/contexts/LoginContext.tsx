@@ -17,18 +17,19 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
         const authenticate = async () => {
             try {
                 await auth()
-                state.setUserLoggedIn(true)
-                state.setEmail(localStorage.getItem('email') || '')
-                state.setFullName(localStorage.getItem('fullName') || '')
-                state.setImg(localStorage.getItem('img') || '')
-
+                const data = {
+                    isLoggedIn : true,
+                    email: localStorage.getItem('email') || '',
+                    fullName: localStorage.getItem('fullName') || '',
+                    img: localStorage.getItem('img') || ''
+                }
+                state.setUserData(data)
             } catch (err) {
-                if (state.isUserLoggedIn) {
+                if (state.userData.isLoggedIn) {
                     localStorage.removeItem('uid')
                     localStorage.removeItem('fullName')
                     localStorage.removeItem('email')
                     localStorage.removeItem('img')
-                    // state.setEmail('')
                 }
             } finally {
                 setAuthFinished(true)
@@ -48,22 +49,30 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
     )
 }
 
+interface UserData {
+    email : string,
+    fullName : string,
+    img: string | File | ArrayBuffer | null,
+    isLoggedIn: boolean
+}
+
+const clearUserData : UserData = {
+    email: '',
+    fullName: '',
+    img: '',
+    isLoggedIn: false
+}
+
 const useProviderData = () => {
 
-    const [isUserLoggedIn, setUserLoggedIn] = useState(false)
-    const [email, setEmail] = useState('')
-    const [fullName, setFullName] = useState('')
-    const [img, setImg] = useState('')
+    // const [isUserLoggedIn, setUserLoggedIn] = useState(false)
+    // const [email, setEmail] = useState('')
+    // const [fullName, setFullName] = useState('')
+    // const [img, setImg] = useState<string | File | ArrayBuffer | null>('')
+    const [userData, setUserData] = useState(clearUserData)
 
     return {
-        isUserLoggedIn,
-        setUserLoggedIn,
-        setEmail,
-        email,
-        fullName,
-        setFullName,
-        img,
-        setImg
+        userData, setUserData
     }
 }
 

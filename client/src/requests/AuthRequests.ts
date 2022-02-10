@@ -1,11 +1,11 @@
 import myAxios from "../axios/axios";
-import { UserData } from "../components/Auth/Login/LoginForm";
+import { LoginData } from "../components/Auth/Login/LoginForm";
 import { registrationFields } from "../components/Auth/Registration/RegistrationForm";
 
 export const confirmRegistrationToken = (token: string) => myAxios.get(`/confirmation/${token}`)
 
 
-export const login = (userData: UserData) => myAxios.post('/login', { ...userData })
+export const login = (loginData: LoginData) => myAxios.post('/login', { ...loginData })
 
 export const signOut = () =>
     myAxios.get('/logout')

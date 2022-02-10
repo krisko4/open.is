@@ -44,7 +44,7 @@ export const LeftNavigation: FC = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const match = useRouteMatch()
-    const { fullName, img } = useLoginContext()
+    const { userData } = useLoginContext()
 
     return (
         <Grid
@@ -63,10 +63,10 @@ export const LeftNavigation: FC = () => {
                     </Grid>
                     <ListItem style={{ marginBottom: 20, }}>
                         <ListItemAvatar>
-                            <Avatar alt={fullName} src={img} />
+                            <Avatar alt={userData.fullName} src={userData.img as string} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary={fullName}
+                            primary={userData.fullName}
                             secondary="Standard user"
                         />
                     </ListItem>

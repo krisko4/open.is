@@ -1,18 +1,15 @@
-import { TouchAppRounded } from '@mui/icons-material';
-import InputMask from "react-input-mask";
-
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LanguageIcon from '@mui/icons-material/Language';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import { ErrorMessage, FastField, Field, Form, Formik } from "formik";
+import { ErrorMessage, FastField, Form, Formik } from "formik";
 import React, { FC, useState } from "react";
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-import { PanelForm } from "../../../../../reusable/PanelForm";
+
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
 const facebookRegExp = /(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
 const instagramRegExp = /^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/ 

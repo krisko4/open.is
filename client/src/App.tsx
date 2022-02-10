@@ -54,15 +54,8 @@ function App() {
                                                 <PanelContextProvider>
                                                     <Panel />
                                                 </PanelContextProvider>
-
                                             </PanelTheme>
                                         </ColorModeContextProvider>
-                                        {/* <ThemeProvider theme={panelTheme}>
-                                            <CssBaseline enableColorScheme />
-                                            <PanelContextProvider>
-                                                <Panel />
-                                            </PanelContextProvider>
-                                        </ThemeProvider> */}
                                     </Route>
                                     <Route path="/search">
                                         <ThemeProvider theme={browserTheme}>

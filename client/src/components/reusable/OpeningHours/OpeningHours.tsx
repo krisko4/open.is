@@ -19,14 +19,14 @@ interface Props {
 
 export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => {
 
-    const { isUserLoggedIn } = useLoginContext()
+    const { userData} = useLoginContext()
     const openingHours = currentPlace && currentPlace.openingHours
     const [dialogOpen, setDialogOpen] = useState(false)
 
 
     return (
         <Grid container direction="column" style={{ height: '100%' }} alignItems="center">
-            {currentPlace?.isUserOwner && isUserLoggedIn && openingHours &&
+            {currentPlace?.isUserOwner && userData.isLoggedIn && openingHours &&
                 <Grid container justifyContent="flex-end" >
                     <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
@@ -78,7 +78,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes
                     </>
             }
 
-            {isUserLoggedIn && currentPlace?.isUserOwner &&
+            {userData.isLoggedIn && currentPlace?.isUserOwner &&
                 <Dialog
                     open={dialogOpen}
                     maxWidth="sm"

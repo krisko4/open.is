@@ -29,7 +29,7 @@ interface Props {
 export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
 
 
-    const { isUserLoggedIn } = useLoginContext()
+    const { userData} = useLoginContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [noteValue, setNoteValue] = useState<number | null>(null)
@@ -82,7 +82,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                     <div>
                         <Grid container justifyContent="space-between" >
                             <Alert severity="info" variant="filled">{currentPlace.opinions?.length} {currentPlace.opinions && currentPlace.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
-                            {isUserLoggedIn && !currentPlace.isUserOwner &&
+                            {userData.isLoggedIn && !currentPlace.isUserOwner &&
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                             }
                         </Grid>
@@ -95,7 +95,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                     </div>
                     : <Grid container direction="column" justifyContent="center" style={{ height: '100%' }} alignItems="center">
                         <Typography variant="h6" className={classes.content}>This place doesn't have any opinions yet.</Typography>
-                        {isUserLoggedIn && !currentPlace.isUserOwner ? <Grid item style={{ textAlign: 'center' }}>
+                        {userData.isLoggedIn &&  !currentPlace.isUserOwner ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
                             <Button style={{ marginTop: 10 }} startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                         </Grid>
@@ -103,7 +103,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                         }
                     </Grid>
                 }
-                {isUserLoggedIn &&
+                {userData.isLoggedIn &&
                     <Dialog
                         open={dialogOpen}
                         TransitionComponent={Transition}

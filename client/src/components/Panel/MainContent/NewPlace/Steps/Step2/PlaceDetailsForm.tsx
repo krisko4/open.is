@@ -1,14 +1,13 @@
-import { Autocomplete, Grid, TextField, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import { Form, useFormikContext } from "formik"
-import { FC, useEffect, useState } from "react"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { getBusinessTypes } from "../../../../../../requests/BusinessTypeRequests"
-import { LoadingButton } from "../../../../../reusable/LoadingButton"
-import { PanelForm } from "../../../../../reusable/PanelForm"
-import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/BusinessType"
-import { Description } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Description"
-import { Subtitle } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Subtitle"
+import { Form, useFormikContext } from "formik";
+import { FC, useEffect, useState } from "react";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { getBusinessTypes } from "../../../../../../requests/BusinessTypeRequests";
+import { LoadingButton } from "../../../../../reusable/LoadingButton";
+import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/BusinessType";
+import { Description } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Description";
+import { Subtitle } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Subtitle";
 
 const useStyles = makeStyles({
     form: {

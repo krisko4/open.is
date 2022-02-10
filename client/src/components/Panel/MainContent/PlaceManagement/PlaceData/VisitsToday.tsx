@@ -24,7 +24,7 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
 
     return (
         <Fade in={true} timeout={2200}>
-            <Card className={shadowCard}>
+            <Card sx={{height: '100%'}}>
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>
                     <Grid container style={{ marginTop: 5 }}>
@@ -48,9 +48,9 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
                                 {visitsToday}
                             </Typography>
                         </Grid>
-                        {/* <Grid item lg={6} container justifyContent="center">
-                            <CardMedia style={{ height: 100, width: 120 }} />
-                        </Grid> */}
+                        <Grid item lg={6} container justifyContent="center">
+                            {/* <CardMedia style={{ height: 100, width: 120 }} /> */}
+                        </Grid>
                     </Grid>
                 </CardContent>
             </Card>

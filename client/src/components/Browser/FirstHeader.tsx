@@ -14,7 +14,7 @@ import { useLoginContext } from "../../contexts/LoginContext";
 const FirstHeader: FC = () => {
 
     const { setLoginOpen } = useAuthContext()
-    const {isUserLoggedIn} = useLoginContext()
+    const {userData} = useLoginContext()
     const history = useHistory()
 
     return (
@@ -35,7 +35,7 @@ const FirstHeader: FC = () => {
                         </IconButton>
                     </Grid>
                     <Grid item style={{ textAlign: 'end' }}>
-                        {!isUserLoggedIn ? <Button color="error" onClick={() => setLoginOpen(true)} variant="contained">
+                        {!userData.isLoggedIn ? <Button color="error" onClick={() => setLoginOpen(true)} variant="contained">
                             Sign in
                         </Button> : <SignOutButton color="error" variant="contained">Sign out</SignOutButton>}
                     </Grid>

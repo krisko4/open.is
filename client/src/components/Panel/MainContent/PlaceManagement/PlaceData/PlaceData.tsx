@@ -158,7 +158,7 @@ export const PlaceData: FC = () => {
                             </Grid>
                             <Grid item container>
                                 <Fade in={true} timeout={2000}>
-                                    <Card elevation={3}>
+                                    <Card sx={{flexGrow: 1}} elevation={3}>
                                         <CardContent>
                                             <Typography variant="h5">
                                                 Rating
@@ -181,7 +181,7 @@ export const PlaceData: FC = () => {
                                 </Fade>
                             </Grid>
                             <Grid item container>
-                                <Card elevation={3}>
+                                <Card elevation={3} sx={{flexGrow: 1}}>
                                     <CardContent>
                                         <Typography variant="h5">
                                             Activity

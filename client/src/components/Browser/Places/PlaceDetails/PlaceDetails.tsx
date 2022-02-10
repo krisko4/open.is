@@ -182,7 +182,7 @@ interface Props {
 export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
 
     const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
-    const { isUserLoggedIn } = useLoginContext()
+    const { userData } = useLoginContext()
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [value, setValue] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -275,11 +275,11 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                                 </span>
                             </Tooltip>
                             :
-                            <Tooltip title={!isUserLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
+                            <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
                                 <span>
                                     <Button
                                         className={classes.subscribeButton}
-                                        disabled={!isUserLoggedIn || currentPlace.isUserOwner}
+                                        disabled={!userData.isLoggedIn || currentPlace.isUserOwner}
                                         variant="contained"
                                         color="error"
                                         onClick={() => setDialogOpen(true)}
