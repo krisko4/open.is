@@ -31,19 +31,7 @@ export const ImageUpload: FC<Props> = ({ img, name, children, setImg, setImageFi
     }
 
 
-    // const clearImage = () => {
-    //     setImg('')
-    //     setImageFile(null)
-    //     setInputKey(Date.now())
-    // }
     return <>
-        {/* <Card variant="outlined"> */}
-        {/* <CardMedia style={{ height: 300, backgroundSize: 'contain' }} image={img || `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} > */}
-        {/* {img && <Grid container justifyContent="flex-end">
-                    <IconButton onClick={() => clearImage()} className="uploader" size="large">
-                        <ClearIcon color="error" />
-                    </IconButton>
-                </Grid>} */}
         <label htmlFor={name}>
             <input
                 type="file"
@@ -55,12 +43,6 @@ export const ImageUpload: FC<Props> = ({ img, name, children, setImg, setImageFi
                 key={inputKey}
             />
             {children}
-            {/* <IconButton color="primary" component="span">
-                <PhotoCamera style={{ width: '100px', height: '100px' }} />
-            </IconButton> */}
         </label>
-        {/* </CardMedia>
-        </Card>
-        <Button startIcon={<UploadIcon/>}style={{ marginTop: 10 }} fullWidth variant="contained" onClick={() => uploadRef.current && uploadRef.current.click()} color="primary">Upload</Button> */}
     </>;
 }

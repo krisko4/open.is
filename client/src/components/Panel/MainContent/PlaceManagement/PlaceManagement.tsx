@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from "react";
 import { useCurrentPlaceContext } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
+import { useChosenPlaceSelector } from '../../../../store/selectors/ChosenPlaceSelector';
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
-import { PlaceData } from './PlaceData/PlaceData';
-import {useChosenPlaceSelector} from '../../../../store/selectors/ChosenPlaceSelector'
+import { PlaceData } from './PlaceBoard/PlaceData/PlaceData';
 
 
 export const PlaceManagement: FC = () => {
@@ -15,7 +15,6 @@ export const PlaceManagement: FC = () => {
         console.log(chosenPlace)
         setCurrentPlace({ ...chosenPlace })
     }, [chosenPlace])
-
 
 
     return <>

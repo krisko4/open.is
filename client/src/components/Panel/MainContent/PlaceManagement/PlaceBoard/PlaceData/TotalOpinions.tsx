@@ -1,13 +1,11 @@
-import { Card, CardContent, Typography, Grid, Fade } from "@mui/material"
-import { isToday } from "date-fns"
-import { FC, useEffect, useState } from "react"
-import { TotalOpinionsChart } from "../Charts/TotalOpinionsChart"
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { Card, CardContent, Fade, Grid, Typography } from "@mui/material";
+import { isToday } from "date-fns";
+import { FC, useEffect, useState } from "react";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 
-export const TotalOpinions: FC<any> = ({ shadowCard }) => {
+export const TotalOpinions: FC<any> = () => {
 
     const [opinionsDiff, setOpinionsDiff] = useState(0)
     const { currentPlace } = useCurrentPlaceContext()

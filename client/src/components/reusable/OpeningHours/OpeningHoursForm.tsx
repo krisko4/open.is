@@ -1,4 +1,6 @@
-import { Button, DialogActions, DialogContent, DialogContentText, Grid, Typography } from "@mui/material"
+import { Button, DialogActions, DialogContent, DialogContentText, Grid, TextField, Typography } from "@mui/material"
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+
 import LockIcon from '@mui/icons-material/Lock'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import { Field, Form, Formik } from "formik"
@@ -6,26 +8,23 @@ import { FC, useEffect, useState } from "react"
 import { changeOpeningHours } from "../../../requests/OpeningHoursRequests"
 import { useCustomSnackbar } from "../../../utils/snackbars"
 import { LoadingButton } from "../LoadingButton"
+import { LocalizationProvider, TimePicker } from "@mui/lab"
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const hours = ['10:00 - 17:00', 'closed', '10:00 - 17:00', '12:00 - 15:00', '7:30 - 18:50', 'closed', 'closed']
 
-const HourPicker: FC<any> = ({ field, form, label, classes, disabled, ...other }) => {
 
-    return ( <></>
-    //     <KeyboardTimePicker
-    //         ampm={false}
-    //         label={label}
-    //         disabled={disabled}
-    //         name={field.name}
-    //         value={field.value}
-    //         InputLabelProps={{ className: classes.inputLabel }}
-    //         InputProps={{ className: classes.hourPicker }}
-    //         InputAdornmentProps={{ className: classes.calendarIcon }}
-    //         onChange={(date: any) => form.setFieldValue(field.name, date, false)}
-    //     />
-     )
+const TimePickerField: FC<any> = ({ field, form, ...other }) => {
+
+    return (
+        <TimePicker
+            value={field.value}
+            onChange={hour => form.setFieldValue(field.name, hour)}
+            renderInput={(props) => <TextField type="time" {...props}></TextField>}
+        />
+    )
 }
+
 export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace, setDialogOpen, setCurrentPlace }) => {
 
     const [loading, setLoading] = useState(false)
@@ -148,29 +147,50 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
     }
 
     return (
-        <Formik
-            initialValues={{ ...startSchedule, ...endSchedule }}
-            onSubmit={submitForm}
-        >
-            {({ initialValues }) => (
-                <Form>
-                    <DialogContent>
-                        <DialogContentText className="dialogContentText" style={{ textAlign: 'center' }}>
-                            Manage the opening state of your place by either providing hours using keyboard or by pressing the calendar attached to each text field.
-                        </DialogContentText>
-                        <Grid container justifyContent="space-evenly" style={{ marginTop: 20 }}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+            <Formik
+                initialValues={{ ...startSchedule, ...endSchedule }}
+                onSubmit={submitForm}
+            >
+                {({ initialValues, handleChange, setFieldValue, values }) => (
+                    <Form>
+                        <Grid container direction="column">
+                            {days.map((day, index) =>
+                                <Grid container alignItems="center" key={index}>
+                                    <Typography variant="subtitle2">{day.toUpperCase()} </Typography>
+                                    <Field
+                                        name={Object.keys(startSchedule)[index]}
+                                        component={TimePickerField}
+                                    />
+                                    <Field
+                                        name={Object.keys(endSchedule)[index]}
+                                        component={TimePickerField}
+                                    />
+                                </Grid>
+                            )}
+                        </Grid>
+                        {/* <Grid container justifyContent="space-evenly" style={{ marginTop: 20 }}>
                             <Grid container item lg={2} direction="column">
                                 {days.map((day, index) =>
                                     <Typography key={index} style={{ marginTop: 26 }} variant="subtitle2" className="dialogContentText">{day.toUpperCase()} </Typography>
                                 )}
                             </Grid>
                             <Grid container item lg={3} direction="column">
-                                {Object.keys(startSchedule).map((day, index) => <Field key={index} disabled={disabledIndices.includes(index)} classes={classes} label="Start hour" component={HourPicker} name={day} />)}
+                                {Object.keys(startSchedule).map((day, index) =>
+                                    <Field
+                                        name={day}
+                                        component={TimePickerField}
+                                    />
+                                )}
                             </Grid>
                             <Grid container item lg={5} direction="column">
                                 {Object.keys(endSchedule).map((day, index) => <Grid key={index} container justifyContent="space-between" style={{ alignItems: 'end' }}>
                                     <Grid item lg={7}>
-                                        <Field key={index} label="End hour" classes={classes} disabled={disabledIndices.includes(index)} component={HourPicker} name={day} />
+                                        <Field
+                                            name={day}
+                                            component={TimePickerField}
+                                        />
                                     </Grid>
                                     <Grid item lg={3}>
                                         {disabledIndices.includes(index) ? <Button startIcon={<LockOpenIcon />} onClick={() => enableIndex(index)} color="primary" size="small" variant="contained">Open</Button>
@@ -182,13 +202,10 @@ export const OpeningHoursForm: FC<any> = ({ openingHours, classes, currentPlace,
                                 )}
                             </Grid>
                         </Grid>
-                    </DialogContent>
-                    <DialogActions style={{ marginTop: 30 }}>
-                        <LoadingButton type="submit" loading={loading} disabled={disabledIndices.length > 6 || loading} color="primary">Submit</LoadingButton>
-                    </DialogActions>
-                </Form>
-
-            )}
-        </Formik>
+                        <LoadingButton type="submit" loading={loading} disabled={disabledIndices.length > 6 || loading} color="primary">Submit</LoadingButton> */}
+                    </Form>
+                )}
+            </Formik>
+        </LocalizationProvider>
     );
 }

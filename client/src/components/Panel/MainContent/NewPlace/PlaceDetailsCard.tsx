@@ -209,7 +209,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
         <Slide in={true} timeout={1000}>
             <div>
                 <Card elevation={3} sx={{ minWidth: 800 }}>
-                    <Grid container item sx={{ backgroundColor: 'panelCard.main' }}>
+                    <Grid container item >
                         <Toolbar style={{ flexGrow: 1 }} disableGutters>
                             <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
                                 <Tooltip title={'Your users will be able to subscribe to your business'} arrow >

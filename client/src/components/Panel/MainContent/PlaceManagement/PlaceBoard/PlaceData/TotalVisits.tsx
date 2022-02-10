@@ -1,12 +1,9 @@
-import { Card, CardContent, Typography, Grid } from "@mui/material"
-import { isToday, isYesterday } from "date-fns"
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat"
+import TrendingUpIcon from "@mui/icons-material/TrendingUp"
+import { Card, CardContent, Fade, Grid, Typography } from "@mui/material"
+import { isToday } from "date-fns"
 import React, { FC, useEffect, useState } from "react"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { TotalVisitsChart } from "../Charts/TotalVisitsChart"
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import {Fade} from '@mui/material'
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 
 export const TotalVisits: FC<any> = ({ shadowCard, totalVisits, setTotalVisits }) => {
 

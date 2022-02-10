@@ -11,7 +11,6 @@ import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
 import { NewPlace } from "./NewPlace/NewPlace";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
-import { PlaceData } from "./PlaceManagement/PlaceData/PlaceData";
 
 export const MainContent: FC = () => {
 

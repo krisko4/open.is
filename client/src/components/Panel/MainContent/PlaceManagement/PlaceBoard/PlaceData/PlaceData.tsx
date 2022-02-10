@@ -1,39 +1,32 @@
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import NoMeetingRoomIcon from '@mui/icons-material/NoMeetingRoom';
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
-    AppBar,
     Button,
     Card,
     CardContent,
     Dialog,
     Fade,
-    Grid,
-    Slide,
-    SlideProps,
-    Tab,
-    Tabs,
-    Toolbar,
-    Typography,
+    Grid, Rating, Slide,
+    SlideProps, Typography
 } from "@mui/material";
-import { Scrollbars } from 'react-custom-scrollbars';
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import NoMeetingRoomIcon from '@mui/icons-material/NoMeetingRoom';
-import SettingsIcon from "@mui/icons-material/Settings";
-import { Rating } from '@mui/material';
 import Alert from '@mui/material/Alert';
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { Status } from "../../../../../contexts/PanelContexts/PanelContext";
-import { setPlaceStatus } from "../../../../../requests/PlaceRequests";
-import { setPlaces } from "../../../../../store/actions/setPlaces";
-import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
-import { convertToRawPlaceData } from "../../../../../utils/place_data_utils";
-import { useCustomSnackbar } from "../../../../../utils/snackbars";
-import { LoadingButton } from "../../../../reusable/LoadingButton";
-import { PlaceDetailsCard } from "../../NewPlace/PlaceDetailsCard";
-import { ActivityChart } from '../Charts/ActivityChart';
-import { RatingChart } from '../Charts/RatingChart';
-import { PlaceSettings } from "../PlaceSettings";
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { Status } from "../../../../../../contexts/PanelContexts/PanelContext";
+import { setPlaceStatus } from "../../../../../../requests/PlaceRequests";
+import { setPlaces } from "../../../../../../store/actions/setPlaces";
+import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
+import { convertToRawPlaceData } from "../../../../../../utils/place_data_utils";
+import { useCustomSnackbar } from "../../../../../../utils/snackbars";
+import { LoadingButton } from "../../../../../reusable/LoadingButton";
+import { PlaceDetailsCard } from "../../../NewPlace/PlaceDetailsCard";
+import { ActivityChart } from '../../Charts/ActivityChart';
+import { RatingChart } from '../../Charts/RatingChart';
+import { PlaceSettings } from "../../PlaceSettings";
 import { TotalOpinions } from './TotalOpinions';
 import { TotalVisits } from './TotalVisits';
 import { VisitsToday } from './VisitsToday';

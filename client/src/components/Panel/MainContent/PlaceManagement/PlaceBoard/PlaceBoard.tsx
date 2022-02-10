@@ -1,9 +1,9 @@
-import { Grid, Card, Toolbar, Tabs, Tab } from "@mui/material"
-import { FC, useEffect, useState } from "react"
+import { Card, Grid, Tab, Tabs, Toolbar } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useLocation } from 'react-router-dom'
-import Scrollbars from "react-custom-scrollbars";
-import { PlaceData } from "../PlaceData/PlaceData";
+import { OpeningHours } from "./OpeningHours/OpeningHours";
+import { PlaceData } from "./PlaceData/PlaceData";
 
 const tabs = [
     {
@@ -16,7 +16,7 @@ const tabs = [
     },
     {
         name: 'Opening hours',
-        content: <h1>Hello world</h1>
+        content: <OpeningHours/>
     },
     {
         name: 'Events',
@@ -53,7 +53,7 @@ export const PlaceBoard: FC = () => {
         //@ts-ignore
         setCurrentPlace(location.state.place)
     }, [])
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState(currentPlace.isActive ? 0 : 2)
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
