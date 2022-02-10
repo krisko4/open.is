@@ -107,14 +107,7 @@ const userController = {
             const { uid } = req.cookies
             const { id } = req.params
             if (uid !== id) throw new Error('Uids are different')
-            const img = req.files && req.files.img
             const userData = { ...req.body }
-            if (img) {
-                userData.img = img
-            }
-            else {
-                delete userData.img
-            }
             const result = await userService.changeUserData(userData, id)
             return res.status(200).json({ emailChanged: result.emailChanged, user: userDto(result.user) })
         } catch (err) {

@@ -182,18 +182,7 @@ const userService = {
                 emailChanged = true
             }
             delete newData.email
-            // upload image to cloudinary
-            if (newData.img) {
-                if (currentUser.img) {
-                    await cloudinary.uploader.destroy(currentUser.img)
-                }
-                const uploadResponse = await cloudinary.uploader.upload(newData.img.tempFilePath, {
-                    upload_preset: 'user_images'
-                })
-                newData.img = uploadResponse.public_id
-            }
             user = await User.findByIdAndUpdate(id, newData, { new: true, session: session }).exec()
-
         })
         await session.endSession()
         return { emailChanged: emailChanged, user: user }

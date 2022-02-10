@@ -44,19 +44,9 @@ router.delete('/:id/profile-picture',
 )
 router.patch('/:id',
     jwtController.authenticateAccessToken,
-    // fileUpload({
-    //     useTempFiles: true,
-    //     tempFileDir: '/tmp/',
-    //     safeFileNames: true,
-    //     limits: { fileSize: 500000 },
-    //     abortOnLimit: true,
-    //     debug: true
-    // }),
-    // imageValidator.validateImageOnEdit,
     body('firstName').notEmpty().isString(),
     body('lastName').notEmpty().isString(),
     body('email').notEmpty().isEmail(),
-    // body('img').optional({nullable: true, checkFalsy: true}).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['res.cloudinary.com'] }),
     body('password').isStrongPassword().optional({ nullable: true, checkFalsy: true }),
     validateRequest,
     (req, res, next) => {
