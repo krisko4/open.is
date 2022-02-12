@@ -34,6 +34,7 @@ export interface LocationProps {
     opinions?: OpinionProps[],
     facebook: string,
     visits?: VisitProps[],
+    alwaysOpen: boolean,
     averageNote?: {
         ones: number,
         twos: number,
@@ -94,6 +95,7 @@ export const clearBusinessChain = {
             email: '',
             website: '',
             isActive: false,
+            alwaysOpen: false
         }
     ],
     type: '',
@@ -102,6 +104,7 @@ export const clearBusinessChain = {
     logo: '',
     images: [], 
     userId: '',
+    
 }
 
 interface VisitProps {

@@ -20,6 +20,7 @@ export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
             averageNote: currentPlace.averageNote,
             openingHours: currentPlace.openingHours,
             isUserOwner: currentPlace.isUserOwner,
+            alwaysOpen: currentPlace.alwaysOpen,
             isActive: currentPlace.isActive,
             email: currentPlace.email,
             status: currentPlace.status,
