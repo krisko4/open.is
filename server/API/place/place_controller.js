@@ -13,6 +13,17 @@ const mongoose = require('mongoose')
 const placeController = {
 
 
+    setAlwaysOpen: async (req, res, next) => {
+        const {alwaysOpen} = req.body
+        const {id} = req.params
+        try{
+            await placeService.setAlwaysOpen(alwaysOpen, id)
+            return res.sendStatus(200)
+        }catch(err){
+            return next(err)
+        }
+    },
+
     getActivePlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
         const { cookies } = req
@@ -334,9 +345,11 @@ const placeController = {
 
     setOpeningHours: async (req, res, next) => {
         const { id } = req.params
+        const {openingHours} = req.body
+        console.log(openingHours)
         try {
-            if (Object.keys(req.body).length === 0) throw ApiError.badRequest('Request body is missing')
-            const place = await placeService.setOpeningHours(id, req.body)
+
+            const place = await placeService.setOpeningHours(id, openingHours)
             return res.status(200).json(place)
         } catch (err) {
             next(err)

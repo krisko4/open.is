@@ -18,60 +18,60 @@ const AverageNoteSchema = new mongoose.Schema({
 
 const OpeningHoursSchema = new mongoose.Schema({
     monday: {
-        startHour: ReqDate,
-        endHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        end: ReqDate,
+        open: {
             type: Boolean,
             default: true
         }
     },
     tuesday: {
-        startHour: ReqDate,
-        endHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        end: ReqDate,
+        open: {
             type: Boolean,
             default: true
         }
     },
     wednesday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     thursday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     friday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     saturday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     sunday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     }
 })
 
@@ -98,6 +98,10 @@ const PlaceSchema = new mongoose.Schema({
             phone: ReqString,
             email: String,
             website: String,
+            alwaysOpen: {
+                type: Boolean,
+                default: false
+            },
             status: {
                 type: String,
                 enum: ['open', 'closed'],

@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const placeController = require('../API/place/place_controller')
 const userService = require('../API/user/user_service')
-const { body, validationResult, cookie } = require('express-validator');
+const { body, param, validationResult, cookie } = require('express-validator');
 const ApiError = require('../errors/ApiError')
-// const fileUpload = require('express-fileupload');
 const jwtController = require('../API/jwt/jwt_controller')
 const placeValidator = require('../request_validators/place_validator')
 const imageValidator = require('../request_validators/image_validator')
@@ -145,9 +144,21 @@ router.patch('/:id/note', (req, res, next) => {
     placeController.updateNote(req, res, next)
 })
 
-router.patch('/:id/opening-hours', (req, res, next) => {
-    placeController.setOpeningHours(req, res, next)
-})
+router.patch('/:id/opening-hours',
+    body('openingHours').notEmpty(),
+    body('openingHours.*.start').notEmpty().isISO8601(),
+    body('openingHours.*.end').notEmpty().isISO8601(),
+    body('openingHours.*.open').isBoolean(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.setOpeningHours(req, res, next)
+    })
 
+router.patch('/:id/always-open',
+    param('id').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.setAlwaysOpen(req, res, next)
+    })
 
 module.exports = router;

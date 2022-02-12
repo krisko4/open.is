@@ -132,6 +132,13 @@ const placeService = {
     },
 
 
+    setAlwaysOpen: async (alwaysOpen, locationId) => {
+        console.log(alwaysOpen)
+        return Place.findOneAndUpdate(
+            { 'locations._id': locationId },
+            { 'locations.$.alwaysOpen': alwaysOpen, 'locations.$.isActive': true },
+            { new: true, runValidators: true }).exec()
+    },
 
 
     addPlace: async (placeData) => {
@@ -149,7 +156,7 @@ const placeService = {
                 upload_preset: 'place_logos'
             })
             const urlImages = []
-            for(const image of images) {
+            for (const image of images) {
                 const res = await cloudinary.uploader.upload(image.path, {
                     upload_preset: 'place_images'
                 })
@@ -180,7 +187,7 @@ const placeService = {
     setStatus: (id, status) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.status': status }, { new: true, runValidators: true }).exec(),
     setOpeningHours: (id, hours) => Place.findOneAndUpdate(
         { 'locations._id': id },
-        { 'locations.$.openingHours': hours, 'locations.$.isActive': true },
+        { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen' : false },
         { new: true, runValidators: true }
     ).exec(),
     deletePlace: async (id) => {
