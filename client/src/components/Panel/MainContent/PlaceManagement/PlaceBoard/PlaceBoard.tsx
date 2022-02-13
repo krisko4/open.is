@@ -56,8 +56,12 @@ export const PlaceBoard: FC = () => {
         setCurrentPlace(location.state.place)
     }, [])
 
+    useEffect(() => {
+       setValue(currentPlace.isActive ? 0 : 2) 
+    }, [currentPlace])
+
     
-    const [value, setValue] = useState(currentPlace.isActive ? 0 : 2)
+    const [value, setValue] = useState(0)
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);

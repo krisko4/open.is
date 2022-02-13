@@ -43,8 +43,12 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
     }
 
     useEffect(() => {
+        console.log(startHour)
+        console.log(endHour)
         if (openingHours[day].start !== startHour || openingHours[day].end !== endHour) {
+            console.log('hej')
             const valid = isAfter(new Date(endHour), new Date(startHour)) || getHours(new Date(endHour)) < 6
+            console.log(valid)
             setHoursValid(valid)
             const newOpeningHours = { ...openingHours }
             newOpeningHours[day].start = startHour
@@ -61,63 +65,75 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
 
 
     return (
-        <Grid container direction="column">
+        <Grid container item sx={{ flexGrow: 1 }} direction="column">
             {openingHours[day].open &&
-                <Grid container justifyContent="center" sx={{ mt: 1 }}>
+                <Grid container justifyContent="center" sx={{ mt: 2 }}>
                     <Grid item container justifyContent="flex-end" lg={10}>
                         <Button onClick={closePlace} variant="outlined" color="error">Close</Button>
                     </Grid>
+
+                    {
+                        areHoursValid ||
+                        <Grid item lg={10} sx={{ mb: 1 , mt: 1}}>
+                            <Alert severity="error" variant="outlined" sx={{ flexGrow: 1 }}>
+                                The difference between opening and closing hour is invalid
+                            </Alert>
+                        </Grid>
+                    }
                 </Grid>
             }
-            <Grid container sx={{ flexGrow: 1, mt: 3, mb: '10px' }} alignItems="center" justifyContent="space-evenly">
-                {
-                    openingHours[day].open ? <>
-                        {
-                            areHoursValid ||
-                            <Grid container lg={10} sx={{ mb: 1 }}>
-                                <Alert severity="error" variant="outlined" sx={{ flexGrow: 1 }}>
-                                    The difference between opening and closing hour is invalid
-                                </Alert>
-                            </Grid>
-                        }
-                        <LocalizationProvider locale={frLocale} dateAdapter={AdapterDateFns}>
-                            <StaticTimePicker
-                                toolbarTitle="Opening hour"
-                                displayStaticWrapperAs="mobile"
-                                value={startHour}
-                                onChange={(newValue) => {
-                                    setStartHour(newValue)
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                            <StaticTimePicker
-                                toolbarTitle="Closing hour"
-                                displayStaticWrapperAs="mobile"
-                                value={endHour}
-                                onChange={(newValue) => {
-                                    setEndHour(newValue)
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </LocalizationProvider>
-                    </>
-                        :
-                        <Grid container alignItems="center" direction="column">
-                            <Tooltip title="Open" arrow placement="top" >
-                                <IconButton onClick={() => openPlace()} onMouseEnter={() => setDoorColor('success')} onMouseLeave={() => setDoorColor('error')}>
-                                    {doorColor === 'error' ?
-                                        <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
-                                        :
-                                        <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
+            <Grid container sx={{ flexGrow: 1, mt: 1, mb: 2 }} justifyContent="space-evenly" direction="column">
+                <Grid container justifyContent="space-evenly" item >
 
-                                    }
-                                </IconButton>
-                            </Tooltip>
-                            <Typography variant="h1">
-                                CLOSED
-                            </Typography>
-                        </Grid>
-                }
+                    {
+                        openingHours[day].open ? <>
+                            {/* {
+                                areHoursValid ||
+                                <Grid item lg={10} sx={{ mb: 1 }}>
+                                    <Alert severity="error" variant="outlined" sx={{ flexGrow: 1 }}>
+                                        The difference between opening and closing hour is invalid
+                                    </Alert>
+                                </Grid>
+                            } */}
+                            <LocalizationProvider locale={frLocale} dateAdapter={AdapterDateFns}>
+                                <StaticTimePicker
+                                    toolbarTitle="Opening hour"
+                                    displayStaticWrapperAs="mobile"
+                                    value={startHour}
+                                    onChange={(newValue) => {
+                                        setStartHour(newValue)
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                                <StaticTimePicker
+                                    toolbarTitle="Closing hour"
+                                    displayStaticWrapperAs="mobile"
+                                    value={endHour}
+                                    onChange={(newValue) => {
+                                        setEndHour(newValue)
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                        </>
+                            :
+                            <Grid container alignItems="center" direction="column">
+                                <Tooltip title="Open" arrow placement="top" >
+                                    <IconButton onClick={() => openPlace()} onMouseEnter={() => setDoorColor('success')} onMouseLeave={() => setDoorColor('error')}>
+                                        {doorColor === 'error' ?
+                                            <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
+                                            :
+                                            <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
+
+                                        }
+                                    </IconButton>
+                                </Tooltip>
+                                <Typography variant="h1">
+                                    CLOSED
+                                </Typography>
+                            </Grid>
+                    }
+                </Grid>
 
             </Grid>
 
