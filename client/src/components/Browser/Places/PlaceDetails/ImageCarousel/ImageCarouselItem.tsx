@@ -86,7 +86,9 @@ export const ImageCarouselItem: FC<Props> = ({ item, currentPlace, setCurrentPla
                     transition: '.3s',
                     '&&:hover': {
                         opacity: '0.8'
-                    }
+                    },
+                    pl: 1,
+                    pr: 1
                 }}
             >
                 <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{currentPlace.address || 'This is an address of your place'}</Typography>

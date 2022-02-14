@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import { FC } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
+import { useColorMode } from '../../../../contexts/ColorModeContext';
 import { useMapContext } from '../../../../contexts/MapContext/MapContext';
 import { PlaceMarker } from "./PlaceMarker";
 import { SetViewOnClick } from "./SetViewOnClick";
@@ -44,12 +45,16 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
     const { chosenCriterias } = useAddressDetailsContext()
     const classes = useStyles()
 
+
+    console.log(tileLayer)
+
     return (
         <MapContainer
             style={{ height: '100%', flexGrow: 1 }}
             center={{ lat: placeCoords.lat, lng: placeCoords.lng }}
             zoom={placeCoords.mapZoom}
-            scrollWheelZoom={true}>
+            scrollWheelZoom={true}
+        >
             <TileLayer
                 attribution={tileLayer.attribution}
                 url={tileLayer.url}

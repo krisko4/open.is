@@ -29,120 +29,6 @@ import { Opinions } from "../../../reusable/Opinions/Opinions";
 
 
 
-const useNewsStyles = makeStyles({
-    date: {},
-    paper: {
-        padding: '6px 16px',
-        borderRadius: 15,
-        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-
-    },
-    title: {
-        color: 'black'
-    },
-    content: {
-        color: 'grey'
-    },
-    dialog: {
-        background: 'white',
-        '& .dialogTitle': {
-            color: '#2196f3'
-        },
-        '& .dialogContentText': {
-            color: 'black'
-        },
-        '& .opinionArea': {
-            background: 'white',
-            borderRadius: 5
-        },
-        '& .input': {
-            color: 'black'
-        }
-    }
-});
-
-
-
-const useOpeningHoursStyles = makeStyles({
-    container: {
-        background: 'inherit',
-        borderRadius: 10,
-        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-
-    },
-    // hourPicker: {
-    //     color: 'green'
-    // },
-    calendarIcon: {
-        // '& .MuiIconButton-root' : {
-        //     color: 'red'
-        // }
-    },
-    title: {
-        textAlign: 'center',
-    },
-    content: {
-        color: 'grey'
-    },
-    divider: {
-        marginTop: 10,
-        background: '#2196f3',
-        marginBottom: 10
-    },
-    dialog: {
-        background: 'white',
-        '& .dialogTitle': {
-            color: '#2196f3'
-        },
-        '& .dialogContentText': {
-            color: 'black'
-        },
-        '& .opinionArea': {
-            background: 'white',
-            borderRadius: 5
-        },
-        '& .input': {
-            color: 'black'
-        }
-    },
-    days: {},
-    hours: {}
-})
-
-
-const useOpinionsStyles = makeStyles({
-    opinionCard: {
-        background: 'inherit',
-        boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-
-    },
-    author: {
-        color: '#2196f3'
-    },
-    date: {
-        color: 'grey'
-    },
-    content: {
-        color: 'black'
-    },
-    dialog: {
-        background: 'white',
-        '& .dialogTitle': {
-            color: '#2196f3'
-        },
-        '& .dialogContentText': {
-            color: 'black'
-        },
-        '& .opinionArea': {
-            background: 'white',
-            borderRadius: 5
-        },
-        '& .input': {
-            color: 'black'
-        }
-    }
-})
-
 const MyTab = (props: any) => {
     const { label, ...rest } = props
     return <Tab {...rest} label={label} disableRipple />
@@ -159,10 +45,6 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
     const [logo, setLogo] = useState(currentPlace.logo)
     const isFirstRender = useRef(true)
 
-
-    const newsClasses = useNewsStyles()
-    const openingHoursClasses = useOpeningHoursStyles()
-    const opinionClasses = useOpinionsStyles()
     const [value, setValue] = useState(0)
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -270,7 +152,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             <Typography variant="h2" sx={{fontWeight: 'bold' }}>
                                 {currentPlace.name || 'This is the name of your business'}
                             </Typography>
-                            <Typography variant="h6" style={{ color: 'lightgrey' }}>
+                            <Typography variant="h6">
                                 {currentPlace.subtitle || 'This is a subtitle of your business'}
                             </Typography>
                             <Typography variant="body1">{currentPlace.type || 'Business type'}</Typography>
@@ -307,7 +189,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                                                 <Grid item lg={12} style={{ textAlign: 'center' }}>
                                                     {item.icon}
                                                 </Grid>
-                                                <Grid item style={{ color: 'white' }}>
+                                                <Grid item>
                                                     {item.text}
                                                 </Grid>
                                             </Grid>

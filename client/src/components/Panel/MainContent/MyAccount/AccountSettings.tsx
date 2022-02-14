@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Fade, Slide, Button, Card, CardActions, CardContent, CardMedia, Grid, TextField, Typography, Avatar, List, ListItem, ListItemIcon, ListItemText, IconButton, Backdrop } from "@mui/material"
+import { Paper, Fade, Slide, Button, Card, CardActions, CardContent, CardMedia, Grid, TextField, Typography, Avatar, List, ListItem, ListItemIcon, ListItemText, IconButton, Backdrop } from "@mui/material"
 import { Formik, Form, FastField } from "formik"
 import { FC, useEffect, useRef, useState } from "react"
 import { useLoginContext } from "../../../../contexts/LoginContext"
@@ -111,11 +111,11 @@ export const AccountSettings: FC = () => {
     }
 
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false
+            return
+        }
         (async () => {
-            if (isFirstRender.current) {
-                isFirstRender.current = false
-                return
-            }
             setBackdropOpen(true)
             if (img) {
                 await uploadImage()
@@ -165,7 +165,7 @@ export const AccountSettings: FC = () => {
     }
 
     return (
-        <Grid container sx={{ overflow: 'hidden', flexGrow: 1}}>
+        <Grid container sx={{ overflow: 'hidden', flexGrow: 1 }}>
             <Backdrop
                 open={backdropOpen}
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -210,81 +210,80 @@ export const AccountSettings: FC = () => {
 
             <Slide direction="left" timeout={1500} in={true}>
                 <Grid container
+                    item
                     lg={5}
-                    direction="column"
-                    justifyContent="space-evenly"
-                    alignItems="center"
-                    sx={
-                        {
-                            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
+                >
+                    <Paper sx={{ flexGrow: 1 }}>
+                        <Grid container sx={{height: '100%'}} alignItems="center">
+                            <Grid container direction="column" alignItems="center">
+                                <Avatar
+                                    onMouseEnter={() => setHover(true)}
+                                    onMouseLeave={() => setHover(false)}
+                                    alt={userData.fullName}
+                                    sx={{ width: 200, height: 200 }}
+                                >
+                                    <Grid justifyContent="center" alignItems="center" container style={{ width: 200, height: 200, position: "absolute" }}>
+                                        {img ? <img src={img as string} style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
 
-                        }
-                    }>
-                    <Grid item container direction="column" alignItems="center">
-                        <Avatar
-                            onMouseEnter={() => setHover(true)}
-                            onMouseLeave={() => setHover(false)}
-                            alt={userData.fullName}
-                            sx={{ width: 200, height: 200 }}
-                        >
-                            <Grid justifyContent="center" alignItems="center" container style={{ width: 200, height: 200, position: "absolute" }}>
-                                {img ? <img src={img as string} style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-
-                                }}
-                                /> : <PersonIcon style={{ width: '75%', height: '75%' }} />
-                                }
+                                        }}
+                                        /> : <PersonIcon style={{ width: '75%', height: '75%' }} />
+                                        }
+                                    </Grid>
+                                    <Slide direction="up" in={isHover} appear>
+                                        <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
+                                            <ImageUpload name="logo-upload" img={img} setImg={setImg} setImageFile={setImageFile}>
+                                                <IconButton color="primary" size="large" component="span">
+                                                    <PhotoCamera />
+                                                </IconButton>
+                                            </ImageUpload>
+                                            {img &&
+                                                <IconButton color="error" size="large" onClick={() => clearImage()} component="span">
+                                                    <DeleteForeverIcon />
+                                                </IconButton>
+                                            }
+                                        </Grid>
+                                    </Slide>
+                                </Avatar>
+                                <Typography variant="h2" sx={{ textAlign: 'center', mt: 3 }}>
+                                    {userData.fullName}
+                                </Typography>
+                                <Typography variant="h6">
+                                    {userData.email}
+                                </Typography>
                             </Grid>
-                            <Slide direction="up" in={isHover} appear>
-                                <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                                    <ImageUpload name="logo-upload" img={img} setImg={setImg} setImageFile={setImageFile}>
-                                        <IconButton color="primary" size="large" component="span">
-                                            <PhotoCamera />
-                                        </IconButton>
-                                    </ImageUpload>
-                                    {img &&
-                                        <IconButton color="error" size="large" onClick={() => clearImage()} component="span">
-                                            <DeleteForeverIcon />
-                                        </IconButton>
-                                    }
+                            <Grid container justifyContent="center">
+                                <Grid item lg={8}>
+                                    <List style={{ flexGrow: 1 }}>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <SettingsIcon color="primary" />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Account credentials" />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <SettingsIcon color="primary" />
+                                            </ListItemIcon>
+                                            <ListItemText primary="My subscriptions" />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <SettingsIcon color="primary" />
+                                            </ListItemIcon>
+                                            <ListItemText primary="My places" />
+                                        </ListItem>
+                                    </List>
+
+
                                 </Grid>
-                            </Slide>
-                        </Avatar>
-                        <Typography variant="h2" sx={{ textAlign: 'center', mt: 3 }}>
-                            {userData.fullName}
-                        </Typography>
-                        <Typography variant="h6">
-                            {userData.email}
-                        </Typography>
-                    </Grid>
-                    <Grid container justifyContent="center">
-                        <Grid item lg={8}>
-                            <List style={{ flexGrow: 1 }}>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <SettingsIcon color="primary" />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Account credentials" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <SettingsIcon color="primary" />
-                                    </ListItemIcon>
-                                    <ListItemText primary="My subscriptions" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <SettingsIcon color="primary" />
-                                    </ListItemIcon>
-                                    <ListItemText primary="My places" />
-                                </ListItem>
-                            </List>
 
-
+                            </Grid>
                         </Grid>
-                    </Grid>
+
+                    </Paper>
                 </Grid>
 
             </Slide >

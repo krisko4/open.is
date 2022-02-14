@@ -15,7 +15,7 @@ export const ColorModeContext = createContext<ColorMode>({
 export const ColorModeContextProvider: FC = ({ children }) => {
     // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-    const [mode, setMode] = useState<"light" | "dark">('dark')
+    const [mode, setMode] = useState<"light" | "dark">('light')
 
     const colorMode = useMemo(
         () => ({

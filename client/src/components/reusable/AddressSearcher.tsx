@@ -14,23 +14,23 @@ interface Props {
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
-const useStyles = makeStyles({
-    input: {
-        '& .MuiInputBase-root, .MuiFormHelperText-root': {
-            color: 'white'
-        },
-    },
-    paper: {
-        color: 'white',
-        background: '#18202b'
-    },
-    clearIndicator: {
-        color: 'red'
-    },
-    loading: {
-        color: 'white'
-    }
-})
+// const useStyles = makeStyles({
+//     input: {
+//         '& .MuiInputBase-root, .MuiFormHelperText-root': {
+//             color: 'white'
+//         },
+//     },
+//     paper: {
+//         color: 'white',
+//         background: '#18202b'
+//     },
+//     clearIndicator: {
+//         color: 'red'
+//     },
+//     loading: {
+//         color: 'white'
+//     }
+// })
 
 
 
@@ -39,7 +39,7 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
 
     const [open, setOpen] = useState(false)
     const { setPlaceCoords } = useMapContext()
-    const classes = useStyles()
+    // const classes = useStyles()
 
     const { availableAddresses, setAvailableAddresses, setChosenCriterias, setSelectedAddress } = useAddressDetailsContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
@@ -106,7 +106,7 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
 
     return (
         <Autocomplete
-            classes={classes}
+            // classes={classes}
             freeSolo
             loading={loading}
             inputValue={inputValue}

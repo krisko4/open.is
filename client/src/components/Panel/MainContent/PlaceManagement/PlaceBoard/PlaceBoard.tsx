@@ -1,4 +1,4 @@
-import { Card, Grid, Tab, Tabs, Toolbar } from "@mui/material";
+import { Card, Grid, Paper, Tab, Tabs, Toolbar } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -16,7 +16,7 @@ const tabs = [
     },
     {
         name: 'Opening hours',
-        content: <OpeningHours/>
+        content: <OpeningHours />
     },
     {
         name: 'Events',
@@ -57,10 +57,10 @@ export const PlaceBoard: FC = () => {
     }, [])
 
     useEffect(() => {
-       setValue(currentPlace.isActive ? 0 : 2) 
+        setValue(currentPlace.isActive ? 0 : 2)
     }, [currentPlace])
 
-    
+
     const [value, setValue] = useState(0)
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -69,18 +69,24 @@ export const PlaceBoard: FC = () => {
 
     return (
         <Grid container direction="column" style={{ flexGrow: 1 }}>
-            <Card >
-                <Toolbar sx={{ width: '100%' }}>
-                    <Tabs value={value} onChange={handleChange} variant="fullWidth" sx={{ width: '100%' }}>
+            <Grid item>
+                <Paper square>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="fullWidth"
+                        sx={{ width: '100%' }}
+                    >
                         {tabs.map((tab) =>
-                            <Tab label={tab.name} key={tab.name} />
+                            <Tab key={tab.name} disableRipple label={tab.name} />
                         )}
                     </Tabs>
-                </Toolbar>
-            </Card>
+                </Paper>
+            </Grid>
             <Grid container sx={{ flexGrow: 1 }}>
                 {tabs[value].content}
             </Grid>
+
         </Grid>
     )
 }

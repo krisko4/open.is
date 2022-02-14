@@ -1,4 +1,4 @@
-import { AppBar, Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
+import { Paper, Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloudCircle from '@mui/icons-material/CloudCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -50,10 +50,11 @@ export const LeftNavigation: FC = () => {
         <Grid
             item
             lg={2}
-            sx={{
-                backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
-            }}
+        // sx={{
+        //     backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
+        // }}
         >
+            <Paper sx={{height: '100%'}}>
                 <Scrollbars autoHide>
                     <Grid container justifyContent="center">
                         <CardMedia
@@ -89,8 +90,11 @@ export const LeftNavigation: FC = () => {
                                 </ListItem>
                             )
                         }
+                        <MyPlaces />
+                        <MyBusinessChains />
+                    </List>
 
-                        {/* <ListItem
+                    {/* <ListItem
                         button
                         onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
                     >
@@ -117,10 +121,8 @@ export const LeftNavigation: FC = () => {
                         </ListItemIcon>
                         <ListItemText error="New business chain" />
                     </ListItem> */}
-                        <MyPlaces />
-                        <MyBusinessChains />
-                    </List>
                 </Scrollbars>
+            </Paper>
         </Grid >
     )
 }

@@ -1,4 +1,4 @@
-import { Chip, Theme } from "@mui/material";
+import { Chip, Paper, Theme } from "@mui/material";
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 import AppBar from "@mui/material/AppBar";
@@ -113,23 +113,25 @@ export const SecondHeader: FC = () => {
     }, [selectedTypes])
 
     return (
-        <AppBar
-            style={{
-                // background: '#2C2C2C',
-                position: 'static'
-            }}>
+        // <AppBar
+        //     style={{
+        //         // background: '#2C2C2C',
+        //         position: 'static'
+        //     }}>
+        <Paper>
             <Toolbar disableGutters>
                 <Grid container >
-                    <Grid item xs={10} sm={9} md={8} lg={5} style={{paddingLeft: 5, paddingRight: 5}}>
+                    <Grid item xs={10} sm={9} md={8} lg={5} style={{ paddingLeft: 5, paddingRight: 5 }}>
                         <Searcher />
                     </Grid>
                     <Grid justifyContent="center" container lg={7} item alignItems="center">
                         {businessTypes.map((type, index) =>
-                            <CustomChip setSelectedTypes={setSelectedTypes}  type={type} key={index} />
+                            <CustomChip setSelectedTypes={setSelectedTypes} type={type} key={index} />
                         )}
                     </Grid>
                 </Grid>
             </Toolbar>
-        </AppBar>
+        </Paper>
+        // </AppBar>
     );
 }

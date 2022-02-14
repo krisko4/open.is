@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, AppBar, Button, Card, CardActions, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, Divider, Fade, FormControlLabel, FormGroup, Grid, IconButton, Slide, SlideProps, Switch, Tab, Tabs, Toolbar, Tooltip, Typography } from "@mui/material"
+import {Paper, Alert, AlertTitle, AppBar, Button, Card, CardActions, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, Divider, Fade, FormControlLabel, FormGroup, Grid, IconButton, Slide, SlideProps, Switch, Tab, Tabs, Toolbar, Tooltip, Typography } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close'
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -165,7 +165,7 @@ export const OpeningHours: FC = () => {
                         <Slide in={true} timeout={1000} direction="left">
                             <Card sx={{ height: '100%' }}>
                                 <CardContent>
-                                    <Typography variant="h2" style={{ color: 'white' }}>Opening hours management</Typography>
+                                    <Typography variant="h2">Opening hours management</Typography>
                                     <Grid style={{ marginTop: 10 }} item lg={11}>
                                         <Typography variant="body1">
                                             This is a crucial section of your business.
@@ -194,22 +194,22 @@ export const OpeningHours: FC = () => {
             </Grid>
             <Grid
                 container
-                sx={{
-                    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
-                }}
             >
-                <Toolbar sx={{ flexGrow: 1 }}>
-                    <Grid container justifyContent="space-between">
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Checkbox onChange={(e) => setChecked(e.target.checked)} checked={checked} />}
-                                label="My place is always open"
-                                labelPlacement="end"
-                            />
-                        </FormGroup>
-                        <LoadingButton loading={loading} variant="contained" onClick={saveChanges} disabled={(!areHoursValid && !checked) || (checked && currentPlace.alwaysOpen) || openingHours === currentPlace.openingHours} size="large" color="primary">Save changes</LoadingButton>
-                    </Grid>
-                </Toolbar>
+                <Paper square sx={{flexGrow: 1}}>
+                    <Toolbar sx={{ flexGrow: 1 }}>
+                        <Grid container justifyContent="space-between">
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={<Checkbox onChange={(e) => setChecked(e.target.checked)} checked={checked} />}
+                                    label="My place is always open"
+                                    labelPlacement="end"
+                                />
+                            </FormGroup>
+                            <LoadingButton loading={loading} variant="contained" onClick={saveChanges} disabled={(!areHoursValid && !checked) || (checked && currentPlace.alwaysOpen) || (openingHours === currentPlace.openingHours && !checked)} size="large" color="primary">Save changes</LoadingButton>
+                        </Grid>
+                    </Toolbar>
+
+                </Paper>
             </Grid>
             <OpeningHoursDialog
                 openingHours={openingHours}

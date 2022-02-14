@@ -4,8 +4,8 @@ import { ClassNameMap } from '@mui/styles';
 import React, { FC, useState } from 'react';
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
-import { OpeningHoursCard } from './OpeningHoursCard';
 import { OpeningHoursForm } from './OpeningHoursForm';
+import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
@@ -18,60 +18,46 @@ interface Props {
 
 export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
 
-    const { userData} = useLoginContext()
+    const { userData } = useLoginContext()
     const openingHours = currentPlace && currentPlace.openingHours
     const [dialogOpen, setDialogOpen] = useState(false)
 
 
     return (
         <Grid container direction="column" style={{ height: '100%' }} alignItems="center">
-            {currentPlace?.isUserOwner && userData.isLoggedIn && openingHours &&
+            {/* {currentPlace?.isUserOwner && userData.isLoggedIn && openingHours &&
                 <Grid container justifyContent="flex-end" >
                     <Grid item style={{ paddingRight: 30, paddingTop: 30 }}>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                     </Grid>
                 </Grid>
-            }
+            } */}
             {
-                openingHours ?
-                    <Grid item container style={{ flexGrow: 1 }} alignItems="center" lg={5} md={8} >
-                        <OpeningHoursCard  openingHours={openingHours} />
+                openingHours ? <>
+
+
+                    <Grid container style={{ flexGrow: 1 }} justifyContent="center" alignItems="center" >
+                        {currentPlace.alwaysOpen ? <>
+                            <img style={{width: '100%'}} src="https://cdn.dribbble.com/users/1354693/screenshots/10231698/open_247.gif" />
+                        </> :
+                            <Grid item lg={10}>
+                                <OpeningHoursCard openingHours={openingHours} />
+                            </Grid>
+                        }
                     </Grid>
+
+
+                </>
 
                     : <>
                         {currentPlace?.isUserOwner ?
                             <Grid justifyContent="center" style={{ height: '100%' }} direction="column" alignItems="center" container>
                                 <Typography variant="h6">This place has not set opening hours yet.</Typography>
-                                <Typography  variant="subtitle1">Press the button below to set opening hours.</Typography>
+                                <Typography variant="subtitle1">Press the button below to set opening hours.</Typography>
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                             </Grid>
-
                             :
                             <Grid style={{ height: '100%' }} container justifyContent="center" alignItems="center">
-                                {/* <Grid item lg={5}>
-                                    <Card className={classes.container} style={{ flexGrow: 1 }} elevation={10}>
-                                        <CardContent>
-                                            <Typography variant="h5" className={classes.title}>Opening hours</Typography>
-                                            <Divider className={classes.divider} />
-                                            <Grid container justify="center">
-                                                <Grid item className={classes.days} lg={6}>
-                                                    {days.map((day, index) => <Typography key={index} variant="h6">{day}</Typography>)}
-                                                </Grid>
-                                                <Grid item lg={5} style={{ textAlign: 'center' }} container direction="column" className={classes.hours}>
-                                                    {hours.map((hour, index) => <div key={index}>
-                                                        {hour === 'closed' ?
-                                                            <Typography variant="h6" style={{ color: 'red' }}>CLOSED</Typography>
-                                                            :
-                                                            <Typography variant="h6">{hour}</Typography>
-                                                        }
-                                                    </div>
-                                                    )}
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
-                                    <Typography variant="caption"><span style={{ color: 'red' }}>*</span>You will be able to specify the opening state of your place once it is registered. This is just an example.</Typography>
-                                </Grid> */}
                             </Grid>
                         }
                     </>
@@ -83,7 +69,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                     maxWidth="sm"
                     TransitionComponent={Transition}
                     onClose={() => setDialogOpen(false)}
-                   
+
 
                 >
                     <DialogTitle className="dialogTitle">Opening hours management</DialogTitle>
@@ -92,7 +78,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                         openingHours={openingHours}
                         setCurrentPlace={setCurrentPlace}
                         setDialogOpen={setDialogOpen}
-                       
+
                     />
 
                 </Dialog>

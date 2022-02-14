@@ -1,5 +1,5 @@
 import { FiberNew, Timelapse, Star, Favorite, Subscriptions } from "@mui/icons-material";
-import { Tab, Grid, Tabs, Fade, ListItem } from "@mui/material";
+import { Paper, Tab, Grid, Tabs, Fade, ListItem } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -114,28 +114,32 @@ const PlacesBox: FC = () => {
     return (
         <Grid container direction="column" style={{ height: '100%' }} >
             {isPlaceCardClicked ||
-                <Grid container style={{ background: '#2C2C2C' }} justifyContent="flex-end" alignItems="center">
-                    <Tabs
-                        variant="scrollable"
-                        selectionFollowsFocus
-                        scrollButtons
-                        TabScrollButtonProps={
-                            {
-                                style: {
-                                    color: 'white'
-                                }
-                            }
-                        }
-                        value={tabIndex}
-                        style={{ marginTop: 10 }}
-                        onChange={(e, newIndex) => setTabIndex(newIndex)}
-                    >
-                        <MyTab icon={<FiberNew />} label="Popular" />
-                        <MyTab icon={<Timelapse />} label="Recently added" />
-                        <MyTab icon={<Star />} label="Top rated" />
-                        <MyTab icon={<Favorite />} label="Favorite" />
-                        <MyTab icon={<Subscriptions />} label="Subscriptions" />
-                    </Tabs>
+                <Grid container justifyContent="flex-end" alignItems="center">
+                    <Paper sx={{flexGrow: 1}}>
+                        <Tabs
+                            variant="fullWidth"
+                            selectionFollowsFocus
+                            scrollButtons
+                            
+                            // TabScrollButtonProps={
+                            //     {
+                            //         style: {
+                            //             color: 'white'
+                            //         }
+                            //     }
+                            // }
+                            value={tabIndex}
+                            style={{ marginTop: 10 }}
+                            onChange={(e, newIndex) => setTabIndex(newIndex)}
+                        >
+                            <MyTab icon={<FiberNew />} label="Popular" />
+                            <MyTab icon={<Timelapse />} label="Recently added" />
+                            <MyTab icon={<Star />} label="Top rated" />
+                            <MyTab icon={<Favorite />} label="Favorite" />
+                            <MyTab icon={<Subscriptions />} label="Subscriptions" />
+                        </Tabs>
+
+                    </Paper>
                 </Grid>
             }
             <Grid container style={{ flexGrow: 1 }} >
@@ -156,18 +160,18 @@ const PlacesBox: FC = () => {
                             {isPlaceCardClicked ||
                                 <Fade in={true} timeout={1000}>
                                     <ListItem
-                                     disableGutters
-                                     disablePadding
-                                     sx={{mt: 1, mb: 1, ml:1, mr: 1, width: 'inherit'}}
-                                     onClick={() => openPlaceDetails(place)}
+                                        disableGutters
+                                        disablePadding
+                                        sx={{ mt: 1, mb: 1, ml: 1, mr: 1, width: 'inherit' }}
+                                        onClick={() => openPlaceDetails(place)}
                                         // sx={{ mt: '8px', mr: '8px', padding: 0, mb: '8px', width: 'none' }}
                                         key={place._id}
                                         button
                                     >
-                                    <PlaceCard
-                                        currentPlace={place}
-                                        tabIndex={tabIndex}
-                                    />
+                                        <PlaceCard
+                                            currentPlace={place}
+                                            tabIndex={tabIndex}
+                                        />
                                     </ListItem>
                                 </Fade>
 

@@ -25,7 +25,7 @@ export const MainContent: FC = () => {
       <Grid container>
         <Header />
       </Grid>
-      <Grid container style={{ flexGrow : 1}}>
+      <Grid container style={{ flexGrow: 1 }}>
         {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
         <Route
           path={`${match.url}/new-place`}
@@ -55,8 +55,11 @@ export const MainContent: FC = () => {
         />
         <Route
           path={`${match.url}/new-business-chain`}
-          component={NewBusinessChain}
-        />
+        >
+          <StepContextProvider>
+            <NewBusinessChain />
+          </StepContextProvider>
+        </Route>
 
       </Grid>
 

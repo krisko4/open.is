@@ -39,7 +39,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
         <Fade timeout={1000} in={true}>
             <Grid container >
                 <Grid container item>
-                    <Card elevation={10} style={{ flexGrow: 1, paddingBottom: 12, paddingTop: 12, paddingRight: 20, background: '#202020' }}>
+                    <Card style={{ flexGrow: 1, paddingBottom: 12, paddingTop: 12, paddingRight: 20 }}>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
                                     {place.status === 'open' ? <Alert severity="success" variant="filled" >
@@ -68,7 +68,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                         <Typography variant="h2" sx={{fontWeight: 'bold' }}>
                             {place.name}
                         </Typography>
-                        <Typography variant="h6" style={{ color: 'lightgrey'}}>
+                        <Typography variant="h6">
                             {place.subtitle}
                         </Typography>
                         <Typography variant="body1" color="primary">{place.type}</Typography>
@@ -82,7 +82,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                     <Grid item lg={10}>
                         <Card elevation={10} style={{ flexGrow: 1 }}>
                             <CardContent>
-                                <Typography variant="body1" style={{ color: 'white' }}>{place.description}</Typography>
+                                <Typography variant="body1">{place.description}</Typography>
                             </CardContent>
                         </Card>
 
@@ -95,13 +95,13 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                     {icons.map((item, index) => {
                         return (
                             <Grid item lg={3} key={index}>
-                                <Card elevation={10} style={{ background: '#2C2C2C', borderRadius: 10 }}>
+                                <Card elevation={10} style={{  borderRadius: 10 }}>
                                     <CardContent>
                                         <Grid container justifyContent="center">
                                             <Grid item lg={12} style={{ textAlign: 'center' }}>
                                                 {item.icon}
                                             </Grid>
-                                            <Grid item style={{ color: 'white' }}>
+                                            <Grid item>
                                                 {item.text}
                                             </Grid>
                                         </Grid>

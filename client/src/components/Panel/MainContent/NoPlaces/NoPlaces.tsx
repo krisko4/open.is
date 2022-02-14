@@ -28,7 +28,7 @@ export const NoPlaces: FC = () => {
                             <Typography variant="h2">Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
                             <img src={`https://c.tenor.com/jCmPqgkv0vQAAAAC/hello.gif`} />
                             <Grid item lg={8}>
-                                <Typography variant="subtitle1" sx={{ color: 'white', textAlign: 'center' }}>
+                                <Typography variant="subtitle1" sx={{textAlign: 'center' }}>
                                     It seems you have not registered any places yet.
                                     Please press the button below to add your business
                                     and take advantage of functionality provided by our panel.
@@ -42,7 +42,7 @@ export const NoPlaces: FC = () => {
                     <Slide in={true} timeout={1000} direction="left">
                         <Card>
                             <CardContent>
-                                <Typography variant="h2" style={{ color: 'white' }}>How does it work?</Typography>
+                                <Typography variant="h2">How does it work?</Typography>
                                 <Grid style={{ marginTop: 10 }} container lg={10}>
                                     <Typography variant="body1">
                                         In order to register your business, you will have to complete some simple steps:

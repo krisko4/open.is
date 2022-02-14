@@ -6,15 +6,15 @@ import { useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { getBusinessTypes } from "../../../../../../../requests/BusinessTypeRequests"
 
-const useStyles = makeStyles({
-    clearIndicator: {
-        color: 'red'
-    },
-    paper: {
-        color: 'white',
-        background: '#18202b'
-    }
-})
+// const useStyles = makeStyles({
+//     clearIndicator: {
+//         color: 'red'
+//     },
+//     paper: {
+//         color: 'white',
+//         background: '#18202b'
+//     }
+// })
 
 export const BusinessType = () => {
 
@@ -23,7 +23,7 @@ export const BusinessType = () => {
     const [type, setType] = useState<string | null>(currentPlace.type)
     const { setFieldValue } = useFormikContext()
     const [firstAttempt, setFirstAttempt] = useState(true)
-    const classes = useStyles()
+    // const classes = useStyles()
 
     useEffect(() => {
         getBusinessTypes().then(res => setBusinessTypes(res.data))
@@ -45,7 +45,7 @@ export const BusinessType = () => {
             freeSolo
             options={businessTypes}
             fullWidth={true}
-            classes={classes}
+            // classes={classes}
             value={type}
             onChange={(e, value) => submitAutocomplete(value)}
             renderInput={(params) => <TextField

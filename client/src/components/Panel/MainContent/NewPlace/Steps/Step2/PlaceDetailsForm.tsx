@@ -9,20 +9,9 @@ import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/Busi
 import { Description } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Description";
 import { Subtitle } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/Subtitle";
 
-const useStyles = makeStyles({
-    form: {
-        '& .MuiTypography-root': {
-            color: 'white'
-        },
-        '& .MuiInputBase-root': {
-            color: 'white'
-        }
-    }
-})
 
 export const PlaceDetailsForm: FC = () => {
 
-    const classes = useStyles()
     const { values, isValid } = useFormikContext<any>()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [loading, setLoading] = useState(false)

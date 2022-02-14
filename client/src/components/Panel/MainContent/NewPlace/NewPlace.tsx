@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, SlideProps, Tooltip, Typography } from "@mui/material";
+import { Paper, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, SlideProps, Tooltip, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from "react-redux";
@@ -119,10 +119,12 @@ export const NewPlace: FC = () => {
             <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
                 <Grid container lg={11} style={{ paddingTop: 30, paddingBottom: 30 }} justifyContent="space-evenly">
                     {activeStep > 0 && activeStep !== 3 &&
-                        <Grid container sx={{ height: 120, backgroundColor: 'background.paper' }} alignItems="center">
-                            <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
-                            <NewPlaceStepper />
-                        </Grid>
+                        <Paper sx={{width: '100%'}}>
+                            <Grid container sx={{ height: '120px' }} alignItems="center">
+                                <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
+                                <NewPlaceStepper />
+                            </Grid>
+                        </Paper>
                     }
                     {activeStep !== 4 &&
                         <Grid container item lg={activeStep === 3 ? 6 : 5}>

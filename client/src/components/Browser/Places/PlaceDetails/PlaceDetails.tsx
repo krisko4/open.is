@@ -73,15 +73,15 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
 
     const MyTab = (props: any) => {
         const { label, ...rest } = props
-        return <Tab {...rest} label={label} disableRipple  />
+        return <Tab {...rest} label={label} disableRipple />
     }
     const tabContents = [
-        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace}  />,
+        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
         <OpeningHours setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
-       
+
         />
     ]
 
@@ -116,40 +116,43 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     return (
         <Grid container>
             <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
-            <Grid container item style={{ background: '#2C2C2C' }}>
-                <Toolbar style={{ flexGrow: 1 }} disableGutters>
-                    <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
-                        <KeyboardReturn />
-                    </IconButton>
-                    <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
-                        {currentPlace.isUserSubscriber ?
-                            <Tooltip title={'Unsubscribe'} arrow >
-                                <span>
-                                    <LoadingButton
-                                        loading={loading}
-                                        color="primary"
-                                        onClick={() => unsubscribe()}
-                                    >
-                                        Subscribed
-                                    </LoadingButton>
-                                </span>
-                            </Tooltip>
-                            :
-                            <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
-                                <span>
-                                    <Button
-                                        disabled={!userData.isLoggedIn || currentPlace.isUserOwner}
-                                        variant="contained"
-                                        color="error"
-                                        onClick={() => setDialogOpen(true)}
-                                    >
-                                        Subscribe
-                                    </Button>
-                                </span>
-                            </Tooltip>
-                        }
-                    </Grid>
-                </Toolbar>
+            <Grid container item>
+                <Paper sx={{flexGrow: 1}}>
+                    <Toolbar style={{ flexGrow: 1 }} disableGutters>
+                        <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
+                            <KeyboardReturn />
+                        </IconButton>
+                        <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
+                            {currentPlace.isUserSubscriber ?
+                                <Tooltip title={'Unsubscribe'} arrow >
+                                    <span>
+                                        <LoadingButton
+                                            loading={loading}
+                                            color="primary"
+                                            onClick={() => unsubscribe()}
+                                        >
+                                            Subscribed
+                                        </LoadingButton>
+                                    </span>
+                                </Tooltip>
+                                :
+                                <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
+                                    <span>
+                                        <Button
+                                            disabled={!userData.isLoggedIn || currentPlace.isUserOwner}
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => setDialogOpen(true)}
+                                        >
+                                            Subscribe
+                                        </Button>
+                                    </span>
+                                </Tooltip>
+                            }
+                        </Grid>
+                    </Toolbar>
+
+                </Paper>
             </Grid>
             <Grid container>
                 <ImagesCarousel currentPlace={currentPlace} />

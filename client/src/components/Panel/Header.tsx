@@ -27,7 +27,7 @@ const Header: FC = () => {
 
 
     return (
-        <AppBar position="static" sx={{ pt: '20px', pr: '40px' }}>
+        <AppBar position="static" sx={{pt: 1, pb: 1, pr: '40px' }}>
             <Toolbar>
                 <Grid item container justifyContent="flex-end" alignItems="center">
                     <ColorModeSwitch />
