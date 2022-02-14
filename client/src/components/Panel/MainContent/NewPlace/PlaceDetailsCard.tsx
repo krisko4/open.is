@@ -195,12 +195,12 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
     ]
 
     const tabContents = [
-        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
-        <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
+        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
+        <OpeningHours  setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
-            classes={opinionClasses}
+          
         />
 
     ]
@@ -225,7 +225,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Toolbar>
                     </Grid>
                     <Grid container>
-                        <ImagesCarousel isEditable={isEditable} address={currentPlace.address || 'This is an address of your business'} />
+                        <ImagesCarousel isEditable={isEditable} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />
                     </Grid>
                     <Grid container >
                         <Grid container item>
@@ -267,7 +267,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             />
                         </Grid>
                         <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                            <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
+                            <Typography variant="h2" sx={{fontWeight: 'bold' }}>
                                 {currentPlace.name || 'This is the name of your business'}
                             </Typography>
                             <Typography variant="h6" style={{ color: 'lightgrey' }}>

@@ -3,7 +3,7 @@ import { CardMedia, Grid, IconButton, Slide, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import { FC, useEffect, useRef, useState } from "react";
 import Carousel from "react-material-ui-carousel";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../contexts/StepContext";
 import { ImageUpload } from "../../../../reusable/ImageUpload";
 import { ImageCarouselItem } from "./ImageCarouselItem";
@@ -37,30 +37,15 @@ const useStyles = makeStyles({
     }
 })
 interface Props {
-    address: string,
-    isEditable?: boolean
+    isEditable?: boolean,
+    currentPlace : CurrentPlaceProps,
+    setCurrentPlace? : React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
 }
 
-interface Image {
-    img: string,
-    file: File | null
-}
 
-export const ImagesCarousel: FC<Props> = ({ address, isEditable }) => {
+export const ImagesCarousel: FC<Props> = ({currentPlace, setCurrentPlace, isEditable }) => {
     const classes = useStyles()
-    const {currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    // const [images, setImages] = useState<Image[]>(currentPlace.images)
-    const isFirstRender = useRef(true)
 
-    // useEffect(() => {
-    //     if(isFirstRender.current){
-    //         isFirstRender.current = false
-    //         return
-    //     }
-    //     const place = { ...currentPlace }
-    //     place.images = images
-    //     setCurrentPlace(place)
-    // }, [images])
 
     return (
         <Carousel
@@ -76,7 +61,7 @@ export const ImagesCarousel: FC<Props> = ({ address, isEditable }) => {
                 <div
                     key={index}
                 >
-                    <ImageCarouselItem isEditable={isEditable} index={index} item={item} address={address} />
+                    <ImageCarouselItem currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} isEditable={isEditable} index={index} item={item} />
                 </div>)
             }
         </Carousel >

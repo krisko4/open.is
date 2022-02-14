@@ -9,19 +9,19 @@ import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceC
 
 
 
-const useStyles = makeStyles({
-    card: {
-        backgroundColor: '#2C2C2C',
-        // borderRadius: 20,
-        width: '100%',
-        height: '100%'
-    },
-    image: {
-        height: 80,
-        width: 80
-    }
-}
-)
+// const useStyles = makeStyles({
+//     card: {
+//         backgroundColor: '#2C2C2C',
+//         // borderRadius: 20,
+//         width: '100%',
+//         height: '100%'
+//     },
+//     image: {
+//         height: 80,
+//         width: 80
+//     }
+// }
+// )
 
 
 enum tabType {
@@ -32,7 +32,7 @@ enum tabType {
 }
 interface PlaceProps {
     tabIndex: number,
-    currentPlace: CurrentPlaceProps
+    currentPlace: CurrentPlaceProps,
 }
 
 const StyledRating = styled(Rating)({
@@ -51,10 +51,10 @@ const StyledRating = styled(Rating)({
 
 
 export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
     const { setChosenCriterias } = useAddressDetailsContext()
-    const [elevation, setElevation] = useState(0)
+    const [elevation, setElevation] = useState(3)
 
 
     useEffect(() => {
@@ -96,10 +96,10 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
 
     return (
         <Card
-            className={classes.card}
+            // className={classes.card}
             elevation={elevation}
             onMouseEnter={() => setElevation(10)}
-            onMouseLeave={() => setElevation(0)}
+            onMouseLeave={() => setElevation(3)}
         >
             <CardContent>
                 <Grid container justifyContent="space-between">
@@ -108,14 +108,14 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                             <Avatar style={{ width: 80, height: 80 }} src={currentPlace.logo as string} alt={currentPlace.name} />
                         </Grid>
                         <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
-                            <Typography variant="h6" style={{ color: 'white' }}>
+                            <Typography variant="h6">
                                 {currentPlace.name}
                             </Typography>
-                            <Typography variant="body1" style={{ color: '#A0A0A0' }}>
+                            <Typography variant="body1" >
                                 {currentPlace.subtitle}
                             </Typography>
                             <Grid container alignItems="center">
-                                <Typography variant="overline" style={{ color: '#32de84' }}>
+                                <Typography variant="overline" >
                                     {currentPlace.type}
                                 </Typography>
                                 <Tooltip title="Add to favorites">
@@ -141,11 +141,11 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                             <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
                                 {currentPlace.status === 'open' ?
                                     <Tooltip title="This place is now open">
-                                        <Button variant="contained" size="small" style={{ background: '#4caf50', color: 'white' }}>Open</Button>
+                                        <Button variant="contained" color="success" size="small" >Open</Button>
                                     </Tooltip>
                                     :
                                     <Tooltip title="This place is now closed">
-                                        <Button variant="contained" size="small" style={{ background: '#ff5252', color: 'white' }}>Closed</Button>
+                                        <Button variant="contained" color="error" size="small" >Closed</Button>
                                     </Tooltip>
                                 }
                             </Grid>

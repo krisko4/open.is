@@ -23,142 +23,6 @@ import { ImagesCarousel } from './ImageCarousel/ImagesCarousel';
 import MainContent from "./MainContent";
 import { SubscribeDialog } from './SubscribeDialog';
 
-const useStyles = makeStyles(() =>
-    createStyles({
-        root: {
-            // fontWeight: 'bold',
-            color: '#fff'
-        },
-        subscribeButton: {
-            '&&.MuiButton-contained.Mui-disabled': {
-                backgroundColor: 'lightgray'
-            }
-        }
-
-
-
-    }))
-
-const useNewsStyles = makeStyles({
-    paper: {
-        padding: '6px 16px',
-        borderRadius: 10,
-        background: '#2C2C2C',
-    },
-    title: {
-        color: 'white'
-    },
-    content: {
-        color: 'lightgrey'
-    },
-    date: {
-        color: 'grey'
-    },
-    dialog: {
-        background: '#2C2C2C',
-        '& .dialogTitle': {
-            color: '#2196f3'
-        },
-        '& .dialogContentText': {
-            color: 'white'
-        },
-        '& .opinionArea': {
-            background: '#404040',
-            borderRadius: 5
-        },
-        '& .input': {
-            color: 'white'
-        }
-    }
-
-});
-
-const useOpinionsStyles = makeStyles({
-    opinionCard: {
-        background: '#2C2C2C',
-    },
-    author: {
-        color: '#2196f3'
-    },
-    date: {
-        color: 'lightgrey'
-    },
-    content: {
-        color: 'white'
-    },
-    dialog: {
-        background: '#2C2C2C',
-        '& .dialogTitle': {
-            color: '#2196f3'
-        },
-        '& .dialogContentText': {
-            color: 'white'
-        },
-        '& .opinionArea': {
-            background: '#404040',
-            borderRadius: 5
-        },
-        '& .input': {
-            color: 'white'
-        }
-    }
-})
-
-const useOpeningHoursStyles = makeStyles({
-    container: {
-        background: '#2C2C2C',
-        borderRadius: 10
-    },
-    content: {
-        color: 'grey'
-    },
-    hourPicker: {
-        color: 'white'
-    },
-    calendarIcon: {
-        '& .MuiIconButton-root': {
-            color: '#2196f3'
-        }
-    },
-    inputLabel: {
-        color: 'white'
-    },
-    title: {
-        textAlign: 'center',
-        color: 'white'
-    },
-    divider: {
-        marginTop: 10,
-        background: '#2196f3',
-        marginBottom: 10
-    },
-    days: {
-        color: 'white',
-
-    },
-    hours: {
-        color: 'white'
-    },
-    dialog: {
-        background: '#2C2C2C',
-        '& .dialogTitle': {
-            color: '#2196f3'
-        },
-        '& .dialogContentText': {
-            color: 'white'
-        },
-        '& .opinionArea': {
-            background: '#404040',
-            borderRadius: 5
-        },
-        '& .input': {
-            color: 'white'
-        }
-    }
-
-
-})
-
 
 
 const addVisit = async (place: CurrentPlaceProps) => {
@@ -202,10 +66,6 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     }, [])
 
 
-    const classes = useStyles()
-    const newsClasses = useNewsStyles()
-    const opinionsClasses = useOpinionsStyles()
-    const openingHoursClasses = useOpeningHoursStyles()
     const history = useHistory()
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -213,15 +73,15 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
 
     const MyTab = (props: any) => {
         const { label, ...rest } = props
-        return <Tab {...rest} label={label} disableRipple className={classes.root} />
+        return <Tab {...rest} label={label} disableRipple  />
     }
     const tabContents = [
-        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} classes={newsClasses} />,
-        <OpeningHours classes={openingHoursClasses} setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
+        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace}  />,
+        <OpeningHours setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
-            classes={opinionsClasses}
+       
         />
     ]
 
@@ -278,7 +138,6 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                             <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
                                 <span>
                                     <Button
-                                        className={classes.subscribeButton}
                                         disabled={!userData.isLoggedIn || currentPlace.isUserOwner}
                                         variant="contained"
                                         color="error"
@@ -293,17 +152,15 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                 </Toolbar>
             </Grid>
             <Grid container>
-                <ImagesCarousel address={currentPlace.address} />
+                <ImagesCarousel currentPlace={currentPlace} />
             </Grid>
             <MainContent place={currentPlace} />
             <Grid container style={{ marginTop: 10 }}>
-                <Divider style={{ width: '100%', backgroundColor: 'red' }} />
+                <Divider style={{ width: '100%' }} />
                 <Paper square style={{ width: '100%', background: 'inherit' }}>
                     <Tabs
                         value={value}
                         variant="fullWidth"
-                        indicatorColor="secondary"
-                        textColor="secondary"
                         onChange={handleChange}
                     >
                         <MyTab label="News" />

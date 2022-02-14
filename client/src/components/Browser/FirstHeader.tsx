@@ -11,34 +11,33 @@ import { IconButton } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { SignOutButton } from "../reusable/SignOutButton";
 import { useLoginContext } from "../../contexts/LoginContext";
+import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
 const FirstHeader: FC = () => {
 
     const { setLoginOpen } = useAuthContext()
-    const {userData} = useLoginContext()
+    const { userData } = useLoginContext()
     const history = useHistory()
 
     return (
-        <AppBar style={{
-            background: '#2C2C2C',
-            position: 'static',
-            borderColor: '#383838',
-            borderBottomStyle: 'solid',
-            borderWidth: 2
-            
-        }}
+        <AppBar position="static"
+            // style={{
+            //     background: '#2C2C2C',
+            //     position: 'static',
+            //     borderColor: '#383838',
+            //     borderBottomStyle: 'solid',
+            //     borderWidth: 2
+
+            // }}
         >
             <Toolbar>
                 <Grid container alignItems="center" justifyContent="flex-end">
-                    <Grid item>
-                        <IconButton onClick={() => history.push('/')} color="inherit" size="large">
-                            <HomeIcon />
-                        </IconButton>
-                    </Grid>
-                    <Grid item style={{ textAlign: 'end' }}>
+                    <ColorModeSwitch />
+                    <IconButton sx={{mr: 1}} onClick={() => history.push('/')} color="inherit" size="large">
+                        <HomeIcon />
+                    </IconButton>
                         {!userData.isLoggedIn ? <Button color="error" onClick={() => setLoginOpen(true)} variant="contained">
                             Sign in
                         </Button> : <SignOutButton color="error" variant="contained">Sign out</SignOutButton>}
-                    </Grid>
                 </Grid>
             </Toolbar>
             <Auth />

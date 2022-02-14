@@ -25,7 +25,7 @@ import { LoadingButton } from "./LoadingButton";
 
 
 interface Props {
-    classes: ClassNameMap<"paper" | "content" | "title" | "dialog" | "date">,
+    
 
     currentPlace: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<any>,
@@ -40,7 +40,7 @@ type OpenNews = {
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
+export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -96,15 +96,15 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                     <TimelineConnector />
                                 </TimelineSeparator>
                                 <TimelineContent>
-                                    <Card className={classes.paper}>
+                                    <Card>
                                         <CardContent>
-                                            <Typography variant="h6" className={classes.title}>
+                                            <Typography variant="h6" >
                                                 {item.title}
                                             </Typography>
-                                            <Typography variant="caption" className={classes.date}>
+                                            <Typography variant="caption" >
                                                 {item.date}
                                             </Typography>
-                                            <Typography variant="body2" style={{ marginTop: 10 }} className={classes.content}>
+                                            <Typography variant="body2" style={{ marginTop: 10 }} >
                                                 {item.content.length < 100 ? item.content : `${item.content.substring(0, 100)}...`}
                                             </Typography>
                                         </CardContent>
@@ -124,23 +124,21 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                             open={openNews.isOpen}
                             onClose={() => setOpenNews({ isOpen: false, newsIndex: 0 })}
                             TransitionComponent={Transition}
-                            PaperProps={{
-                                classes: { root: classes.dialog }
-                            }}
+                           
                         >
                             <DialogTitle>
                                 <Grid container direction="column">
-                                    <Typography variant="h6" className={classes.title}>
+                                    <Typography variant="h6" >
                                         {currentPlace.news[openNews.newsIndex].title}
                                     </Typography>
-                                    <Typography variant="caption" className={classes.content}>
+                                    <Typography variant="caption" >
                                         {currentPlace.news[openNews.newsIndex].date}
                                     </Typography>
                                 </Grid>
                             </DialogTitle>
                             <DialogContent>
                                 <DialogContentText>
-                                    <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} className={classes.content}>
+                                    <Typography gutterBottom variant="body2" style={{ marginTop: 10 }} >
                                         {currentPlace.news[openNews.newsIndex].content}
                                     </Typography>
                                 </DialogContentText>
@@ -155,9 +153,9 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                 :
 
                 <Grid justifyContent="center" style={{ height: 500 }} direction="column" alignItems="center" container >
-                    <Typography variant="h6" className={classes.title}>This place has not provided any news yet.</Typography>
+                    <Typography variant="h6">This place has not provided any news yet.</Typography>
                     {userData.isLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
-                        <Typography className={classes.content} variant="subtitle1">Press the button below to add your first news.</Typography>
+                        <Typography  variant="subtitle1">Press the button below to add your first news.</Typography>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} style={{ marginTop: 10 }} variant="contained" color="primary">Add news</Button>
                     </Grid>
                     }
@@ -168,12 +166,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                     open={dialogOpen}
                     TransitionComponent={Transition}
                     onClose={() => setDialogOpen(false)}
-                    PaperProps={
-                        {
-                            classes: { root: classes.dialog }
-                        }
-                    }
-
+                   
                 >
                     <DialogTitle className="dialogTitle">Add news</DialogTitle>
                     <DialogContent>
@@ -188,7 +181,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                 value={newsTitle}
                                 onChange={(e) => setNewsTitle(e.target.value)}
                                 InputProps={{
-                                    className: 'input',
+                                
                                     endAdornment:
                                         <InputAdornment position="end">
                                             <IconButton
@@ -198,9 +191,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                             </IconButton>
                                         </InputAdornment>
                                 }}
-                                InputLabelProps={{
-                                    className: 'input'
-                                }}
+                              
                             />
                         </Grid>
                         <Grid container style={{ marginTop: 20 }}>
@@ -215,7 +206,6 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                 maxRows={10}
                                 className="opinionArea"
                                 InputProps={{
-                                    className: 'input',
                                     endAdornment:
                                         <InputAdornment position="end">
                                             <IconButton
@@ -225,9 +215,7 @@ export const News: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
                                             </IconButton>
                                         </InputAdornment>
                                 }}
-                                InputLabelProps={{
-                                    className: 'input'
-                                }}
+                              
 
                             >
                             </TextField>

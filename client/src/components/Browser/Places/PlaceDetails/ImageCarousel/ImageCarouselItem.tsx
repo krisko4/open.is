@@ -2,7 +2,7 @@ import { PhotoCamera } from "@mui/icons-material"
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
 import { FC, useEffect, useRef, useState } from "react"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { ImageUpload } from "../../../../reusable/ImageUpload"
 
 
@@ -13,30 +13,32 @@ interface Image {
 
 interface Props {
     item: Image,
-    address: string,
     index: number,
-    isEditable?: boolean
+    isEditable?: boolean,
+    currentPlace: CurrentPlaceProps,
+    setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
 }
-export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address}) => {
-   
+export const ImageCarouselItem: FC<Props> = ({ item, currentPlace, setCurrentPlace, isEditable, index }) => {
+
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
     const [imageFile, setImageFile] = useState<File | null>(item.file)
-    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
     const isFirstRender = useRef(true)
 
     useEffect(() => {
-        if(isFirstRender.current){
+        if (isFirstRender.current) {
             isFirstRender.current = false
             return
         }
-        const place = {...currentPlace}
-        place.images[index] = {
-            img: img as string,
-            file: imageFile
+        if (isEditable) {
+            const place = { ...currentPlace }
+            place.images[index] = {
+                img: img as string,
+                file: imageFile
+            }
+            console.log(place)
+            if(setCurrentPlace) setCurrentPlace(place)
         }
-        console.log(place)
-        setCurrentPlace(place)
     }, [img])
 
     const clearImage = () => {
@@ -87,7 +89,7 @@ export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index, address}
                     }
                 }}
             >
-                <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{address}</Typography>
+                <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{currentPlace.address || 'This is an address of your place'}</Typography>
             </Grid>
         </CardMedia>
 

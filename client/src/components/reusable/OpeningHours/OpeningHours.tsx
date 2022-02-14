@@ -12,12 +12,11 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 interface Props {
     currentPlace?: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<any>,
-    classes: ClassNameMap<"title" | "container" | "divider" | "days" | "hours" | "content" | "dialog">,
 }
 
 
 
-export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes }) => {
+export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
 
     const { userData} = useLoginContext()
     const openingHours = currentPlace && currentPlace.openingHours
@@ -36,14 +35,14 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes
             {
                 openingHours ?
                     <Grid item container style={{ flexGrow: 1 }} alignItems="center" lg={5} md={8} >
-                        <OpeningHoursCard classes={classes} openingHours={openingHours} />
+                        <OpeningHoursCard  openingHours={openingHours} />
                     </Grid>
 
                     : <>
                         {currentPlace?.isUserOwner ?
                             <Grid justifyContent="center" style={{ height: '100%' }} direction="column" alignItems="center" container>
                                 <Typography variant="h6">This place has not set opening hours yet.</Typography>
-                                <Typography className={classes.content} variant="subtitle1">Press the button below to set opening hours.</Typography>
+                                <Typography  variant="subtitle1">Press the button below to set opening hours.</Typography>
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} variant="contained" color="primary">Set opening hours</Button>
                             </Grid>
 
@@ -84,11 +83,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes
                     maxWidth="sm"
                     TransitionComponent={Transition}
                     onClose={() => setDialogOpen(false)}
-                    PaperProps={
-                        {
-                            classes: { root: classes.dialog }
-                        }
-                    }
+                   
 
                 >
                     <DialogTitle className="dialogTitle">Opening hours management</DialogTitle>
@@ -97,7 +92,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace, classes
                         openingHours={openingHours}
                         setCurrentPlace={setCurrentPlace}
                         setDialogOpen={setDialogOpen}
-                        classes={classes}
+                       
                     />
 
                 </Dialog>

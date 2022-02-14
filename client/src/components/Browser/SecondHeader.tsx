@@ -86,27 +86,26 @@ const CustomChip = (props: ChipProps) => {
 }
 
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    secondHeader: {
-        marginTop: 10,
-        marginBottom: 10,
-    },
-    [theme.breakpoints.down('xl')]: {
-        secondHeader: {
-            justifyContent: 'center',
-        },
-        chip: {
-            marginTop: 10
-        }
+// const useStyles = makeStyles((theme: Theme) => createStyles({
+//     secondHeader: {
+//         marginTop: 10,
+//         marginBottom: 10,
+//     },
+//     [theme.breakpoints.down('xl')]: {
+//         secondHeader: {
+//             justifyContent: 'center',
+//         },
+//         chip: {
+//             marginTop: 10
+//         }
 
-    }
-}))
+//     }
+// }))
 
 
 
 export const SecondHeader: FC = () => {
 
-    const classes = useStyles()
     const [selectedTypes, setSelectedTypes] = useState<string[]>([])
 
     useEffect(() => {
@@ -116,17 +115,17 @@ export const SecondHeader: FC = () => {
     return (
         <AppBar
             style={{
-                background: '#2C2C2C',
+                // background: '#2C2C2C',
                 position: 'static'
             }}>
             <Toolbar disableGutters>
-                <Grid container className={classes.secondHeader}>
+                <Grid container >
                     <Grid item xs={10} sm={9} md={8} lg={5} style={{paddingLeft: 5, paddingRight: 5}}>
                         <Searcher />
                     </Grid>
                     <Grid justifyContent="center" container lg={7} item alignItems="center">
                         {businessTypes.map((type, index) =>
-                            <CustomChip setSelectedTypes={setSelectedTypes} className={classes.chip} type={type} key={index} />
+                            <CustomChip setSelectedTypes={setSelectedTypes}  type={type} key={index} />
                         )}
                     </Grid>
                 </Grid>

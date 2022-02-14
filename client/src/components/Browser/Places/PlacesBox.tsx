@@ -14,24 +14,24 @@ import { PlaceCard } from "./PlaceCard";
 import { PlaceDetails } from "./PlaceDetails/PlaceDetails";
 
 
-const useStyles = makeStyles({
-    myTab: {
-        color: 'white',
-        '&& .MuiTab-wrapper': {
-            flexDirection: 'row',
-            alignItems: 'unset'
-        },
-        '&& .MuiSvgIcon-root': {
-            fill: 'white',
-            marginRight: 2
-        }
-    }
-})
+// const useStyles = makeStyles({
+//     myTab: {
+//         color: 'white',
+//         '&& .MuiTab-wrapper': {
+//             flexDirection: 'row',
+//             alignItems: 'unset'
+//         },
+//         '&& .MuiSvgIcon-root': {
+//             fill: 'white',
+//             marginRight: 2
+//         }
+//     }
+// })
 
 const MyTab = (props: any) => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const { label, icon, ...rest } = props
-    return <Tab {...rest} icon={icon} label={label} className={classes.myTab} />
+    return <Tab {...rest} icon={icon} label={label} />
 }
 
 
@@ -83,7 +83,6 @@ const PlacesBox: FC = () => {
             let currentPlaces = places.map(place => convertToCurrentPlace(place))
             let chosenCriterias: CurrentPlaceProps[] = []
             currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
-            console.log(chosenCriterias)
             setChosenCriterias(chosenCriterias)
         })()
 
@@ -129,8 +128,6 @@ const PlacesBox: FC = () => {
                         }
                         value={tabIndex}
                         style={{ marginTop: 10 }}
-                        indicatorColor="secondary"
-                        // textColor="se"
                         onChange={(e, newIndex) => setTabIndex(newIndex)}
                     >
                         <MyTab icon={<FiberNew />} label="Popular" />
@@ -159,12 +156,18 @@ const PlacesBox: FC = () => {
                             {isPlaceCardClicked ||
                                 <Fade in={true} timeout={1000}>
                                     <ListItem
-                                        style={{ marginTop: 8, paddingLeft: 8, paddingRight: 8, paddingTop: 0, paddingBottom: 0, marginBottom: 8 }}
+                                     disableGutters
+                                     disablePadding
+                                     sx={{mt: 1, mb: 1, ml:1, mr: 1, width: 'inherit'}}
+                                     onClick={() => openPlaceDetails(place)}
+                                        // sx={{ mt: '8px', mr: '8px', padding: 0, mb: '8px', width: 'none' }}
                                         key={place._id}
-                                        onClick={() => openPlaceDetails(place)}
                                         button
                                     >
-                                        <PlaceCard currentPlace={place} tabIndex={tabIndex} />
+                                    <PlaceCard
+                                        currentPlace={place}
+                                        tabIndex={tabIndex}
+                                    />
                                     </ListItem>
                                 </Fade>
 

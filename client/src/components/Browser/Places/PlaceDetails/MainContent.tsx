@@ -54,9 +54,9 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                             </Grid>
                     </Card>
                 </Grid>
-                <Grid container item style={{ marginTop: 10 }}>
-                    <Grid item style={{ marginLeft: 20 }}>
-                        <CardMedia style={{ height: 100, width: 100, marginTop: 10, borderRadius: 20 }} image={place.img} />
+                <Grid container item sx={{ mt: '20px' }}>
+                    <Grid item lg={3} sx={{ ml: '20px', textAlign: 'center' }}>
+                        <CardMedia style={{ height: 200, marginTop: 10, borderRadius: 20 }} image={place.logo} />
                         <Rating
                             style={{ marginTop: 20 }}
                             name="simple-controlled"
@@ -64,11 +64,11 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                             readOnly
                         />
                     </Grid>
-                    <Grid item lg={9} style={{ marginLeft: 20 }}>
-                        <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>
+                        <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
+                        <Typography variant="h2" sx={{fontWeight: 'bold' }}>
                             {place.name}
                         </Typography>
-                        <Typography variant="h6" style={{ color: 'lightgrey', fontStyle: 'italic' }}>
+                        <Typography variant="h6" style={{ color: 'lightgrey'}}>
                             {place.subtitle}
                         </Typography>
                         <Typography variant="body1" color="primary">{place.type}</Typography>
@@ -78,9 +78,9 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                         </div>
                     </Grid>
                 </Grid>
-                <Grid item container justifyContent="center" style={{ marginTop: 20 }}>
+                <Grid item container justifyContent="center" sx={{mt: '10px', mb: '10px' }}>
                     <Grid item lg={10}>
-                        <Card elevation={10} style={{ flexGrow: 1, background: '#2C2C2C' }}>
+                        <Card elevation={10} style={{ flexGrow: 1 }}>
                             <CardContent>
                                 <Typography variant="body1" style={{ color: 'white' }}>{place.description}</Typography>
                             </CardContent>
@@ -88,7 +88,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
 
                     </Grid>
                     <Grid item lg={10} style={{ marginTop: 20 }}>
-                        <Divider style={{ width: '100%', background: 'red' }}></Divider>
+                        <Divider style={{ width: '100%'}}></Divider>
                     </Grid>
                 </Grid>
                 <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>

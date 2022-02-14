@@ -12,6 +12,7 @@ import { useColorMode } from "../../contexts/ColorModeContext";
 import { ChosenOptions } from '../../contexts/PanelContexts/PanelContext';
 import { setSelectedOption } from '../../store/actions/setSelectedOption';
 import { usePlacesSelector } from '../../store/selectors/PlacesSelector';
+import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
 
 
 const Header: FC = () => {
@@ -22,12 +23,6 @@ const Header: FC = () => {
     const places = usePlacesSelector()
     const dispatch = useDispatch()
     const history = useHistory()
-    const { toggleColorMode } = useColorMode()
-    const [checked, setChecked] = useState(false)
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        toggleColorMode()
-        setChecked(event.target.checked)
-    }
 
 
 
@@ -35,11 +30,7 @@ const Header: FC = () => {
         <AppBar position="static" sx={{ pt: '20px', pr: '40px' }}>
             <Toolbar>
                 <Grid item container justifyContent="flex-end" alignItems="center">
-                    <Switch
-                        checked={checked}
-                        onChange={handleChange}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                    />
+                    <ColorModeSwitch />
                    
                     <IconButton onClick={() => history.push('/')} color="inherit" size="large">
                         <HomeIcon />

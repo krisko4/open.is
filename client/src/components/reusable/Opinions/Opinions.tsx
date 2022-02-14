@@ -20,13 +20,12 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 
 
 interface Props {
-    classes: ClassNameMap<"opinionCard" | "author" | "date" | "content" | "dialog">,
     currentPlace: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<any>,
 }
 
 
-export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) => {
+export const Opinions: FC<Props> = ({  currentPlace, setCurrentPlace }) => {
 
 
     const { userData} = useLoginContext()
@@ -89,12 +88,12 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                         {
                             currentPlace.opinions.map((opinion, index) =>
                                 <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
-                                    <OpinionCard classes={classes} opinion={opinion} />
+                                    <OpinionCard  opinion={opinion} />
                                 </Grid>
                             )}
                     </div>
                     : <Grid container direction="column" justifyContent="center" style={{ height: '100%' }} alignItems="center">
-                        <Typography variant="h6" className={classes.content}>This place doesn't have any opinions yet.</Typography>
+                        <Typography variant="h6" >This place doesn't have any opinions yet.</Typography>
                         {userData.isLoggedIn &&  !currentPlace.isUserOwner ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
                             <Button style={{ marginTop: 10 }} startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
@@ -108,11 +107,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                         open={dialogOpen}
                         TransitionComponent={Transition}
                         onClose={() => setDialogOpen(false)}
-                        PaperProps={
-                            {
-                                classes: { root: classes.dialog }
-                            }
-                        }
+                      
 
                     >
                         <DialogTitle className="dialogTitle">New opinion</DialogTitle>
@@ -139,9 +134,9 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                                     rows={10}
                                     variant="outlined"
                                     maxRows={10}
-                                    className="opinionArea"
+                                  
                                     InputProps={{
-                                        className: 'input',
+                                       
                                         endAdornment:
                                             <InputAdornment position="end">
                                                 <IconButton onClick={() => setEmojiPickerOpen(current => !current)} size="large">
@@ -149,9 +144,7 @@ export const Opinions: FC<Props> = ({ classes, currentPlace, setCurrentPlace }) 
                                                 </IconButton>
                                             </InputAdornment>
                                     }}
-                                    InputLabelProps={{
-                                        className: 'input'
-                                    }}
+                                 
 
                                 >
                                 </TextField>
