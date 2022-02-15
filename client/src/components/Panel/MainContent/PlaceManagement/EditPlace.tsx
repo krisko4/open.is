@@ -45,6 +45,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
             const rawPlaceDataAfterUpdate = res.data.place
             if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
             dispatch(setPlaces([...places]))
+            //@ts-ignore
             setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
             enqueueSuccessSnackbar('You have successfully modified your place')
             setDialogOpen(false)

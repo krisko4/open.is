@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import React, { FC } from "react";
 import { Route, useLocation, useRouteMatch } from "react-router-dom";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { LocationContextProvider } from "../../../contexts/PanelContexts/LocationContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import Header from "../Header";
@@ -60,14 +61,14 @@ export const MainContent: FC = () => {
         >
           <CurrentPlaceContextProvider>
             <StepContextProvider steps={businessChainSteps}>
-              <NewBusinessChain />
+                <NewBusinessChain />
             </StepContextProvider>
           </CurrentPlaceContextProvider>
         </Route>
 
       </Grid>
 
-    </Grid>
+    </Grid >
 
   )
 }

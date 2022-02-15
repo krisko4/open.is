@@ -1,6 +1,6 @@
 import { RawPlaceDataProps } from "../contexts/PanelContexts/BusinessChainContext"
 import { CurrentPlaceProps } from "../contexts/PanelContexts/CurrentPlaceContext"
-
+import {Image} from '../contexts/PanelContexts/CurrentPlaceContext'
 
 export const convertToRawPlaceData = (currentPlace: CurrentPlaceProps) => {
     const locations = [
@@ -47,10 +47,13 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
 
     const { locations } = place
     const images = place.images.map(image => {
-        return {
-            img: image,
+        const returnedVal: Image = {
+            img: image as string,
             file: null
+
         }
+        return returnedVal
+        
     })
     const currentPlaces = locations.map(location => {
         return {

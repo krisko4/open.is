@@ -3,88 +3,75 @@ import { useSnackbar } from "notistack"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useHistory } from "react-router-dom"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { LocationProps, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
 import { registerNewPlace } from "../../../../../requests/PlaceRequests"
 import { useCustomSnackbar } from "../../../../../utils/snackbars"
 import { LoadingButton } from "../../../../reusable/LoadingButton"
 import { Location } from './Location'
 import { animateScroll as scroll } from 'react-scroll'
+import { RawPlaceDataProps } from "../../../../../contexts/PanelContexts/BusinessChainContext"
+import { useStepContext } from "../../../../../contexts/StepContext"
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface Props {
     addressSubmitted: boolean,
-    imageFile: File | null,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
-export interface LocationDetails {
-    address: string,
-    phone: string,
-    website: string,
-    email: string,
-    facebook: string,
-    instagram: string,
-    lat: number,
-    lng: number
 }
 
-export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFile }) => {
+export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
 
     const { currentPlace } = useCurrentPlaceContext()
+    const { setActiveStep } = useStepContext()
     const isFirstRender = useRef(true)
-    const [loading, setLoading] = useState(false)
-    const { enqueueInfoSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    const history = useHistory()
+    const { enqueueInfoSnackbar } = useCustomSnackbar()
+    const [locationCount, setLocationCount] = useState(0)
     const { setSaveButtonClicked, selectedLocations, setSelectedLocations, errorsDetected } = useLocationContext()
-    const [businessSummary, setBusinessSummary] = useState({
-        name: currentPlace.name,
-        subtitle: currentPlace.subtitle,
-        type: currentPlace.type,
-        description: currentPlace.description,
-        img: currentPlace.logo,
-        locations: selectedLocations
-    })
 
-    const registerNewBusiness = async () => {
-
-        setLoading(true)
-        const formData = new FormData()
-        const { locations } = businessSummary
-        businessSummary.img = imageFile
-        //@ts-ignore
-        delete businessSummary['locations']
-        console.log(locations)
-        console.log(businessSummary)
-        let key: keyof typeof businessSummary
-        //@ts-ignore
-        for (key in businessSummary) formData.append(key, businessSummary[key])
-        formData.append('locations', JSON.stringify(locations))
-        try {
-            const res = await registerNewPlace(formData)
-            console.log(res.data)
-            enqueueSuccessSnackbar('You have successfully registered your business chain')
-            setDialogOpen(false)
-            setOpen(false)
-            history.push('dashboard')
-
-        } catch (err) {
-            console.log(err)
-            enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
+    useEffect(() => {
+        if (locationCount !== selectedLocations.length) {
+            return
+        }
+        if (locationCount > 0) {
+            setLocationCount(0)
+            setActiveStep(step => step + 1)
         }
 
+    }, [locationCount])
 
-    }
+    // const registerNewBusiness = async () => {
 
-    const [dialogOpen, setDialogOpen] = useState(false)
+    //     setLoading(true)
+    //     const formData = new FormData()
+    //     const { locations } = businessSummary
+    //     businessSummary.img = imageFile
+    //     //@ts-ignore
+    //     delete businessSummary['locations']
+    //     console.log(locations)
+    //     console.log(businessSummary)
+    //     let key: keyof typeof businessSummary
+    //     //@ts-ignore
+    //     for (key in businessSummary) formData.append(key, businessSummary[key])
+    //     formData.append('locations', JSON.stringify(locations))
+    //     try {
+    //         const res = await registerNewPlace(formData)
+    //         console.log(res.data)
+    //         enqueueSuccessSnackbar('You have successfully registered your business chain')
+    //         setDialogOpen(false)
+    //         setOpen(false)
+    //         history.push('dashboard')
+
+    //     } catch (err) {
+    //         console.log(err)
+    //         enqueueErrorSnackbar()
+    //     } finally {
+    //         setLoading(false)
+    //     }
 
 
-    const handleSaveButtonClick = () => {
-        console.log(businessSummary)
+    // }
+
+    const handleClick = () => {
         setSaveButtonClicked(state => !state)
-        // setDialogOpen(true)
     }
 
     useEffect(() => {
@@ -92,7 +79,6 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
             isFirstRender.current = false
             return
         }
-
         if (selectedLocations.some(place => place.address === currentPlace.address)) {
             enqueueInfoSnackbar('You have already selected this location.')
             return
@@ -108,18 +94,9 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
             facebook: ''
         }
         selectedLocations.push(newLocation)
-
         setSelectedLocations([...selectedLocations])
     }, [addressSubmitted])
 
-    useEffect(() => {
-        setBusinessSummary(summary => {
-            return {
-                ...summary,
-                locations: selectedLocations
-            }
-        })
-    }, [selectedLocations])
 
     return (
         <Grid container style={{ height: '100%', paddingTop: 1 }}>
@@ -152,7 +129,7 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
                         <Grid container style={{ height: '10%' }}>
                             <Paper elevation={3} style={{ flexGrow: 1 }}>
                                 <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
-                                    <Button disabled={errorsDetected} style={{ marginRight: 20 }} onClick={handleSaveButtonClick} variant="contained" color="primary">Continue</Button>
+                                    <Button disabled={errorsDetected} style={{ marginRight: 20 }} onClick={handleClick} variant="contained" color="primary">Continue</Button>
                                 </Grid>
                             </Paper>
                         </Grid>

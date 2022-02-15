@@ -1,19 +1,20 @@
 
 
 import { createContext, FC, useContext, useState } from "react";
+import { LocationProps } from "./CurrentPlaceContext";
 
 
 
-interface LocationDetails {
-    address: string,
-    phone: string,
-    website: string,
-    email: string,
-    facebook: string,
-    instagram: string,
-    lat: number,
-    lng: number
-}
+// interface LocationDetails {
+//     address: string,
+//     phone: string,
+//     website: string,
+//     email: string,
+//     facebook: string,
+//     instagram: string,
+//     lat: number,
+//     lng: number
+// }
 
 
 export const LocationContext = createContext<LocationContextData | null>(null)
@@ -33,7 +34,7 @@ export const LocationContextProvider: FC = ({ children }) => {
 const useProviderSettings = () => {
 
 
-    const [selectedLocations, setSelectedLocations] = useState<LocationDetails[]>([])
+    const [selectedLocations, setSelectedLocations] = useState<LocationProps[]>([])
     const [saveButtonClicked, setSaveButtonClicked] = useState(false)
     const [fieldForAll, setFieldForAll] = useState({
         field: '',

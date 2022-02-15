@@ -57,11 +57,11 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                 <CurrentPlaceContextProvider>
                     <Grid item style={{ background: 'white' }} lg={6} xs={9}>
                         <Scrollbars>
-                            {currentStep === Steps.BUSINESS_INFORMATION ? <>
+                            {/* {currentStep === Steps.BUSINESS_INFORMATION ? <>
                                 <BusinessInformation setImageFile={setImageFile} setCurrentStep={setCurrentStep} />
                             </>
-                                : <LocationSelection setAddressSubmitted={setAddressSubmitted} setCurrentStep={setCurrentStep} />
-                            }
+                                : <LocationSelection setAddressSubmitted={setAddressSubmitted}  />
+                            } */}
                         </Scrollbars>
                     </Grid>
                     <Grid item container lg={6}>
@@ -74,7 +74,7 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                                 </Grid>
                                 :
                                 <LocationContextProvider>
-                                    <LocationDetails setOpen={setOpen} imageFile={imageFile} addressSubmitted={addressSubmitted} />
+                                    {/* <LocationDetails setOpen={setOpen} addressSubmitted={addressSubmitted} /> */}
                                 </LocationContextProvider>
                             }
                         </Scrollbars>

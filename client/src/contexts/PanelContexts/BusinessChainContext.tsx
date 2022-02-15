@@ -1,5 +1,6 @@
 import { createContext, useContext, FC, useState } from "react";
 import { defaultNews, defaultOpinions } from "../../utils/defaults";
+import {Image} from './CurrentPlaceContext'
 
 
 export enum Status {
@@ -15,7 +16,7 @@ export interface RawPlaceDataProps {
     description: string,
     subtitle: string,
     logo: string | ArrayBuffer | null | File,
-    images: string[]
+    images: string[] | Image[],
     locations: LocationProps[],
     userId?: string,
     isUserOwner?: boolean
@@ -34,7 +35,7 @@ export interface LocationProps {
     opinions?: OpinionProps[],
     facebook: string,
     visits?: VisitProps[],
-    alwaysOpen: boolean,
+    alwaysOpen?: boolean,
     averageNote?: {
         ones: number,
         twos: number,

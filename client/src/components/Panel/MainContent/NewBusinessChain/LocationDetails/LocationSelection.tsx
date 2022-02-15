@@ -11,12 +11,11 @@ enum Steps {
 }
 
 interface Props {
-    setCurrentStep: React.Dispatch<React.SetStateAction<number>>,
     setAddressSubmitted?: React.Dispatch<React.SetStateAction<boolean>>,
 
 }
 
-export const LocationSelection: FC<Props> = ({ setCurrentStep, setAddressSubmitted }) => {
+export const LocationSelection: FC<Props> = ({setAddressSubmitted }) => {
 
     return <>
         <Grid container alignItems="center" justifyContent="center">

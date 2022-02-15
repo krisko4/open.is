@@ -4,10 +4,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { FC } from "react"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
 import { LocationDetails } from "./LocationDetails"
-import { TestForm } from './LocationDetailsForm/TestForm'
+import { LocationDetailsForm}  from './LocationDetailsForm/LocationDetailsForm'
+import { LocationProps } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 
 interface Props {
-    location: LocationDetails
+    location: LocationProps
 }
 
 
@@ -42,7 +43,7 @@ export const Location: FC<Props> = ({location}) => {
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
-                <TestForm location={location}/>
+                <LocationDetailsForm location={location}/>
             </AccordionDetails>
         </Accordion >
     );

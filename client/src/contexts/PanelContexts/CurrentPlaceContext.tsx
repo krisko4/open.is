@@ -35,7 +35,7 @@ export interface CurrentPlaceProps {
     facebook: string,
     userId?: string,
     visits?: VisitProps[],
-    alwaysOpen: boolean,
+    alwaysOpen?: boolean,
     averageNote?: {
         ones: number,
         twos: number,
@@ -78,7 +78,7 @@ export interface LocationProps {
         average: number
     },
     openingHours?: any,
-    alwaysOpen: boolean,
+    alwaysOpen?: boolean,
     isActive?: boolean
     status?: Status,
     visitCount?: number,
