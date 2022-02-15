@@ -90,7 +90,7 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
             isFirstRender.current = false
             return
         }
-        console.log(currentPlace)
+        console.log('hallko')
 
         if (selectedLocations.some(place => place.address === currentPlace.address)) {
             enqueueInfoSnackbar('You have already selected this location.')
@@ -121,22 +121,20 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
     }, [selectedLocations])
 
     return (
-        <Grid container style={{ height: '100%', borderLeftStyle: 'solid', borderWidth: 1, borderColor: 'lightgrey' }}>
-            {selectedLocations.length === 0 ?
-                <Fade in={true} timeout={1000}>
-                    <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
-                        <Grid container item justifyContent="center" lg={10}>
+        <Grid container style={{ height: '100%' }}>
+            <Paper>
+                {selectedLocations.length === 0 ?
+                    <Fade in={true} timeout={1000}>
+                        <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
                             <Typography variant="h3">Waiting for the first location...</Typography>
                             <Grid item lg={8} style={{ marginTop: 10 }}>
                                 <img src={`${process.env.REACT_APP_BASE_URL}/images/location.gif`} style={{ width: '100%' }} />
                             </Grid>
                         </Grid>
-                    </Grid>
-                </Fade>
-                : <>
-                    <Grid container style={{ height: '90%' }}>
-                        <div style={{ flexGrow: 1 }}>
-                            <Scrollbars autoHide>
+                    </Fade>
+                    : <>
+                        <Grid container style={{ height: '90%' }}>
+                            <div style={{ flexGrow: 1 }}>
                                 {
                                     selectedLocations.map((location) =>
                                         <Grid item key={location.address} style={{ width: '100%' }}>
@@ -146,11 +144,9 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
                                         </Grid>
                                     )
                                 }
-                            </Scrollbars>
-
-                        </div>
-                    </Grid>
-                    <Grid container style={{ height: '10%' }}>
+                            </div>
+                        </Grid>
+                        {/* <Grid container style={{ height: '10%' }}>
                         <Paper elevation={5} style={{ flexGrow: 1 }}>
                             <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
                                 <Button style={{ marginRight: 20 }} onClick={handleSaveButtonClick} variant="contained" color="primary">Register my business</Button>
@@ -168,9 +164,11 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
                             <Button onClick={() => setDialogOpen(false)} color="primary">Cancel</Button>
                             <LoadingButton loading={loading} disabled={loading} onClick={() => registerNewBusiness()} color="primary">Yes, I am sure</LoadingButton>
                         </DialogActions>
-                    </Dialog>
-                </>
-            }
+                    </Dialog> */}
+                    </>
+                }
+
+            </Paper>
 
         </Grid >
     );

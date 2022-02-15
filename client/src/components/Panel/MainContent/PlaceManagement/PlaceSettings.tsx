@@ -103,8 +103,8 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
                 </Dialog>
             </Toolbar>
         </AppBar>
-        <StepContextProvider>
+        {/* <StepContextProvider>
             <EditPlace setDialogOpen={setOpen} initialPlaceData={initialPlaceData} />
-        </StepContextProvider>
+        </StepContextProvider> */}
     </>;
 }

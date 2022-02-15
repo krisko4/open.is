@@ -1,4 +1,4 @@
-import { Button, Grid, InputAdornment, TextField, Tooltip } from "@mui/material";
+import { Button, Grid, InputAdornment, TextField, Theme, Tooltip, useTheme } from "@mui/material";
 import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import PhoneIcon from '@mui/icons-material/Phone'
@@ -8,6 +8,49 @@ import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext";
 import { LocationDetails } from "../LocationDetails";
+import ReactPhoneInput from 'react-phone-input-material-ui'
+import { makeStyles } from "@mui/styles";
+import PhoneField from "../PhoneField";
+
+const useStyles = makeStyles((theme: Theme) => (
+    {
+        container: {
+            '& .special-label': {
+                backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))!important',
+                background: `${theme.palette.background.default}!important`,
+                color: `${theme.palette.text.secondary}`,
+                padding: '0 3px!important',
+                left: '10px!important',
+            },
+            '& :hover': {
+                border: `1px solid ${theme.palette.text.primary}!important`
+            },
+            border: `1px solid grey!important`,
+            borderRadius: '2px!important',
+            '& :focus': {
+                border: `2px ${theme.palette.primary.main}!important`
+            },
+        },
+        input: {
+            '& :hover': {
+                border: `1px solid ${theme.palette.text.primary}!important`
+            },
+            border: `1px solid grey!important`,
+            borderRadius: '2px!important',
+            // '& :hover': {
+            //     borderColor: `${theme.palette.text.primary}!important`
+            // },
+            '& :focus': {
+                border: `2px ${theme.palette.primary.main}!important`
+            },
+            // borderColor: `${theme.palette.divider}!important`,
+            width: 'inherit!important',
+            background: 'inherit!important',
+        }
+    }
+
+)
+)
 
 type Inputs = {
     example: string,
@@ -19,12 +62,14 @@ type Inputs = {
     instagram: string
 };
 
-interface Props{
+interface Props {
     location: LocationDetails
 }
 
-export const TestForm: FC<Props> = ({location}) => {
-    const {setSelectedLocations, saveButtonClicked, fieldForAll, setFieldForAll} = useLocationContext()
+export const TestForm: FC<Props> = ({ location }) => {
+    const classes = useStyles()
+    const theme = useTheme()
+    const { setSelectedLocations, saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext()
     const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = data => {
         console.log(data)
@@ -38,9 +83,9 @@ export const TestForm: FC<Props> = ({location}) => {
     useEffect(() => {
         setSelectedLocations(locations => {
             let foundLocation = locations.find(loc => loc === location)
-            foundLocation = Object.assign(location , getValues())
+            foundLocation = Object.assign(location, getValues())
             return [...locations]
-        }) 
+        })
     }, [saveButtonClicked])
 
 
@@ -49,7 +94,7 @@ export const TestForm: FC<Props> = ({location}) => {
 
     return (
         <form style={{ flexGrow: 1 }} onSubmit={handleSubmit(onSubmit)} >
-            <Grid container justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -62,8 +107,18 @@ export const TestForm: FC<Props> = ({location}) => {
                         </Button>
                     </Tooltip>
                 </Grid>
-                <Grid item lg={5}>
-                    <TextField
+                <Grid item lg={5} >
+                    <ReactPhoneInput
+                        component={TextField}
+                        {...register('phone')}
+                        value={getValues('phone')}
+                        onChange={(phone: any) => setValue('phone', phone)}
+
+                    />
+
+
+
+                    {/* <TextField
                         type="number"
                         label="Phone number"
                         {...register('phone')}
@@ -71,10 +126,10 @@ export const TestForm: FC<Props> = ({location}) => {
                         InputProps={{
                             startAdornment: <InputAdornment position="start"><PhoneIcon color="primary" /></InputAdornment>
                         }}
-                    />
+                    /> */}
                 </Grid>
             </Grid>
-            <Grid container justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -96,7 +151,7 @@ export const TestForm: FC<Props> = ({location}) => {
                     />
                 </Grid>
             </Grid>
-            <Grid container justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
@@ -119,7 +174,7 @@ export const TestForm: FC<Props> = ({location}) => {
                     />
                 </Grid>
             </Grid>
-            <Grid container justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button

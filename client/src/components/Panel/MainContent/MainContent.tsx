@@ -8,7 +8,9 @@ import Header from "../Header";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { AccountSettings } from "./MyAccount/AccountSettings";
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
+import businessChainSteps from "./NewBusinessChain/steps";
 import { NewPlace } from "./NewPlace/NewPlace";
+import newPlaceSteps from "./NewPlace/Steps/steps";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
 
@@ -31,7 +33,7 @@ export const MainContent: FC = () => {
           path={`${match.url}/new-place`}
         >
           <CurrentPlaceContextProvider>
-            <StepContextProvider>
+            <StepContextProvider steps={newPlaceSteps}>
               <NewPlace />
             </StepContextProvider>
           </CurrentPlaceContextProvider>
@@ -56,9 +58,11 @@ export const MainContent: FC = () => {
         <Route
           path={`${match.url}/new-business-chain`}
         >
-          <StepContextProvider>
-            <NewBusinessChain />
-          </StepContextProvider>
+          <CurrentPlaceContextProvider>
+            <StepContextProvider steps={businessChainSteps}>
+              <NewBusinessChain />
+            </StepContextProvider>
+          </CurrentPlaceContextProvider>
         </Route>
 
       </Grid>

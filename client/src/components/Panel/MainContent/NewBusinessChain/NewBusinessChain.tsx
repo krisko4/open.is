@@ -1,65 +1,163 @@
-import { Button, Card, CardContent, Dialog, Fade, Grid, Grow, Slide, Stack, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Grow, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Paper, Slide, Tooltip, Typography, SlideProps } from "@mui/material";
 import React, { FC, useState } from "react";
-import { match } from "react-router-dom";
-import { CurrentPlaceContextProvider } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import Scrollbars from "react-custom-scrollbars";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { LocationContextProvider } from "../../../../contexts/PanelContexts/LocationContext";
+import { useStepContext } from "../../../../contexts/StepContext";
+import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
-import { BusinessChainDialog } from './BusinessChainDialog'
+import { Step1 } from "../NewPlace/Steps/Step1/Step1";
+import { Step2 } from "../NewPlace/Steps/Step2/Step2";
+import { Step3 } from "../NewPlace/Steps/Step3/Step3";
+import { Step4 } from "../NewPlace/Steps/Step4/Step4";
+import Intro from "./Intro";
+import { LocationDetails } from "./LocationDetails/LocationDetails";
+import { LocationSelection } from './LocationDetails/LocationSelection'
 
+
+const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+
+function getStepContent(step: number, isEditionMode: boolean, setActiveStep: any, setAddressSubmitted: any) {
+    switch (step) {
+        case 0:
+            return <Step1 />
+        case 1:
+            return <Step2 />
+        case 2:
+            return <LocationSelection setCurrentStep={setActiveStep} setAddressSubmitted={setAddressSubmitted} />
+        // case 4:
+        //     return <Step5 />
+        default:
+            return 'Unknown step';
+    }
+}
 export const NewBusinessChain: FC = () => {
 
-    const [dialogOpen, setDialogOpen] = useState(false)
+    const [startClicked, setStartClicked] = useState(false)
+    const { activeStep, setActiveStep } = useStepContext()
+    const [addressSubmitted, setAddressSubmitted] = useState(false)
+
+    const [imageFile, setImageFile] = useState<File | null>(null)
+    const [open, setOpen] = useState(false)
+    const closeDialog = () => {
+        setOpen(false)
+    }
 
     return (
-        <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center">
-            <Grid container justifyContent="space-evenly">
-                <Grow in={true} timeout={1200}>
-                    <Grid item container direction="column" alignItems="center" justifyContent="space-evenly" lg={6}>
-                        <Typography variant="h2">New business chain</Typography>
-                        <img src={`https://i.imgur.com/4NkElpt.gif`} />
-                        <Button fullWidth variant="contained" size="large" color="primary">Let's start</Button>
-                    </Grid>
-                </Grow >
-                <Grid item container lg={5} justifyContent="center" alignItems="center">
-                    <Slide in={true} timeout={1000} direction="left">
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h2">What is a business chain?</Typography>
-                                <Grid style={{ marginTop: 10 }} container lg={10}>
-                                    <Typography variant="body1" sx={{ mb: 1 }}>
-                                        If you're an owner of a business with multiple locations, business chain is a great option for you.
-                                        Follow some simple steps to add your locations quickly and conveniently.
-                                    </Typography>
-                                    <NewPlaceStepper orientation="vertical" />
+        <>
+            {
+                startClicked ?
+                    <Scrollbars>
+                        <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
+                            <Grid container lg={11} style={{ paddingTop: 30, paddingBottom: 30 }} justifyContent="space-evenly">
+                                {activeStep > 0 && activeStep !== 3 &&
+                                    <Paper sx={{ width: '100%' }}>
+                                        <Grid container sx={{ height: '120px' }} alignItems="center">
+                                            <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
+                                            <NewPlaceStepper
+                                            />
+                                        </Grid>
+                                    </Paper>
+                                }
+                                {activeStep !== 4 &&
+                                    <Grid container item lg={activeStep === 3 || activeStep === 2 ? 6 : 5}>
+                                        {getStepContent(activeStep, false, setActiveStep, setAddressSubmitted)}
+                                    </Grid>
+                                }
+                                {activeStep === 2 &&
+                                    <Grid container item lg={6} sx={{mt: 2}}>
+                                        <LocationContextProvider>
+                                            <LocationDetails setOpen={setOpen} addressSubmitted={addressSubmitted} imageFile={imageFile} />
+                                        </LocationContextProvider>
+                                    </Grid>
+                                }
+                                {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ mt: '20px' }}>
+                                    <Grid container lg={5}>
+                                        <PlaceDetailsCard isEditable />
+                                    </Grid>
+                                    <Grid container lg={5}>
+                                        <Slide in={true} timeout={1000}>
+                                            <div>
+                                                <Card>
+                                                    <CardContent>
+                                                        <Typography variant="h2">
+                                                            Step {activeStep + 1} - Final
+                                                        </Typography>
+                                                        <Grid container sx={{ mt: '10px', mb: '10px' }} lg={11}>
+                                                            <Typography variant="body1" sx={{ mb: '10px' }}>
+                                                                This is the final step of the registration process. On the left side, you can see your place card.
+                                                                You have filled it with your data - now you can make it beautiful by uploading images presenting your place.
+                                                            </Typography>
+                                                            <Typography variant="caption">
+                                                                <span style={{ color: 'red' }}>*</span> Uploading a logo picture is required.<br />
+                                                                <span style={{ color: 'red' }}>*</span> You can upload up to 5 pictures.<br />
+                                                            </Typography>
+                                                            <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
+                                                            <NewPlaceStepper
+                                                                orientation="vertical"
+                                                            />
+                                                        </Grid>
+                                                    </CardContent>
+                                                </Card>
+                                            </div>
+
+                                        </Slide>
+                                    </Grid>
                                 </Grid>
-                            </CardContent>
-                        </Card>
-                    </Slide>
-                </Grid>
-            </Grid >
-        </Grid >
-        // <Grid container lg={10} spacing={2} item style={{ marginBottom: 40, paddingLeft: 10 }} justifyContent="space-evenly">
-        //     <Grid item lg={8}>
-        //         <Slide in={true} timeout={1000}>
-        //             <Card >
-        //                 <CardContent>
-        //                     <Typography variant="h5" >
-        //                         Business chain management
-        //                     </Typography>
-        //                     <Typography variant="subtitle2">
-        //                         Add chain of places to your place assembly
-        //                     </Typography>
-        //                     <Typography style={{ textAlign: 'center', marginTop: 20 }} variant="subtitle1">Are you an owner of a business chain? Add all your locations quickly and conveniently.</Typography>
-        //                     <Grid container justifyContent="center">
-        //                         <Grid item justifyContent="center" container lg={8}>
-        //                             <img src={`${process.env.REACT_APP_BASE_URL}/images/chain.gif`} />
-        //                             <Button style={{ marginBottom: 20 }} fullWidth size="large" variant="contained" color="primary" onClick={() => setDialogOpen(true)}>Let's start</Button>
-        //                         </Grid>
-        //                     </Grid>
-        //                 </CardContent>
-        //             </Card>
-        //         </Slide>
-        //     </Grid>
-        //     <BusinessChainDialog open={dialogOpen} setOpen={setDialogOpen} />
-        // </Grid>
+
+                                }
+                                {activeStep === 1 ?
+                                    <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                                        <TransformWrapper
+                                            limitToBounds={false}
+                                            doubleClick={{
+                                                disabled: true
+                                            }}
+                                            initialPositionY={-370}
+                                            initialPositionX={70}
+                                            initialScale={0.93}
+                                            minScale={0.5}
+                                        >
+                                            <TransformComponent>
+                                                <PlaceDetailsCard />
+                                            </TransformComponent>
+                                        </TransformWrapper>
+                                    </Grid>
+                                    : activeStep !== 2 &&
+                                    <Grid container item lg={5}>
+                                        <Slide in={true} timeout={1000}>
+                                            <div>
+                                                <Card>
+                                                    <CardContent>
+                                                        <Typography variant="h2">
+                                                            Step {activeStep + 1}
+                                                        </Typography>
+                                                        <Grid container style={{ marginTop: 10 }} lg={10}>
+                                                            <Typography variant="body1">
+                                                                {activeStep === 0 ?
+                                                                    'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
+                                                                    'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
+                                                                }
+                                                            </Typography>
+                                                            <NewPlaceStepper
+                                                                orientation="vertical"
+                                                            />
+                                                        </Grid>
+                                                    </CardContent>
+                                                </Card>
+                                            </div>
+
+                                        </Slide>
+                                    </Grid>
+
+                                }
+                            </Grid>
+                        </Grid >
+                    </Scrollbars>
+                    :
+                    <Intro setStartClicked={setStartClicked} />
+            }
+        </>
     );
 }

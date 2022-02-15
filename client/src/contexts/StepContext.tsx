@@ -5,9 +5,17 @@ import { ContextProps } from "./ContextProps";
 
 export const StepContext = createContext<StepContextData | null>(null)
 
+interface Step{
+    title: string,
+    content: string
+}
 
-export const StepContextProvider: FC<ContextProps> = ({ children }) => {
-    const value = useProviderSettings()
+interface Props{
+    steps : Step[]
+}
+
+export const StepContextProvider: FC<Props> = ({ children, steps }) => {
+    const value = useProviderSettings(steps)
 
     return (
         <StepContext.Provider value={value}>
@@ -17,7 +25,7 @@ export const StepContextProvider: FC<ContextProps> = ({ children }) => {
 }
 
 
-const useProviderSettings = () => {
+const useProviderSettings = (steps : Step[]) => {
     const [activeStep, setActiveStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
     const [imageFile, setImageFile] = useState<File | null>(null)
@@ -28,7 +36,8 @@ const useProviderSettings = () => {
         imageFile,
         setImageFile,
         currentStep,
-        setCurrentStep
+        setCurrentStep,
+        steps
 
     }
 }

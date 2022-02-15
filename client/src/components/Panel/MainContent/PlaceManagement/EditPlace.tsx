@@ -70,7 +70,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                             <Typography variant="subtitle2">
                                 Modify your place information
                             </Typography>
-                            <NewPlaceStepper isEditionMode={true} />
+                            {/* <NewPlaceStepper isEditionMode={true} /> */}
                         </CardContent>
                         {activeStep > 0 &&
                             <CardActions>

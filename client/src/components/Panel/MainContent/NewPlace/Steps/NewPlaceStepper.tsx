@@ -3,39 +3,23 @@ import React, { FC, useEffect, useState } from 'react';
 import { useStepContext } from "../../../../../contexts/StepContext";
 
 
-const steps = [
-    {
-        title: 'Name your place',
-        content: 'Provide the name of your business. Your visitors will use it to find your place in the browser',
-    },
-    {
-        title: 'Place details',
-        content: 'Describe your business in few words',
-    },
-    {
-        title: 'Contact details',
-        content: 'Share some contact information with your clients',
-    },
-    {
-        title: 'Address details',
-        content: 'Provide the address of your business in order to appear in our search engines',
-    },
-    {
-        title: 'Image upload',
-        content: 'Represent your business with images',
-    },
-]
+interface Step {
+    title: string,
+    content: string
+}
+
+interface Props {
+    orientation?: any,
+}
 
 
+export const NewPlaceStepper: FC<Props> = (props) => {
 
-
-export const NewPlaceStepper: FC<any> = (props) => {
-
-    const { setActiveStep, activeStep } = useStepContext()
+    const { activeStep, setActiveStep, steps } = useStepContext()
+    const { children, orientation, ...rest } = props
     const [step, setStep] = useState(activeStep)
+
     const handleChange = (index: number) => {
-        console.log(index)
-        console.log(step)
         if (orientation !== 'vertical') {
             if (index < step) {
                 setActiveStep(index)
@@ -50,7 +34,6 @@ export const NewPlaceStepper: FC<any> = (props) => {
         setStep(activeStep)
     }, [activeStep])
 
-    const { children, orientation, ...rest } = props
 
 
     return (
@@ -76,7 +59,6 @@ export const NewPlaceStepper: FC<any> = (props) => {
                                     index < activeStep &&
                                     <Button variant="contained" onClick={() => setActiveStep(index)} sx={{ mt: 1 }}>Jump to step</Button>
                                 }
-                                {/* <Button variant="contained" sx={{ mt: 1, ml: 1 }}>Continue</Button> */}
                             </StepContent>
                         }
                     </Step>

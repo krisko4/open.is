@@ -40,7 +40,7 @@ function getStepContent(step: number, isEditionMode: boolean) {
 
 export const NewPlace: FC = () => {
 
-    const { activeStep, setActiveStep, currentStep } = useStepContext()
+    const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
     const { imageFile, currentPlace } = useCurrentPlaceContext()
     const dispatch = useDispatch()
     const history = useHistory()
@@ -119,10 +119,10 @@ export const NewPlace: FC = () => {
             <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="space-evenly">
                 <Grid container lg={11} style={{ paddingTop: 30, paddingBottom: 30 }} justifyContent="space-evenly">
                     {activeStep > 0 && activeStep !== 3 &&
-                        <Paper sx={{width: '100%'}}>
+                        <Paper sx={{ width: '100%' }}>
                             <Grid container sx={{ height: '120px' }} alignItems="center">
                                 <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
-                                <NewPlaceStepper />
+                                <NewPlaceStepper/>
                             </Grid>
                         </Paper>
                     }
@@ -153,7 +153,9 @@ export const NewPlace: FC = () => {
                                                     <span style={{ color: 'red' }}>*</span> You can upload up to 5 pictures.<br />
                                                 </Typography>
                                                 <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
-                                                <NewPlaceStepper orientation="vertical" />
+                                                <NewPlaceStepper
+                                                    orientation="vertical"
+                                                />
                                             </Grid>
                                             <Grid container sx={{ mt: 2 }}>
                                                 <Dialog
@@ -228,7 +230,9 @@ export const NewPlace: FC = () => {
                                                         'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
                                                     }
                                                 </Typography>
-                                                <NewPlaceStepper orientation="vertical" />
+                                                <NewPlaceStepper
+                                                    orientation="vertical"
+                                                />
                                             </Grid>
                                         </CardContent>
                                     </Card>

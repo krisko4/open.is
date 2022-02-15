@@ -6,16 +6,39 @@ import {
     Grow, Slide, Stack
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 
 
+const steps = [
+    {
+        title: 'Name your place',
+        content: 'Provide the name of your business. Your visitors will use it to find your place in the browser',
+    },
+    {
+        title: 'Place details',
+        content: 'Describe your business in few words',
+    },
+    {
+        title: 'Contact details',
+        content: 'Share some contact information with your clients',
+    },
+    {
+        title: 'Address details',
+        content: 'Provide the address of your business in order to appear in our search engines',
+    },
+    {
+        title: 'Image upload',
+        content: 'Represent your business with images',
+    },
+]
 
 export const NoPlaces: FC = () => {
 
     const { setSelectedOption } = usePanelContext()
+    const [activeStep, setActiveStep] = useState(0)
     const history = useHistory()
     const match = useRouteMatch()
 
@@ -28,7 +51,7 @@ export const NoPlaces: FC = () => {
                             <Typography variant="h2">Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
                             <img src={`https://c.tenor.com/jCmPqgkv0vQAAAAC/hello.gif`} />
                             <Grid item lg={8}>
-                                <Typography variant="subtitle1" sx={{textAlign: 'center' }}>
+                                <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
                                     It seems you have not registered any places yet.
                                     Please press the button below to add your business
                                     and take advantage of functionality provided by our panel.
@@ -47,7 +70,9 @@ export const NoPlaces: FC = () => {
                                     <Typography variant="body1">
                                         In order to register your business, you will have to complete some simple steps:
                                     </Typography>
-                                    <NewPlaceStepper orientation="vertical" />
+                                    <NewPlaceStepper
+                                        orientation="vertical"
+                                    />
                                 </Grid>
                             </CardContent>
                         </Card>

@@ -30,7 +30,7 @@ export const Location: FC<Props> = ({location}) => {
 
 
     return (
-        <Accordion style={{ flexGrow: 1, background: 'white' }}>
+        <Accordion style={{ flexGrow: 1 }}>
             <AccordionSummary
                 expandIcon={<ExpandMore />}
             >
