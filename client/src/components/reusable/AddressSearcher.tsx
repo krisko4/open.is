@@ -11,7 +11,8 @@ import { findByAddress } from "../../requests/PlaceRequests"
 import { styled } from "@mui/styles";
 
 interface Props {
-    setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+    setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
+    errorMessage: string
 }
 
 // const useStyles = makeStyles({
@@ -35,7 +36,7 @@ interface Props {
 
 
 
-export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
+export const AddressSearcher: FC<Props> = ({errorMessage,  setErrorMessage }) => {
 
     const [open, setOpen] = useState(false)
     const { setPlaceCoords } = useMapContext()
@@ -48,7 +49,12 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
     const [loading, setLoading] = useState(false)
 
     const selectPlace = async (place: any) => {
+        setErrorMessage('')
         if (place) {
+            console.log('hello')
+            if(!place.raw.address.postcode){
+                setErrorMessage('This is not a valid address. Please provide a street number.')
+            }
             setSelectedAddress({
                 label: place.label,
                 lng: place.x,
@@ -140,6 +146,7 @@ export const AddressSearcher: FC<Props> = ({ setErrorMessage }) => {
             renderInput={(params) =>
                 <TextField
                     {...params}
+                    error={errorMessage !== ''}
                     variant="outlined"
                     // focused
                     placeholder="Enter the address of your place"

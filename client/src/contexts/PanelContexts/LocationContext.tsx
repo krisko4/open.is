@@ -39,6 +39,7 @@ const useProviderSettings = () => {
         field: '',
         value: ''
     })
+    const [errorsDetected, setErrorsDetected] = useState(false)
     
     // const [businessSummary, setBusinessSummary] = useState({
     //     name: currentPlace.name,
@@ -56,7 +57,9 @@ const useProviderSettings = () => {
         saveButtonClicked,
         setSaveButtonClicked,
         fieldForAll,
-        setFieldForAll
+        setFieldForAll,
+        errorsDetected,
+        setErrorsDetected
     }
 }
 

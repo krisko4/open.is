@@ -45,9 +45,6 @@ export const MapBox: FC<Props> = ({ tileLayer }) => {
     const { chosenCriterias } = useAddressDetailsContext()
     const classes = useStyles()
 
-
-    console.log(tileLayer)
-
     return (
         <MapContainer
             style={{ height: '100%', flexGrow: 1 }}

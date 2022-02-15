@@ -1,6 +1,6 @@
 import { Button, Grid, InputAdornment, TextField, Theme, Tooltip, useTheme } from "@mui/material";
 import { FC, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import PhoneIcon from '@mui/icons-material/Phone'
 import MailIcon from '@mui/icons-material/Mail'
 import LanguageIcon from '@mui/icons-material/Language'
@@ -10,47 +10,15 @@ import { useLocationContext } from "../../../../../../contexts/PanelContexts/Loc
 import { LocationDetails } from "../LocationDetails";
 import ReactPhoneInput from 'react-phone-input-material-ui'
 import { makeStyles } from "@mui/styles";
-import PhoneField from "../PhoneField";
+import { yupToFormErrors } from "formik";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 
-const useStyles = makeStyles((theme: Theme) => (
-    {
-        container: {
-            '& .special-label': {
-                backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))!important',
-                background: `${theme.palette.background.default}!important`,
-                color: `${theme.palette.text.secondary}`,
-                padding: '0 3px!important',
-                left: '10px!important',
-            },
-            '& :hover': {
-                border: `1px solid ${theme.palette.text.primary}!important`
-            },
-            border: `1px solid grey!important`,
-            borderRadius: '2px!important',
-            '& :focus': {
-                border: `2px ${theme.palette.primary.main}!important`
-            },
-        },
-        input: {
-            '& :hover': {
-                border: `1px solid ${theme.palette.text.primary}!important`
-            },
-            border: `1px solid grey!important`,
-            borderRadius: '2px!important',
-            // '& :hover': {
-            //     borderColor: `${theme.palette.text.primary}!important`
-            // },
-            '& :focus': {
-                border: `2px ${theme.palette.primary.main}!important`
-            },
-            // borderColor: `${theme.palette.divider}!important`,
-            width: 'inherit!important',
-            background: 'inherit!important',
-        }
-    }
+const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
+const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
+const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/
+const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/
 
-)
-)
 
 type Inputs = {
     example: string,
@@ -66,19 +34,36 @@ interface Props {
     location: LocationDetails
 }
 
+const schema = yup.object({
+    phone: yup.string().required('Phone number is required'),
+    email: yup.string().email('This is not a valid e-mail address'),
+    website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
+    facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
+    instagram: yup.string().matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
+
+})
+
 export const TestForm: FC<Props> = ({ location }) => {
-    const classes = useStyles()
-    const theme = useTheme()
-    const { setSelectedLocations, saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext()
-    const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } = useForm<Inputs>();
+    const { setSelectedLocations, saveButtonClicked, fieldForAll, setErrorsDetected, setFieldForAll } = useLocationContext()
+    const { control, register, handleSubmit, watch, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
+        resolver: yupResolver(schema),
+        mode: 'onChange'
+    });
     const onSubmit: SubmitHandler<Inputs> = data => {
         console.log(data)
     }
 
     useEffect(() => {
         //@ts-ignore
-        fieldForAll.field && setValue(fieldForAll.field, fieldForAll.value)
+        setValue(fieldForAll.field, fieldForAll.value)
     }, [fieldForAll])
+
+    useEffect(() => {
+        setErrorsDetected(!isValid)
+        console.log(isValid)
+        console.log(errors)
+
+    }, [isValid])
 
     useEffect(() => {
         setSelectedLocations(locations => {
@@ -101,19 +86,25 @@ export const TestForm: FC<Props> = ({ location }) => {
                             size="small"
                             style={{ marginTop: 15 }}
                             variant="outlined"
-                            onClick={() => setFieldForAll({ field: 'phone', value: getValues('phone') })}
-
+                            onClick={() => { setFieldForAll({ field: 'phone', value: getValues('phone') }) }}
                         >Phone number
                         </Button>
                     </Tooltip>
                 </Grid>
-                <Grid item lg={5} >
-                    <ReactPhoneInput
-                        component={TextField}
-                        {...register('phone')}
-                        value={getValues('phone')}
-                        onChange={(phone: any) => setValue('phone', phone)}
+                <Grid item lg={6} >
+                    <Controller
+                        name="phone"
+                        control={control}
+                        render={
+                            ({ field}) =>
+                                <ReactPhoneInput
+                                    defaultCountry={'pl'}
+                                    {...field}
+                                    component={TextField}
 
+                                    label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
+                                />
+                        }
                     />
 
 
@@ -140,15 +131,19 @@ export const TestForm: FC<Props> = ({ location }) => {
                             E-mail address</Button>
                     </Tooltip>
                 </Grid>
-                <Grid item lg={5}>
+                <Grid item lg={6}>
                     <TextField
+                        helperText={errors.email?.message}
+                        error={errors.email?.message ? true : false}
                         label="example@mail.com"
                         {...register('email')}
+                        placeholder="E-mail address"
                         InputProps={{
                             startAdornment: <InputAdornment position="start"><MailIcon color="primary" /></InputAdornment>
                         }}
                         fullWidth
                     />
+
                 </Grid>
             </Grid>
             <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
@@ -162,9 +157,12 @@ export const TestForm: FC<Props> = ({ location }) => {
                         >Website</Button>
                     </Tooltip>
                 </Grid>
-                <Grid item lg={5}>
+                <Grid item lg={6}>
                     <TextField
+                        helperText={errors.website?.message}
+                        error={errors.website?.message ? true : false}
                         label="https://example.com"
+                        placeholder="Personal website"
                         {...register('website')}
                         fullWidth
                         InputProps={{
@@ -185,13 +183,29 @@ export const TestForm: FC<Props> = ({ location }) => {
                         >Facebook</Button>
                     </Tooltip>
                 </Grid>
-                <Grid item lg={5}>
+                <Grid item lg={6}>
                     <TextField
                         label="https://facebook.com/my-profile"
+                        helperText={errors.facebook?.message}
+                        error={errors.facebook?.message ? true : false}
                         {...register('facebook')}
+                        placeholder="my-profile"
                         fullWidth
+                        inputProps={{
+                            maxLength: 50
+                        }}
                         InputProps={{
-                            startAdornment: <InputAdornment position="start"><FacebookIcon color="primary" /></InputAdornment>
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <p style={{ color: 'lightgrey' }}>https://facebook.com/</p>
+                                </InputAdornment>
+                            ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <FacebookIcon color="primary" />
+                                </InputAdornment>
+
+                            )
                         }}
                     />
                 </Grid>
@@ -207,13 +221,29 @@ export const TestForm: FC<Props> = ({ location }) => {
                         >Instagram</Button>
                     </Tooltip>
                 </Grid>
-                <Grid item lg={5}>
+                <Grid item lg={6}>
                     <TextField
                         label="https://instagram.com/my-profile"
                         {...register('instagram')}
+                        helperText={errors.instagram?.message}
+                        error={errors.instagram?.message ? true : false}
                         fullWidth
+                        placeholder="my-profile"
+                        inputProps={{
+                            maxLength: 50
+                        }}
+                        // focused
                         InputProps={{
-                            startAdornment: <InputAdornment position="start"><InstagramIcon color="primary" /></InputAdornment>
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <p style={{ color: 'lightgrey' }}>https://instagram.com/</p>
+                                </InputAdornment>
+                            ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <InstagramIcon color="primary" />
+                                </InputAdornment>
+                            )
                         }}
                     />
                 </Grid>

@@ -19,14 +19,12 @@ interface Props {
 export const LocationSelection: FC<Props> = ({ setCurrentStep, setAddressSubmitted }) => {
 
     return <>
-        <Grid item container alignItems="center" direction="column">
+        <Grid container alignItems="center" justifyContent="center">
             <MapContextProvider isMarkerDraggable={true}>
                 <AddressDetailsContextProvider isEditionMode={true}>
-                    <Grid item container style={{ marginTop: 20 }}>
-                        <Grid container item lg={11}>
-                            <AddressDetails setAddressSubmitted={setAddressSubmitted} />
-                        </Grid>
-                    </Grid >
+                    <Grid container item justifyContent="center" lg={11}>
+                        <AddressDetails setAddressSubmitted={setAddressSubmitted} />
+                    </Grid>
                 </AddressDetailsContextProvider>
             </MapContextProvider>
         </Grid>

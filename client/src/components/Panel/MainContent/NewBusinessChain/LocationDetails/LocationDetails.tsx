@@ -9,6 +9,7 @@ import { registerNewPlace } from "../../../../../requests/PlaceRequests"
 import { useCustomSnackbar } from "../../../../../utils/snackbars"
 import { LoadingButton } from "../../../../reusable/LoadingButton"
 import { Location } from './Location'
+import { animateScroll as scroll } from 'react-scroll'
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -35,7 +36,7 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
     const [loading, setLoading] = useState(false)
     const { enqueueInfoSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const history = useHistory()
-    const { setSaveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
+    const { setSaveButtonClicked, selectedLocations, setSelectedLocations, errorsDetected } = useLocationContext()
     const [businessSummary, setBusinessSummary] = useState({
         name: currentPlace.name,
         subtitle: currentPlace.subtitle,
@@ -81,8 +82,9 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
 
 
     const handleSaveButtonClick = () => {
+        console.log(businessSummary)
         setSaveButtonClicked(state => !state)
-        setDialogOpen(true)
+        // setDialogOpen(true)
     }
 
     useEffect(() => {
@@ -90,7 +92,6 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
             isFirstRender.current = false
             return
         }
-        console.log('hallko')
 
         if (selectedLocations.some(place => place.address === currentPlace.address)) {
             enqueueInfoSnackbar('You have already selected this location.')
@@ -121,8 +122,8 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
     }, [selectedLocations])
 
     return (
-        <Grid container style={{ height: '100%' }}>
-            <Paper>
+        <Grid container style={{ height: '100%', paddingTop: 1 }}>
+            <Paper square sx={{ flexGrow: 1, height: '100%' }}>
                 {selectedLocations.length === 0 ?
                     <Fade in={true} timeout={1000}>
                         <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
@@ -134,42 +135,33 @@ export const LocationDetails: FC<Props> = ({ setOpen, addressSubmitted, imageFil
                     </Fade>
                     : <>
                         <Grid container style={{ height: '90%' }}>
-                            <div style={{ flexGrow: 1 }}>
-                                {
-                                    selectedLocations.map((location) =>
-                                        <Grid item key={location.address} style={{ width: '100%' }}>
-                                            <Location
-                                                location={location}
-                                            />
-                                        </Grid>
-                                    )
-                                }
-                            </div>
+                            <Scrollbars>
+                                <div style={{ flexGrow: 1 }}>
+                                    {
+                                        selectedLocations.map((location) =>
+                                            <Grid item key={location.address} style={{ width: '100%' }}>
+                                                <Location
+                                                    location={location}
+                                                />
+                                            </Grid>
+                                        )
+                                    }
+                                </div>
+                            </Scrollbars>
                         </Grid>
-                        {/* <Grid container style={{ height: '10%' }}>
-                        <Paper elevation={5} style={{ flexGrow: 1 }}>
-                            <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
-                                <Button style={{ marginRight: 20 }} onClick={handleSaveButtonClick} variant="contained" color="primary">Register my business</Button>
-                            </Grid>
-                        </Paper>
-                    </Grid>
-                    <Dialog TransitionComponent={Transition} open={dialogOpen}>
-                        <DialogTitle>
-                            Business registration confirmation
-                        </DialogTitle>
-                        <DialogContent>
-                            You have selected <b>{selectedLocations.length}</b> {selectedLocations.length > 1 ? 'locations' : 'location'}. Are you sure you would like to register your business?
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setDialogOpen(false)} color="primary">Cancel</Button>
-                            <LoadingButton loading={loading} disabled={loading} onClick={() => registerNewBusiness()} color="primary">Yes, I am sure</LoadingButton>
-                        </DialogActions>
-                    </Dialog> */}
+                        <Grid container style={{ height: '10%' }}>
+                            <Paper elevation={3} style={{ flexGrow: 1 }}>
+                                <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
+                                    <Button disabled={errorsDetected} style={{ marginRight: 20 }} onClick={handleSaveButtonClick} variant="contained" color="primary">Continue</Button>
+                                </Grid>
+                            </Paper>
+                        </Grid>
                     </>
                 }
 
             </Paper>
 
         </Grid >
+
     );
 }

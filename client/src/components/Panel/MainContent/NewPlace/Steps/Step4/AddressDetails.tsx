@@ -9,7 +9,7 @@ import { getPlaceByLatLng } from "../../../../../../requests/PlaceRequests";
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import { MapBox } from "../../../../../Browser/Places/MapBox/MapBox";
 import { AddressSearcher } from "../../../../../reusable/AddressSearcher";
-import { LoadingButton } from "../../../../../reusable/LoadingButton";
+import { LoadingButton } from "@mui/lab";
 
 interface Props {
     setActiveStep?: React.Dispatch<React.SetStateAction<number>>,
@@ -36,9 +36,9 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
     const submitAddress = async () => {
         setSubmitLoading(true)
         try {
-            console.log(selectedAddress)
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
             if (!selectedAddress.postcode) {
+                console.log('no postcode')
                 setErrorMessage('This is not a valid address. Please provide a street number.')
                 return
             }
@@ -67,7 +67,6 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
 
 
     useEffect(() => {
-        console.log(selectedAddress)
         if (currentPlace.address !== '') {
             setSelectedAddress({
                 label: currentPlace.address,
@@ -90,17 +89,17 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
                 {selectedAddress.postcode && <Alert style={{ marginBottom: 20 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
             </Grid>
             <Grid item lg={12}>
-                <AddressSearcher setErrorMessage={setErrorMessage} />
+                <AddressSearcher errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
             </Grid>
             <Fade in={errorMessage !== ''}>
                 <Grid item lg={12} style={{ textAlign: 'center'}}>
                     <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
                 </Grid>
             </Fade>
-            <Grid style={{ height: 500, marginTop: 20 }} container>
+            <Grid style={{ height: 500, marginTop: 10 }} container>
                 <MapBox tileLayer={tileLayer} />
             </Grid>
-            <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10, marginBottom: 10 }} color="primary">Submit</LoadingButton>
+            <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</LoadingButton>
         </Grid>
     );
 }
