@@ -92,7 +92,7 @@ export const NewPlace: FC = () => {
         registerNewPlace(formData).then(res => {
             console.log(res.data)
             const newPlace = res.data.place
-            newPlace.img = res.data.place.img
+            newPlace.logo = res.data.place.logo
             newPlace.visits = []
             newPlace.opinions = []
             newPlace.news = []

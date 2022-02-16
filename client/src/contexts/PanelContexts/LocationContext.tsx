@@ -17,10 +17,15 @@ import { LocationProps } from "./CurrentPlaceContext";
 // }
 
 
+
 export const LocationContext = createContext<LocationContextData | null>(null)
 
+interface Props{
 
-export const LocationContextProvider: FC = ({ children }) => {
+}
+
+
+export const LocationContextProvider: FC<Props> = ({ children }) => {
 
     const state = useProviderSettings()
 
@@ -40,7 +45,6 @@ const useProviderSettings = () => {
         field: '',
         value: ''
     })
-    const [errorsDetected, setErrorsDetected] = useState(false)
     
     // const [businessSummary, setBusinessSummary] = useState({
     //     name: currentPlace.name,
@@ -59,8 +63,6 @@ const useProviderSettings = () => {
         setSaveButtonClicked,
         fieldForAll,
         setFieldForAll,
-        errorsDetected,
-        setErrorsDetected
     }
 }
 

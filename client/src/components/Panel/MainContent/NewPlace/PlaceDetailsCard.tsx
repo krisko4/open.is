@@ -61,6 +61,11 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
     }, [logo])
 
 
+    useEffect(() => {
+        console.log(currentPlace)
+    }, [])
+
+
     const icons = [
         {
             icon: <PhoneIcon color="primary" />,

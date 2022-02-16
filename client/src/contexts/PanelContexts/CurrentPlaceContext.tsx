@@ -62,6 +62,7 @@ export interface LocationProps {
     lat: number,
     lng: number,
     phone: string,
+    isValid? : boolean,
     email: string,
     website: string,
     instagram: string,
@@ -169,7 +170,7 @@ type CurrentPlaceContextData = ReturnType<typeof useProviderSettings>
 
 export const useCurrentPlaceContext = () => {
     const currentPlaceContext = useContext(CurrentPlaceContext)
-    if (!currentPlaceContext) throw new Error('CurrentPlaceContextProvider should be used inside CurrentPlaceContext!')
+    if (!currentPlaceContext) throw new Error('CurrentPlaceContext should be used inside CurrentPlaceContextProvider!')
     return currentPlaceContext
 
 }

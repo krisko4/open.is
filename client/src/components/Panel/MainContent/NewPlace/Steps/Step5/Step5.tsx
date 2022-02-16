@@ -1,87 +1,149 @@
-import { Grid, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
-import { ImageList, ImageListItem } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useStepContext } from "../../../../../../contexts/StepContext";
-import { ImageUpload } from "../../../../../reusable/ImageUpload";
+import { LoadingButton } from "@mui/lab"
+import { Slide, Card, CardContent, Typography, Grid, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Tooltip, SlideProps } from "@mui/material"
+import React from "react"
+import { FC, useState } from "react"
+import { useDispatch } from "react-redux"
+import { useHistory } from "react-router-dom"
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext"
+import { useStepContext } from "../../../../../../contexts/StepContext"
+import { registerNewPlace } from "../../../../../../requests/PlaceRequests"
+import { setPlaces } from "../../../../../../store/actions/setPlaces"
+import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
+import { useCustomSnackbar } from "../../../../../../utils/snackbars"
+import { NewPlaceStepper } from "../NewPlaceStepper"
 
-const useStyles = makeStyles({
-    imageContainer: {
-        height: '100%',
-        '&:hover .uploader': {
-            display: 'flex'
-        },
-        '& .uploader': {
-            display: 'none',
-            height: '100%'
-        }
-    },
-})
-
+const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 export const Step5: FC = () => {
+    const [isOpen, setOpen] = useState(false)
+    const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
+    const { imageFile, currentPlace } = useCurrentPlaceContext()
+    const { selectedLocations } = useLocationContext()
+    const [isLoading, setLoading] = useState(false)
+    const [tooltipOpen, setTooltipOpen] = useState(false)
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const places = usePlacesSelector()
+    const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+    const handleClose = () => {
+        setTooltipOpen(false)
+    }
 
 
-    const classes = useStyles()
+    const registerPlace = () => {
+        console.log(currentPlace)
+        console.log(selectedLocations)
+        setLoading(true)
+        const formData = new FormData()
+        const images: any = currentPlace.images.filter(image => image.file).map(image => image.file)
+        const place = {
+            logo: imageFile as File,
+            name: currentPlace.name,
+            subtitle: currentPlace.subtitle,
+            description: currentPlace.description,
+            type: currentPlace.type as string,
+        }
+        const locations = selectedLocations.map(location => {
+            delete location['isValid']
+            location.facebook = `https://facebook.com/` + location.facebook
+            location.instagram = `https://instagram.com/` + location.instagram
+            return location
+        }
+        )
+        console.log(locations)
 
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const { imageFile, setImageFile } = useStepContext()
-    const [img, setImg] = useState<any>(currentPlace.logo)
+        let key: keyof typeof place
+        for (key in place) formData.append(key, place[key])
+        formData.append('locations', JSON.stringify(locations))
+        for (const image of images) {
+            formData.append('images', image)
+        }
+        registerNewPlace(formData).then(res => {
+            console.log(res.data)
+            const newPlace = res.data.place
+            newPlace.logo = res.data.place.logo
+            newPlace.visits = []
+            newPlace.opinions = []
+            newPlace.news = []
+            places.push(newPlace)
+            dispatch(setPlaces(places))
+            enqueueSuccessSnackbar('You have successfully registered new place')
+            history.push(`dashboard`)
+        }).catch(err => {
+            console.log(err)
+            enqueueErrorSnackbar()
+        }).finally(() => {
+            setLoading(false)
+            setOpen(false)
+        }
+        )
 
-
-    useEffect(() => {
-        const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.logo = img
-        setCurrentPlace(newCurrentPlace)
-    }, [img])
-
-
-
+    }
+    const handleOpen = () => {
+        if (!currentPlace.logo) {
+            setTooltipOpen(true)
+        }
+    }
 
     return (
-        <Grid style={{marginTop: 20}} container justifyContent="center" >
-            <Grid item lg={12} style={{ textAlign: 'center' }}>
-                <Typography variant="h3">Step 5</Typography>
-            </Grid>
-            <Grid item lg={12} style={{ textAlign: 'center' }}>
-                <Typography variant="subtitle1">Representative image</Typography>
+        <Slide in={true} direction="left" timeout={1000}>
+            <div>
+                <Card>
+                    <CardContent>
+                        <Typography variant="h2">
+                            Step {activeStep + 1} - Final
+                        </Typography>
+                        <Grid container sx={{ mt: '10px', mb: '10px' }} lg={11}>
+                            <Typography variant="body1" sx={{ mb: '10px' }}>
+                                This is the final step of the registration process. On the left side, you can see an example place card of one of your localizations.
+                                You have filled it with your data - now you can make it beautiful by uploading images presenting your business.
+                            </Typography>
+                            <Typography variant="caption">
+                                <span style={{ color: 'red' }}>*</span> Uploading a logo picture is required.<br />
+                                <span style={{ color: 'red' }}>*</span> You can upload up to 5 pictures.<br />
+                            </Typography>
+                            <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
+                            <NewPlaceStepper
+                                orientation="vertical"
+                            />
+                        </Grid>
+                        <Grid container sx={{ mt: 2 }}>
+                            <Dialog
+                                open={isOpen}
+                                TransitionComponent={Transition}
+                            >
+                                <DialogTitle>Summary</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Are you sure you would like to finish registration and save your place?
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={registerPlace}>Yes, I am sure</LoadingButton>
+                                </DialogActions>
+                            </Dialog>
 
-            </Grid>
-            <Grid item lg={9}>
-                <Typography style={{ marginTop: 20, textAlign: 'center' }} variant="subtitle1">
-                    In order for your place to stand out, please upload an image related to your business.
-                    Uploading a logo of your brand might be the best idea.
-                </Typography>
-            </Grid>
-            <Grid item container justifyContent="center" style={{ marginTop: 20 }} lg={12}>
-                <Grid item lg={7}>
-                    <ImageUpload name="test" img={img} setImg={setImg} setImageFile={setImageFile} />
-                    <Grid item container direction="column" style={{ textAlign: 'center', marginTop: 10, marginBottom: 20 }}>
-                        <Typography style={{ marginTop: 10 }} variant="caption"><span style={{ color: 'red' }}>*</span>At least one representative image is required.</Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item lg={9}>
-                <Typography style={{ marginTop: 20, textAlign: 'center' }} variant="subtitle1">
-                    You can also upload some pictures presenting your place indoors or outdoors. 
-                    If you don't want to do it now, you will be able to share your pictures later.
-                </Typography>
-            </Grid>
-            <ImageList style={{height: 200}}>
-                <ImageListItem>
-                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
-                </ImageListItem>
-                <ImageListItem>
-                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
-                </ImageListItem>
-                <ImageListItem>
-                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
-                </ImageListItem>
-                <ImageListItem>
-                    <img src="https://d-art.ppstatic.pl/kadry/k/r/a0/5e/618a4faca96dc_o_full.jpg" />
-                </ImageListItem>
-            </ImageList>
-        </Grid>
-    );
+                            <Tooltip open={tooltipOpen} onClose={handleClose} onOpen={handleOpen} title="Please upload a logo picture">
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    disabled={!currentPlace.logo}
+                                    size="large"
+                                    onClick={() => setOpen(true)}
+
+                                > Finish registration
+                                </Button>
+                            </Tooltip>
+                        </Grid>
+                    </CardContent>
+                </Card>
+            </div>
+
+        </Slide>
+
+    )
 }

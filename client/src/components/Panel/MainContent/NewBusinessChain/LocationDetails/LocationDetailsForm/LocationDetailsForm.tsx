@@ -1,6 +1,6 @@
 import { Button, Grid, InputAdornment, TextField, Theme, Tooltip, useTheme } from "@mui/material";
 import { useRef, FC, useEffect } from "react";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { SubmitHandler, useForm, Controller, useWatch } from "react-hook-form";
 import PhoneIcon from '@mui/icons-material/Phone'
 import MailIcon from '@mui/icons-material/Mail'
 import LanguageIcon from '@mui/icons-material/Language'
@@ -34,7 +34,8 @@ type Inputs = {
 };
 
 interface Props {
-    location: LocationProps
+    location: LocationProps,
+    setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const schema = yup.object({
@@ -46,17 +47,17 @@ const schema = yup.object({
 
 })
 
-export const LocationDetailsForm: FC<Props> = ({ location }) => {
-    const { setSelectedLocations, saveButtonClicked, fieldForAll, setErrorsDetected, setFieldForAll } = useLocationContext()
-    const {setActiveStep} = useStepContext()
+export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateChanged }) => {
+    const { saveButtonClicked, fieldForAll, setFieldForAll, selectedLocations } = useLocationContext()
     const isFirstRender = useRef(true)
+    const isFirstFieldForAllRender = useRef(true)
 
 
-    const { control, register, handleSubmit, watch, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
+    const { control, register, handleSubmit, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
         resolver: yupResolver(schema),
         mode: 'onChange',
         defaultValues: {
-            phone : location.phone,
+            phone: location.phone,
             email: location.email,
             website: location.website,
             facebook: location.facebook,
@@ -67,25 +68,29 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
         console.log(data)
     }
 
-    useEffect(() => {
-        console.log(location)
-    }, [])
 
     useEffect(() => {
+        if (isFirstFieldForAllRender.current) {
+            isFirstFieldForAllRender.current = false
+            return
+        }
         //@ts-ignore
-        fieldForAll.field && setValue(fieldForAll.field, fieldForAll.value)
+        fieldForAll.field && setValue(fieldForAll.field, fieldForAll.value, {shouldValidate: true})
     }, [fieldForAll])
 
     useEffect(() => {
-        setErrorsDetected(!isValid)
+        location.isValid = isValid
+        setValidationStateChanged(state => !state)
+        // locationErrors.splice(index, 0, isValid)
     }, [isValid])
 
     useEffect(() => {
-        setSelectedLocations(locations => {
-            let foundLocation = locations.find(loc => loc === location)
-            foundLocation = Object.assign(location, getValues())
-            return [...locations]
-        })
+        if (isFirstRender.current) {
+            console.log('first')
+            isFirstRender.current = false
+            return
+        }
+        location = Object.assign(location, getValues())
     }, [saveButtonClicked])
 
 
@@ -100,6 +105,7 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
                         <Button
                             size="small"
                             style={{ marginTop: 15 }}
+                            disabled={errors.phone?.message ? true : false}
                             variant="outlined"
                             onClick={() => { setFieldForAll({ field: 'phone', value: getValues('phone') }) }}
                         >Phone number
@@ -111,7 +117,7 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
                         name="phone"
                         control={control}
                         render={
-                            ({ field}) =>
+                            ({ field }) =>
                                 <ReactPhoneInput
                                     defaultCountry={'pl'}
                                     {...field}
@@ -139,6 +145,7 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
                         <Button
+                            disabled={errors.email?.message ? true : false}
                             size="small"
                             style={{ marginTop: 15 }}
                             variant="outlined"
@@ -166,6 +173,7 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
                     <Tooltip title="Set value for all locations">
                         <Button
                             size="small"
+                            disabled={errors.website?.message ? true : false}
                             style={{ marginTop: 15 }}
                             variant="outlined"
                             onClick={() => setFieldForAll({ field: 'website', value: getValues('website') })}
@@ -194,6 +202,7 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
                             size="small"
                             style={{ marginTop: 15 }}
                             variant="outlined"
+                            disabled={errors.facebook?.message ? true : false}
                             onClick={() => setFieldForAll({ field: 'facebook', value: getValues('facebook') })}
                         >Facebook</Button>
                     </Tooltip>
@@ -232,6 +241,7 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
                             size="small"
                             style={{ marginTop: 15 }}
                             variant="outlined"
+                            disabled={errors.instagram?.message ? true : false}
                             onClick={() => setFieldForAll({ field: 'instagram', value: getValues('instagram') })}
                         >Instagram</Button>
                     </Tooltip>

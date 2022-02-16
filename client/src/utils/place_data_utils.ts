@@ -50,7 +50,6 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
         const returnedVal: Image = {
             img: image as string,
             file: null
-
         }
         return returnedVal
         
@@ -69,6 +68,5 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
 
         }
     })
-    console.log(currentPlaces)
     return currentPlaces
 }

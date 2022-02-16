@@ -4,29 +4,25 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { FC } from "react"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
 import { LocationDetails } from "./LocationDetails"
-import { LocationDetailsForm}  from './LocationDetailsForm/LocationDetailsForm'
+import { LocationDetailsForm } from './LocationDetailsForm/LocationDetailsForm'
 import { LocationProps } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 
 interface Props {
-    location: LocationProps
+    location: LocationProps,
+    setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
+export const Location: FC<Props> = ({ location, setValidationStateChanged}) => {
 
-const handleSubmit = () => {
-    console.log('hello')
-}
-
-
-export const Location: FC<Props> = ({location}) => {
-
-    const {setSelectedLocations} = useLocationContext() 
+    let { setSelectedLocations, selectedLocations } = useLocationContext()
 
     const deleteLocation = (e: any) => {
         e.preventDefault()
-        setSelectedLocations(locations => {
-            return locations.filter(loc => location !== loc)
-        })
+        const newSelectedLocations = selectedLocations.filter(loc => location !== loc)
+        // setLocations([...newSelectedLocations])
+        setValidationStateChanged((state) => !state)
+        setSelectedLocations([...newSelectedLocations])
     }
 
 
@@ -43,7 +39,9 @@ export const Location: FC<Props> = ({location}) => {
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
-                <LocationDetailsForm location={location}/>
+                <LocationDetailsForm
+                    setValidationStateChanged={ setValidationStateChanged}
+                    location={location} />
             </AccordionDetails>
         </Accordion >
     );

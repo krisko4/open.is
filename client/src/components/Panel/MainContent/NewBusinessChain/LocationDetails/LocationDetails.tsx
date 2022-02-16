@@ -16,56 +16,37 @@ import { useStepContext } from "../../../../../contexts/StepContext"
 
 interface Props {
     addressSubmitted: boolean,
+    // setLocations: React.Dispatch<React.SetStateAction<LocationProps[]>>,
+    // locations: LocationProps[]
 }
 
 export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
 
     const { currentPlace } = useCurrentPlaceContext()
     const { setActiveStep } = useStepContext()
-    const isFirstRender = useRef(true)
+    const isFirstRenderAddress = useRef(true)
+    const isFirstRenderSave = useRef(true)
     const { enqueueInfoSnackbar } = useCustomSnackbar()
-    const [locationCount, setLocationCount] = useState(0)
-    const { setSaveButtonClicked, selectedLocations, setSelectedLocations, errorsDetected } = useLocationContext()
+    const { setSaveButtonClicked, saveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
+    const [validationStateChanged, setValidationStateChanged] = useState(false)
+    const [isValid, setValid] = useState(false)
 
     useEffect(() => {
-        if (locationCount !== selectedLocations.length) {
+        setValid(!selectedLocations.some(loc => !loc.isValid))
+    }, [validationStateChanged])
+
+
+    useEffect(() => {
+        if (isFirstRenderSave.current) {
+            isFirstRenderSave.current = false
             return
         }
-        if (locationCount > 0) {
-            setLocationCount(0)
-            setActiveStep(step => step + 1)
-        }
+        setActiveStep(step => step + 1)
+    }, [saveButtonClicked])
 
-    }, [locationCount])
 
     // const registerNewBusiness = async () => {
 
-    //     setLoading(true)
-    //     const formData = new FormData()
-    //     const { locations } = businessSummary
-    //     businessSummary.img = imageFile
-    //     //@ts-ignore
-    //     delete businessSummary['locations']
-    //     console.log(locations)
-    //     console.log(businessSummary)
-    //     let key: keyof typeof businessSummary
-    //     //@ts-ignore
-    //     for (key in businessSummary) formData.append(key, businessSummary[key])
-    //     formData.append('locations', JSON.stringify(locations))
-    //     try {
-    //         const res = await registerNewPlace(formData)
-    //         console.log(res.data)
-    //         enqueueSuccessSnackbar('You have successfully registered your business chain')
-    //         setDialogOpen(false)
-    //         setOpen(false)
-    //         history.push('dashboard')
-
-    //     } catch (err) {
-    //         console.log(err)
-    //         enqueueErrorSnackbar()
-    //     } finally {
-    //         setLoading(false)
-    //     }
 
 
     // }
@@ -75,8 +56,8 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
     }
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false
+        if (isFirstRenderAddress.current) {
+            isFirstRenderAddress.current = false
             return
         }
         if (selectedLocations.some(place => place.address === currentPlace.address)) {
@@ -98,6 +79,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
     }, [addressSubmitted])
 
 
+
     return (
         <Grid container style={{ height: '100%', paddingTop: 1 }}>
             <Paper square sx={{ flexGrow: 1, height: '100%' }}>
@@ -115,9 +97,10 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
                             <Scrollbars>
                                 <div style={{ flexGrow: 1 }}>
                                     {
-                                        selectedLocations.map((location) =>
+                                        selectedLocations.map((location, index) =>
                                             <Grid item key={location.address} style={{ width: '100%' }}>
                                                 <Location
+                                                    setValidationStateChanged={setValidationStateChanged}
                                                     location={location}
                                                 />
                                             </Grid>
@@ -129,7 +112,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
                         <Grid container style={{ height: '10%' }}>
                             <Paper elevation={3} style={{ flexGrow: 1 }}>
                                 <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
-                                    <Button disabled={errorsDetected} style={{ marginRight: 20 }} onClick={handleClick} variant="contained" color="primary">Continue</Button>
+                                    <Button disabled={!isValid} style={{ marginRight: 20 }} onClick={handleClick} variant="contained" color="primary">Continue</Button>
                                 </Grid>
                             </Paper>
                         </Grid>

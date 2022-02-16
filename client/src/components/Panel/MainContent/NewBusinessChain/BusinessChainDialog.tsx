@@ -65,7 +65,7 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                         </Scrollbars>
                     </Grid>
                     <Grid item container lg={6}>
-                        <Scrollbars>
+                        {/* <Scrollbars>
                             {currentStep === Steps.BUSINESS_INFORMATION ?
                                 <Grid container justifyContent="center">
                                     <Grid item lg={11} style={{ marginTop: 20, marginBottom: 20 }}>
@@ -74,10 +74,10 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
                                 </Grid>
                                 :
                                 <LocationContextProvider>
-                                    {/* <LocationDetails setOpen={setOpen} addressSubmitted={addressSubmitted} /> */}
+                                     <LocationDetails setOpen={setOpen} addressSubmitted={addressSubmitted} /> 
                                 </LocationContextProvider>
                             }
-                        </Scrollbars>
+                        </Scrollbars> */}
                     </Grid>
                 </CurrentPlaceContextProvider>
             </Grid >

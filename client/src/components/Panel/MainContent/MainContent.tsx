@@ -61,7 +61,9 @@ export const MainContent: FC = () => {
         >
           <CurrentPlaceContextProvider>
             <StepContextProvider steps={businessChainSteps}>
+              <LocationContextProvider>
                 <NewBusinessChain />
+              </LocationContextProvider>
             </StepContextProvider>
           </CurrentPlaceContextProvider>
         </Route>
