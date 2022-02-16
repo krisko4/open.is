@@ -93,34 +93,6 @@ export const LeftNavigation: FC = () => {
                         <MyPlaces />
                         <MyBusinessChains />
                     </List>
-
-                    {/* <ListItem
-                        button
-                        onClick={() => places.length > 0 ? history.push(`${match.url}/dashboard`) : history.push(`${match.url}`)}
-                    >
-                        <ListItemIcon>
-                            <DashboardIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText error="Dashboard" />
-                    </ListItem>
-                    <ListItem button onClick={() => history.push(`${match.url}/account`)}>
-                        <ListItemIcon>
-                            <SettingsIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText error="My account" />
-                    </ListItem>
-                    <ListItem button onClick={() => history.push(`${match.url}/new-place`)}>
-                        <ListItemIcon>
-                            <AddIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText error="New place" />
-                    </ListItem>
-                    <ListItem button onClick={() => history.push(`${match.url}/new-business-chain`)}>
-                        <ListItemIcon>
-                            <CloudCircle color="primary" />
-                        </ListItemIcon>
-                        <ListItemText error="New business chain" />
-                    </ListItem> */}
                 </Scrollbars>
             </Paper>
         </Grid >

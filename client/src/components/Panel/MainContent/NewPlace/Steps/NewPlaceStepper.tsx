@@ -31,9 +31,14 @@ export const NewPlaceStepper: FC<Props> = (props) => {
     }
 
     useEffect(() => {
+        // if(activeStep === 3){
+        //     setStep(activeStep - 1)
+        //     return
+        // }
         setStep(activeStep)
     }, [activeStep])
 
+    
 
 
     return (

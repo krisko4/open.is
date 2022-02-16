@@ -6,6 +6,7 @@ import { useLoginContext } from "../../../contexts/LoginContext";
 import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { OpeningHoursForm } from './OpeningHoursForm';
 import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
+import { useColorMode } from '../../../contexts/ColorModeContext';
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
@@ -21,6 +22,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
     const { userData } = useLoginContext()
     const openingHours = currentPlace && currentPlace.openingHours
     const [dialogOpen, setDialogOpen] = useState(false)
+    const {mode} = useColorMode()
 
 
     return (
@@ -38,7 +40,7 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
 
                     <Grid container style={{ flexGrow: 1 }} justifyContent="center" alignItems="center" >
                         {currentPlace.alwaysOpen ? <>
-                            <img style={{width: '100%'}} src="https://cdn.dribbble.com/users/1354693/screenshots/10231698/open_247.gif" />
+                            <img style={{width: '100%'}} src={mode === 'light' ? `${process.env.REACT_APP_BASE_URL}/images/open24light.png` : `${process.env.REACT_APP_BASE_URL}/images/open24dark.gif`} />
                         </> :
                             <Grid item lg={10}>
                                 <OpeningHoursCard openingHours={openingHours} />

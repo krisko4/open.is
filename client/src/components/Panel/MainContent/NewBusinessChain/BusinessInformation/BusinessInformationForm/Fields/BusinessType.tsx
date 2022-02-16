@@ -42,7 +42,7 @@ export const BusinessType = () => {
 
     return (
         <Autocomplete
-            freeSolo
+            // freeSolo
             options={businessTypes}
             fullWidth={true}
             // classes={classes}

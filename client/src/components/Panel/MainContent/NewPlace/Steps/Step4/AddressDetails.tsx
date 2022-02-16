@@ -86,7 +86,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
     return (
         <Grid container justifyContent="center">
             <Grid container justifyContent="center">
-                {selectedAddress.postcode && <Alert style={{ marginBottom: 20 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
+                {selectedAddress.postcode && <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
             </Grid>
             <Grid item lg={12}>
                 <AddressSearcher errorMessage={errorMessage} setErrorMessage={setErrorMessage} />

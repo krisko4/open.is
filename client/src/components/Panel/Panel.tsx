@@ -48,7 +48,7 @@ export const Panel: FC = () => {
                 container direction="column">
                 {loading ?
                     <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                        <CircularProgress style={{ color: 'white' }} />
+                        <CircularProgress size={100} />
                     </Grid> :
                     <Grid container direction="row" sx={{ flex: '1 1 auto' }}>
                         <LeftNavigation />

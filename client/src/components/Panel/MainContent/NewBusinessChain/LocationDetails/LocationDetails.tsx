@@ -12,6 +12,7 @@ import { Location } from './Location'
 import { animateScroll as scroll } from 'react-scroll'
 import { RawPlaceDataProps } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 import { useStepContext } from "../../../../../contexts/StepContext"
+import { useColorMode } from "../../../../../contexts/ColorModeContext"
 
 
 interface Props {
@@ -30,6 +31,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
     const { setSaveButtonClicked, saveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
     const [validationStateChanged, setValidationStateChanged] = useState(false)
     const [isValid, setValid] = useState(false)
+    const {mode} = useColorMode()
 
     useEffect(() => {
         setValid(!selectedLocations.some(loc => !loc.isValid))
@@ -88,7 +90,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
                         <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
                             <Typography variant="h3">Waiting for the first location...</Typography>
                             <Grid item lg={8} style={{ marginTop: 10 }}>
-                                <img src={`${process.env.REACT_APP_BASE_URL}/images/location.gif`} style={{ width: '100%' }} />
+                                <img src={mode === 'light' ? `${process.env.REACT_APP_BASE_URL}/images/location.gif` : `https://thumbs.gfycat.com/WastefulGiganticClumber-max-1mb.gif`} style={{ width: '100%' }} />
                             </Grid>
                         </Grid>
                     </Fade>

@@ -14,7 +14,7 @@ const Intro: FC<Props> = ({ setStartClicked }) => {
                 <Grow in={true} timeout={1200}>
                     <Grid item container direction="column" alignItems="center" justifyContent="space-evenly" lg={6}>
                         <Typography variant="h2">New business chain</Typography>
-                        <img src={`https://i.imgur.com/4NkElpt.gif`} />
+                        <img src={`${process.env.REACT_APP_BASE_URL}/images/chain2.gif`} />
                         <Grid justifyContent="center" container>
                             <Grid item lg={8}>
                                 <Button fullWidth variant="contained" onClick={() => setStartClicked(true)} size="large" color="primary">Let's start</Button>
