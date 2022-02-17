@@ -13,13 +13,27 @@ const mongoose = require('mongoose')
 const placeController = {
 
 
+    deleteLocation: async (req, res, next) => {
+        const { placeId, locationId } = req.params
+        const { uid } = req.cookies
+        const user = await userService.getUserById(uid)
+        if (!user) throw ApiError.internal('Invalid uid')
+        try {
+            console.log(userService)
+            await placeService.deleteLocation(user, placeId, locationId)
+            return res.sendStatus(200)
+        } catch (err) {
+            return next(err)
+        }
+    },
+
     setAlwaysOpen: async (req, res, next) => {
-        const {alwaysOpen} = req.body
-        const {id} = req.params
-        try{
+        const { alwaysOpen } = req.body
+        const { id } = req.params
+        try {
             await placeService.setAlwaysOpen(alwaysOpen, id)
             return res.sendStatus(200)
-        }catch(err){
+        } catch (err) {
             return next(err)
         }
     },
@@ -232,9 +246,9 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            const {logo, images} = req.files
+            const { logo, images } = req.files
             if (!logo || !images) throw ApiError.badRequest('Request is missing necessary upload files')
-            if(logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
+            if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
             const placeData = {
                 name: reqBody.name,
                 type: reqBody.type,
@@ -325,7 +339,9 @@ const placeController = {
         const { uid } = cookies
         try {
             let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
+            console.log(places)
             places = await placeController.getVisitsNewsOpinions(places, uid)
+            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -345,7 +361,7 @@ const placeController = {
 
     setOpeningHours: async (req, res, next) => {
         const { id } = req.params
-        const {openingHours} = req.body
+        const { openingHours } = req.body
         console.log(openingHours)
         try {
 

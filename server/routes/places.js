@@ -91,15 +91,25 @@ router.get('/active/subscribed',
     validateRequest,
     (req, res, next) => {
         placeController.getSubscribedPlaces(req, res, next)
-    }),
-
-    // router.delete('/', (req, res, next) => {
-    //     placeController.deleteAll(req, res, next)
-    // })
-
-    router.delete('/:placeId', (req, res, next) => {
-        placeController.deletePlace(req, res, next)
     })
+
+// router.delete('/', (req, res, next) => {
+//     placeController.deleteAll(req, res, next)
+// })
+
+router.delete('/:placeId', (req, res, next) => {
+    placeController.deletePlace(req, res, next)
+})
+
+router.delete('/:placeId/locations/:locationId',
+    cookie('uid').notEmpty().isMongoId(),
+    param('placeId').notEmpty().isMongoId(),
+    param('locationId').notEmpty().isMongoId(),
+    (req, res, next) => {
+        placeController.deleteLocation(req, res, next)
+    }
+
+)
 
 
 router.put('/',

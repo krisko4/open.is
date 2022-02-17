@@ -35,6 +35,16 @@ const placeService = {
         ]
     },
 
+    async deleteLocation(user, placeId, locationId) {
+        const place = await placeService.getPlaceById(placeId)
+        if (!place) throw ApiError.internal('Invalid placeId')
+        if (place.userId.toString() !== user._id.toString()) throw ApiError.internal('Illegal operation')
+        console.log(placeId)
+        console.log(locationId)
+        return Place.findByIdAndUpdate(placeId, { $pull: { 'locations': {'_id' : locationId} } }, { new: true, upsert: true }).exec()
+    },
+
+
     getPlaces: () => Place.find().exec(),
     getActivePlaces: () => Place.find({ 'locations.isActive': false }).exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
@@ -78,11 +88,12 @@ const placeService = {
             '_id': '$_id',
             'name': { '$first': '$name' },
             'type': { '$first': '$type' },
-            'img': { '$first': '$img' },
+            'logo': { '$first': '$logo' },
             'description': { '$first': '$description' },
             'createdAt': { '$first': '$createdAt' },
             'subtitle': { '$first': '$subtitle' },
             'userId': { '$first': '$userId' },
+            'images': { '$first': '$images' },
             'locations': {
                 '$addToSet': '$locations'
             }
@@ -187,7 +198,7 @@ const placeService = {
     setStatus: (id, status) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.status': status }, { new: true, runValidators: true }).exec(),
     setOpeningHours: (id, hours) => Place.findOneAndUpdate(
         { 'locations._id': id },
-        { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen' : false },
+        { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen': false },
         { new: true, runValidators: true }
     ).exec(),
     deletePlace: async (id) => {
