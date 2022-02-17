@@ -1,9 +1,10 @@
-import { Card, Grid, Paper, Tab, Tabs, Toolbar } from "@mui/material";
+import { Box, Card, Grid, Paper, Tab, Tabs, Toolbar } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
+import { Opinions } from "./Opinions/Opinions";
 import { PlaceData } from "./PlaceData/PlaceData";
 
 const tabs = [
@@ -25,7 +26,7 @@ const tabs = [
     },
     {
         name: 'Opinions',
-        content: <h1>Hello world</h1>
+        content: <Opinions />
     },
     {
         name: 'News',
@@ -74,20 +75,18 @@ export const PlaceBoard: FC = () => {
 
     return (
         <Grid container direction="column" style={{ flexGrow: 1 }}>
-            <Grid item>
-                <Paper square>
-                    <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        variant="fullWidth"
-                        sx={{ width: '100%' }}
-                    >
-                        {tabs.map((tab) =>
-                            <Tab key={tab.name} disableRipple label={tab.name} />
-                        )}
-                    </Tabs>
-                </Paper>
-            </Grid>
+            <Paper>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    // variant="fullWidth"
+                    sx={{ width: '100%' }}
+                >
+                    {tabs.map((tab) =>
+                        <Tab key={tab.name} disableRipple label={tab.name} />
+                    )}
+                </Tabs>
+            </Paper>
             <Grid container sx={{ flexGrow: 1 }}>
                 {tabs[value].content}
             </Grid>

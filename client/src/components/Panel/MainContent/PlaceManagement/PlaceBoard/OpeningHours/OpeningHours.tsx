@@ -1,4 +1,4 @@
-import {Paper, Alert, AlertTitle, AppBar, Button, Card, CardActions, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, Divider, Fade, FormControlLabel, FormGroup, Grid, IconButton, Slide, SlideProps, Switch, Tab, Tabs, Toolbar, Tooltip, Typography } from "@mui/material"
+import { Paper, Alert, AlertTitle, AppBar, Button, Card, CardActions, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, Divider, Fade, FormControlLabel, FormGroup, Grid, IconButton, Slide, SlideProps, Switch, Tab, Tabs, Toolbar, Tooltip, Typography } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close'
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -117,13 +117,9 @@ export const OpeningHours: FC = () => {
                 newCurrentPlace.isActive = true
                 setCurrentPlace(newCurrentPlace)
             }
-            const place =  places.find(place => place._id === currentPlace.businessId)
-            const location =  place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps 
+            const place = places.find(place => place._id === currentPlace.businessId)
+            const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
             location.alwaysOpen = true
-            
-
-
-
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {
@@ -202,25 +198,28 @@ export const OpeningHours: FC = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid
-                container
-            >
-                <Paper square sx={{flexGrow: 1}}>
-                    <Toolbar sx={{ flexGrow: 1 }}>
-                        <Grid container justifyContent="space-between">
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={<Checkbox onChange={(e) => setChecked(e.target.checked)} checked={checked} />}
-                                    label="My place is always open"
-                                    labelPlacement="end"
-                                />
-                            </FormGroup>
-                            <LoadingButton loading={loading} variant="contained" onClick={saveChanges} disabled={(!areHoursValid && !checked) || (checked && currentPlace.alwaysOpen) || (openingHours === currentPlace.openingHours && !checked)} size="large" color="primary">Save changes</LoadingButton>
-                        </Grid>
-                    </Toolbar>
+            <Slide timeout={500} in={true} direction="up">
+                <Grid
+                    container
+                >
+                    <Paper square sx={{ flexGrow: 1 }}>
+                        <Toolbar sx={{ flexGrow: 1 }}>
+                            <Grid container justifyContent="space-between">
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox onChange={(e) => setChecked(e.target.checked)} checked={checked} />}
+                                        label="My place is always open"
+                                        labelPlacement="end"
+                                    />
+                                </FormGroup>
+                                <LoadingButton loading={loading} variant="contained" onClick={saveChanges} disabled={(!areHoursValid && !checked) || (checked && currentPlace.alwaysOpen) || (openingHours === currentPlace.openingHours && !checked)} size="large" color="primary">Save changes</LoadingButton>
+                            </Grid>
+                        </Toolbar>
 
-                </Paper>
-            </Grid>
+                    </Paper>
+                </Grid>
+
+            </Slide>
             <OpeningHoursDialog
                 openingHours={openingHours}
                 dialogOpen={dialogOpen}

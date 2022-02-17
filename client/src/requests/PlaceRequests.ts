@@ -50,6 +50,8 @@ export const getPlacesByAddress = (address: string) => {
     })
 }
 
+export const deleteLocation = (businessId: string, locationId: string) => myAxios.delete(`/places/${businessId}/locations/${locationId}`)
+
 export const getPlaceByLatLng = (lat: number, lng: number) => {
     return myAxios.get('/places', {
         params: {

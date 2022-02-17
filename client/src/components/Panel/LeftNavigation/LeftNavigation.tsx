@@ -54,7 +54,7 @@ export const LeftNavigation: FC = () => {
         //     backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
         // }}
         >
-            <Paper sx={{height: '100%'}}>
+            <Paper sx={{height: '100%'}} elevation={4}>
                 <Scrollbars autoHide>
                     <Grid container justifyContent="center">
                         <CardMedia

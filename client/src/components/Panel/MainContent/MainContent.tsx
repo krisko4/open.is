@@ -8,7 +8,6 @@ import { StepContextProvider } from "../../../contexts/StepContext";
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import Header from "../Header";
 import { BusinessChainManagement } from "./BusinessChainManagement/BusinessChainManagement";
-import { BusinessChainTable } from "./BusinessChainManagement/BusinessChainTable";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { AccountSettings } from "./MyAccount/AccountSettings";
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';

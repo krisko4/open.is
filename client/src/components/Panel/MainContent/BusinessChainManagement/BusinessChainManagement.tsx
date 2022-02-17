@@ -1,11 +1,10 @@
-// @flow 
 import { Grid, Paper, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useBusinessChainContext } from '../../../../contexts/PanelContexts/BusinessChainContext';
 import { RawPlaceDataProps } from '../../../../contexts/PlaceProps';
-import { BusinessChainTable } from './BusinessChainTable';
+import { BusinessChainTable } from './BusinessChainTable/BusinessChainTable';
 type Props = {
 
 };
@@ -50,7 +49,6 @@ export const BusinessChainManagement = (props: Props) => {
                     <Tabs
                         value={value}
                         onChange={handleChange}
-                        variant="fullWidth"
                         sx={{ width: '100%' }}
                     >
                         {tabs.map((tab) =>
