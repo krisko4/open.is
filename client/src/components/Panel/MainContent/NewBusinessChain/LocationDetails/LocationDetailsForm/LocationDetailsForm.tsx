@@ -16,6 +16,8 @@ import * as yup from "yup";
 import { LocationProps } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { featureLayerService } from "esri-leaflet";
+// import PhoneInput from "react-phone-input-2";
+
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
 const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
@@ -75,7 +77,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
             return
         }
         //@ts-ignore
-        fieldForAll.field && setValue(fieldForAll.field, fieldForAll.value, {shouldValidate: true})
+        fieldForAll.field && setValue(fieldForAll.field, fieldForAll.value, { shouldValidate: true })
     }, [fieldForAll])
 
     useEffect(() => {
@@ -118,13 +120,13 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         control={control}
                         render={
                             ({ field }) =>
-                                <ReactPhoneInput
-                                    defaultCountry={'pl'}
-                                    {...field}
-                                    component={TextField}
+                            <ReactPhoneInput
+                                defaultCountry={'pl'}
+                                {...field}
+                                component={TextField}
 
-                                    label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
-                                />
+                                label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
+                            />
                         }
                     />
 

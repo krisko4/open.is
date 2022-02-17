@@ -6,6 +6,8 @@ import { LocationContextProvider } from "../../../contexts/PanelContexts/Locatio
 import { StepContextProvider } from "../../../contexts/StepContext";
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import Header from "../Header";
+import { BusinessChainManagement } from "./BusinessChainManagement/BusinessChainManagement";
+import { BusinessChainTable } from "./BusinessChainManagement/BusinessChainTable";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { AccountSettings } from "./MyAccount/AccountSettings";
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
@@ -56,6 +58,11 @@ export const MainContent: FC = () => {
           path={`${match.url}/account`}
           component={AccountSettings}
         />
+        <Route path={`${match.url}/business-chain/:id`}>
+          <CurrentPlaceContextProvider>
+            <BusinessChainManagement/>
+          </CurrentPlaceContextProvider>
+        </Route>
         <Route
           path={`${match.url}/new-business-chain`}
         >
