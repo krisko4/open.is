@@ -1,7 +1,7 @@
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import myAxios from "../axios/axios";
 import { SearchParams } from "../components/Browser/Searcher";
-import { Status } from "../contexts/PanelContexts/PanelContext";
+import { Status } from "../contexts/PlaceProps";
 
 
 const provider = new OpenStreetMapProvider({

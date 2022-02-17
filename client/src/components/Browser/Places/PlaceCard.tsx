@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
-import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
 
 
 

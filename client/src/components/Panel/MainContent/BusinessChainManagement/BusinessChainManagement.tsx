@@ -1,7 +1,10 @@
 // @flow 
 import { Grid, Paper, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useBusinessChainContext } from '../../../../contexts/PanelContexts/BusinessChainContext';
+import { RawPlaceDataProps } from '../../../../contexts/PlaceProps';
 import { BusinessChainTable } from './BusinessChainTable';
 type Props = {
 
@@ -22,8 +25,20 @@ const tabs = [
     },
 ]
 
+
+interface StateType {
+    place: RawPlaceDataProps
+}
+
 export const BusinessChainManagement = (props: Props) => {
     const [value, setValue] = useState(0)
+    const location = useLocation<StateType>()
+    const {setBusinessChain} = useBusinessChainContext()
+
+    useEffect(() => {
+        setBusinessChain(location.state.place)
+    }, [])
+
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);

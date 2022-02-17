@@ -8,10 +8,10 @@ import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../../contexts/LoginContext";
-import { RawPlaceDataProps } from "../../../contexts/PanelContexts/BusinessChainContext";
 import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
+import { RawPlaceDataProps } from '../../../contexts/PlaceProps';
 
 
 const generateNavigationButtons = (places: RawPlaceDataProps[]) => [

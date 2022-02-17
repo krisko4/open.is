@@ -16,7 +16,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { Status } from "../../../../../../contexts/PanelContexts/PanelContext";
+import { Status } from "../../../../../../contexts/PlaceProps";
 import { setPlaceStatus } from "../../../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";

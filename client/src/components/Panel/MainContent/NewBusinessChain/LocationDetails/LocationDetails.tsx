@@ -3,14 +3,13 @@ import { useSnackbar } from "notistack"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useHistory } from "react-router-dom"
-import { LocationProps, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
 import { registerNewPlace } from "../../../../../requests/PlaceRequests"
 import { useCustomSnackbar } from "../../../../../utils/snackbars"
 import { LoadingButton } from "../../../../reusable/LoadingButton"
 import { Location } from './Location'
 import { animateScroll as scroll } from 'react-scroll'
-import { RawPlaceDataProps } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 import { useStepContext } from "../../../../../contexts/StepContext"
 import { useColorMode } from "../../../../../contexts/ColorModeContext"
 

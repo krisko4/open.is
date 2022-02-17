@@ -1,16 +1,13 @@
 import AddIcon from "@mui/icons-material/Add";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import HomeIcon from "@mui/icons-material/Home";
-import { IconButton, Switch } from '@mui/material';
+import { IconButton } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Grid from "@mui/material/Grid";
 import Toolbar from '@mui/material/Toolbar';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
-import { useColorMode } from "../../contexts/ColorModeContext";
-import { ChosenOptions } from '../../contexts/PanelContexts/PanelContext';
-import { setSelectedOption } from '../../store/actions/setSelectedOption';
 import { usePlacesSelector } from '../../store/selectors/PlacesSelector';
 import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
 

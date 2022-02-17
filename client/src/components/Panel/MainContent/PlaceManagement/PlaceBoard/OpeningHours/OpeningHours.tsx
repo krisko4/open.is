@@ -10,6 +10,8 @@ import { OpeningHoursDialog } from "./OpeningHoursDialog"
 import { LoadingButton } from "@mui/lab"
 import { setPlaceAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
+import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
+import { LocationProps } from "../../../../../../contexts/PlaceProps"
 
 
 const defaultStartHour = new Date(0, 0, 0, 8)
@@ -22,6 +24,7 @@ export const OpeningHours: FC = () => {
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const [value, setValue] = useState('monday');
+    const places = usePlacesSelector()
     const [areHoursValid, setHoursValid] = useState(false)
     const [checked, setChecked] = useState(currentPlace.alwaysOpen)
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -110,9 +113,16 @@ export const OpeningHours: FC = () => {
             enqueueSuccessSnackbar('You have successfully updated your opening hours')
             if (!currentPlace.isActive) {
                 const newCurrentPlace = { ...currentPlace }
+                newCurrentPlace.alwaysOpen = true
                 newCurrentPlace.isActive = true
                 setCurrentPlace(newCurrentPlace)
             }
+            const place =  places.find(place => place._id === currentPlace.businessId)
+            const location =  place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps 
+            location.alwaysOpen = true
+            
+
+
 
         } catch (err) {
             enqueueErrorSnackbar()

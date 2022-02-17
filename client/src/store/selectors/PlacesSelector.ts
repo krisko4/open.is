@@ -1,6 +1,5 @@
 
 import { useSelector } from "react-redux";
-import { RawPlaceDataProps } from "../../contexts/PanelContexts/BusinessChainContext";
 import { RootState } from "../RootState";
 
 

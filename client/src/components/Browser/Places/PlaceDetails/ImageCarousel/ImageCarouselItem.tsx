@@ -2,7 +2,8 @@ import { PhotoCamera } from "@mui/icons-material"
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
 import { FC, useEffect, useRef, useState } from "react"
-import { CurrentPlaceProps, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import {  useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
 import { ImageUpload } from "../../../../reusable/ImageUpload"
 
 

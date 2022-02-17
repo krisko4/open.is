@@ -12,12 +12,9 @@ import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router";
-import { RawPlaceDataProps } from "../../../../contexts/PanelContexts/BusinessChainContext";
-import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ChosenOptions } from "../../../../contexts/PanelContexts/PanelContext";
-import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { ActivityChart } from './Charts/ActivityChart';
+import { RawPlaceDataProps } from "../../../../contexts/PlaceProps";
 
 
 const useStyles = makeStyles({

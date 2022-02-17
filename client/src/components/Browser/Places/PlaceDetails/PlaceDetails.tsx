@@ -11,7 +11,7 @@ import React, { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useLoginContext } from "../../../../contexts/LoginContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
-import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { removeSubscription } from "../../../../requests/SubscriptionRequests";
 import { addNewVisit } from "../../../../requests/VisitRequests";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
@@ -115,68 +115,71 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
 
     return (
         <Grid container>
-            <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
-            <Grid container item>
-                <Paper sx={{flexGrow: 1}}>
-                    <Toolbar style={{ flexGrow: 1 }} disableGutters>
-                        <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
-                            <KeyboardReturn />
-                        </IconButton>
-                        <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
-                            {currentPlace.isUserSubscriber ?
-                                <Tooltip title={'Unsubscribe'} arrow >
-                                    <span>
-                                        <LoadingButton
-                                            loading={loading}
-                                            color="primary"
-                                            onClick={() => unsubscribe()}
-                                        >
-                                            Subscribed
-                                        </LoadingButton>
-                                    </span>
-                                </Tooltip>
-                                :
-                                <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
-                                    <span>
-                                        <Button
-                                            disabled={!userData.isLoggedIn || currentPlace.isUserOwner}
-                                            variant="contained"
-                                            color="error"
-                                            onClick={() => setDialogOpen(true)}
-                                        >
-                                            Subscribe
-                                        </Button>
-                                    </span>
-                                </Tooltip>
-                            }
-                        </Grid>
-                    </Toolbar>
-
-                </Paper>
-            </Grid>
-            <Grid container>
-                <ImagesCarousel currentPlace={currentPlace} />
-            </Grid>
-            <MainContent place={currentPlace} />
-            <Grid container style={{ marginTop: 10 }}>
-                <Divider style={{ width: '100%' }} />
-                <Paper square style={{ width: '100%', background: 'inherit' }}>
-                    <Tabs
-                        value={value}
-                        variant="fullWidth"
-                        onChange={handleChange}
-                    >
-                        <MyTab label="News" />
-                        <MyTab label="Opening hours" />
-                        <MyTab label="Opinions" />
-                    </Tabs>
-                </Paper>
+            <Paper sx={{ flexGrow: 1 }}>
+                <SubscribeDialog currentPlace={currentPlace} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
                 <Grid container item>
-                    <Grid container style={{ height: 500 }}>
-                        {tabContents[value]}
+                    <Paper sx={{ flexGrow: 1 }}>
+                        <Toolbar style={{ flexGrow: 1 }} disableGutters>
+                            <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
+                                <KeyboardReturn />
+                            </IconButton>
+                            <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
+                                {currentPlace.isUserSubscriber ?
+                                    <Tooltip title={'Unsubscribe'} arrow >
+                                        <span>
+                                            <LoadingButton
+                                                loading={loading}
+                                                color="primary"
+                                                onClick={() => unsubscribe()}
+                                            >
+                                                Subscribed
+                                            </LoadingButton>
+                                        </span>
+                                    </Tooltip>
+                                    :
+                                    <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : currentPlace.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
+                                        <span>
+                                            <Button
+                                                disabled={!userData.isLoggedIn || currentPlace.isUserOwner}
+                                                variant="contained"
+                                                color="error"
+                                                onClick={() => setDialogOpen(true)}
+                                            >
+                                                Subscribe
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+                                }
+                            </Grid>
+                        </Toolbar>
+
+                    </Paper>
+                </Grid>
+                <Grid container>
+                    <ImagesCarousel currentPlace={currentPlace} />
+                </Grid>
+                <MainContent place={currentPlace} />
+                <Grid container style={{ marginTop: 10 }}>
+                    <Divider style={{ width: '100%' }} />
+                    <Paper square style={{ width: '100%', background: 'inherit' }}>
+                        <Tabs
+                            value={value}
+                            variant="fullWidth"
+                            onChange={handleChange}
+                        >
+                            <MyTab label="News" />
+                            <MyTab label="Opening hours" />
+                            <MyTab label="Opinions" />
+                        </Tabs>
+                    </Paper>
+                    <Grid container item>
+                        <Grid container style={{ height: 500 }}>
+                            {tabContents[value]}
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+
+            </Paper>
 
         </Grid>
     );

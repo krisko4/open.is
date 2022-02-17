@@ -5,10 +5,9 @@ import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
-import { RawPlaceDataProps } from "../../../../contexts/PanelContexts/BusinessChainContext"
-import { LocationProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { setPlace } from "../../../../store/actions/setCurrentPlace"
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils"
+import { LocationProps, RawPlaceDataProps } from "../../../../contexts/PlaceProps"
 
 interface Props {
     place: RawPlaceDataProps

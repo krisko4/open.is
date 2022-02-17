@@ -2,6 +2,7 @@ import { Card, Grid, Paper, Tab, Tabs, Toolbar } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { PlaceData } from "./PlaceData/PlaceData";
 
@@ -44,16 +45,20 @@ const tabs = [
     },
 ]
 
+interface LocationState {
+    place: CurrentPlaceProps,
+    businessId: string
+}
 
 export const PlaceBoard: FC = () => {
 
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const location = useLocation()
+    const location = useLocation<LocationState>()
 
 
     useEffect(() => {
-        //@ts-ignore
-        setCurrentPlace(location.state.place)
+        const { place } = location.state
+        setCurrentPlace(place)
     }, [])
 
     useEffect(() => {

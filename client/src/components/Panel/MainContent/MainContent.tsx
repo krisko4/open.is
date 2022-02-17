@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import React, { FC } from "react";
 import { Route, useLocation, useRouteMatch } from "react-router-dom";
+import { BusinessChainContextProvider } from "../../../contexts/PanelContexts/BusinessChainContext";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LocationContextProvider } from "../../../contexts/PanelContexts/LocationContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
@@ -45,10 +46,8 @@ export const MainContent: FC = () => {
           <Route
             path={`${match.url}/management/:id`}
             component={(props: any) => <PlaceBoard {...props} />}
-          >
-          </Route>
+          />
         </CurrentPlaceContextProvider>
-
         <Route
           path={`${match.url}/dashboard`}
         >
@@ -59,9 +58,9 @@ export const MainContent: FC = () => {
           component={AccountSettings}
         />
         <Route path={`${match.url}/business-chain/:id`}>
-          <CurrentPlaceContextProvider>
-            <BusinessChainManagement/>
-          </CurrentPlaceContextProvider>
+          <BusinessChainContextProvider>
+            <BusinessChainManagement />
+          </BusinessChainContextProvider>
         </Route>
         <Route
           path={`${match.url}/new-business-chain`}

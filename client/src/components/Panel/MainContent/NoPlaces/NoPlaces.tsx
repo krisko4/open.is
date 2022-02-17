@@ -8,7 +8,6 @@ import {
 import Typography from "@mui/material/Typography";
 import React, { FC, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { usePanelContext } from "../../../../contexts/PanelContexts/PanelContext";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 
 
@@ -37,7 +36,6 @@ const steps = [
 
 export const NoPlaces: FC = () => {
 
-    const { setSelectedOption } = usePanelContext()
     const [activeStep, setActiveStep] = useState(0)
     const history = useHistory()
     const match = useRouteMatch()

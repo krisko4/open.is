@@ -1,21 +1,15 @@
-import { Button, Grid, InputAdornment, TextField, Theme, Tooltip, useTheme } from "@mui/material";
-import { useRef, FC, useEffect } from "react";
-import { SubmitHandler, useForm, Controller, useWatch } from "react-hook-form";
-import PhoneIcon from '@mui/icons-material/Phone'
-import MailIcon from '@mui/icons-material/Mail'
-import LanguageIcon from '@mui/icons-material/Language'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import InstagramIcon from '@mui/icons-material/Instagram'
-import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext";
-import { LocationDetails } from "../LocationDetails";
-import ReactPhoneInput from 'react-phone-input-material-ui'
-import { makeStyles } from "@mui/styles";
-import { yupToFormErrors } from "formik";
 import { yupResolver } from '@hookform/resolvers/yup';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LanguageIcon from '@mui/icons-material/Language';
+import MailIcon from '@mui/icons-material/Mail';
+import { Button, Grid, InputAdornment, TextField, Tooltip } from "@mui/material";
+import { FC, useEffect, useRef } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import ReactPhoneInput from 'react-phone-input-material-ui';
 import * as yup from "yup";
-import { LocationProps } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useStepContext } from "../../../../../../contexts/StepContext";
-import { featureLayerService } from "esri-leaflet";
+import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext";
+import { LocationProps } from "../../../../../../contexts/PlaceProps";
 // import PhoneInput from "react-phone-input-2";
 
 

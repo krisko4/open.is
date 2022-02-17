@@ -1,4 +1,4 @@
-import { RawPlaceDataProps } from "../contexts/PanelContexts/BusinessChainContext";
+import { RawPlaceDataProps } from "../contexts/PlaceProps";
 
 export interface RootState {
 

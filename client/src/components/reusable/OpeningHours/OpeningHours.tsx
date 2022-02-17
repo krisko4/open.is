@@ -1,12 +1,11 @@
-import { SlideProps, Slide, Grid, Typography, Dialog, DialogTitle, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { ClassNameMap } from '@mui/styles';
+import { Button, Dialog, DialogTitle, Grid, Slide, SlideProps, Typography } from '@mui/material';
 import React, { FC, useState } from 'react';
-import { useLoginContext } from "../../../contexts/LoginContext";
-import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
-import { OpeningHoursForm } from './OpeningHoursForm';
-import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
 import { useColorMode } from '../../../contexts/ColorModeContext';
+import { useLoginContext } from "../../../contexts/LoginContext";
+import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
+import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
+import { OpeningHoursForm } from './OpeningHoursForm';
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 

@@ -1,30 +1,25 @@
 // @flow 
-import { Grid, Toolbar, Typography, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, CardMedia, Button, TablePagination, Rating, Fade } from '@mui/material';
+import { Button, CardMedia, Fade, Grid, Paper, Rating, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Toolbar, Typography } from '@mui/material';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useDispatch } from 'react-redux';
-import { match, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import { RawPlaceDataProps } from '../../../../contexts/PanelContexts/BusinessChainContext';
-import { LocationProps, useCurrentPlaceContext } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useBusinessChainContext } from '../../../../contexts/PanelContexts/BusinessChainContext';
+import { LocationProps, RawPlaceDataProps } from '../../../../contexts/PlaceProps';
 import { setPlace } from '../../../../store/actions/setCurrentPlace';
 import { convertToCurrentPlace } from '../../../../utils/place_data_utils';
 type Props = {
 
 };
 
-interface StateType {
-    place: RawPlaceDataProps
-}
 
 export const BusinessChainTable = (props: Props) => {
 
-    const location = useLocation<StateType>()
-    const [businessChain, setBusinessChain] = useState(location.state.place)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const {businessChain} = useBusinessChainContext()
     const history = useHistory()
-    const match = useRouteMatch()
     const dispatch = useDispatch()
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -46,7 +41,7 @@ export const BusinessChainTable = (props: Props) => {
         dispatch(setPlace(currentPlace))
         history.push({
             pathname: `/panel/management/${currentPlace._id}`,
-            state: { place: currentPlace }
+            state: { place: currentPlace, businessChainId: businessChain._id }
         }
         )
     }

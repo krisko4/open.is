@@ -1,71 +1,6 @@
 import { createContext, useContext, FC, useState } from "react";
 import { defaultNews, defaultOpinions } from "../../utils/defaults";
-import {Image} from './CurrentPlaceContext'
-
-
-export enum Status {
-    OPEN = 'open',
-    CLOSED = 'closed'
-}
-
-
-export interface RawPlaceDataProps {
-    _id?: string,
-    name: string,
-    type: string | null,
-    description: string,
-    subtitle: string,
-    logo: string | ArrayBuffer | null | File,
-    images: string[] | Image[],
-    locations: LocationProps[],
-    userId?: string,
-    isUserOwner?: boolean
-}
-
-export interface LocationProps {
-    _id? : string,
-    address: string,
-    lat: number,
-    lng: number,
-    phone: string,
-    email: string,
-    website: string,
-    instagram: string,
-    news?: NewsProps[],
-    opinions?: OpinionProps[],
-    facebook: string,
-    visits?: VisitProps[],
-    alwaysOpen?: boolean,
-    averageNote?: {
-        ones: number,
-        twos: number,
-        threes: number,
-        fours: number,
-        fives: number,
-        average: number
-    },
-    openingHours?: any,
-    isActive?: boolean
-    status?: Status,
-    visitCount?: number,
-}
-
-interface NewsProps {
-    title: string,
-    date: string,
-    content: string
-}
-
-
-interface OpinionProps {
-    author: string,
-    date: string,
-    content: string,
-    note: number,
-    averageNote: number,
-    authorImg: string
-}
-
+import { RawPlaceDataProps, Status } from "../PlaceProps";
 
 export const BusinessChainContext = createContext<BusinessChainContextData | null>(null)
 
@@ -103,16 +38,11 @@ export const clearBusinessChain = {
     description: '',
     subtitle: '',
     logo: '',
-    images: [], 
+    images: [],
     userId: '',
-    
+
 }
 
-interface VisitProps {
-    date: string,
-    placeId: string,
-    visitCount: number
-}
 
 
 

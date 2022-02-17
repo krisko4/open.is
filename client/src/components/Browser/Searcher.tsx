@@ -13,10 +13,9 @@ import parse from 'autosuggest-highlight/parse';
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
-import { RawPlaceDataProps } from "../../contexts/PanelContexts/BusinessChainContext";
-import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
 import { getPlacesByName, getPlacesBySearchParams } from "../../requests/PlaceRequests";
 import { convertToCurrentPlace } from "../../utils/place_data_utils";
+import { CurrentPlaceProps, RawPlaceDataProps } from "../../contexts/PlaceProps";
 
 
 const provider = new OpenStreetMapProvider({});

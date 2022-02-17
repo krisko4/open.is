@@ -1,5 +1,5 @@
 import React, { createContext, FC, useContext, useState } from "react";
-import { CurrentPlaceProps } from "../PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../PlaceProps";
 import MapContextProps from "./MapContextProps";
 
 

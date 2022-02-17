@@ -1,9 +1,8 @@
-import { ListSubheader, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material"
+import { Avatar, ListItem, ListItemAvatar, ListItemText, ListSubheader } from "@mui/material"
 import { FC } from "react"
 import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
-import { RawPlaceDataProps } from "../../../contexts/PanelContexts/BusinessChainContext"
-import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext"
+import { RawPlaceDataProps } from "../../../contexts/PlaceProps"
 import { setPlace } from "../../../store/actions/setCurrentPlace"
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from '../../../utils/place_data_utils'
@@ -19,7 +18,7 @@ export const MyPlaces: FC = () => {
         dispatch(setPlace(currentPlace))
         history.push({
             pathname: `${match.url}/management/${currentPlace._id}`,
-            state: { place: currentPlace }
+            state: { place: currentPlace, businessId: place._id }
         }
         )
     }

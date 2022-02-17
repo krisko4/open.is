@@ -1,7 +1,7 @@
 
 
 import { createContext, FC, useContext, useState } from "react";
-import { LocationProps } from "./CurrentPlaceContext";
+import { LocationProps } from "../PlaceProps";
 
 
 

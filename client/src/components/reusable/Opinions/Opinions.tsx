@@ -8,11 +8,11 @@ import { ClassNameMap } from "@mui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from "react";
 import { useLoginContext } from "../../../contexts/LoginContext";
-import { CurrentPlaceProps } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { addOpinion } from "../../../requests/OpinionRequests";
 import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../LoadingButton";
 import { OpinionCard } from './OpinionCard';
+import { CurrentPlaceProps } from "../../../contexts/PlaceProps";
 
 
 

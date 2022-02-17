@@ -1,11 +1,10 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, Typography } from "@mui/material"
 import { ExpandMore } from "@mui/icons-material"
 import DeleteIcon from '@mui/icons-material/Delete'
+import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, Typography } from "@mui/material"
 import { FC } from "react"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
-import { LocationDetails } from "./LocationDetails"
+import { LocationProps } from "../../../../../contexts/PlaceProps"
 import { LocationDetailsForm } from './LocationDetailsForm/LocationDetailsForm'
-import { LocationProps } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 
 interface Props {
     location: LocationProps,

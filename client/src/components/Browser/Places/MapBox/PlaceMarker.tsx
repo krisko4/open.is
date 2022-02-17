@@ -8,7 +8,7 @@ import { Marker, Popup } from "react-leaflet";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
-import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 
 
 

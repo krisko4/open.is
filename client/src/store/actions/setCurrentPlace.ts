@@ -1,4 +1,4 @@
-import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext"
+import { CurrentPlaceProps } from "../../contexts/PlaceProps"
 
 export const setPlace = (currentPlace : CurrentPlaceProps) => {
     return {

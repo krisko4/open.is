@@ -12,7 +12,6 @@ import HomePage from './components/HomePage/MainPage/HomePage';
 import { Panel } from './components/Panel/Panel';
 import { ColorModeContextProvider } from "./contexts/ColorModeContext";
 import { LoginContextProvider } from './contexts/LoginContext';
-import { PanelContextProvider } from './contexts/PanelContexts/PanelContext';
 import { BrowserTheme } from "./themes/BrowserTheme";
 import mainTheme from "./themes/MainTheme";
 import { PanelTheme } from "./themes/PanelTheme";
@@ -51,9 +50,7 @@ function App() {
                                         <ColorModeContextProvider>
                                             <PanelTheme>
                                                 <CssBaseline enableColorScheme />
-                                                <PanelContextProvider>
                                                     <Panel />
-                                                </PanelContextProvider>
                                             </PanelTheme>
                                         </ColorModeContextProvider>
                                     </Route>

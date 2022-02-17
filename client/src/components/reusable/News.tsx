@@ -17,7 +17,7 @@ import { ClassNameMap } from "@mui/styles";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useRef, useState } from "react";
 import { useLoginContext } from "../../contexts/LoginContext";
-import { CurrentPlaceProps } from "../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from '../../contexts/PlaceProps';
 import { addNews } from "../../requests/NewsRequests";
 import { useCustomSnackbar } from "../../utils/snackbars";
 import { LoadingButton } from "./LoadingButton";

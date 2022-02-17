@@ -9,7 +9,6 @@ import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ChosenOptions } from "../../../../contexts/PanelContexts/PanelContext";
 import { StepContextProvider } from "../../../../contexts/StepContext";
 import { deletePlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
@@ -52,7 +51,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
             enqueueSuccessSnackbar('You have successfully deleted your place')
             setOpen(false)
             const croppedPlaces = places.filter(place => place._id !== currentPlace._id)
-            dispatch(croppedPlaces.length === 0 ? setSelectedOption(ChosenOptions.NEW_PLACE) : setSelectedOption(ChosenOptions.DASHBOARD))
+            // dispatch(croppedPlaces.length === 0 ? setSelectedOption(ChosenOptions.NEW_PLACE) : setSelectedOption(ChosenOptions.DASHBOARD))
             dispatch(setPlaces(croppedPlaces))
 
         } catch (err) {

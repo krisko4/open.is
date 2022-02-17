@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
-import { CurrentPlaceProps } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { addSubscription } from "../../../../requests/SubscriptionRequests";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
