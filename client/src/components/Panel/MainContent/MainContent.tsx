@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import React, { FC } from "react";
-import { Route, useLocation, useRouteMatch } from "react-router-dom";
+import React, { FC, useEffect } from "react";
+import { Route, useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { BusinessChainContextProvider } from "../../../contexts/PanelContexts/BusinessChainContext";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LocationContextProvider } from "../../../contexts/PanelContexts/LocationContext";
@@ -22,6 +22,12 @@ export const MainContent: FC = () => {
   let match = useRouteMatch();
   const places = usePlacesSelector()
   const location = useLocation()
+  const history = useHistory()
+
+  useEffect(() => {
+      console.log(match)
+      console.log(location)
+  }, [])
 
 
 

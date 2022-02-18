@@ -1,5 +1,6 @@
 
 import React, { createContext, FC, useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { auth } from "../requests/AuthRequests";
 import { ContextProps } from "./ContextProps";
 
@@ -12,6 +13,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
 
     const state = useProviderData()
     const [isAuthFinished, setAuthFinished] = useState(false)
+    const history = useHistory()
 
     useEffect(() => {
         const authenticate = async () => {
@@ -31,6 +33,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
                     localStorage.removeItem('email')
                     localStorage.removeItem('img')
                 }
+                history.push('/')
             } finally {
                 setAuthFinished(true)
             }

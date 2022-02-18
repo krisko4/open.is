@@ -7,6 +7,7 @@ import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { addSubscription } from "../../../../requests/SubscriptionRequests";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
+import DialogTransition from "../../../reusable/DialogTransition";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 
 interface Props {
@@ -15,7 +16,6 @@ interface Props {
     currentPlace: CurrentPlaceProps
 }
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 const useStyles = makeStyles({
     dialog: {
         background: '#2C2C2C'
@@ -62,7 +62,7 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
 
     return (
         <Dialog
-            TransitionComponent={Transition}
+            TransitionComponent={DialogTransition}
             open={isDialogOpen}
             onClose={() => setDialogOpen(false)}
             PaperProps={

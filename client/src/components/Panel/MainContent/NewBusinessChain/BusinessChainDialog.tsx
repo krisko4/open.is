@@ -9,7 +9,7 @@ import { LocationDetails } from './LocationDetails/LocationDetails';
 import { LocationSelection } from './LocationDetails/LocationSelection';
 import { LocationContextProvider } from '../../../../contexts/PanelContexts/LocationContext'
 import { SettingsInputComponentRounded } from "@mui/icons-material";
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+import DialogTransition from "../../../reusable/DialogTransition";
 interface Props {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,7 +35,7 @@ export const BusinessChainDialog: FC<Props> = ({ open, setOpen }) => {
     return (
         <Dialog
             open={open}
-            TransitionComponent={Transition}
+            TransitionComponent={DialogTransition}
             fullScreen
         >
             <AppBar style={{ position: 'relative' }}>

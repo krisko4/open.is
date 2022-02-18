@@ -6,11 +6,11 @@ import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import { LoginForm } from "./LoginForm";
 import {  useAuthContext } from "../../../contexts/AuthContext";
+import DialogTransition from '../../reusable/DialogTransition';
 
 
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
 export const Login = () => {
@@ -23,7 +23,7 @@ export const Login = () => {
             open={loginOpen}
             onClose={() => setLoginOpen(false)}
             keepMounted
-            TransitionComponent={Transition}
+            TransitionComponent={DialogTransition}
             fullWidth={true}
             maxWidth={'md'}
         >

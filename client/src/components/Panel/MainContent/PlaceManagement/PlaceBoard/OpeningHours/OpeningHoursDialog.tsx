@@ -11,8 +11,8 @@ import { useDispatch } from "react-redux";
 import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
 import { setPlaces } from "../../../../../../store/actions/setPlaces";
 import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
+import DialogTransition from "../../../../../reusable/DialogTransition";
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface Props {
     dialogOpen: boolean,
@@ -59,7 +59,7 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, openi
         <Dialog fullScreen
             open={dialogOpen}
             onClose={() => setDialogOpen(false)}
-            TransitionComponent={Transition}
+            TransitionComponent={DialogTransition}
         >
             <AppBar sx={{ position: 'relative' }}>
                 <Toolbar>

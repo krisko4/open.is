@@ -17,9 +17,9 @@ import { Step1 } from "./Steps/Step1/Step1";
 import { Step2 } from "./Steps/Step2/Step2";
 import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
+import { Step5 } from "./Steps/Step5/Step5";
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 function getStepContent(step: number, isEditionMode: boolean) {
     switch (step) {
@@ -40,26 +40,9 @@ export const NewPlace: FC = () => {
 
     const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
     const { imageFile, currentPlace } = useCurrentPlaceContext()
-    const dispatch = useDispatch()
-    const history = useHistory()
-    const places = usePlacesSelector()
-    const [isOpen, setOpen] = useState(false)
-    const [isLoading, setLoading] = useState(false)
-    const [tooltipOpen, setTooltipOpen] = useState(false)
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
-    const handleClose = () => {
-        setTooltipOpen(false)
-    }
 
-    const handleOpen = () => {
-        if (!currentPlace.logo) {
-            setTooltipOpen(true)
-        }
-    }
-
-    const registerPlace = () => {
-        setLoading(true)
+    const prepareFormData = () => {
         const images: any = currentPlace.images.filter(image => image.file !== null).map(image => image.file)
         const place = {
             logo: imageFile as File,
@@ -87,40 +70,41 @@ export const NewPlace: FC = () => {
         for (const image of images) {
             formData.append('images', image)
         }
-        registerNewPlace(formData).then(res => {
-            console.log(res.data)
-            const newPlace = res.data.place
-            newPlace.logo = res.data.place.logo
-            newPlace.visits = []
-            newPlace.opinions = []
-            newPlace.news = []
-            places.push(newPlace)
-            dispatch(setPlaces(places))
-            enqueueSuccessSnackbar('You have successfully registered new place')
-            history.push(`dashboard`)
-        }).catch(err => {
-            console.log(err)
-            enqueueErrorSnackbar()
-        }).finally(() => {
-            setLoading(false)
-            setOpen(false)
-        }
-        )
+        return formData
+        // registerNewPlace(formData).then(res => {
+        //     console.log(res.data)
+        //     const newPlace = res.data.place
+        //     newPlace.logo = res.data.place.logo
+        //     newPlace.visits = []
+        //     newPlace.opinions = []
+        //     newPlace.news = []
+        //     places.push(newPlace)
+        //     dispatch(setPlaces(places))
+        //     enqueueSuccessSnackbar('You have successfully registered new place')
+        //     history.push(`dashboard`)
+        // }).catch(err => {
+        //     console.log(err)
+        //     enqueueErrorSnackbar()
+        // }).finally(() => {
+        //     setLoading(false)
+        //     setOpen(false)
+        // }
+        // )
     }
 
 
     return (
-        <Scrollbars>
-            <Grid container style={{ height: '100%' }} direction="column">
-                {activeStep > 0 && activeStep !== 3 &&
-                    <Paper sx={{ width: '100%' }}>
-                        <Grid container sx={{ height: '120px' }} alignItems="center">
-                            <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
-                            <NewPlaceStepper />
-                        </Grid>
-                    </Paper>
-                }
-                <Grid container sx={{ flexGrow: 1 }}>
+        <Grid container style={{ height: '100%' }} direction="column">
+            {activeStep > 0 && activeStep !== 3 &&
+                <Paper sx={{ width: '100%' }}>
+                    <Grid container sx={{ height: '120px' }} alignItems="center">
+                        <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
+                        <NewPlaceStepper />
+                    </Grid>
+                </Paper>
+            }
+            <Grid container sx={{ flexGrow: 1 }}>
+                <Scrollbars>
                     <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                         <Grid container item lg={11} justifyContent="space-evenly">
                             {activeStep !== 4 &&
@@ -128,68 +112,12 @@ export const NewPlace: FC = () => {
                                     {getStepContent(activeStep, false)}
                                 </Grid>
                             }
-                            {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ mt: '20px' }}>
-                                <Grid container lg={5}>
+                            {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
+                                <Grid item lg={5}>
                                     <PlaceDetailsCard isEditable />
                                 </Grid>
-                                <Grid container lg={5}>
-                                    <Slide in={true} timeout={1000}>
-                                        <div>
-                                            <Card>
-                                                <CardContent>
-                                                    <Typography variant="h2">
-                                                        Step {activeStep + 1} - Final
-                                                    </Typography>
-                                                    <Grid container sx={{ mt: '10px', mb: '10px' }} lg={11}>
-                                                        <Typography variant="body1" sx={{ mb: '10px' }}>
-                                                            This is the final step of the registration process. On the left side, you can see your place card.
-                                                            You have filled it with your data - now you can make it beautiful by uploading images presenting your place.
-                                                        </Typography>
-                                                        <Typography variant="caption">
-                                                            <span style={{ color: 'red' }}>*</span> Uploading a logo picture is required.<br />
-                                                            <span style={{ color: 'red' }}>*</span> You can upload up to 5 pictures.<br />
-                                                        </Typography>
-                                                        <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
-                                                        <NewPlaceStepper
-                                                            orientation="vertical"
-                                                        />
-                                                    </Grid>
-                                                    <Grid container sx={{ mt: 2 }}>
-                                                        <Dialog
-                                                            open={isOpen}
-                                                            TransitionComponent={Transition}
-                                                        >
-                                                            <DialogTitle>Summary</DialogTitle>
-                                                            <DialogContent>
-                                                                <DialogContentText>
-                                                                    Are you sure you would like to finish registration and save your place?
-                                                                </DialogContentText>
-                                                            </DialogContent>
-                                                            <DialogActions>
-                                                                <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
-                                                                    Cancel
-                                                                </Button>
-                                                                <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={registerPlace}>Yes, I am sure</LoadingButton>
-                                                            </DialogActions>
-                                                        </Dialog>
-
-                                                        <Tooltip open={tooltipOpen} onClose={handleClose} onOpen={handleOpen} title="Please upload a logo picture">
-                                                            <Button
-                                                                fullWidth
-                                                                variant="contained"
-                                                                disabled={!currentPlace.logo}
-                                                                size="large"
-                                                                onClick={() => setOpen(true)}
-
-                                                            > Finish registration
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </Grid>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-
-                                    </Slide>
+                                <Grid item lg={5}>
+                                    <Step5 formData={prepareFormData()} />
                                 </Grid>
                             </Grid>
 
@@ -241,8 +169,8 @@ export const NewPlace: FC = () => {
                             }
                         </Grid>
                     </Grid>
-                </Grid>
+                </Scrollbars>
             </Grid>
-        </Scrollbars>
+        </Grid >
     );
 }

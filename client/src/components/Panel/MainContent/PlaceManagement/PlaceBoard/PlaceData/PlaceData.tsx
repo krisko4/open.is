@@ -34,53 +34,39 @@ import { VisitsToday } from './VisitsToday';
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-// const useStyles = makeStyles({
-//     shadowCard: {
-//         // boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-//         boxShadow: 'rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px',
-//         //    boxShadow:  'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px',
-//         borderRadius: 5,
-//         flexGrow: 1
-//     }
-// })
-
 
 
 export const PlaceData: FC = () => {
 
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [loading, setLoading] = useState(false)
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const places = usePlacesSelector()
+    const { currentPlace, } = useCurrentPlaceContext()
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [totalVisits, setTotalVisits] = useState(0)
-    const dispatch = useDispatch()
-    const location = useLocation()
 
 
     const setStatus = async (status: Status) => {
-        setLoading(true)
-        try {
-            await setPlaceStatus(currentPlace._id as string, status)
-            if (currentPlace) {
-                let oldPlace = places.find(place => place.locations.find(location => location._id = currentPlace._id))
-                let updatedPlace = { ...currentPlace }
-                updatedPlace.status = status
-                const rawPlaceData = convertToRawPlaceData(updatedPlace)
-                if (oldPlace) places[places.indexOf(oldPlace)] = rawPlaceData
-                dispatch(setPlaces([...places]))
-                setCurrentPlace(updatedPlace)
-            }
-            if (status === Status.OPEN) {
-                enqueueSuccessSnackbar('Your place is now open')
-                return
-            }
-            enqueueSuccessSnackbar('Your place is now closed')
-        } catch (err) {
-            enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
-        }
+        // setLoading(true)
+        // try {
+        //     await setPlaceStatus(currentPlace._id as string, status)
+        //     if (currentPlace) {
+        //         let oldPlace = places.find(place => place.locations.find(location => location._id = currentPlace._id))
+        //         let updatedPlace = { ...currentPlace }
+        //         updatedPlace.status = status
+        //         const rawPlaceData = convertToRawPlaceData(updatedPlace)
+        //         if (oldPlace) places[places.indexOf(oldPlace)] = rawPlaceData
+        //         dispatch(setPlaces([...places]))
+        //         setCurrentPlace(updatedPlace)
+        //     }
+        //     if (status === Status.OPEN) {
+        //         enqueueSuccessSnackbar('Your place is now open')
+        //         return
+        //     }
+        //     enqueueSuccessSnackbar('Your place is now closed')
+        // } catch (err) {
+        //     enqueueErrorSnackbar()
+        // } finally {
+        //     setLoading(false)
+        // }
     }
 
     // useEffect(() => {
@@ -195,7 +181,7 @@ export const PlaceData: FC = () => {
                         </Grid>
                     </Grid>
                     <Grid item lg={7}>
-                        <PlaceDetailsCard />
+                        <PlaceDetailsCard  />
                     </Grid>
                 </Grid>
             </Grid>

@@ -12,15 +12,17 @@ import { registerNewPlace } from "../../../../../../requests/PlaceRequests"
 import { setPlaces } from "../../../../../../store/actions/setPlaces"
 import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
+import DialogTransition from "../../../../../reusable/DialogTransition"
 import { NewPlaceStepper } from "../NewPlaceStepper"
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+interface Props {
+    formData: FormData
+}
 
-export const Step5: FC = () => {
+export const Step5: FC<Props> = ({ formData }) => {
     const [isOpen, setOpen] = useState(false)
     const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
-    const { imageFile, currentPlace } = useCurrentPlaceContext()
-    const { selectedLocations } = useLocationContext()
+    const { currentPlace } = useCurrentPlaceContext()
     const [isLoading, setLoading] = useState(false)
     const [tooltipOpen, setTooltipOpen] = useState(false)
     const dispatch = useDispatch()
@@ -31,35 +33,8 @@ export const Step5: FC = () => {
         setTooltipOpen(false)
     }
 
-
-    const registerPlace = () => {
-        console.log(currentPlace)
-        console.log(selectedLocations)
+    const handleClick = () => {
         setLoading(true)
-        const formData = new FormData()
-        const images: any = currentPlace.images.filter(image => image.file).map(image => image.file)
-        const place = {
-            logo: imageFile as File,
-            name: currentPlace.name,
-            subtitle: currentPlace.subtitle,
-            description: currentPlace.description,
-            type: currentPlace.type as string,
-        }
-        const locations = selectedLocations.map(location => {
-            delete location['isValid']
-            location.facebook = `https://facebook.com/` + location.facebook
-            location.instagram = `https://instagram.com/` + location.instagram
-            return location
-        }
-        )
-        console.log(locations)
-
-        let key: keyof typeof place
-        for (key in place) formData.append(key, place[key])
-        formData.append('locations', JSON.stringify(locations))
-        for (const image of images) {
-            formData.append('images', image)
-        }
         registerNewPlace(formData).then(res => {
             console.log(res.data)
             const newPlace = res.data.place
@@ -77,10 +52,10 @@ export const Step5: FC = () => {
         }).finally(() => {
             setLoading(false)
             setOpen(false)
-        }
-        )
+        })
 
     }
+
     const handleOpen = () => {
         if (!currentPlace.logo) {
             setTooltipOpen(true)
@@ -111,7 +86,7 @@ export const Step5: FC = () => {
                     <Grid container sx={{ mt: 2 }}>
                         <Dialog
                             open={isOpen}
-                            TransitionComponent={Transition}
+                            TransitionComponent={DialogTransition}
                         >
                             <DialogTitle>Summary</DialogTitle>
                             <DialogContent>
@@ -123,7 +98,7 @@ export const Step5: FC = () => {
                                 <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
                                     Cancel
                                 </Button>
-                                <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={registerPlace}>Yes, I am sure</LoadingButton>
+                                <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={handleClick}>Yes, I am sure</LoadingButton>
                             </DialogActions>
                         </Dialog>
 

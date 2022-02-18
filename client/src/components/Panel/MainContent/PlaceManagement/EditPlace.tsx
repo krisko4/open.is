@@ -9,12 +9,12 @@ import { setPlaces } from "../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
+import DialogTransition from "../../../reusable/DialogTransition";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface Props {
     initialPlaceData: CurrentPlaceProps,
@@ -83,7 +83,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
                                             <Button variant="text" disabled={!currentPlace.logo} color="primary" onClick={() => setOpen(true)}>Finish modifications</Button>
                                             <Dialog
                                                 open={isOpen}
-                                                TransitionComponent={Transition}
+                                                TransitionComponent={DialogTransition}
                                             >
                                                 <DialogTitle>Summary</DialogTitle>
                                                 <DialogContent>

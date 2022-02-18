@@ -16,7 +16,6 @@ export const MyBusinessChains: FC = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const match = useRouteMatch()
-    const [businessChains, setBusinessChains] = useState(places.filter(place => place.locations.length > 1))
     const choosePlace = (place: RawPlaceDataProps) => {
         history.push({
             pathname: `${match.url}/business-chain/${place._id}`,
@@ -27,12 +26,12 @@ export const MyBusinessChains: FC = () => {
 
 
     return <>
-        {businessChains.length > 0 &&
+        {places.filter(place => place.isBusinessChain).length > 0 &&
             <>
                 <ListSubheader disableSticky>
                     My business chains
                 </ListSubheader>
-                {businessChains.map((place) =>
+                {places.filter(place => place.isBusinessChain).map((place) =>
                     <ListItem key={place._id} button onClick={() => choosePlace(place)}>
                         <ListItemAvatar>
                             <Avatar

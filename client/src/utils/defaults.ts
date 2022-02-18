@@ -2,12 +2,12 @@ import { format } from 'date-fns'
 
 export const defaultNews = [
     {
-        title: 'This will be my first news!',
+        title: 'This will be your first news!',
         date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         content: 'This is just an example of what your news will look like. It will disappear after your first news is created.'
     },
     {
-        title: 'This will be my second news!',
+        title: 'This will be your second news!',
         date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         content: 'It is going to be fun!'
 

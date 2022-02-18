@@ -17,8 +17,8 @@ import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
 import { EditPlace } from "./EditPlace";
+import DialogTransition from "../../../reusable/DialogTransition";
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 interface Props {
     open: boolean,
@@ -79,7 +79,7 @@ export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
                     Place settings
                 </Typography>
                 <Button startIcon={<DeleteIcon />} onClick={() => setDeleteOpen(true)} variant="contained" color="error">Delete</Button>
-                <Dialog TransitionComponent={Transition} open={isDeleteOpen}>
+                <Dialog TransitionComponent={DialogTransition} open={isDeleteOpen}>
                     <DialogTitle>
                         Place removal
                     </DialogTitle>

@@ -8,9 +8,9 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import { resendConfirmationEmail } from "../../../requests/AuthRequests";
 import { useEmailSelector } from '../../../store/selectors/EmailSelector';
 import { useCustomSnackbar } from "../../../utils/snackbars";
+import DialogTransition from "../../reusable/DialogTransition";
 import { LoadingButton } from "../../reusable/LoadingButton";
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 export const EmailConfirmation: FC = () => {
 
@@ -36,7 +36,7 @@ export const EmailConfirmation: FC = () => {
         <Dialog
             open={confirmationOpen}
             keepMounted
-            TransitionComponent={Transition}
+            TransitionComponent={DialogTransition}
             fullWidth={true}
             maxWidth={'xs'}
         >

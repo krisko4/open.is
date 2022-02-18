@@ -35,7 +35,7 @@ const MyTab = (props: any) => {
 }
 
 interface Props {
-    isEditable?: boolean
+    isEditable?: boolean,
 }
 
 export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
@@ -83,11 +83,15 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
 
     const tabContents = [
         <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
-        <OpeningHours  setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
+        <OpeningHours
+            setCurrentPlace={setCurrentPlace}
+            currentPlace={currentPlace}
+
+        />,
         <Opinions
             currentPlace={currentPlace}
             setCurrentPlace={setCurrentPlace}
-          
+
         />
 
     ]
@@ -154,7 +158,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             />
                         </Grid>
                         <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                            <Typography variant="h2" sx={{fontWeight: 'bold' }}>
+                            <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
                                 {currentPlace.name || 'This is the name of your business'}
                             </Typography>
                             <Typography variant="h6">

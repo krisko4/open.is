@@ -6,12 +6,12 @@ import Grid from "@mui/material/Grid";
 import Slide, { SlideProps } from "@mui/material/Slide";
 import * as React from 'react';
 import { useAuthContext } from "../../../contexts/AuthContext";
+import DialogTransition from "../../reusable/DialogTransition";
 import { RegistrationForm } from "./RegistrationForm";
 
 
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
 
@@ -26,7 +26,7 @@ export const Registration = () => {
             open={registrationOpen}
             onClose={() => setRegistrationOpen(false)}
             keepMounted
-            TransitionComponent={Transition}
+            TransitionComponent={DialogTransition}
             fullWidth={true}
             maxWidth={'md'}
 

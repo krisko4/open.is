@@ -40,6 +40,7 @@ export const clearBusinessChain = {
     logo: '',
     images: [],
     userId: '',
+    isBusinessChain: true
 
 }
 

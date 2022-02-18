@@ -149,7 +149,6 @@ export const BusinessChainTable = (props: Props) => {
                     </Paper>
                     <DeleteConfirmationDialog 
                     dialogOpen={dialogOpen}
-                    businessChainId={businessChain._id as string} 
                     selectedLocationId={selectedLocationId}
                     setDialogOpen={setDialogOpen} />
                 </Grid>

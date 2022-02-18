@@ -16,7 +16,6 @@ import { LocationProps } from "../../../../../../contexts/PlaceProps"
 
 const defaultStartHour = new Date(0, 0, 0, 8)
 const defaultEndHour = new Date(0, 0, 0, 18)
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 export const OpeningHours: FC = () => {
 

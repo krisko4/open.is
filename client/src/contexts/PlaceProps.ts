@@ -100,6 +100,7 @@ interface OpinionProps {
 export interface RawPlaceDataProps {
     _id?: string,
     name: string,
+    isBusinessChain: boolean,
     type: string | null,
     description: string,
     subtitle: string,

@@ -15,7 +15,6 @@ import { LocationDetails } from "./LocationDetails/LocationDetails";
 import { LocationSelection } from './LocationDetails/LocationSelection';
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 function getStepContent(step: number) {
     switch (step) {
@@ -34,9 +33,34 @@ export const NewBusinessChain: FC = () => {
     const [startClicked, setStartClicked] = useState(false)
     const { activeStep, setActiveStep } = useStepContext()
     const [addressSubmitted, setAddressSubmitted] = useState(false)
-    const { currentPlace } = useCurrentPlaceContext()
+    const { currentPlace, imageFile } = useCurrentPlaceContext()
     const { selectedLocations } = useLocationContext()
 
+    const prepareFormData = () => {
+        const formData = new FormData()
+        const images: any = currentPlace.images.filter(image => image.file).map(image => image.file)
+        const place = {
+            logo: imageFile as File,
+            name: currentPlace.name,
+            subtitle: currentPlace.subtitle,
+            description: currentPlace.description,
+            type: currentPlace.type as string,
+        }
+        const locations = selectedLocations.map(location => {
+            delete location['isValid']
+            location.facebook = `https://facebook.com/` + location.facebook
+            location.instagram = `https://instagram.com/` + location.instagram
+            return location
+        }
+        )
+        let key: keyof typeof place
+        for (key in place) formData.append(key, place[key])
+        formData.append('locations', JSON.stringify(locations))
+        for (const image of images) {
+            formData.append('images', image)
+        }
+        return formData
+    }
 
 
 
@@ -80,7 +104,7 @@ export const NewBusinessChain: FC = () => {
                                                     <PlaceDetailsCard isEditable />
                                                 </Grid>
                                                 <Grid item lg={5}>
-                                                    <Step5 />
+                                                    <Step5 formData={prepareFormData()} />
                                                 </Grid>
                                             </Grid>
                                             }
