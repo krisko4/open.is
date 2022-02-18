@@ -43,6 +43,7 @@ export const Opinions = (props: Props) => {
                         <List>
                             {options.map(option => (
                                 <ListItem
+                                    key={option.name}
                                     button
                                     onClick={() => setOption(option)}
                                 >

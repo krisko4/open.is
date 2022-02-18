@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloudCircle from '@mui/icons-material/CloudCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -18,23 +18,23 @@ const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
     {
         name: 'Dashboard',
         icon: <DashboardIcon color="primary" />,
-        url: places.length > 0 ? `/dashboard` : ''
+        url: places.length > 0 ? `dashboard` : '',
     },
     {
         name: 'My account',
         icon: <SettingsIcon color="primary" />,
-        url: `/account`
+        url: `account`,
 
     },
     {
         name: 'New place',
         icon: <AddIcon color="primary" />,
-        url: `/new-place`
+        url: `new-place`,
     },
     {
         name: 'New business chain',
         icon: <CloudCircle color="primary" />,
-        url: `/new-business-chain`
+        url: `new-business-chain`
     }
 ]
 
@@ -45,16 +45,15 @@ export const LeftNavigation: FC = () => {
     const history = useHistory()
     const match = useRouteMatch()
     const { userData } = useLoginContext()
+    const [selectedOption, setSelectedOption] = useState<string>('')
+    
 
     return (
         <Grid
             item
             lg={2}
-        // sx={{
-        //     backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09))'
-        // }}
         >
-            <Paper sx={{height: '100%'}} elevation={4}>
+            <Paper sx={{ height: '100%' }} elevation={4}>
                 <Scrollbars autoHide>
                     <Grid container justifyContent="center">
                         <CardMedia
@@ -78,7 +77,11 @@ export const LeftNavigation: FC = () => {
                                 <ListItem
                                     key={index}
                                     button
-                                    onClick={() => history.push(`${match.url}${button.url}`)}
+                                    onClick={() => {
+                                        setSelectedOption(button.url)
+                                        history.push(`${match.url}/${button.url}`)
+                                    }
+                                    }
                                 >
                                     <ListItemIcon>
                                         {button.icon}
@@ -86,11 +89,12 @@ export const LeftNavigation: FC = () => {
                                     <ListItemText
                                         primary={button.name}>
                                     </ListItemText>
-
                                 </ListItem>
                             )
                         }
-                        <MyPlaces />
+                        <MyPlaces
+                         setSelectedOption={setSelectedOption}
+                         selectedOption={selectedOption} />
                         <MyBusinessChains />
                     </List>
                 </Scrollbars>

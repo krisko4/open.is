@@ -1,26 +1,35 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemText, ListSubheader } from "@mui/material"
-import { FC } from "react"
+import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
+import { FC, useState } from "react"
 import { useDispatch } from "react-redux"
-import { useHistory, useRouteMatch } from "react-router"
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
 import { RawPlaceDataProps } from "../../../contexts/PlaceProps"
 import { setPlace } from "../../../store/actions/setCurrentPlace"
 import { usePlacesSelector } from "../../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from '../../../utils/place_data_utils'
-export const MyPlaces: FC = () => {
+import { Destinations } from "../MainContent/PlaceManagement/PlaceBoard/PlaceBoard"
+interface Props {
+    selectedOption: string,
+    setSelectedOption: React.Dispatch<React.SetStateAction<string>>
+}
+export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
 
     const dispatch = useDispatch()
     const places = usePlacesSelector()
     const history = useHistory()
+    const location = useLocation()
     const match = useRouteMatch()
 
-    const choosePlace = (place: RawPlaceDataProps) => {
-        const currentPlace = convertToCurrentPlace(place)[0]
-        dispatch(setPlace(currentPlace))
-        history.push({
-            pathname: `${match.url}/management/${currentPlace._id}`,
-            state: { place: currentPlace, businessId: place._id }
+    const choosePlace = (place: RawPlaceDataProps, index: number) => {
+        if (place._id === selectedOption) {
+            return
         }
-        )
+        setSelectedOption(place._id as string)
+        const currentPlace = convertToCurrentPlace(place)[0]
+        if (currentPlace.isActive) {
+            history.push(`${match.url}/management/${currentPlace._id}/${Destinations.HOME}`)
+            return
+        }
+        history.push(`${match.url}/management/${currentPlace._id}/${Destinations.OPENING_HOURS}`)
     }
 
     return <>
@@ -29,8 +38,12 @@ export const MyPlaces: FC = () => {
                 <ListSubheader disableSticky>
                     My places
                 </ListSubheader>
-                {places.filter(place => !place.isBusinessChain).map((place) =>
-                    <ListItem key={place._id} button onClick={() => choosePlace(place)}>
+                {places.filter(place => !place.isBusinessChain).map((place, index) =>
+                    <ListItemButton
+                        key={place._id}
+                        // selected={selectedIndex === index}
+                        onClick={() => choosePlace(place, index)}
+                    >
                         <ListItemAvatar>
                             <Avatar
                                 alt={place.name}
@@ -40,7 +53,7 @@ export const MyPlaces: FC = () => {
                             primary={place.name}
                             secondary={place.subtitle}
                         />
-                    </ListItem>
+                    </ListItemButton>
                 )}
             </>
         }

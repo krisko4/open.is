@@ -112,14 +112,15 @@ export const NewPlace: FC = () => {
                                     {getStepContent(activeStep, false)}
                                 </Grid>
                             }
-                            {activeStep === 4 && <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
-                                <Grid item lg={5}>
-                                    <PlaceDetailsCard isEditable />
+                            {activeStep === 4 &&
+                                <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
+                                    <Grid item lg={5}>
+                                        <PlaceDetailsCard isEditable />
+                                    </Grid>
+                                    <Grid item lg={5}>
+                                        <Step5 formData={prepareFormData()} />
+                                    </Grid>
                                 </Grid>
-                                <Grid item lg={5}>
-                                    <Step5 formData={prepareFormData()} />
-                                </Grid>
-                            </Grid>
 
                             }
                             {activeStep === 1 || activeStep === 2 ?
@@ -148,7 +149,7 @@ export const NewPlace: FC = () => {
                                                     <Typography variant="h2">
                                                         Step {activeStep + 1}
                                                     </Typography>
-                                                    <Grid container style={{ marginTop: 10 }} lg={10}>
+                                                    <Grid container item style={{ marginTop: 10 }} lg={10}>
                                                         <Typography variant="body1">
                                                             {activeStep === 0 ?
                                                                 'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :

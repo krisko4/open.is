@@ -25,8 +25,8 @@ export const MainContent: FC = () => {
   const history = useHistory()
 
   useEffect(() => {
-      console.log(match)
-      console.log(location)
+    console.log(match)
+    console.log(location)
   }, [])
 
 
@@ -50,7 +50,7 @@ export const MainContent: FC = () => {
         <CurrentPlaceContextProvider>
           <Route
             path={`${match.url}/management/:id`}
-            component={(props: any) => <PlaceBoard {...props} />}
+            render={(props: any) => <PlaceBoard {...props} />}
           />
         </CurrentPlaceContextProvider>
         <Route

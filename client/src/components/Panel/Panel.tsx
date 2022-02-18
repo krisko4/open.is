@@ -30,6 +30,10 @@ export const Panel: FC = () => {
                 if (places.length === 0) {
                     return
                 }
+                if (location.pathname === '/panel/') {
+                    history.push('dashboard')
+                    return
+                }
                 if (location.pathname === '/panel') {
                     history.push(`${match.url}/dashboard`)
                 }
