@@ -95,7 +95,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                     {icons.map((item, index) => {
                         return (
                             <Grid item lg={3} key={index}>
-                                <Card elevation={10} style={{  borderRadius: 10 }}>
+                                <Card elevation={10}>
                                     <CardContent>
                                         <Grid container justifyContent="center">
                                             <Grid item lg={12} style={{ textAlign: 'center' }}>

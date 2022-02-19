@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import AddIcon from '@mui/icons-material/Add';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
@@ -25,10 +25,10 @@ interface Props {
 }
 
 
-export const Opinions: FC<Props> = ({  currentPlace, setCurrentPlace }) => {
+export const Opinions: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
 
 
-    const { userData} = useLoginContext()
+    const { userData } = useLoginContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const [dialogOpen, setDialogOpen] = useState(false)
     const [noteValue, setNoteValue] = useState<number | null>(null)
@@ -88,15 +88,23 @@ export const Opinions: FC<Props> = ({  currentPlace, setCurrentPlace }) => {
                         {
                             currentPlace.opinions.map((opinion, index) =>
                                 <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
-                                    <OpinionCard  opinion={opinion} />
+                                    <OpinionCard opinion={opinion} />
                                 </Grid>
                             )}
                     </div>
                     : <Grid container direction="column" justifyContent="center" style={{ height: '100%' }} alignItems="center">
                         <Typography variant="h6" >This place doesn't have any opinions yet.</Typography>
-                        {userData.isLoggedIn &&  !currentPlace.isUserOwner ? <Grid item style={{ textAlign: 'center' }}>
+                        {userData.isLoggedIn ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
-                            <Button style={{ marginTop: 10 }} startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
+                            {currentPlace.isUserOwner ?
+                                // <Tooltip title='You cannot rate your own place' arrow>
+                                //     <div>
+                                        <Button style={{ marginTop: 10 }} disabled={true} startIcon={<AddIcon />} color="primary" variant="contained">New opinion</Button>
+                                //     </div>
+                                // </Tooltip>
+                                :
+                                <Button style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} color="primary" variant="contained">New opinion</Button>
+                            }
                         </Grid>
                             : <Typography variant="subtitle1" style={{ color: 'grey' }}>If you want to be the first advisor, please sign in to your account.</Typography>
                         }
@@ -107,7 +115,7 @@ export const Opinions: FC<Props> = ({  currentPlace, setCurrentPlace }) => {
                         open={dialogOpen}
                         TransitionComponent={Transition}
                         onClose={() => setDialogOpen(false)}
-                      
+
 
                     >
                         <DialogTitle className="dialogTitle">New opinion</DialogTitle>
@@ -134,9 +142,9 @@ export const Opinions: FC<Props> = ({  currentPlace, setCurrentPlace }) => {
                                     rows={10}
                                     variant="outlined"
                                     maxRows={10}
-                                  
+
                                     InputProps={{
-                                       
+
                                         endAdornment:
                                             <InputAdornment position="end">
                                                 <IconButton onClick={() => setEmojiPickerOpen(current => !current)} size="large">
@@ -144,7 +152,7 @@ export const Opinions: FC<Props> = ({  currentPlace, setCurrentPlace }) => {
                                                 </IconButton>
                                             </InputAdornment>
                                     }}
-                                 
+
 
                                 >
                                 </TextField>

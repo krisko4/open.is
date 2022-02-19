@@ -152,11 +152,14 @@ export const OpeningHours: FC = () => {
                         <Fade in={true} timeout={1000}>
                             <Card sx={{ height: '100%' }}>
                                 <Grid container direction="column" sx={{ height: '100%' }}>
-                                    <Tabs value={value} onChange={handleChange} variant="fullWidth" sx={{ width: '100%' }}>
-                                        {days.map((day) =>
-                                            <Tab value={day.toLowerCase()} label={day} key={day} />
-                                        )}
-                                    </Tabs>
+                                    <Paper>
+                                        <Tabs value={value} onChange={handleChange} variant="fullWidth" sx={{ width: '100%' }}>
+                                            {days.map((day) =>
+                                                <Tab value={day.toLowerCase()} label={day} key={day} />
+                                            )}
+                                        </Tabs>
+
+                                    </Paper>
                                     <SingleDayOpeningHours
                                         openingHours={openingHours}
                                         setOpeningHours={setOpeningHours}

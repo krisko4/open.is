@@ -7,6 +7,7 @@ import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/Pl
 import { setPlace } from "../../../../../store/actions/setCurrentPlace";
 import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
+import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { Opinions } from "./Opinions/Opinions";
 import { PlaceData } from "./PlaceData/PlaceData";
@@ -78,7 +79,7 @@ interface LocationState {
     businessId: string
 }
 
-interface MatchProps{
+interface MatchProps {
     id: string
 }
 
@@ -91,6 +92,7 @@ export const PlaceBoard: FC<any> = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const places = usePlacesSelector()
+    const [value, setValue] = useState(Destinations.HOME as string)
 
 
     useEffect(() => {
@@ -111,35 +113,13 @@ export const PlaceBoard: FC<any> = () => {
         setCurrentPlace(currentPlace)
     }, [match])
 
-    const [value, setValue] = useState(Destinations.HOME as string)
 
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-        setValue(newValue);
-        history.push(`${match.url}/${newValue}`)
-    };
+    // const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    //     setValue(newValue);
+    //     history.push(`${match.url}/${newValue}`)
+    // };
 
     return (
-        <Grid container direction="column" style={{ flexGrow: 1 }}>
-            <Paper>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    // variant="fullWidth"
-                    sx={{ width: '100%' }}
-                >
-                    {tabs.map((tab) =>
-                        <Tab key={tab.name} value={tab.url} disableRipple label={tab.name} />
-                    )}
-                </Tabs>
-            </Paper>
-            <Grid container sx={{ flexGrow: 1 }}>
-                {tabs.map((tab) =>
-                    <Route key={tab.name} path={`${match.url}/${tab.url as string}`}>
-                        {tab.content}
-                    </Route>
-                )}
-            </Grid>
-
-        </Grid>
+        <PanelTabNavigator value={value} setValue={setValue} tabs={tabs} />
     )
 }

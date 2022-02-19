@@ -192,7 +192,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         {icons.map((item, index) => {
                             return (
                                 <Grid item lg={3} key={index}>
-                                    <Card elevation={10} sx={{ borderRadius: 10 }}>
+                                    <Card elevation={10}>
                                         <CardContent>
                                             <Grid container justifyContent="center">
                                                 <Grid item lg={12} style={{ textAlign: 'center' }}>
@@ -208,77 +208,6 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             );
                         })}
                     </Grid>
-                    {/* <CardContent> */}
-                    {/* <Typography variant="h5">
-                            Place card
-                        </Typography>
-                        <Typography variant="subtitle2">
-                            Your place profile will look similar to this template in a browser
-                        </Typography> */}
-                    {/* <Grid container style={{ marginTop: 10 }} alignItems="center" justifyContent="space-evenly">
-                            <Grid item lg={5} style={{ textAlign: 'center' }}>
-                                <CardMedia style={{ height: 345, marginTop: 10 }} image={currentPlace.logo ? `${currentPlace.logo}` : `https://www.penworthy.com/Image/Getimage?id=C:\Repositories\Common\About%20Us\Slide1.jpg`} />
-                            </Grid>
-                            <Grid item lg={5} container direction="column" alignItems="center" style={{ textAlign: 'center', marginLeft: 10 }}>
-                                <Typography variant="h3" style={{ fontWeight: 'bold' }}>
-                                    {currentPlace.name || 'Business name'}
-                                </Typography>
-                                <Typography variant="h6" >
-                                    {currentPlace.subtitle || 'This is a short subtitle of my place'}
-                                </Typography>
-                                {currentPlace.status === Status.OPEN ? <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>
-                                    This place is now {currentPlace.status.toUpperCase()}
-                                </Alert>
-                                    : <Alert severity="error" variant="filled" style={{ marginTop: 10 }}>
-                                        This place is now {currentPlace.status?.toUpperCase()}
-                                    </Alert>
-
-                                }
-                                <Rating
-                                    name="simple-controlled"
-                                    readOnly
-                                    value={currentPlace.averageNote?.average}
-                                    style={{ marginTop: 10 }}
-                                />
-                                <Typography variant="body1" style={{ fontStyle: 'italic' }}>{currentPlace.type || 'Business type'}</Typography>
-                                <div>
-                                    <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.facebook ? currentPlace.facebook : "http://facebook.com"} /></IconButton>
-                                    <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url={currentPlace.instagram ? currentPlace.instagram : "http://instagram.com"} /></IconButton>
-                                </div>
-                            </Grid>
-                            <Grid item container lg={12} style={{ marginTop: 20 }} justifyContent="center">
-                                <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                    <Typography variant="body1">
-                                        {currentPlace.description || 'This is a brief description of my business. In this section I can make my visitors interested in my company.'}
-                                    </Typography>
-                                </Grid>
-                                <Grid item lg={10} style={{ marginTop: 10 }}>
-                                    <Divider style={{ width: '100%', background: '#2196f3' }} />
-                                </Grid>
-                            </Grid>
-                            <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
-                                {icons.map((item, index) => {
-                                    return (
-                                        <Grid item lg={3} key={index}>
-                                            <Card elevation={10} style={{ borderRadius: 10 }}>
-                                                <CardContent>
-                                                    <Grid container justifyContent="center">
-                                                        <Grid item lg={12} style={{ textAlign: 'center' }}>
-                                                            {item.icon}
-                                                        </Grid>
-                                                        <Grid item >
-                                                            <Typography variant="caption">{item.text}</Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-                                    );
-                                })}
-                            </Grid>
-                        </Grid>
-                    </CardContent> */}
-
                     <Grid container item lg={12} style={{ marginTop: 10, }}>
                         <Divider style={{ width: '100%', backgroundColor: '#2196f3' }} />
                         <Paper square style={{ width: '100%', background: 'inherit' }}>
