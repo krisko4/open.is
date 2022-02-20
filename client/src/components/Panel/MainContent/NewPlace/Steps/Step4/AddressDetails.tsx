@@ -38,22 +38,18 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
         try {
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
             if (!selectedAddress.postcode) {
-                console.log('no postcode')
                 setErrorMessage('This is not a valid address. Please provide a street number.')
                 return
             }
-            if (res.data && (!isEditionMode || (isEditionMode && currentPlace.address !== res.data.address))) {
+            console.log(res.data)
+            console.log(currentPlace.address)
+            if (res.data && (!isEditionMode || (isEditionMode && currentPlace.address !== res.data.locations[0].address))) {
                 setErrorMessage('Selected location is already occupied by another place. If your place is located on this address, try to change the position of a marker.')
                 return
             }
-            const newCurrentPlace = {
-                ...currentPlace,
-                address: selectedAddress.label,
-                lat: selectedAddress.lat,
-                lng: selectedAddress.lng,
-            }
-            console.log(newCurrentPlace)
-            setCurrentPlace(newCurrentPlace)
+            currentPlace.address = selectedAddress.label
+            currentPlace.lat = selectedAddress.lat
+            currentPlace.lng = selectedAddress.lng
             setActiveStep && setActiveStep(currentStep => currentStep + 1)
             setAddressSubmitted && setAddressSubmitted(addressSubmitted => !addressSubmitted)
         } catch (err) {

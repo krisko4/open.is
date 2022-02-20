@@ -7,36 +7,29 @@ import { useStepContext } from "../../../../../../contexts/StepContext";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
 
-// const useStyles = makeStyles({
-//     input: {
-//         '& .MuiInputBase-root, .MuiFormHelperText-root': {
-//             color: 'white'
-//         },
-        
-//     }
-// })
-
 export const Step1: FC = () => {
 
     const { setCurrentStep, setActiveStep } = useStepContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [input, setInput] = useState('')
 
     useEffect(() => {
         setCurrentStep(0)
     }, [])
+
+
     useEffect(() => {
         setInput(currentPlace.name)
     }, [currentPlace])
 
 
     const submitName = () => {
+        currentPlace.name = input
         setCurrentStep(1)
         setActiveStep(1)
-        const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.name = input
-        setCurrentPlace(newCurrentPlace)
     }
+
+
     return (
         <Fade in={true} timeout={1500}>
             <Grid item container direction="column" justifyContent="space-between" style={{ textAlign: 'center' }}>

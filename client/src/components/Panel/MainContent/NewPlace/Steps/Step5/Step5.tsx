@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab"
 import { Slide, Card, CardContent, Typography, Grid, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Tooltip, SlideProps } from "@mui/material"
-import React from "react"
+import _ from "lodash"
+import React, { useEffect } from "react"
 import { FC, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useDispatch } from "react-redux"
@@ -16,25 +17,31 @@ import DialogTransition from "../../../../../reusable/DialogTransition"
 import { NewPlaceStepper } from "../NewPlaceStepper"
 
 interface Props {
-    formData: FormData
+    formData: FormData,
+    isEditionMode?: boolean
 }
 
-export const Step5: FC<Props> = ({ formData }) => {
+export const Step5: FC<Props> = ({ formData, isEditionMode }) => {
     const [isOpen, setOpen] = useState(false)
-    const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
-    const { currentPlace } = useCurrentPlaceContext()
+    const { activeStep } = useStepContext()
+    const { currentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [isLoading, setLoading] = useState(false)
-    const [tooltipOpen, setTooltipOpen] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
     const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const handleClose = () => {
-        setTooltipOpen(false)
-    }
+
+    useEffect(() => {
+        console.log(currentPlace)
+        console.log(initialPlaceData)
+    }, [])
 
     const handleClick = () => {
         setLoading(true)
+        if (isEditionMode) {
+
+            return
+        }
         registerNewPlace(formData).then(res => {
             console.log(res.data)
             const newPlace = res.data.place
@@ -56,12 +63,6 @@ export const Step5: FC<Props> = ({ formData }) => {
 
     }
 
-    const handleOpen = () => {
-        if (!currentPlace.logo) {
-            setTooltipOpen(true)
-        }
-    }
-
     return (
         <Slide in={true} direction="left" timeout={1000}>
             <Card>
@@ -71,7 +72,7 @@ export const Step5: FC<Props> = ({ formData }) => {
                     </Typography>
                     <Grid container sx={{ mt: '10px', mb: '10px' }} lg={11}>
                         <Typography variant="body1" sx={{ mb: '10px' }}>
-                            This is the final step of the registration process. On the left side, you can see an example place card of one of your localizations.
+                            This is the final step of the registration process. On the left side, you can see an example place card of one of your locations.
                             You have filled it with your data - now you can make it beautiful by uploading images presenting your business.
                         </Typography>
                         <Typography variant="caption">
@@ -91,7 +92,10 @@ export const Step5: FC<Props> = ({ formData }) => {
                             <DialogTitle>Summary</DialogTitle>
                             <DialogContent>
                                 <DialogContentText>
-                                    Are you sure you would like to finish registration and save your place?
+                                    {isEditionMode ?
+                                        'Are your sure you would like to save your changes?' :
+                                        'Are you sure you would like to finish registration and save your place?'
+                                    }
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions>
@@ -101,18 +105,43 @@ export const Step5: FC<Props> = ({ formData }) => {
                                 <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={handleClick}>Yes, I am sure</LoadingButton>
                             </DialogActions>
                         </Dialog>
+                        {
+                            !currentPlace.logo ?
 
-                        <Tooltip open={tooltipOpen} onClose={handleClose} onOpen={handleOpen} title="Please upload a logo picture">
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                disabled={!currentPlace.logo}
-                                size="large"
-                                onClick={() => setOpen(true)}
+                                <Tooltip arrow title="Please upload a logo picture">
+                                    <Grid container>
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            disabled={
+                                                !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
+                                            }
+                                            size="large"
+                                            onClick={() => setOpen(true)}
+                                        >
+                                            {
+                                                isEditionMode ? 'Save changes' : 'Finish registration'
+                                            }
+                                        </Button>
 
-                            > Finish registration
-                            </Button>
-                        </Tooltip>
+                                    </Grid>
+                                </Tooltip>
+                                :
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    disabled={
+                                        !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
+                                    }
+
+                                    size="large"
+                                    onClick={() => setOpen(true)}
+                                >
+                                    {
+                                        isEditionMode ? 'Save changes' : 'Finish registration'
+                                    }
+                                </Button>
+                        }
                     </Grid>
                 </CardContent>
             </Card>

@@ -16,10 +16,13 @@ interface Props {
     item: Image,
     index: number,
     isEditable?: boolean,
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
+    address : string,
+    // currentPlace: CurrentPlaceProps,
+    setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
+    images: Image[]
 }
-export const ImageCarouselItem: FC<Props> = ({ item, currentPlace, setCurrentPlace, isEditable, index }) => {
+export const ImageCarouselItem: FC<Props> = ({ item, images, address, setCurrentPlace, isEditable, index }) => {
+
 
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
@@ -32,13 +35,13 @@ export const ImageCarouselItem: FC<Props> = ({ item, currentPlace, setCurrentPla
             return
         }
         if (isEditable) {
-            const place = { ...currentPlace }
-            place.images[index] = {
+            // const place = { ...currentPlace }
+            images[index] = {
                 img: img as string,
                 file: imageFile
             }
-            console.log(place)
-            if(setCurrentPlace) setCurrentPlace(place)
+            // console.log(place)
+            // if(setCurrentPlace) setCurrentPlace(place)
         }
     }, [img])
 
@@ -92,7 +95,7 @@ export const ImageCarouselItem: FC<Props> = ({ item, currentPlace, setCurrentPla
                     pr: 1
                 }}
             >
-                <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{currentPlace.address || 'This is an address of your place'}</Typography>
+                <Typography style={{ color: 'white', textAlign: 'center' }} variant="body1">{address || 'This is an address of your place'}</Typography>
             </Grid>
         </CardMedia>
 

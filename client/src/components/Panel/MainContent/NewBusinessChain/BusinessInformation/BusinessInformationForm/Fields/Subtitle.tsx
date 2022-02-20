@@ -4,33 +4,27 @@ import React, { useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 
 export const Subtitle = () => {
-    const {currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [subtitle, setSubtitle] = useState(currentPlace.subtitle)
-    const {setFieldValue} = useFormikContext()
+    const { setFieldValue } = useFormikContext()
     const handleChange = (e: any) => {
         setSubtitle(e.target.value)
     }
 
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setCurrentPlace(currentPlace => {
-                currentPlace.subtitle = subtitle
-                return { ...currentPlace }
-            })
-            setFieldValue('subtitle', subtitle)
-        }, 50)
-        return () => clearTimeout(timeout)
-    }, [subtitle])
+    // useEffect(() => {
+    //     setFieldValue('subtitle', subtitle)
+    // }, [subtitle])
 
     return (
         <TextField
-            value={subtitle}
+            // value={subtitle}
+            name="subtitle"
             variant="outlined"
             // focused
             placeholder="Please enter a short subtitle"
             helperText={`${subtitle.length}/100`}
-            onChange={handleChange}
+            // onChange={() => setFiel}
             label="Subtitle"
             fullWidth
             inputProps={{

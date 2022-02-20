@@ -14,7 +14,7 @@ import Alert from '@mui/material/Alert';
 import React, { FC, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status } from "../../../../../../contexts/PlaceProps";
 import { setPlaceStatus } from "../../../../../../requests/PlaceRequests";
@@ -27,6 +27,7 @@ import { PlaceDetailsCard } from "../../../NewPlace/PlaceDetailsCard";
 import { ActivityChart } from '../../Charts/ActivityChart';
 import { RatingChart } from '../../Charts/RatingChart';
 import { PlaceSettings } from "../../PlaceSettings";
+import { Destinations } from "../PlaceBoard";
 import { TotalOpinions } from './TotalOpinions';
 import { TotalVisits } from './TotalVisits';
 import { VisitsToday } from './VisitsToday';
@@ -42,7 +43,12 @@ export const PlaceData: FC = () => {
     const { currentPlace, } = useCurrentPlaceContext()
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [totalVisits, setTotalVisits] = useState(0)
+    const history = useHistory()
 
+    const handleSettingsButtonClick = () => {
+        history.push(`/panel/management/${currentPlace?._id}/${Destinations.SETTINGS}`)
+
+    }
 
     const setStatus = async (status: Status) => {
         // setLoading(true)
@@ -68,12 +74,6 @@ export const PlaceData: FC = () => {
         //     setLoading(false)
         // }
     }
-
-    // useEffect(() => {
-    //     //@ts-ignore
-    //     setCurrentPlace(location.state.place)
-    // }, [])
-
 
 
     return <>
@@ -128,7 +128,7 @@ export const PlaceData: FC = () => {
                                             Press the button below to manage your business
                                         </Typography>
                                         <Grid container style={{ marginTop: 20 }} justifyContent="space-between" alignItems="center">
-                                            <Button onClick={() => setSettingsOpen(true)} variant="outlined" style={{ color: 'white', borderColor: 'white' }}>Settings</Button>
+                                            <Button onClick={handleSettingsButtonClick} variant="outlined" style={{ color: 'white', borderColor: 'white' }}>Settings</Button>
                                             <SettingsIcon style={{ color: 'white', width: 60, height: 60 }} />
                                         </Grid>
                                         <Dialog

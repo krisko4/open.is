@@ -5,7 +5,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { ErrorMessage, FastField, Form, Formik } from "formik";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
@@ -33,7 +33,7 @@ const isNumber = (e: React.KeyboardEvent) => {
 }
 export const ContactDetailsForm: FC = () => {
 
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    let { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const { setActiveStep } = useStepContext()
 
     const [contactDetails, setContactDetails] = useState({
@@ -44,11 +44,12 @@ export const ContactDetailsForm: FC = () => {
         instagram: currentPlace.instagram,
     })
 
+    useEffect(() => {
+        console.log(currentPlace)
+    },[])
 
     const handleSubmit = (values: typeof contactDetails) => {
-        console.log(currentPlace)
-        const newCurrentPlace = { ...currentPlace, ...values }
-        setCurrentPlace(newCurrentPlace)
+        currentPlace = Object.assign(currentPlace, values)
         setActiveStep(3)
     }
     return (

@@ -17,15 +17,24 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Rating from '@mui/material/Rating';
 import makeStyles from '@mui/styles/makeStyles';
-import React, { FC, useEffect, useRef, useState } from "react";
+import { circle } from "leaflet";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { SocialIcon } from "react-social-icons";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
+import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
+import { ImagesCarousel, ImagesCarouselMemo } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
 import { ImageUpload } from "../../../reusable/ImageUpload";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
+import { MemoizedContactIcons } from "./PlaceDetailsCard/ContactIcons";
+import { MemoizedPlaceDescription } from "./PlaceDetailsCard/PlaceDescription";
+import { MemoizedPlaceLogo, PlaceLogo } from "./PlaceDetailsCard/PlaceLogo";
+import { MemoizedPlaceName, PlaceName } from "./PlaceDetailsCard/PlaceName";
+import { PlaceStatus } from "./PlaceDetailsCard/PlaceStatus";
+import { MemoizedPlaceSubtitle, PlaceSubtitle } from "./PlaceDetailsCard/PlaceSubtitle";
+import { MemoizedPlaceType } from "./PlaceDetailsCard/PlaceType";
 
 
 
@@ -38,14 +47,16 @@ interface Props {
     isEditable?: boolean,
 }
 
+
 export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
+
 
     const { currentPlace, setImageFile, setCurrentPlace } = useCurrentPlaceContext()
     const [isHover, setHover] = useState(true)
     const [logo, setLogo] = useState(currentPlace.logo)
     const isFirstRender = useRef(true)
-
     const [value, setValue] = useState(0)
+
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
@@ -60,41 +71,40 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
         setCurrentPlace(newCurrentPlace)
     }, [logo])
 
+    const tabs = useMemo(() => {
 
-    useEffect(() => {
-        console.log(currentPlace)
-    }, [])
+        return [
+            <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
+            <OpeningHours
+                setCurrentPlace={setCurrentPlace}
+                currentPlace={currentPlace}
 
+            />,
+            <Opinions
+                currentPlace={currentPlace}
+                setCurrentPlace={setCurrentPlace}
 
-    const icons = [
-        {
-            icon: <PhoneIcon color="primary" />,
-            text: currentPlace.phone || 'Phone number'
-        },
-        {
-            icon: <MailOutlineIcon color="primary" />,
-            text: currentPlace.email || 'Contact e-mail'
-        },
-        {
-            icon: <LanguageIcon color="primary" />,
-            text: currentPlace.website || 'Website address'
-        },
-    ]
+            />
+        ]
+    }, [currentPlace])
 
-    const tabContents = [
-        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
-        <OpeningHours
-            setCurrentPlace={setCurrentPlace}
-            currentPlace={currentPlace}
+    const icons = useMemo(() => {
+        return [
+            {
+                icon: <PhoneIcon color="primary" />,
+                text: currentPlace.phone || 'Phone number'
+            },
+            {
+                icon: <MailOutlineIcon color="primary" />,
+                text: currentPlace.email || 'Contact e-mail'
+            },
+            {
+                icon: <LanguageIcon color="primary" />,
+                text: currentPlace.website || 'Website address'
+            }
+        ]
+    }, [currentPlace])
 
-        />,
-        <Opinions
-            currentPlace={currentPlace}
-            setCurrentPlace={setCurrentPlace}
-
-        />
-
-    ]
 
     return (
         <Slide in={true} timeout={1000}>
@@ -116,7 +126,12 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Toolbar>
                     </Grid>
                     <Grid container>
-                        <ImagesCarousel isEditable={isEditable} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />
+                        <ImagesCarouselMemo
+                            address={currentPlace.address}
+                            isEditable={isEditable}
+                            images={currentPlace.images}
+                            setCurrentPlace={setCurrentPlace}
+                        />
                     </Grid>
                     <Grid container >
                         <Grid container item>
@@ -124,11 +139,7 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                                 sx={{ flexGrow: 1, paddingBottom: '12px', paddingTop: '12px', paddingRight: '20px', backgroundColor: 'panelCard.main' }}>
                                 <Grid container justifyContent="flex-end">
                                     <Grid item>
-                                        <Tooltip title={'This is a current status of your place'}>
-                                            <Alert severity="error" variant="filled" >
-                                                This place is now <b>{currentPlace.status?.toUpperCase() || 'CLOSED'}</b>
-                                            </Alert>
-                                        </Tooltip>
+                                        <PlaceStatus />
                                     </Grid>
                                 </Grid>
                             </Card>
@@ -136,20 +147,11 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                     </Grid>
                     <Grid container item sx={{ mt: '20px' }}>
                         <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
-                            <CardMedia onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }} image={currentPlace.logo ? `${currentPlace.logo}` : `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`} >
-                                {isEditable &&
-                                    <Slide direction="up" in={isHover} appear>
-                                        <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                                            <ImageUpload name="logo-upload" img={logo} setImg={setLogo} setImageFile={setImageFile}>
-                                                <IconButton color="primary" component="span">
-                                                    <PhotoCamera />
-                                                </IconButton>
-                                            </ImageUpload>
-                                        </Grid>
-                                    </Slide>
-
-                                }
-                            </CardMedia>
+                            <MemoizedPlaceLogo
+                                isEditable={isEditable}
+                                logo={currentPlace.logo}
+                                setImageFile={setImageFile}
+                            />
                             <Rating
                                 style={{ marginTop: 20 }}
                                 name="simple-controlled"
@@ -158,37 +160,21 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             />
                         </Grid>
                         <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                            <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
-                                {currentPlace.name || 'This is the name of your business'}
-                            </Typography>
-                            <Typography variant="h6">
-                                {currentPlace.subtitle || 'This is a subtitle of your business'}
-                            </Typography>
-                            <Typography variant="body1">{currentPlace.type || 'Business type'}</Typography>
-                            <div>
-                                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://facebook.com" /></IconButton>
-                                <IconButton size="large"><SocialIcon target="_blank" rel="noopener noreferrer" style={{ width: 35, height: 35, display: 'table-cell' }} url="http://instagram.com" /></IconButton>
-                            </div>
+                            <MemoizedPlaceName name={currentPlace.name} />
+                            <MemoizedPlaceSubtitle subtitle={currentPlace.subtitle} />
+                            <MemoizedPlaceType type={currentPlace.type} />
+                            <MemoizedContactIcons facebook={currentPlace.facebook} instagram={currentPlace.instagram} />
                         </Grid>
                     </Grid>
                     <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
                         <Grid item lg={10}>
-                            <Card elevation={10} style={{ flexGrow: 1 }}>
-                                <CardContent>
-                                    <div style={{ display: 'inline-block', overflowWrap: 'break-word' }}>
-                                        <Typography variant="body1" >
-                                            {currentPlace.description || 'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
-                                        </Typography>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
+                            <MemoizedPlaceDescription description={currentPlace.description} />
                         </Grid>
                         <Grid item lg={10} style={{ marginTop: 20 }}>
                             <Divider sx={{ width: '100%' }}></Divider>
                         </Grid>
                     </Grid>
-                    <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
+                    {/* <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
                         {icons.map((item, index) => {
                             return (
                                 <Grid item lg={3} key={index}>
@@ -225,10 +211,10 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Paper>
                         <Grid container style={{ height: 495 }}>
                             <Scrollbars>
-                                {tabContents[value]}
+                                {tabs[value]}
                             </Scrollbars>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
 
                 </Card>
             </div>
@@ -236,3 +222,5 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
         </Slide >
     );
 }
+
+export const MemoizedPlaceDetailsCard = React.memo(PlaceDetailsCard)

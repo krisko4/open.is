@@ -28,8 +28,9 @@ export const Description = () => {
             fullWidth={true}
             label="This is a description of my business!"
             multiline
-            value={description}
-            onChange={handleChange}
+            // value={description}
+            name="description"
+            // onChange={handleChange}
             rows={10}
             variant="outlined"
             // focused

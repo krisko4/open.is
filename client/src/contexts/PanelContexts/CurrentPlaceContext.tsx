@@ -1,14 +1,17 @@
 
-import { createContext, useContext, FC, useState } from "react";
+import { createContext, useContext, FC, useState, useEffect } from "react";
 import { defaultNews, defaultOpinions } from "../../utils/defaults";
 import { CurrentPlaceProps } from "../PlaceProps";
 
 export const CurrentPlaceContext = createContext<CurrentPlaceContextData | null>(null)
 
+interface Props{
+    initialPlaceData? : CurrentPlaceProps
+}
 
-export const CurrentPlaceContextProvider: FC = ({ children }) => {
+export const CurrentPlaceContextProvider: FC<Props> = ({ children, initialPlaceData }) => {
 
-    const state = useProviderSettings()
+    const state = useProviderSettings(initialPlaceData)
 
     return (
         <CurrentPlaceContext.Provider value={state}>
@@ -52,10 +55,11 @@ interface VisitProps {
 
 
 
-const useProviderSettings = () => {
+const useProviderSettings = (initialPlaceData? : CurrentPlaceProps) => {
 
-    const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps>(clearPlace)
+    const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps>(initialPlaceData || {...clearPlace})
     const [imageFile, setImageFile] = useState<File | null>(null)
+    const [sub, setSub] = useState('')
     // const [news, setNews] = useState<NewsProps[]>(defaultNews)
     // const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
     const [visits, setVisits] = useState<VisitProps[]>([])
@@ -69,7 +73,9 @@ const useProviderSettings = () => {
         visits,
         setVisits,
         imageFile,
-        setImageFile
+        setImageFile,
+        initialPlaceData,
+        sub,setSub
     }
 }
 

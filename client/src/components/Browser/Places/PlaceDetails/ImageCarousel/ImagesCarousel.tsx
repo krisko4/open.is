@@ -1,6 +1,7 @@
 import { PhotoCamera } from "@mui/icons-material";
 import { CardMedia, Grid, IconButton, Slide, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
+import React from "react";
 import { FC, useEffect, useRef, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
@@ -8,7 +9,7 @@ import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../../contexts/StepContext";
 import { ImageUpload } from "../../../../reusable/ImageUpload";
 import { ImageCarouselItem } from "./ImageCarouselItem";
-
+import { Image } from '../../../../../contexts/PlaceProps'
 
 
 const useStyles = makeStyles({
@@ -39,14 +40,17 @@ const useStyles = makeStyles({
 })
 interface Props {
     isEditable?: boolean,
-    currentPlace : CurrentPlaceProps,
-    setCurrentPlace? : React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
+    // currentPlace: CurrentPlaceProps,
+    images: Image[],
+    setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
+    address: string
 }
 
 
-export const ImagesCarousel: FC<Props> = ({currentPlace, setCurrentPlace, isEditable }) => {
+export const ImagesCarousel: FC<Props> = ({ images, address, setCurrentPlace, isEditable }) => {
     const classes = useStyles()
 
+    console.log('hellou')
 
     return (
         <Carousel
@@ -58,13 +62,22 @@ export const ImagesCarousel: FC<Props> = ({currentPlace, setCurrentPlace, isEdit
             animation="slide"
             className={classes.carousel}
         >
-            {currentPlace.images.map((item, index) =>
+            {images.map((item, index) =>
                 <div
                     key={index}
                 >
-                    <ImageCarouselItem currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} isEditable={isEditable} index={index} item={item} />
+                    <ImageCarouselItem
+                        images={images}
+                        setCurrentPlace={setCurrentPlace}
+                        isEditable={isEditable}
+                        index={index}
+                        item={item}
+                        address={address}
+                    />
                 </div>)
             }
         </Carousel >
     );
 }
+
+export const ImagesCarouselMemo = React.memo(ImagesCarousel)

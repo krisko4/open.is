@@ -1,23 +1,19 @@
-import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, SlideProps, TextField, Typography } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Dialog from "@mui/material/Dialog";
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { StepContextProvider } from "../../../../contexts/StepContext";
 import { deletePlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
-import { setSelectedOption } from "../../../../store/actions/setSelectedOption";
 import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
-import { LoadingButton } from "../../../reusable/LoadingButton";
-import { EditPlace } from "./EditPlace";
 import DialogTransition from "../../../reusable/DialogTransition";
+import { LoadingButton } from "../../../reusable/LoadingButton";
 
 
 interface Props {

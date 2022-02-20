@@ -54,7 +54,7 @@ export const NewPlaceStepper: FC<Props> = (props) => {
             {steps.map((step, index) => {
                 return (
                     <Step key={index} >
-                        <StepLabel onMouseEnter={() => activeStep === 0 && handleChange(index)} onClick={() => handleChange(index)}>{step.title}</StepLabel>
+                        <StepLabel onMouseEnter={() => activeStep === 0 || activeStep === 3 && handleChange(index)} onClick={() => handleChange(index)}>{step.title}</StepLabel>
                         {orientation === 'vertical' &&
                             <StepContent>
                                 <Typography>

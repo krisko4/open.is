@@ -53,7 +53,6 @@ export const Locations = (props: Props) => {
                     </Paper>
                 </Grid>
             </Fade>
-
         </Scrollbars>
     );
 };

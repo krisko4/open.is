@@ -2,15 +2,18 @@ import { Box, Card, Grid, Paper, Tab, Tabs, Toolbar } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Route, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
+import { StepContextProvider } from "../../../../../contexts/StepContext";
 import { setPlace } from "../../../../../store/actions/setCurrentPlace";
 import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
+import newPlaceSteps from "../../NewPlace/Steps/steps";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { Opinions } from "./Opinions/Opinions";
 import { PlaceData } from "./PlaceData/PlaceData";
+import { PlaceSettings } from "./Settings/PlaceSettings";
 
 
 export enum Destinations {
@@ -65,7 +68,10 @@ const tabs = [
     {
         name: 'Settings',
         url: Destinations.SETTINGS,
-        content: <h1>Hello world</h1>
+        content:
+            <StepContextProvider steps={newPlaceSteps}>
+                <PlaceSettings />
+            </StepContextProvider>
     },
     {
         name: 'Subscriptions',
@@ -95,7 +101,9 @@ export const PlaceBoard: FC<any> = () => {
     const [value, setValue] = useState(Destinations.HOME as string)
 
 
+
     useEffect(() => {
+        console.log(match)
         const { id } = match.params
         const place = places.find(pl => pl.locations.some(loc => loc._id === id)) as RawPlaceDataProps
         const currentPlace = convertToCurrentPlace(place)[0]

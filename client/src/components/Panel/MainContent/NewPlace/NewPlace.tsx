@@ -1,17 +1,10 @@
-import { LoadingButton } from "@mui/lab";
-import { Paper, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, SlideProps, Tooltip, Typography } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from "@mui/material";
+import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { useDispatch } from "react-redux";
-import { useHistory } from 'react-router-dom';
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../contexts/StepContext";
-import { registerNewPlace } from "../../../../requests/PlaceRequests";
-import { setPlaces } from "../../../../store/actions/setPlaces";
-import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
-import { useCustomSnackbar } from "../../../../utils/snackbars";
-import { PlaceDetailsCard } from "./PlaceDetailsCard";
+import { MemoizedPlaceDetailsCard, PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
 import { Step1 } from "./Steps/Step1/Step1";
 import { Step2 } from "./Steps/Step2/Step2";
@@ -36,10 +29,15 @@ function getStepContent(step: number, isEditionMode: boolean) {
     }
 }
 
-export const NewPlace: FC = () => {
+interface Props {
+    isEditionMode?: boolean
+}
+
+export const NewPlace: FC<Props> = ({ isEditionMode }) => {
 
     const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
     const { imageFile, currentPlace } = useCurrentPlaceContext()
+    const [subtitle, setSubtitle] = useState('')
 
 
     const prepareFormData = () => {
@@ -71,25 +69,6 @@ export const NewPlace: FC = () => {
             formData.append('images', image)
         }
         return formData
-        // registerNewPlace(formData).then(res => {
-        //     console.log(res.data)
-        //     const newPlace = res.data.place
-        //     newPlace.logo = res.data.place.logo
-        //     newPlace.visits = []
-        //     newPlace.opinions = []
-        //     newPlace.news = []
-        //     places.push(newPlace)
-        //     dispatch(setPlaces(places))
-        //     enqueueSuccessSnackbar('You have successfully registered new place')
-        //     history.push(`dashboard`)
-        // }).catch(err => {
-        //     console.log(err)
-        //     enqueueErrorSnackbar()
-        // }).finally(() => {
-        //     setLoading(false)
-        //     setOpen(false)
-        // }
-        // )
     }
 
 
@@ -106,69 +85,74 @@ export const NewPlace: FC = () => {
             <Grid container sx={{ flexGrow: 1 }}>
                 <Scrollbars>
                     <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                        <Grid container item lg={11} justifyContent="space-evenly">
-                            {activeStep !== 4 &&
-                                <Grid container item lg={activeStep === 3 ? 6 : 5}>
-                                    {getStepContent(activeStep, false)}
-                                </Grid>
-                            }
-                            {activeStep === 4 &&
-                                <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
-                                    <Grid item lg={5}>
-                                        <PlaceDetailsCard isEditable />
+                        <CurrentPlaceContextProvider initialPlaceData={currentPlace}>
+                            <Grid container item lg={11} justifyContent="space-evenly">
+                                {activeStep !== 4 &&
+                                    <Grid container item lg={activeStep === 3 ? 6 : 5}>
+                                        {getStepContent(activeStep, isEditionMode || false)}
                                     </Grid>
-                                    <Grid item lg={5}>
-                                        <Step5 formData={prepareFormData()} />
-                                    </Grid>
-                                </Grid>
+                                }
+                                {/* <MemoizedPlaceDetailsCard /> */}
 
-                            }
-                            {activeStep === 1 || activeStep === 2 ?
-                                <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
-                                    <TransformWrapper
-                                        limitToBounds={false}
-                                        doubleClick={{
-                                            disabled: true
-                                        }}
-                                        initialPositionY={-370}
-                                        initialPositionX={70}
-                                        initialScale={0.93}
-                                        minScale={0.5}
-                                    >
-                                        <TransformComponent>
-                                            <PlaceDetailsCard />
-                                        </TransformComponent>
-                                    </TransformWrapper>
-                                </Grid>
-                                : activeStep !== 4 &&
-                                <Grid container item lg={5}>
-                                    <Slide in={true} timeout={1000}>
-                                        <div>
-                                            <Card>
-                                                <CardContent>
-                                                    <Typography variant="h2">
-                                                        Step {activeStep + 1}
-                                                    </Typography>
-                                                    <Grid container item style={{ marginTop: 10 }} lg={10}>
-                                                        <Typography variant="body1">
-                                                            {activeStep === 0 ?
-                                                                'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
-                                                                'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
-                                                            }
+                                {activeStep === 4 &&
+                                    <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
+                                        <Grid item lg={5}>
+                                            <PlaceDetailsCard isEditable />
+                                        </Grid>
+                                        <Grid item lg={5}>
+                                            <Step5 isEditionMode={isEditionMode} formData={prepareFormData()} />
+                                        </Grid>
+                                    </Grid>
+
+                                }
+                                {activeStep === 1 || activeStep === 2 ?
+                                    <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                                        <TransformWrapper
+                                            limitToBounds={false}
+                                            doubleClick={{
+                                                disabled: true
+                                            }}
+                                            initialPositionY={-370}
+                                            initialPositionX={70}
+                                            initialScale={0.93}
+                                            minScale={0.5}
+                                        >
+                                            <TransformComponent>
+                                                <MemoizedPlaceDetailsCard />
+                                            </TransformComponent>
+                                        </TransformWrapper>
+                                    </Grid>
+                                    : activeStep !== 4 &&
+                                    <Grid container item lg={5}>
+                                        <Slide in={true} timeout={1000}>
+                                            <div>
+                                                <Card>
+                                                    <CardContent>
+                                                        <Typography variant="h2">
+                                                            Step {activeStep + 1}
                                                         </Typography>
-                                                        <NewPlaceStepper
-                                                            orientation="vertical"
-                                                        />
-                                                    </Grid>
-                                                </CardContent>
-                                            </Card>
-                                        </div>
+                                                        <Grid container item style={{ marginTop: 10 }} lg={10}>
+                                                            <Typography variant="body1">
+                                                                {activeStep === 0 ?
+                                                                    'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
+                                                                    'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
+                                                                }
+                                                            </Typography>
+                                                            <NewPlaceStepper
+                                                                orientation="vertical"
+                                                            />
+                                                        </Grid>
+                                                    </CardContent>
+                                                </Card>
+                                            </div>
 
-                                    </Slide>
-                                </Grid>
+                                        </Slide>
+                                    </Grid>
 
-                            }
-                        </Grid>
+                                }
+                            </Grid>
+
+                        </CurrentPlaceContextProvider>
                     </Grid>
                 </Scrollbars>
             </Grid>

@@ -156,7 +156,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                     </Paper>
                 </Grid>
                 <Grid container>
-                    <ImagesCarousel currentPlace={currentPlace} />
+                    <ImagesCarousel images={currentPlace.images} address={currentPlace.address} />
                 </Grid>
                 <MainContent place={currentPlace} />
                 <Grid container style={{ marginTop: 10 }}>
