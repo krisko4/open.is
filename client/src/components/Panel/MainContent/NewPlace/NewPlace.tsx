@@ -11,6 +11,7 @@ import { Step2 } from "./Steps/Step2/Step2";
 import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
 import { Step5 } from "./Steps/Step5/Step5";
+import { Step5Container } from "./Steps/Step5Container";
 
 
 
@@ -35,42 +36,7 @@ interface Props {
 
 export const NewPlace: FC<Props> = ({ isEditionMode }) => {
 
-    const { activeStep, setActiveStep, currentStep, steps } = useStepContext()
-    const { imageFile, currentPlace } = useCurrentPlaceContext()
-    const [subtitle, setSubtitle] = useState('')
-
-
-    const prepareFormData = () => {
-        const images: any = currentPlace.images.filter(image => image.file !== null).map(image => image.file)
-        const place = {
-            logo: imageFile as File,
-            name: currentPlace.name,
-            subtitle: currentPlace.subtitle,
-            description: currentPlace.description,
-            type: currentPlace.type as string,
-        }
-        const locations = [
-            {
-                address: currentPlace.address,
-                lat: currentPlace.lat,
-                lng: currentPlace.lng,
-                phone: currentPlace.phone,
-                email: currentPlace.email,
-                website: currentPlace.website,
-                facebook: `https://facebook.com/${currentPlace.facebook}`,
-                instagram: `https://instagram.com/${currentPlace.instagram}`,
-            }
-        ]
-        const formData = new FormData()
-        let key: keyof typeof place
-        for (key in place) formData.append(key, place[key])
-        formData.append('locations', JSON.stringify(locations))
-        for (const image of images) {
-            formData.append('images', image)
-        }
-        return formData
-    }
-
+    const { activeStep, setActiveStep } = useStepContext()
 
     return (
         <Grid container style={{ height: '100%' }} direction="column">
@@ -82,28 +48,25 @@ export const NewPlace: FC<Props> = ({ isEditionMode }) => {
                     </Grid>
                 </Paper>
             }
-            <Grid container sx={{ flexGrow: 1 }}>
-                <Scrollbars>
-                    <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                        <CurrentPlaceContextProvider initialPlaceData={currentPlace}>
+            <CurrentPlaceContextProvider>
+                <Grid container sx={{ flexGrow: 1 }}>
+                    <Scrollbars>
+                        <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                             <Grid container item lg={11} justifyContent="space-evenly">
                                 {activeStep !== 4 &&
                                     <Grid container item lg={activeStep === 3 ? 6 : 5}>
                                         {getStepContent(activeStep, isEditionMode || false)}
                                     </Grid>
                                 }
-                                {/* <MemoizedPlaceDetailsCard /> */}
-
                                 {activeStep === 4 &&
                                     <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
                                         <Grid item lg={5}>
                                             <PlaceDetailsCard isEditable />
                                         </Grid>
                                         <Grid item lg={5}>
-                                            <Step5 isEditionMode={isEditionMode} formData={prepareFormData()} />
+                                            <Step5Container isEditionMode={isEditionMode} />
                                         </Grid>
                                     </Grid>
-
                                 }
                                 {activeStep === 1 || activeStep === 2 ?
                                     <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
@@ -148,14 +111,12 @@ export const NewPlace: FC<Props> = ({ isEditionMode }) => {
 
                                         </Slide>
                                     </Grid>
-
                                 }
                             </Grid>
-
-                        </CurrentPlaceContextProvider>
-                    </Grid>
-                </Scrollbars>
-            </Grid>
+                        </Grid>
+                    </Scrollbars>
+                </Grid >
+            </CurrentPlaceContextProvider>
         </Grid >
     );
 }

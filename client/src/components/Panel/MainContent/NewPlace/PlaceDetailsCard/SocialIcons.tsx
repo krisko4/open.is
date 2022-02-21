@@ -24,13 +24,15 @@ const SocialIconButton : FC<SocialProps> = ({ url }) => {
     )
 }
 
-export const ContactIcons: FC<Props> = ({ facebook, instagram }) => {
+export const SocialIcons: FC<Props> = ({ facebook, instagram }) => {
+    const fb = facebook.startsWith('https://facebook.com') ? facebook : `https://facebook.com/${facebook}`
+    const ig = instagram.startsWith('https://instagram.com') ? instagram : `https://instagram.com/${instagram}`
     return (
         <div>
-            <SocialIconButton url={facebook || `https://facebook.com`} />
-            <SocialIconButton url={instagram || `https://instagram.com`} />
+            <SocialIconButton url={fb} />
+            <SocialIconButton url={ig} />
         </div>
     )
 }
 
-export const MemoizedContactIcons = React.memo(ContactIcons)
+export const MemoizedSocialIcons = React.memo(SocialIcons)

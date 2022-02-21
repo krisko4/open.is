@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material"
-import React from "react"
+import React, { useRef } from "react"
 import { FC, useState, useEffect } from "react"
 import { Controller, FieldValues, useFormContext, useWatch } from "react-hook-form"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
@@ -8,16 +8,16 @@ import { getBusinessTypes } from "../../../../../../requests/BusinessTypeRequest
 
 export const BusinessTypeContainer: FC = () => {
     const methods = useFormContext()
-    const {currentPlace, setCurrentPlace} = useCurrentPlaceContext()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     return <BusinessType setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
 }
 
-interface Props{
-    currentPlace : CurrentPlaceProps,
+interface Props {
+    currentPlace: CurrentPlaceProps,
     setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
 }
 
-const BusinessType = React.memo<FieldValues & Props>(({currentPlace, setCurrentPlace, control, formState: {errors } }) => {
+const BusinessType = React.memo<FieldValues & Props>(({ setValue, currentPlace, setCurrentPlace, control, formState: { errors } }) => {
     // const { control, formState: { errors } } = useFormContext()
     const [businessTypes, setBusinessTypes] = useState<any>([])
     // const { setCurrentPlace } = useCurrentPlaceContext()
@@ -31,8 +31,15 @@ const BusinessType = React.memo<FieldValues & Props>(({currentPlace, setCurrentP
         control,
         name: 'type'
     })
+    
+    const isFirstRender = useRef(true)
 
     useEffect(() => {
+        if (isFirstRender.current) {
+            setValue('type', currentPlace.type)
+            isFirstRender.current = false
+            return
+        }
         setCurrentPlace(place => {
             place.type = type
             return { ...place }
@@ -66,6 +73,6 @@ const BusinessType = React.memo<FieldValues & Props>(({currentPlace, setCurrentP
     )
 },
     (prevProps, nextProps) => {
-        return prevProps.getValues('type') === nextProps.getValues('type') 
+    return prevProps.getValues('type') === nextProps.getValues('type') && prevProps.formState === nextProps.formState
     }
 )

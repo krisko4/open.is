@@ -24,6 +24,7 @@ export interface CurrentPlaceProps {
     logo: string | ArrayBuffer | null | File,
     email: string,
     images: Image[],
+    isBusinessChain? : boolean,
     website: string,
     instagram: string,
     news?: NewsProps[],
@@ -52,7 +53,7 @@ interface VisitProps {
     visitCount: number
 }
 
-interface NewsProps {
+export interface NewsProps {
     title: string,
     date: string,
     content: string
@@ -88,7 +89,7 @@ export interface LocationProps {
     isUserSubscriber?: boolean
 }
 
-interface OpinionProps {
+export interface OpinionProps {
     author: string,
     date: string,
     content: string,

@@ -60,10 +60,6 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
             instagram: location.instagram
         }
     });
-    const onSubmit: SubmitHandler<Inputs> = data => {
-        console.log(data)
-    }
-
 
     useEffect(() => {
         if (isFirstFieldForAllRender.current) {
@@ -94,7 +90,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
 
 
     return (
-        <form style={{ flexGrow: 1 }} onSubmit={handleSubmit(onSubmit)} >
+        <form style={{ flexGrow: 1 }} >
             <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
                 <Grid item lg={5}>
                     <Tooltip title="Set value for all locations">
