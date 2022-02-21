@@ -9,30 +9,37 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
+import icon from 'leaflet/dist/images/marker-icon.png';
 
 
 
 
 
-interface Props{
+interface Props {
     criterium: CurrentPlaceProps,
     index: number,
     classes: any
 }
 
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     const placeMarker = useRef<any>(null)
-    const {popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable} = useMapContext()
-    const {chosenCriterias, setSelectedAddress, setChosenCriterias} = useAddressDetailsContext()
+    const { popupOpen, popupIndex, setCurrentPlace, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable } = useMapContext()
+    const { chosenCriterias, setSelectedAddress, setChosenCriterias } = useAddressDetailsContext()
     const firstRender = useRef(true)
     const history = useHistory()
     const match = useRouteMatch()
     const img = criterium.logo as string
     const myIcon = L.icon({
         // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
-        iconUrl: img || `https://image.flaticon.com/icons/png/512/149/149059.png`,
+        iconUrl: img,
         iconSize: [50, 50],
         // iconAnchor: [10, 0],
         shadowUrl: iconShadow,
@@ -54,7 +61,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     return (
         <Marker
-            icon={myIcon}
+            icon={img ? myIcon :  DefaultIcon}
             ref={placeMarker}
             eventHandlers={{
                 click: () => {

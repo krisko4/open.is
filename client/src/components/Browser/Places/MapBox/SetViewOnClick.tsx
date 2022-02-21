@@ -15,6 +15,7 @@ export const SetViewOnClick: FC = () => {
     map.options.minZoom = 5
     useEffect(() => {
         map.setView({lat: placeCoords.lat, lng: placeCoords.lng}, placeCoords.mapZoom);
+        
     }, [placeCoords])
     return null;
 }

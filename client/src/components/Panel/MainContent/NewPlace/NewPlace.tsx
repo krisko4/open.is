@@ -3,6 +3,7 @@ import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { MemoizedPlaceDetailsCard, PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
@@ -31,10 +32,11 @@ function getStepContent(step: number, isEditionMode: boolean) {
 }
 
 interface Props {
-    isEditionMode?: boolean
+    isEditionMode?: boolean,
+    initialPlaceData?: CurrentPlaceProps
 }
 
-export const NewPlace: FC<Props> = ({ isEditionMode }) => {
+export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
 
     const { activeStep, setActiveStep } = useStepContext()
 
@@ -48,7 +50,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode }) => {
                     </Grid>
                 </Paper>
             }
-            <CurrentPlaceContextProvider>
+            <CurrentPlaceContextProvider initialPlaceData={initialPlaceData}>
                 <Grid container sx={{ flexGrow: 1 }}>
                     <Scrollbars>
                         <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">

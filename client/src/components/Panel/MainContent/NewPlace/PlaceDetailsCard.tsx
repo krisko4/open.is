@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 import Rating from '@mui/material/Rating';
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ImagesCarouselMemo } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
+import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
@@ -37,20 +37,6 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
 
 
     const { currentPlace, setImageFile, setCurrentPlace } = useCurrentPlaceContext()
-    const [logo, setLogo] = useState(currentPlace.logo)
-    const isFirstRender = useRef(true)
-
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
-        }
-        const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.logo = logo
-        setCurrentPlace(newCurrentPlace)
-    }, [logo])
-
-
 
     return (
         <Slide in={true} timeout={1000}>
@@ -72,11 +58,11 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Toolbar>
                     </Grid>
                     <Grid container>
-                        <ImagesCarouselMemo
-                            address={currentPlace.address}
+                        <ImagesCarousel
                             isEditable={isEditable}
                             images={currentPlace.images}
                             setCurrentPlace={setCurrentPlace}
+                            address={currentPlace.address}
                         />
                     </Grid>
                     <Grid container >

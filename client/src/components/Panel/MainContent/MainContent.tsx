@@ -41,11 +41,9 @@ export const MainContent: FC = () => {
         <Route
           path={`${match.url}/new-place`}
         >
-          <CurrentPlaceContextProvider>
-            <StepContextProvider steps={newPlaceSteps}>
-              <NewPlace />
-            </StepContextProvider>
-          </CurrentPlaceContextProvider>
+          <StepContextProvider steps={newPlaceSteps}>
+            <NewPlace />
+          </StepContextProvider>
         </Route>
         <CurrentPlaceContextProvider>
           <Route

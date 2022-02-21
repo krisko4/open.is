@@ -2,7 +2,7 @@ import { PhotoCamera } from "@mui/icons-material"
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
 import { FC, useEffect, useRef, useState } from "react"
-import {  useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
 import { ImageUpload } from "../../../../reusable/ImageUpload"
 
@@ -16,12 +16,13 @@ interface Props {
     item: Image,
     index: number,
     isEditable?: boolean,
-    address : string,
+    address: string,
     // currentPlace: CurrentPlaceProps,
     setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
-    images: Image[]
+    images: Image[],
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
 }
-export const ImageCarouselItem: FC<Props> = ({ item, images, address, setCurrentPlace, isEditable, index }) => {
+export const ImageCarouselItem: FC<Props> = ({ item, setCurrentIndex, images, address, setCurrentPlace, isEditable, index }) => {
 
 
     const [isHover, setHover] = useState(true)
@@ -34,20 +35,39 @@ export const ImageCarouselItem: FC<Props> = ({ item, images, address, setCurrent
             isFirstRender.current = false
             return
         }
+        // setCurrentIndex(index)
         if (isEditable) {
-            // const place = { ...currentPlace }
             images[index] = {
                 img: img as string,
                 file: imageFile
             }
-            // console.log(place)
-            // if(setCurrentPlace) setCurrentPlace(place)
+            if (setCurrentPlace) setCurrentPlace(place => {
+                place.images = [...images]
+                return { ...place }
+            })
+            // if (setCurrentPlace) setCurrentPlace(place => {
+            //     place.images[index] = {
+            //         img: img as string,
+            //         file: imageFile
+            //     }
+            //     place.images = [...place.images]
+            //     return { ...place }
+            // })
         }
     }, [img])
 
     const clearImage = () => {
         setImg(null)
         setImageFile(null)
+        // item.img = ''
+        images[index] = {
+            img: '',
+            file: null
+        }
+        if (setCurrentPlace) setCurrentPlace(place => {
+            place.images = [...images]
+            return { ...place }
+        })
     }
 
     return (

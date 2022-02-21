@@ -24,7 +24,7 @@ interface Props {
 export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, openingHours }) => {
 
     const [loading, setLoading] = useState(false)
-    const { currentPlace} = useCurrentPlaceContext()
+    const { currentPlace } = useCurrentPlaceContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const places = usePlacesSelector()
     const dispatch = useDispatch()
@@ -39,10 +39,12 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, openi
         )
         try {
             await changeOpeningHours(currentPlace._id as string, openingHours)
-            const place =  places.find(place => place._id === currentPlace.businessId)
-            const location =  place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps 
+            const place = places.find(place => place._id === currentPlace.businessId)
+            const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
             location.openingHours = openingHours
+            location.isActive = true
             currentPlace.openingHours = openingHours
+            currentPlace.isActive = true
             enqueueSuccessSnackbar('You have successfully updated your opening hours')
             setDialogOpen(false)
         } catch (err) {

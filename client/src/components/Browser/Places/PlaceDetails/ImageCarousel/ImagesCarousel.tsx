@@ -38,20 +38,28 @@ const useStyles = makeStyles({
 
     }
 })
+
+
+// export const ImagesCarousel: FC<Props> = ({ isEditable }) => {
+//     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+//     console.log(currentPlace)
+//     return <MemoizedImagesCarousel
+//         currentPlace={currentPlace}
+//         setCurrentPlace={setCurrentPlace}
+//         isEditable={isEditable}
+//     />
+// }
+
 interface Props {
     isEditable?: boolean,
-    // currentPlace: CurrentPlaceProps,
     images: Image[],
     setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
     address: string
 }
 
-
-export const ImagesCarousel: FC<Props> = ({ images, address, setCurrentPlace, isEditable }) => {
+export const ImagesCarousel: FC<Props> = React.memo(({ isEditable, images, address, setCurrentPlace }) => {
     const classes = useStyles()
-
-    console.log('hellou')
-
+    const [currentIndex, setCurrentIndex] = useState(1)
     return (
         <Carousel
             stopAutoPlayOnHover
@@ -59,6 +67,8 @@ export const ImagesCarousel: FC<Props> = ({ images, address, setCurrentPlace, is
             indicators={false}
             interval={10000}
             swipe={false}
+            index={currentIndex}
+            onChange={(now) => setCurrentIndex(now as number)}
             animation="slide"
             className={classes.carousel}
         >
@@ -73,11 +83,13 @@ export const ImagesCarousel: FC<Props> = ({ images, address, setCurrentPlace, is
                         index={index}
                         item={item}
                         address={address}
+                        setCurrentIndex={setCurrentIndex}
                     />
                 </div>)
             }
         </Carousel >
     );
-}
+}, (prevProps, nextProps) => prevProps.images === nextProps.images
+)
 
-export const ImagesCarouselMemo = React.memo(ImagesCarousel)
+

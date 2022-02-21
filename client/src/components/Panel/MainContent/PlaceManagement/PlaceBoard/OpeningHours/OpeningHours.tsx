@@ -1,21 +1,31 @@
-import { Paper, Alert, AlertTitle, AppBar, Button, Card, CardActions, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, Divider, Fade, FormControlLabel, FormGroup, Grid, IconButton, Slide, SlideProps, Switch, Tab, Tabs, Toolbar, Tooltip, Typography } from "@mui/material"
-import CloseIcon from '@mui/icons-material/Close'
-import { FC, useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
-import { format } from "date-fns"
-import React from "react"
-import { OpeningHoursDialog } from "./OpeningHoursDialog"
 import { LoadingButton } from "@mui/lab"
-import { setPlaceAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
-import { useCustomSnackbar } from "../../../../../../utils/snackbars"
-import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
+import { Alert, AlertTitle, Card, CardContent, Checkbox, Fade, FormControlLabel, FormGroup, Grid, Paper, Slide, Tab, Tabs, Toolbar, Typography } from "@mui/material"
+import _ from "lodash"
+import React, { FC, useEffect, useState } from "react"
+import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { LocationProps } from "../../../../../../contexts/PlaceProps"
+import { setPlaceAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
+import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
+import { useCustomSnackbar } from "../../../../../../utils/snackbars"
+import { OpeningHoursDialog } from "./OpeningHoursDialog"
+import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
 
 
 const defaultStartHour = new Date(0, 0, 0, 8)
 const defaultEndHour = new Date(0, 0, 0, 18)
+
+const areOpeningHoursEqual = (h1:any, h2: any) => {
+    console.log(h1)
+    console.log(h2)
+    for(const key of Object.keys(h1)){
+        for(const nestedKey of Object.keys(key)){
+            if(h1[key][nestedKey] !== h2[key][nestedKey]){
+                return false
+            }
+        }
+    }
+    return true
+}
 
 export const OpeningHours: FC = () => {
 
@@ -36,7 +46,7 @@ export const OpeningHours: FC = () => {
             for (const day of Object.keys(hours)) {
                 hours[day].valid = true
             }
-            setOpeningHours(hours)
+            setOpeningHours({...hours})
         }
 
     }, [currentPlace])
@@ -214,7 +224,19 @@ export const OpeningHours: FC = () => {
                                         labelPlacement="end"
                                     />
                                 </FormGroup>
-                                <LoadingButton loading={loading} variant="contained" onClick={saveChanges} disabled={(!areHoursValid && !checked) || (checked && currentPlace.alwaysOpen) || (openingHours === currentPlace.openingHours && !checked)} size="large" color="primary">Save changes</LoadingButton>
+                                <LoadingButton
+                                    loading={loading}
+                                    variant="contained"
+                                    onClick={saveChanges}
+                                    disabled={
+                                        (!areHoursValid && !checked) ||
+                                        (checked && currentPlace.alwaysOpen) ||
+                                        (areOpeningHoursEqual(openingHours, currentPlace.openingHours) && !checked)}
+                                    size="large"
+                                    color="primary"
+                                >
+                                    Save changes
+                                </LoadingButton>
                             </Grid>
                         </Toolbar>
 

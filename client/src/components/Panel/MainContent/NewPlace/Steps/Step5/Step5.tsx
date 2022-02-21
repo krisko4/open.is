@@ -8,10 +8,12 @@ import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext"
+import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
 import { useStepContext } from "../../../../../../contexts/StepContext"
-import { registerNewPlace } from "../../../../../../requests/PlaceRequests"
+import { registerNewPlace, updatePlaceData } from "../../../../../../requests/PlaceRequests"
 import { setPlaces } from "../../../../../../store/actions/setPlaces"
 import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
+import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import DialogTransition from "../../../../../reusable/DialogTransition"
 import { NewPlaceStepper } from "../NewPlaceStepper"
@@ -21,25 +23,57 @@ interface Props {
     isEditionMode?: boolean
 }
 
-export const Step5: FC<Props> = ({ formData, isEditionMode }) => {
+function getObjectDiff(obj1: any, obj2: any) {
+    const diff = Object.keys(obj1).reduce((result, key) => {
+        if (!obj2.hasOwnProperty(key)) {
+            result.push(key);
+        } else if (_.isEqual(obj1[key], obj2[key])) {
+            const resultKeyIndex = result.indexOf(key);
+            result.splice(resultKeyIndex, 1);
+        }
+        return result;
+    }, Object.keys(obj2));
+
+    return diff;
+}
+
+export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const [isOpen, setOpen] = useState(false)
     const { activeStep } = useStepContext()
-    const { currentPlace, initialPlaceData } = useCurrentPlaceContext()
+    const { imageFile, currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [isLoading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
     const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
 
-    useEffect(() => {
-        console.log(currentPlace)
-        console.log(initialPlaceData)
-    }, [])
+    const editPlaceData = async () => {
+        try {
+            const res = await updatePlaceData(formData)
+            console.log(res.data)
+            // const placeBeforeUpdate = places.find(place => place.locations.find(location => location._id === currentPlace._id))
+            // const rawPlaceDataAfterUpdate = res.data.place
+            // if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
+            // dispatch(setPlaces([...places]))
+            // //@ts-ignore
+            // setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
+            // enqueueSuccessSnackbar('You have successfully modified your place')
+            // setOpen(false)
 
-    const handleClick = () => {
+        } catch (err) {
+            console.log(err)
+            enqueueErrorSnackbar()
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleClick = async () => {
         setLoading(true)
         if (isEditionMode) {
-
+            console.log(currentPlace)
+            await editPlaceData() 
+            setLoading(false)
             return
         }
         registerNewPlace(formData).then(res => {
@@ -70,9 +104,9 @@ export const Step5: FC<Props> = ({ formData, isEditionMode }) => {
                     <Typography variant="h2">
                         Step {activeStep + 1} - Final
                     </Typography>
-                    <Grid container sx={{ mt: '10px', mb: '10px' }} lg={11}>
+                    <Grid container item sx={{ mt: '10px', mb: '10px' }} lg={11}>
                         <Typography variant="body1" sx={{ mb: '10px' }}>
-                            This is the final step of the registration process. On the left side, you can see an example place card of one of your locations.
+                            This is the final step of the {isEditionMode ? 'edition' : 'registration'}  process. On the left side, you can see an example place card of one of your locations.
                             You have filled it with your data - now you can make it beautiful by uploading images presenting your business.
                         </Typography>
                         <Typography variant="caption">

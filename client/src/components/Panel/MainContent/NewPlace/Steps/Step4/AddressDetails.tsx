@@ -21,7 +21,7 @@ interface Props {
 export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }) => {
 
     const { setPlaceCoords } = useMapContext()
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
+    const { enqueueErrorSnackbar } = useCustomSnackbar()
 
     const [tileLayer, setTileLayer] = useState({
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -29,7 +29,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
     })
 
     const { setChosenCriterias, selectedAddress, isEditionMode, setSelectedAddress } = useAddressDetailsContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const { currentPlace } = useCurrentPlaceContext()
     const [submitLoading, setSubmitLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -80,22 +80,25 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
     }, [])
 
     return (
-        <Grid container justifyContent="center">
+        <Fade timeout={1000} in={true}>
             <Grid container justifyContent="center">
-                {selectedAddress.postcode && <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
-            </Grid>
-            <Grid item lg={12}>
-                <AddressSearcher errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
-            </Grid>
-            <Fade in={errorMessage !== ''}>
-                <Grid item lg={12} style={{ textAlign: 'center'}}>
-                    <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
+                <Grid container justifyContent="center">
+                    {selectedAddress.postcode && <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
                 </Grid>
-            </Fade>
-            <Grid style={{ height: 500, marginTop: 10 }} container>
-                <MapBox tileLayer={tileLayer} />
+                <Grid item lg={12}>
+                    <AddressSearcher errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+                </Grid>
+                <Fade in={errorMessage !== ''}>
+                    <Grid item lg={12} style={{ textAlign: 'center' }}>
+                        <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
+                    </Grid>
+                </Fade>
+                <Grid style={{ height: 500, marginTop: 10 }} container>
+                    <MapBox tileLayer={tileLayer} />
+                </Grid>
+                <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</LoadingButton>
             </Grid>
-            <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</LoadingButton>
-        </Grid>
+
+        </Fade>
     );
 }

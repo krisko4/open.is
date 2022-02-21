@@ -11,12 +11,6 @@ import { useMapContext } from '../../../../contexts/MapContext/MapContext';
 import { PlaceMarker } from "./PlaceMarker";
 import { SetViewOnClick } from "./SetViewOnClick";
 
-let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
 
 
 const useStyles = makeStyles({

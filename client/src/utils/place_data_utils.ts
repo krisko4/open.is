@@ -50,11 +50,11 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
             file: null
         }
         return returnedVal
-        
+
     })
-    if(place.images.length === 0){
+    if (place.images.length === 0) {
         images = [
-            {img: '', file: null}
+            { img: '', file: null }
         ]
     }
     const currentPlaces = locations.map(location => {
@@ -74,3 +74,4 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
     })
     return currentPlaces
 }
+
