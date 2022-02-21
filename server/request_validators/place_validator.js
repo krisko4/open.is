@@ -8,6 +8,8 @@ const placeValidator = {
             const {lat, lng, address} = location
             const addressResponse = await axios.get(`https://nominatim.openstreetmap.org//reverse?format=json&lat=${lat}&lon=${lng}`)
             const addressData = addressResponse.data
+            console.log(location)
+            console.log(addressData)
             if (!addressData.display_name || !addressData.address.postcode || addressData.display_name !== address) return next(ApiError.badRequest('Provided address is invalid'))
         }
         next()

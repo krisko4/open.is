@@ -9,6 +9,7 @@ const placeDto = (place, uid) => {
 
 const convertPlaceData = (placeData) => {
     const placeDto = { ...placeData}
+    console.log(placeDto)
     delete placeDto['userId']
     delete placeDto['createdAt']
     placeDto.locations.forEach(location => {

@@ -81,6 +81,10 @@ const PlaceSchema = new mongoose.Schema({
     type: ReqString,
     logo: ReqString,
     images: [ReqString],
+    isBusinessChain: {
+        type: Boolean,
+        default: false
+    },
     description: ReqString,
     createdAt: {
         type: Date,

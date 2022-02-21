@@ -39,9 +39,14 @@ const placeService = {
         const place = await placeService.getPlaceById(placeId)
         if (!place) throw ApiError.internal('Invalid placeId')
         if (place.userId.toString() !== user._id.toString()) throw ApiError.internal('Illegal operation')
-        console.log(placeId)
-        console.log(locationId)
-        return Place.findByIdAndUpdate(placeId, { $pull: { 'locations': {'_id' : locationId} } }, { new: true, upsert: true }).exec()
+        if (place.locations.length === 1) {
+            await Promise.all([
+                cloudinary.uploader.destroy(place.logo),
+                place.images.map(image => cloudinary.uploader.destroy(image))
+            ])
+            return Place.findByIdAndDelete(placeId)
+        }
+        return Place.findByIdAndUpdate(placeId, { $pull: { 'locations': { '_id': locationId } } }, { new: true, upsert: true }).exec()
     },
 
 
@@ -100,47 +105,7 @@ const placeService = {
         }),
     getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, 'location.address': addresses }).lean().exec(),
     getPlaceByLocationId: (locationId) => Place.findOne({ 'locations._id': locationId }).exec(),
-    editPlace: async (placeData, user) => {
-        const { lat, lng, img } = placeData
-        const place = await placeService.getPlaceByLocationId(placeData._id)
-        if (!place) throw new Error('Invalid locationId')
-        if (!user._id.equals(place.userId)) throw new Error('This user is not allowed to edit this place')
-        const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
-        if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
-        let editedPlace
-        const session = await mongoose.startSession()
-        await session.withTransaction(async () => {
-            if (img) {
-                await cloudinary.uploader.destroy(place.img)
-                const uploadResponse = await cloudinary.uploader.upload(img.tempFilePath, {
-                    upload_preset: 'place_images'
-                })
-                placeData.img = uploadResponse.public_id
-            }
-            // editedPlace = Place.findByIdAndUpdate(placeData._id, placeData, { new: true }).exec()
-            editedPlace = Place.findOneAndUpdate(
-                { 'locations._id': placeData._id },
-                {
-                    name: placeData.name,
-                    subtitle: placeData.subtitle,
-                    description: placeData.description,
-                    type: placeData.type,
-                    'locations.$.email': placeData.email,
-                    'locations.$.phone': placeData.phone,
-                    'locations.$.website': placeData.website,
-                    'locations.$.facebook': placeData.facebook,
-                    'locations.$.instagram': placeData.instagram,
-                    'locations.$.lat': placeData.lat,
-                    'locations.$.lng': placeData.lng,
-                    'locations.$.address': placeData.address
-                },
-                { new: true }
-            ).lean().exec()
-        })
-        await session.endSession()
-        return editedPlace
 
-    },
 
 
     setAlwaysOpen: async (alwaysOpen, locationId) => {
@@ -152,8 +117,64 @@ const placeService = {
     },
 
 
+    editPlace: async (placeData, user) => {
+        const { lat, lng, logo, images } = placeData
+        console.log(placeData)
+        const place = await placeService.getPlaceByLocationId(placeData._id)
+        if (!place) throw new Error('Invalid locationId')
+        if (!user._id.equals(place.userId)) throw new Error('Illegal operation')
+        const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
+        if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
+        let editedPlace
+        const session = await mongoose.startSession()
+        await session.withTransaction(async () => {
+            if (logo) {
+                await cloudinary.uploader.destroy(place.logo)
+                const uploadResponse = await cloudinary.uploader.upload(logo.path, {
+                    upload_preset: 'place_logos'
+                })
+                placeData.logo = uploadResponse.public_id
+            }
+            if (images) {
+                const urlImages = []
+                await place.images.map(image => cloudinary.uploader.destroy(image))
+                for (const image of images) {
+                    const res = await cloudinary.uploader.upload(image.path, {
+                        upload_preset: 'place_images'
+                    })
+                    urlImages.push(res.public_id)
+                }
+            }
+            editedPlace = await Place.findOneAndUpdate(
+                { 'locations._id': placeData._id },
+                {
+                    name: placeData.name,
+                    subtitle: placeData.subtitle,
+                    description: placeData.description,
+                    type: placeData.type,
+                    logo: placeData.logo,
+                    images: urlImages,
+                    'locations.$.email': placeData.email,
+                    'locations.$.phone': placeData.phone,
+                    'locations.$.website': placeData.website,
+                    'locations.$.facebook': placeData.facebook,
+                    'locations.$.instagram': placeData.instagram,
+                    'locations.$.lat': placeData.lat,
+                    'locations.$.lng': placeData.lng,
+                    'locations.$.address': placeData.address
+                },
+                { new: true, session: session}
+            ).lean().exec()
+        })
+        await session.endSession()
+        return editedPlace
+    },
+
     addPlace: async (placeData) => {
         const { logo, images, locations } = placeData
+        if (locations.length > 1) {
+            placeData.isBusinessChain = true
+        }
         for (const location of locations) {
             const { lat, lng } = location
             const duplicateAddress = await placeService.getPlaceByLatLng(lat, lng)
@@ -167,11 +188,13 @@ const placeService = {
                 upload_preset: 'place_logos'
             })
             const urlImages = []
-            for (const image of images) {
-                const res = await cloudinary.uploader.upload(image.path, {
-                    upload_preset: 'place_images'
-                })
-                urlImages.push(res.public_id)
+            if (images) {
+                for (const image of images) {
+                    const res = await cloudinary.uploader.upload(image.path, {
+                        upload_preset: 'place_images'
+                    })
+                    urlImages.push(res.public_id)
+                }
             }
             placeData.images = urlImages
             placeData.logo = uploadResponse.public_id
@@ -201,6 +224,7 @@ const placeService = {
         { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen': false },
         { new: true, runValidators: true }
     ).exec(),
+
     deletePlace: async (id) => {
         const place = await placeService.getPlaceById(id)
         if (!place) throw new Error('No place with provided id found')

@@ -173,48 +173,53 @@ const placeController = {
 
 
     editPlace: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
-        const reqBody = req.body
-        try {
-            const user = await userService.getUserById(uid)
-            if (!user) throw ApiError.internal('User with provided uid not found')
-            const placeData = {
-                _id: reqBody._id,
-                name: reqBody.name,
-                address: reqBody.address,
-                type: reqBody.type,
-                lat: reqBody.lat,
-                lng: reqBody.lng,
-                description: reqBody.description,
-                subtitle: reqBody.subtitle,
-                phone: reqBody.phone,
-                email: reqBody.email,
-                website: reqBody.website,
-                userId: user._id,
-                facebook: reqBody.facebook,
-                instagram: reqBody.instagram
-            }
-            const img = req.files && req.files.img
-            if (img) placeData.img = img
-            const place = await placeService.editPlace(placeData, user)
-            place = await placeController.getVisitsNewsOpinions(place, uid)[0]
-            // const placeObject = { ...place._doc }
-            // for (const location of placeObject.locations) {
-            //     const [visits, opinions, news] = await Promise.all([
-            //         visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
-            //         opinionService.getOpinionsBy({ locationId: location._id }),
-            //         newsService.getNewsBy({ locationId: location._id })
-            //     ])
-            //     location.visits = visits.map(visit => visitDto(visit))
-            //     location.opinions = opinions.map(opinion => opinionDto(opinion))
-            //     location.news = news.map(news => newsDto(news))
-            // }
-            return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(place, uid) })
-        }
-        catch (err) {
-            return next(err)
-        }
+
+
+        // const { cookies } = req
+        // const { uid } = cookies
+        // const reqBody = req.body
+        // try {
+        //     const user = await userService.getUserById(uid)
+        //     if (!user) throw ApiError.internal('User with provided uid not found')
+        //     const { logo, images } = req.files
+        //     if (!logo) throw ApiError.badRequest('Request is missing necessary upload files')
+        //     if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
+        //     const placeData = {
+        //         _id: reqBody._id,
+        //         name: reqBody.name,
+        //         address: reqBody.address,
+        //         type: reqBody.type,
+        //         lat: reqBody.lat,
+        //         lng: reqBody.lng,
+        //         description: reqBody.description,
+        //         images: images,
+        //         logo: logo[0],
+        //         subtitle: reqBody.subtitle,
+        //         phone: reqBody.phone,
+        //         email: reqBody.email,
+        //         website: reqBody.website,
+        //         userId: user._id,
+        //         facebook: reqBody.facebook,
+        //         instagram: reqBody.instagram
+        //     }
+        //     const place = await placeService.editPlace(placeData, user)
+        //     place = await placeController.getVisitsNewsOpinions(place, uid)[0]
+        // const placeObject = { ...place._doc }
+        // for (const location of placeObject.locations) {
+        //     const [visits, opinions, news] = await Promise.all([
+        //         visitService.getVisitsByLocationId(placeObject._id, location._id, uid),
+        //         opinionService.getOpinionsBy({ locationId: location._id }),
+        //         newsService.getNewsBy({ locationId: location._id })
+        //     ])
+        //     location.visits = visits.map(visit => visitDto(visit))
+        //     location.opinions = opinions.map(opinion => opinionDto(opinion))
+        //     location.news = news.map(news => newsDto(news))
+        // }
+        // return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(place, uid) })
+        // }
+        // catch (err) {
+        //     return next(err)
+        // }
 
 
     },
@@ -247,19 +252,28 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
             const { logo, images } = req.files
-            if (!logo || !images) throw ApiError.badRequest('Request is missing necessary upload files')
-            if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
+            if (!reqBody.editionMode) {
+                if (!logo) throw ApiError.badRequest('Request is missing necessary upload files')
+                if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
+            }
             const placeData = {
                 name: reqBody.name,
                 type: reqBody.type,
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
-                logo: logo[0],
+                logo: logo ? logo[0] : null,
                 images: images,
                 locations: reqBody.locations,
                 userId: user._id,
             }
-            const place = await placeService.addPlace(placeData)
+            let place
+            if(reqBody.editionMode){
+                place = await placeService.editPlace(placeData)
+            }
+            else{
+                place = await placeService.addPlace(placeData)
+            }
+            // const place = await reqBody.editionMode ? placeService.editPlace(placeData) : placeService.addPlace(placeData)
             return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
         }
         catch (err) {
