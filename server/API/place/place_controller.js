@@ -123,7 +123,7 @@ const placeController = {
     },
 
     getVisitsNewsOpinions: async (places, uid) => {
-        const subscribedLocations = await userService.getSubscribedLocations(uid)
+        const subscribedLocations = uid && await userService.getSubscribedLocations(uid)
         places = await Promise.all(places.map(async (place) => {
             place.locations.forEach(loc => {
                 loc['isUserSubscriber'] = subscribedLocations && subscribedLocations.some(location => location._id.toString() === loc._id.toString())
@@ -211,16 +211,15 @@ const placeController = {
                 images: images,
                 locations: reqBody.locations,
                 userId: user._id,
-                _id : reqBody.editionMode ? reqBody._id : null
             }
             let place
             if(reqBody.editionMode){
+                placeData['_id'] = reqBody._id
                 place = await placeService.editPlace(placeData, user)
             }
             else{
                 place = await placeService.addPlace(placeData)
             }
-            // const place = await reqBody.editionMode ? placeService.editPlace(placeData) : placeService.addPlace(placeData)
             return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
         }
         catch (err) {
