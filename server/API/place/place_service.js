@@ -118,8 +118,9 @@ const placeService = {
 
 
     editPlace: async (placeData, user) => {
-        const { lat, lng, logo, images } = placeData
+        const { lat, lng, logo, images, locations } = placeData
         console.log(placeData)
+        console.log(locations)
         const place = await placeService.getPlaceByLocationId(placeData._id)
         if (!place) throw new Error('Invalid locationId')
         if (!user._id.equals(place.userId)) throw new Error('Illegal operation')
@@ -128,12 +129,26 @@ const placeService = {
         let editedPlace
         const session = await mongoose.startSession()
         await session.withTransaction(async () => {
+            const dataToChange = {
+                name: placeData.name,
+                subtitle: placeData.subtitle,
+                description: placeData.description,
+                type: placeData.type,
+                'locations.$.email': locations[0].email,
+                'locations.$.phone': locations[0].phone,
+                'locations.$.website': locations[0].website,
+                'locations.$.facebook': locations[0].facebook,
+                'locations.$.instagram': locations[0].instagram,
+                'locations.$.lat': locations[0].lat,
+                'locations.$.lng': locations[0].lng,
+                'locations.$.address': locations[0].address
+            }
             if (logo) {
                 await cloudinary.uploader.destroy(place.logo)
                 const uploadResponse = await cloudinary.uploader.upload(logo.path, {
                     upload_preset: 'place_logos'
                 })
-                placeData.logo = uploadResponse.public_id
+                dataToChange.logo = uploadResponse.public_id
             }
             if (images) {
                 const urlImages = []
@@ -144,27 +159,13 @@ const placeService = {
                     })
                     urlImages.push(res.public_id)
                 }
+                dataToChange.images = urlImages
             }
             editedPlace = await Place.findOneAndUpdate(
                 { 'locations._id': placeData._id },
-                {
-                    name: placeData.name,
-                    subtitle: placeData.subtitle,
-                    description: placeData.description,
-                    type: placeData.type,
-                    logo: placeData.logo,
-                    images: urlImages,
-                    'locations.$.email': placeData.email,
-                    'locations.$.phone': placeData.phone,
-                    'locations.$.website': placeData.website,
-                    'locations.$.facebook': placeData.facebook,
-                    'locations.$.instagram': placeData.instagram,
-                    'locations.$.lat': placeData.lat,
-                    'locations.$.lng': placeData.lng,
-                    'locations.$.address': placeData.address
-                },
-                { new: true, session: session}
-            ).lean().exec()
+                dataToChange,
+                { new: true, session: session }
+            ).exec()
         })
         await session.endSession()
         return editedPlace
