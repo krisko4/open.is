@@ -95,6 +95,7 @@ const PlaceSchema = new mongoose.Schema({
     locations: [
         {
             address: ReqString,
+            addressId: ReqString,
             lat: ReqNumber,
             lng: ReqNumber,
             facebook: String,
