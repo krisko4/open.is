@@ -51,6 +51,10 @@ export const OpeningHours: FC = () => {
 
     }, [currentPlace])
 
+    useEffect(() => {
+        console.log('fss')
+    }, [])
+
 
     const [openingHours, setOpeningHours] = useState<any>(
         {
@@ -186,7 +190,7 @@ export const OpeningHours: FC = () => {
                                     <Typography variant="h2">Opening hours management</Typography>
                                     <Grid style={{ marginTop: 10 }} item lg={11}>
                                         <Typography variant="body1">
-                                            This is a crucial section of your business.
+                                            This is an important section of your business.
                                             Our great mission is to encourage you to update the opening state of your place
                                             as frequently as it is possible. Your commitment will shortly result with benefits:
                                         </Typography>

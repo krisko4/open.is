@@ -26,13 +26,19 @@ interface Props {
 
 export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const [isOpen, setOpen] = useState(false)
-    const { activeStep } = useStepContext()
-    const { imageFile, currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
+    const { activeStep, steps } = useStepContext()
+    const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [isLoading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const history = useHistory()
     const places = usePlacesSelector()
-    const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+    const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+
+    useEffect(() => {
+        if (steps.some(step => !step.isValid)) {
+            enqueueWarningSnackbar('You have left some invalid data in previous steps. Please make sure all the fields are correctly filled.')
+        }
+    }, [])
 
     const editPlaceData = async () => {
         try {
@@ -59,7 +65,7 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
         setLoading(true)
         if (isEditionMode) {
             console.log(currentPlace)
-            await editPlaceData() 
+            await editPlaceData()
             setLoading(false)
             return
         }
@@ -152,7 +158,9 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
                                     fullWidth
                                     variant="contained"
                                     disabled={
-                                        !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
+                                        !currentPlace.logo ||
+                                        (isEditionMode && _.isEqual(currentPlace, initialPlaceData)) ||
+                                        steps.some(step => !step.isValid)
                                     }
 
                                     size="large"

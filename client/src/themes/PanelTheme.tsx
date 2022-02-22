@@ -12,17 +12,21 @@ declare module '@mui/material/styles' {
 
     interface Palette {
         layout?: Palette['primary'],
+        navi?: Palette['primary'],
     }
 
     interface PaletteOptions {
         layout?: PaletteOptions['primary'],
+        navi?: PaletteOptions['primary'],
     }
 
     interface PaletteColor {
         layout?: string;
+        navi?: string,
     }
     interface SimplePaletteColorOptions {
         layout?: string;
+        navi?: string,
     }
 }
 
@@ -32,11 +36,24 @@ export const PanelTheme: FC = ({ children }) => {
 
     const theme = useMemo(
         () => createTheme({
+            // components:{
+            //     MuiAppBar: {
+            //         styleOverrides: {
+            //             colorPrimary: {
+            //                 backgroundColor: mode === 'light' ? 'white' : 'primary.main'
+            //             }
+            //         }
+            //     }
+            // },
             palette: {
                 mode: mode,
-                // layout: {
-                //     main: ''
-                // }
+                background: {
+                    default: mode === 'light' ? '#eef5f9' :  '#121212',
+                    // paper: mode === 'light' ? '#e4e5f1' : '#121212'
+                },
+                navi: {
+                    main: mode === 'light' ? 'white' : 'background.paper'
+                }
                 // primary: {
                 //     light: '#757ce8',
                 //     main: '#2196f3',

@@ -24,10 +24,6 @@ export const MainContent: FC = () => {
   const location = useLocation()
   const history = useHistory()
 
-  useEffect(() => {
-    console.log(match)
-    console.log(location)
-  }, [])
 
 
 
@@ -48,8 +44,9 @@ export const MainContent: FC = () => {
         <CurrentPlaceContextProvider>
           <Route
             path={`${match.url}/management/:id`}
-            render={(props: any) => <PlaceBoard {...props} />}
-          />
+          >
+            <PlaceBoard />
+          </Route>
         </CurrentPlaceContextProvider>
         <Route
           path={`${match.url}/dashboard`}
@@ -68,13 +65,11 @@ export const MainContent: FC = () => {
         <Route
           path={`${match.url}/new-business-chain`}
         >
-          <CurrentPlaceContextProvider>
-            <StepContextProvider steps={businessChainSteps}>
-              <LocationContextProvider>
-                <NewBusinessChain />
-              </LocationContextProvider>
-            </StepContextProvider>
-          </CurrentPlaceContextProvider>
+          <StepContextProvider steps={businessChainSteps}>
+            <LocationContextProvider>
+              <NewBusinessChain />
+            </LocationContextProvider>
+          </StepContextProvider>
         </Route>
 
       </Grid>

@@ -3,13 +3,16 @@ import { FC, useMemo } from "react";
 import { useColorMode } from "../contexts/ColorModeContext";
 
 
-export const BrowserTheme : FC = ({children}) => {
+export const BrowserTheme: FC = ({ children }) => {
     const { mode } = useColorMode()
     const theme = useMemo(() => (
         createTheme({
-           palette: {
-               mode: mode
-           } 
+            palette: {
+                mode: mode,
+                background: {
+                    default: mode === 'light' ? '#fafafa' : '#121212'
+                }
+            }
         })
 
     ), [mode])

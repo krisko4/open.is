@@ -7,7 +7,8 @@ export const StepContext = createContext<StepContextData | null>(null)
 
 interface Step{
     title: string,
-    content: string
+    content: string,
+    isValid?: boolean
 }
 
 interface Props{
@@ -29,6 +30,7 @@ const useProviderSettings = (steps : Step[]) => {
     const [activeStep, setActiveStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
     const [imageFile, setImageFile] = useState<File | null>(null)
+    const [areStepsValid, setStepsValid] = useState(false)
 
     return {
         activeStep,
@@ -37,7 +39,9 @@ const useProviderSettings = (steps : Step[]) => {
         setImageFile,
         currentStep,
         setCurrentStep,
-        steps
+        steps,
+        areStepsValid,
+        setStepsValid
 
     }
 }

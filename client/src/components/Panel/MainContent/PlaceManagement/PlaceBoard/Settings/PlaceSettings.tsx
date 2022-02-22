@@ -1,14 +1,29 @@
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
+import { useRouteMatch } from "react-router-dom";
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
+import { StepContextProvider } from "../../../../../../contexts/StepContext";
+import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
+import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils";
 import { NewPlace } from "../../../NewPlace/NewPlace";
+import newPlaceSteps from "../../../NewPlace/Steps/steps";
 
 
 
+interface LocationState {
+    place: CurrentPlaceProps,
+    businessId: string
+}
+
+interface MatchProps {
+    id: string
+}
 
 export const PlaceSettings: FC = () => {
 
+    console.log('chad')
 
-    const { currentPlace } = useCurrentPlaceContext()
+    const { currentPlace} = useCurrentPlaceContext()
 
     const initialPlaceData = useMemo(() => {
         while (currentPlace.images.length < 4) {
@@ -26,10 +41,12 @@ export const PlaceSettings: FC = () => {
     }, [currentPlace])
 
     return (
-        <NewPlace
-            isEditionMode={true}
-            initialPlaceData={initialPlaceData}
-        />
+        <StepContextProvider steps={newPlaceSteps}>
+            <NewPlace
+                isEditionMode={true}
+                initialPlaceData={initialPlaceData}
+            />
+        </StepContextProvider>
     )
 
 }

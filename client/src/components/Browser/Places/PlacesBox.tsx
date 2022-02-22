@@ -1,10 +1,11 @@
 import { FiberNew, Timelapse, Star, Favorite, Subscriptions } from "@mui/icons-material";
-import { Paper, Tab, Grid, Tabs, Fade, ListItem } from "@mui/material";
+import { Paper, Tab, Grid, Tabs, Fade, ListItem, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
+import { useLoginContext } from "../../../contexts/LoginContext";
 import { useMapContext } from "../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../contexts/PlaceProps";
 import { getPlaces } from "../../../requests/PlaceRequests";
@@ -48,6 +49,7 @@ const PlacesBox: FC = () => {
 
     const { chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
     const { isPlaceCardClicked, currentPlace } = useMapContext()
+    const { userData: { isLoggedIn } } = useLoginContext()
     const [tabIndex, setTabIndex] = useState(0)
     const isFirstRender = useRef(true)
     const scrollbarRef = useRef<any>()
@@ -114,12 +116,12 @@ const PlacesBox: FC = () => {
         <Grid container direction="column" style={{ height: '100%' }} >
             {isPlaceCardClicked ||
                 <Grid container justifyContent="flex-end" alignItems="center">
-                    <Paper sx={{flexGrow: 1}}>
+                    <Paper sx={{ flexGrow: 1 }}>
                         <Tabs
                             variant="fullWidth"
                             selectionFollowsFocus
                             scrollButtons
-                            
+
                             // TabScrollButtonProps={
                             //     {
                             //         style: {
@@ -135,7 +137,15 @@ const PlacesBox: FC = () => {
                             <MyTab icon={<Timelapse />} label="Recently added" />
                             <MyTab icon={<Star />} label="Top rated" />
                             <MyTab icon={<Favorite />} label="Favorite" />
-                            <MyTab icon={<Subscriptions />} label="Subscriptions" />
+                            {isLoggedIn ?
+                                <MyTab icon={<Subscriptions />} label="Subscriptions" />
+                                :
+                                <Tooltip arrow title={'Sign in to view your subscriptions'}>
+                                    <div>
+                                        <MyTab disabled icon={<Subscriptions />} label="Subscriptions" />
+                                    </div>
+                                </Tooltip>
+                            }
                         </Tabs>
 
                     </Paper>

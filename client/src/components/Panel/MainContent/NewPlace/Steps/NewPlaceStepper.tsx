@@ -10,18 +10,19 @@ interface Step {
 
 interface Props {
     orientation?: any,
+    isEditionMode?: boolean
 }
 
 
 export const NewPlaceStepper: FC<Props> = (props) => {
 
     const { activeStep, setActiveStep, steps } = useStepContext()
-    const { children, orientation, ...rest } = props
+    const { children, orientation, isEditionMode, ...rest } = props
     const [step, setStep] = useState(activeStep)
 
     const handleChange = (index: number) => {
         if (orientation !== 'vertical') {
-            if (index < step) {
+            if (index < step || isEditionMode) {
                 setActiveStep(index)
                 // setStep(index)
             }
@@ -31,14 +32,10 @@ export const NewPlaceStepper: FC<Props> = (props) => {
     }
 
     useEffect(() => {
-        // if(activeStep === 3){
-        //     setStep(activeStep - 1)
-        //     return
-        // }
         setStep(activeStep)
     }, [activeStep])
 
-    
+
 
 
     return (
@@ -54,14 +51,19 @@ export const NewPlaceStepper: FC<Props> = (props) => {
             {steps.map((step, index) => {
                 return (
                     <Step key={index} >
-                        <StepLabel onMouseEnter={() => activeStep === 0 || activeStep === 3 && handleChange(index)} onClick={() => handleChange(index)}>{step.title}</StepLabel>
+                        <StepLabel
+                            onMouseEnter={() => activeStep === 0 || activeStep === 3 && handleChange(index)}
+                            onClick={() => handleChange(index)}
+                        >
+                            {step.title}
+                        </StepLabel>
                         {orientation === 'vertical' &&
                             <StepContent>
                                 <Typography>
                                     {step.content}
                                 </Typography>
                                 {
-                                    index < activeStep &&
+                                    (index < activeStep || (index !== activeStep && isEditionMode)) &&
                                     <Button variant="contained" onClick={() => setActiveStep(index)} sx={{ mt: 1 }}>Jump to step</Button>
                                 }
                             </StepContent>

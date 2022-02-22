@@ -53,7 +53,7 @@ export const LeftNavigation: FC = () => {
             item
             lg={2}
         >
-            <Paper sx={{ height: '100%' }} elevation={4}>
+            <Paper sx={{ height: '100%', bgcolor: 'navi.main' }} elevation={4}>
                 <Scrollbars autoHide>
                     <Grid container justifyContent="center">
                         <CardMedia

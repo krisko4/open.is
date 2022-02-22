@@ -2,6 +2,15 @@
 import { createTheme } from '@mui/material/styles';
 
 const mainTheme = createTheme({
+    // components: {
+    //     MuiButton: {
+    //         styleOverrides: {
+    //             root: {
+    //                 fontWeight: 'bold'
+    //             }
+    //         }
+    //     }
+    // },
     palette: {
         primary: {
             light: '#757ce8',
@@ -16,7 +25,7 @@ const mainTheme = createTheme({
             contrastText: '#fff',
         },
         background: {
-            default : 'red'
+            default: 'red'
         }
     },
 });

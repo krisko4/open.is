@@ -37,7 +37,11 @@ function App() {
 
     return <>
         <StyledEngineProvider injectFirst>
-            <SnackbarProvider maxSnack={3}>
+            <SnackbarProvider maxSnack={3}
+                anchorOrigin={{
+                    horizontal: 'center',
+                    vertical: 'bottom'
+                }}>
                 <div className="App">
                     <ThemeProvider theme={mainTheme}>
                         <Router>
@@ -50,7 +54,7 @@ function App() {
                                         <ColorModeContextProvider>
                                             <PanelTheme>
                                                 <CssBaseline enableColorScheme />
-                                                    <Panel />
+                                                <Panel />
                                             </PanelTheme>
                                         </ColorModeContextProvider>
                                     </Route>

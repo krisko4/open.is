@@ -1,10 +1,11 @@
 import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../contexts/StepContext";
+import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { MemoizedPlaceDetailsCard, PlaceDetailsCard } from "./PlaceDetailsCard";
 import { NewPlaceStepper } from "./Steps/NewPlaceStepper";
 import { Step1 } from "./Steps/Step1/Step1";
@@ -39,6 +40,12 @@ interface Props {
 export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
 
     const { activeStep, setActiveStep } = useStepContext()
+    const { enqueueInfoSnackbar } = useCustomSnackbar()
+
+    useEffect(() => {
+        isEditionMode && enqueueInfoSnackbar('In edition mode you can switch freely between steps. Click on the step label to check it out.')
+
+    }, [])
 
     return (
         <Grid container style={{ height: '100%' }} direction="column">
@@ -46,7 +53,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                 <Paper sx={{ width: '100%' }}>
                     <Grid container sx={{ height: '120px' }} alignItems="center">
                         <Button color="primary" sx={{ ml: '30px' }} variant="outlined" onClick={() => setActiveStep(step => step - 1)}>Back</Button>
-                        <NewPlaceStepper />
+                        <NewPlaceStepper isEditionMode={isEditionMode} />
                     </Grid>
                 </Paper>
             }
@@ -105,6 +112,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                                                             </Typography>
                                                             <NewPlaceStepper
                                                                 orientation="vertical"
+                                                                isEditionMode={isEditionMode}
                                                             />
                                                         </Grid>
                                                     </CardContent>

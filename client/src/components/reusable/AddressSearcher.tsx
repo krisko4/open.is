@@ -57,7 +57,7 @@ export const AddressSearcher: FC<Props> = ({errorMessage,  setErrorMessage }) =>
             const {osm_type, osm_id} = place.raw
 
             setSelectedAddress({
-                label: place.name,
+                label: place.label,
                 lng: place.x,
                 lat: place.y,
                 postcode: place.raw.address.postcode,

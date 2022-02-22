@@ -28,6 +28,7 @@ const useStyles = makeStyles({
 
 export const Dashboard: FC = () => {
 
+
     const dispatch = useDispatch()
     const places = usePlacesSelector()
     const classes = useStyles()

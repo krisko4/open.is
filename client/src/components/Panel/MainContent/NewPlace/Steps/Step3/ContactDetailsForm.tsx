@@ -44,7 +44,7 @@ const SubmitButton: FC = () => {
     const { getValues, formState: { errors, isValid } } = useFormContext()
     const { setCurrentPlace } = useCurrentPlaceContext()
     const { setActiveStep } = useStepContext()
-   
+
 
     const handleClick = () => {
         setCurrentPlace(place => Object.assign(place, getValues()))
@@ -59,7 +59,7 @@ const SubmitButton: FC = () => {
             style={{ marginTop: 10 }}
             color="primary"
             size="large"
-            disabled={Object.keys(errors).length > 0 || getValues('phone') === ''} 
+            disabled={!isValid}
             onClick={handleClick}
         >
             Submit
@@ -69,7 +69,7 @@ const SubmitButton: FC = () => {
 
 export const ContactDetailsForm: FC = () => {
 
-
+    const {steps, activeStep} = useStepContext()
 
     const methods = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -82,6 +82,10 @@ export const ContactDetailsForm: FC = () => {
             website: ''
         }
     });
+
+    useEffect(() => {
+        steps[activeStep].isValid = methods.formState.isValid
+    }, [methods.formState.isValid])
 
     return (
         <FormProvider {...methods}>
@@ -131,7 +135,7 @@ export const ContactDetailsForm: FC = () => {
                         color="primary"
                         size="large"
                         disabled={!methods.formState.isValid}
-                        // onClick={handleClick}
+                        onClick={handleClick}
                     >
                         Submit
                     </Button> */}

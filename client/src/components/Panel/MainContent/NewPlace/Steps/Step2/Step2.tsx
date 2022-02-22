@@ -7,11 +7,6 @@ import { useStepContext } from "../../../../../../contexts/StepContext";
 import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/BusinessType";
 import { PlaceDetailsForm } from "./PlaceDetailsForm";
 
-const PlaceDetailsSchema = Yup.object().shape({
-    subtitle: Yup.string().required().max(100),
-    description: Yup.string().required().max(600),
-    businessType: Yup.string().required()
-})
 
 export const Step2: FC = () => {
     
@@ -23,9 +18,7 @@ export const Step2: FC = () => {
                     <Typography variant="h3">Step 2</Typography>
                     <Typography variant="subtitle1">Business details</Typography>
                 </Grid>
-                {/* <Formik initialValues={initialValues} onSubmit={handleSubmit} validateOnMount validationSchema={PlaceDetailsSchema}> */}
                 <PlaceDetailsForm />
-                {/* </Formik> */}
             </Grid >
         </Fade>
     );

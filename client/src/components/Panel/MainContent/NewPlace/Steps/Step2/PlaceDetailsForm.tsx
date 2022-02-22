@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useStepContext } from "../../../../../../contexts/StepContext";
@@ -20,10 +20,9 @@ interface Inputs {
     description: string
 }
 
-export const PlaceDetailsForm : FC = () => {
+export const PlaceDetailsForm: FC = () => {
 
-    const {setActiveStep} = useStepContext()
-
+    const { setActiveStep, activeStep, steps } = useStepContext()
 
     const methods = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -35,22 +34,11 @@ export const PlaceDetailsForm : FC = () => {
         }
     });
 
-    console.log(methods.formState.errors)
+    useEffect(() => {
+        steps[activeStep].isValid = methods.formState.isValid
+    }, [methods.formState.isValid])
 
 
-    // const type = useWatch({
-    //     control,
-    //     name: 'type'
-    // })
-
-
-
-    // useEffect(() => {
-    //     setCurrentPlace(place => {
-    //         place.type = type
-    //         return { ...place }
-    //     })
-    // }, [type])
 
 
     return (

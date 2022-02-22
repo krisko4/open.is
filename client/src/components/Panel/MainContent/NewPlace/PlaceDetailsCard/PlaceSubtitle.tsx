@@ -7,7 +7,7 @@ interface Props {
 export const PlaceSubtitle: FC<Props> = ({ subtitle }) => {
     return (
         <Typography variant="h6">
-            {subtitle || 'This is the name of your business'}
+            {subtitle || 'This is a short subtitle of your business'}
         </Typography>
 
     )

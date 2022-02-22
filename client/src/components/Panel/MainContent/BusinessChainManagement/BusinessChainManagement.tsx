@@ -51,6 +51,7 @@ export const BusinessChainManagement = (props: Props) => {
         const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
         console.log(businessChain)
         setBusinessChain(businessChain)
+        console.log('biz')
         // const currentPlace = convertToCurrentPlace(place)[0]
         if (location.pathname === `${match.url}`) {
             history.push(`${match.url}/dashboard`)
@@ -62,6 +63,6 @@ export const BusinessChainManagement = (props: Props) => {
     }, [match])
 
     return (
-        <PanelTabNavigator value={value} setValue={setValue} tabs={tabs} />
+        <PanelTabNavigator placeId={match.params.id}  tabs={tabs} />
     );
 };

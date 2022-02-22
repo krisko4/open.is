@@ -26,7 +26,7 @@ export const findByAddress = async (inputValue: string) => {
             })
             console.log(filteredAddressArray)
             filteredAddressArray.splice(0, 0, upperCasedInput)
-            address.name = filteredAddressArray.join(', ')
+            address.name = filteredAddressArray.toString()
             address.type = 'address'
         })
     }

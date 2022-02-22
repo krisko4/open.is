@@ -9,13 +9,21 @@ import { LoadingButton } from "../../../../../reusable/LoadingButton";
 
 export const Step1: FC = () => {
 
-    const { setCurrentStep, setActiveStep } = useStepContext()
+    const { activeStep, setCurrentStep, steps, setActiveStep } = useStepContext()
     const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [input, setInput] = useState('')
 
-    useEffect(() => {
-        setCurrentStep(0)
-    }, [])
+    // useEffect(() => {
+    //     setCurrentStep(0)
+    // }, [])
+
+    // useEffect(() => {
+    //     if (!input) {
+    //         steps[activeStep].isValid = false
+    //         return
+    //     }
+    //     steps[activeStep].isValid = true
+    // }, [input])
 
 
     useEffect(() => {
@@ -25,8 +33,8 @@ export const Step1: FC = () => {
 
     const submitName = () => {
         currentPlace.name = input
-        setCurrentStep(1)
-        setActiveStep(1)
+        setCurrentStep(activeStep => activeStep + 1)
+        setActiveStep(activeStep => activeStep + 1)
     }
 
 
@@ -42,7 +50,7 @@ export const Step1: FC = () => {
                     color="primary"
                     placeholder="This is the name of my business!"
                     variant="outlined"
-                    
+
                     onChange={(e) => setInput(e.target.value)}
                     helperText={`${input.length}/60`}
                     inputProps={{ maxLength: 60 }}
