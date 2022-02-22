@@ -61,7 +61,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
 
     return (
         <Marker
-            icon={img ? myIcon :  DefaultIcon}
+            icon={img ? myIcon : DefaultIcon}
             ref={placeMarker}
             eventHandlers={{
                 click: () => {
@@ -81,12 +81,14 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                     const criterias = [criterium]
                     setChosenCriterias(criterias)
                     const address = res.data
+                    const {osm_type, osm_id} = address.raw
                     console.log(address)
                     setSelectedAddress({
                         label: address.display_name,
                         lat: lat,
                         lng: lng,
-                        postcode: address.address.postcode
+                        postcode: address.address.postcode,
+                        addressId: `${osm_type[0].toString().toUpperCase()}${osm_id}`
                     })
 
                 }

@@ -67,6 +67,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
         }
         const newLocation = {
             address: currentPlace.address,
+            addressId: currentPlace.addressId,
             lat: currentPlace.lat,
             lng: currentPlace.lng,
             phone: '',

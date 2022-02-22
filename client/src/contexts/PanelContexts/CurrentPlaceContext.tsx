@@ -23,6 +23,7 @@ export const CurrentPlaceContextProvider: FC<Props> = ({ children, initialPlaceD
 export const clearPlace = {
     name: '',
     address: '',
+    addressId: '',
     type: null,
     lat: 0,
     lng: 0,

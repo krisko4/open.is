@@ -35,6 +35,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
 
     const submitAddress = async () => {
         setSubmitLoading(true)
+        console.log(selectedAddress)
         try {
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
             if (!selectedAddress.postcode) {
@@ -48,6 +49,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
                 return
             }
             currentPlace.address = selectedAddress.label
+            currentPlace.addressId = selectedAddress.addressId 
             currentPlace.lat = selectedAddress.lat
             currentPlace.lng = selectedAddress.lng
             setActiveStep && setActiveStep(currentStep => currentStep + 1)
@@ -68,6 +70,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
                 label: currentPlace.address,
                 lng: currentPlace.lng,
                 lat: currentPlace.lat,
+                addressId: currentPlace.addressId,
                 postcode: 'default'
             })
             setPlaceCoords({

@@ -8,41 +8,18 @@ export interface Image {
     img: string,
     file: File | null
 }
-export interface CurrentPlaceProps {
+export interface CurrentPlaceProps extends LocationProps {
     status?: Status,
-    visitCount?: number,
     businessId?: string,
     _id?: string,
     name: string,
-    address: string,
     type: string | null,
-    lat: number,
-    lng: number,
     description: string,
     subtitle: string,
-    phone: string,
     logo: string | ArrayBuffer | null | File,
-    email: string,
     images: Image[],
     isBusinessChain? : boolean,
-    website: string,
-    instagram: string,
-    news?: NewsProps[],
-    opinions?: OpinionProps[],
-    facebook: string,
     userId?: string,
-    visits?: VisitProps[],
-    alwaysOpen?: boolean,
-    averageNote?: {
-        ones: number,
-        twos: number,
-        threes: number,
-        fours: number,
-        fives: number,
-        average: number
-    },
-    openingHours?: any,
-    isActive?: boolean,
     isUserOwner?: boolean,
     isUserSubscriber?: boolean
 }
@@ -62,6 +39,7 @@ export interface NewsProps {
 export interface LocationProps {
     _id?: string,
     address: string,
+    addressId: string,
     lat: number,
     lng: number,
     phone: string,

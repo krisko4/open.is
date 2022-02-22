@@ -16,25 +16,12 @@ import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelec
 import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import DialogTransition from "../../../../../reusable/DialogTransition"
+import { Destinations } from "../../../PlaceManagement/PlaceBoard/PlaceBoard"
 import { NewPlaceStepper } from "../NewPlaceStepper"
 
 interface Props {
     formData: FormData,
     isEditionMode?: boolean
-}
-
-function getObjectDiff(obj1: any, obj2: any) {
-    const diff = Object.keys(obj1).reduce((result, key) => {
-        if (!obj2.hasOwnProperty(key)) {
-            result.push(key);
-        } else if (_.isEqual(obj1[key], obj2[key])) {
-            const resultKeyIndex = result.indexOf(key);
-            result.splice(resultKeyIndex, 1);
-        }
-        return result;
-    }, Object.keys(obj2));
-
-    return diff;
 }
 
 export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
@@ -49,17 +36,17 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
 
     const editPlaceData = async () => {
         try {
+            formData.append('_id', currentPlace._id as string)
             const res = await updatePlaceData(formData)
-            console.log(res.data)
-            // const placeBeforeUpdate = places.find(place => place.locations.find(location => location._id === currentPlace._id))
-            // const rawPlaceDataAfterUpdate = res.data.place
-            // if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
-            // dispatch(setPlaces([...places]))
-            // //@ts-ignore
-            // setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
-            // enqueueSuccessSnackbar('You have successfully modified your place')
-            // setOpen(false)
-
+            const placeBeforeUpdate = places.find(place => place.locations.find(location => location._id === currentPlace._id))
+            const rawPlaceDataAfterUpdate = res.data.place
+            if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
+            dispatch(setPlaces([...places]))
+            //@ts-ignore
+            setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
+            enqueueSuccessSnackbar('You have successfully modified your place')
+            setOpen(false)
+            history.push(Destinations.HOME)
         } catch (err) {
             console.log(err)
             enqueueErrorSnackbar()

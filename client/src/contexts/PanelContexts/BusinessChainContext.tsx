@@ -22,6 +22,7 @@ export const clearBusinessChain = {
         {
             status: Status.CLOSED,
             address: '',
+            addressId: '',
             visitCount: 0,
             lat: 0,
             lng: 0,

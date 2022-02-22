@@ -40,7 +40,6 @@ export const AddressSearcher: FC<Props> = ({errorMessage,  setErrorMessage }) =>
 
     const [open, setOpen] = useState(false)
     const { setPlaceCoords } = useMapContext()
-    // const classes = useStyles()
 
     const { availableAddresses, setAvailableAddresses, setChosenCriterias, setSelectedAddress } = useAddressDetailsContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
@@ -51,15 +50,18 @@ export const AddressSearcher: FC<Props> = ({errorMessage,  setErrorMessage }) =>
     const selectPlace = async (place: any) => {
         setErrorMessage('')
         if (place) {
-            console.log('hello')
+            console.log(place)
             if(!place.raw.address.postcode){
-                setErrorMessage('This is not a valid address. Please provide a street number.')
+                setErrorMessage('This is not a valid address. Your address should include street number and postcode.')
             }
+            const {osm_type, osm_id} = place.raw
+
             setSelectedAddress({
-                label: place.label,
+                label: place.name,
                 lng: place.x,
                 lat: place.y,
-                postcode: place.raw.address.postcode
+                postcode: place.raw.address.postcode,
+                addressId : `${osm_type[0].toString().toUpperCase()}${osm_id}`
             })
             setPlaceCoords({
                 lat: place.y,
@@ -80,7 +82,8 @@ export const AddressSearcher: FC<Props> = ({errorMessage,  setErrorMessage }) =>
             setSelectedAddress({
                 label: currentPlace.address,
                 lng: currentPlace.lng,
-                lat: currentPlace.lat
+                lat: currentPlace.lat,
+                addressId: currentPlace.addressId
             })
             setPlaceCoords({
                 lat: currentPlace.lat,

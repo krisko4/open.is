@@ -21,7 +21,8 @@ interface SelectedAddressProps {
     label: string,
     lat: number,
     lng: number,
-    postcode?: string
+    postcode?: string,
+    addressId: string
 }
 
 const useProviderSettings = (isEdition: boolean) => {
@@ -32,7 +33,8 @@ const useProviderSettings = (isEdition: boolean) => {
     const [selectedAddress, setSelectedAddress] = useState<SelectedAddressProps>({
         label: '',
         lat: 0,
-        lng: 0
+        lng: 0,
+        addressId: ''
     })
     return {
         availableAddresses,

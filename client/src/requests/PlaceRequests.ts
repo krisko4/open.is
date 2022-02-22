@@ -12,19 +12,21 @@ const provider = new OpenStreetMapProvider({
 
 export const findByAddress = async (inputValue: string) => {
     const result = await provider.search({ query: inputValue })
+    console.log(result)
     if (result) {
         const inputArray = inputValue.split(' ')
         const upperCasedInputArray = inputArray.map((input) => {
             return input.charAt(0).toUpperCase() + input.slice(1)
         })
+        const upperCasedInput = upperCasedInputArray.toString().replace(/,/gi, ' ')
         result.forEach((address: any) => {
             const addressArray = address.label.split(', ')
             const filteredAddressArray = addressArray.filter((address: any) => {
                 return !upperCasedInputArray.includes(address)
             })
-            const upperCasedInput = upperCasedInputArray.toString().replace(/,/gi, ' ')
+            console.log(filteredAddressArray)
             filteredAddressArray.splice(0, 0, upperCasedInput)
-            address.name = filteredAddressArray.toString()
+            address.name = filteredAddressArray.join(', ')
             address.type = 'address'
         })
     }
@@ -87,7 +89,7 @@ export const updatePlaceData = (data: FormData) => myAxios.put('/places', data, 
     }
 })
 
-export const setPlaceStatus = (placeId : string, status: Status) =>
+export const setPlaceStatus = (placeId: string, status: Status) =>
     myAxios.patch(`/places/${placeId}/status`, {
         status: status
     })

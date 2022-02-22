@@ -14,18 +14,18 @@ import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
 const defaultStartHour = new Date(0, 0, 0, 8)
 const defaultEndHour = new Date(0, 0, 0, 18)
 
-const areOpeningHoursEqual = (h1:any, h2: any) => {
-    console.log(h1)
-    console.log(h2)
-    for(const key of Object.keys(h1)){
-        for(const nestedKey of Object.keys(key)){
-            if(h1[key][nestedKey] !== h2[key][nestedKey]){
-                return false
-            }
-        }
-    }
-    return true
-}
+// const areOpeningHoursEqual = (h1:any, h2: any) => {
+//     console.log(h1)
+//     console.log(h2)
+//     for(const key of Object.keys(h1)){
+//         for(const nestedKey of Object.keys(key)){
+//             if(h1[key][nestedKey] !== h2[key][nestedKey]){
+//                 return false
+//             }
+//         }
+//     }
+//     return true
+// }
 
 export const OpeningHours: FC = () => {
 
@@ -230,8 +230,9 @@ export const OpeningHours: FC = () => {
                                     onClick={saveChanges}
                                     disabled={
                                         (!areHoursValid && !checked) ||
-                                        (checked && currentPlace.alwaysOpen) ||
-                                        (areOpeningHoursEqual(openingHours, currentPlace.openingHours) && !checked)}
+                                        (checked && currentPlace.alwaysOpen) 
+                                    }
+                                        // (areOpeningHoursEqual(openingHours, currentPlace.openingHours) && !checked)}
                                     size="large"
                                     color="primary"
                                 >
