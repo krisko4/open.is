@@ -7,7 +7,6 @@ import {EmailConfirmation} from "./Registration/EmailConfirmation";
 
 export const Auth : FC = () => {
    
-    // const {loginOpen, registrationOpen, confirmationOpen} = useAuthContext()
     return (
         <div>
             <Login/>

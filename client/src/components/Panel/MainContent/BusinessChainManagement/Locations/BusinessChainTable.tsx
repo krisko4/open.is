@@ -41,6 +41,7 @@ export const BusinessChainTable: FC = () => {
     }
 
     const chooseLocation = (location: LocationProps) => {
+        console.log(location)
         const businessChainCopy = { ...businessChain }
         businessChainCopy.locations = [location]
         const currentPlaces = convertToCurrentPlace(businessChainCopy)
@@ -71,7 +72,6 @@ export const BusinessChainTable: FC = () => {
                     {businessChain.locations.map((loc) => (
                         <TableRow
                             hover
-
                             onClick={() => chooseLocation(loc)}
                             key={loc._id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

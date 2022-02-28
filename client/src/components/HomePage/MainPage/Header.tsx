@@ -140,7 +140,6 @@ const Header: FC = () => {
 
                             }
                         </Toolbar>
-
                     </Slide>
                 </Grid>
             </Grid>

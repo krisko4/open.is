@@ -14,7 +14,6 @@ export const Confirmation: FC = () => {
     const {enqueueWarningSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     useEffect(() => {
-        console.log('gre')
         confirmRegistrationToken(token).then(() => {
             enqueueSuccessSnackbar(`Your account has been activated. You can sign in now.`)
             history.push('/')

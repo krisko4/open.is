@@ -1,12 +1,8 @@
 import makeStyles from '@mui/styles/makeStyles';
-import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import { FC } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
-import { useColorMode } from '../../../../contexts/ColorModeContext';
 import { useMapContext } from '../../../../contexts/MapContext/MapContext';
 import { PlaceMarker } from "./PlaceMarker";
 import { SetViewOnClick } from "./SetViewOnClick";

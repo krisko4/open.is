@@ -1,7 +1,5 @@
-import { CircularProgress, Fade } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
-import Grid from "@mui/material/Grid";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { AuthContextProvider } from "../../../contexts/AuthContext";
 import { Auth } from "../../Auth/Auth";
 import { Banner } from "./Banner";
@@ -31,15 +29,6 @@ const useStyles = makeStyles({
 const HomePage: FC = () => {
 
     const classes = useStyles()
-    // const [loading, setLoading] = useState(true)
-
-    // useEffect(() => {
-    //     const timeout = setTimeout(() => {
-    //         setLoading(false)
-    //     }, 3000)
-    //     return () => clearTimeout(timeout)
-    // }, [])
-
     return (
         <>
             <AuthContextProvider>
@@ -51,24 +40,6 @@ const HomePage: FC = () => {
             <Footer classes={classes} />
         </>
     )
-    {/* {
-            loading ?
-                <Fade in={loading} timeout={1000}>
-                    <Grid container style={{ height: '100vh' }} justify="center" alignItems="center">
-                        <CircularProgress />
-                    </Grid>
-                </Fade>
-                :
-                <Grid container>
-                    <AuthContextProvider>
-                        <Header />
-                        <Auth />
-                        <Banner />
-                        <Content />
-                        <Footer classes={classes} />
-                    </AuthContextProvider>
-                </Grid>
-        } */}
 
 }
 

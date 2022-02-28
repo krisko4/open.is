@@ -40,7 +40,6 @@ const FirstHeader: FC = () => {
                         </Button> : <SignOutButton color="error" variant="contained">Sign out</SignOutButton>}
                 </Grid>
             </Toolbar>
-            <Auth />
         </AppBar>
     );
 }

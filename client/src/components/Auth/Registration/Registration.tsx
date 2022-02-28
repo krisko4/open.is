@@ -26,10 +26,6 @@ export const Registration = () => {
             anchor="right"
             open={registrationOpen}
             onClose={() => setRegistrationOpen(false)}
-        // keepMounted
-        // TransitionComponent={DialogTransition}
-        // fullWidth={true}
-        // maxWidth={'md'}
         >
             <Grid container sx={{ width: 800, height: '100%' }} alignItems="center">
                 <RegistrationForm />
