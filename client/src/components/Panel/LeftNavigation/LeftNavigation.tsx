@@ -1,4 +1,4 @@
-import { Paper, Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
+import { Slide, Paper, Avatar, CardMedia, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CloudCircle from '@mui/icons-material/CloudCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -46,59 +46,62 @@ export const LeftNavigation: FC = () => {
     const match = useRouteMatch()
     const { userData } = useLoginContext()
     const [selectedOption, setSelectedOption] = useState<string>('')
-    
+
 
     return (
-        <Grid
-            item
-            lg={2}
-        >
-            <Paper sx={{ height: '100%', bgcolor: 'navi.main' }} elevation={4}>
-                <Scrollbars autoHide>
-                    <Grid container justifyContent="center">
-                        <CardMedia
-                            image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
-                            style={{ height: 190, width: 180 }}
-                        />
-                    </Grid>
-                    <ListItem style={{ marginBottom: 20, }}>
-                        <ListItemAvatar>
-                            <Avatar alt={userData.fullName} src={userData.img as string} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={userData.fullName}
-                            secondary="Standard user"
-                        />
-                    </ListItem>
-                    <List>
-                        <ListSubheader disableSticky>Settings</ListSubheader>
-                        {
-                            generateNavigationButtons(places).map((button, index) =>
-                                <ListItem
-                                    key={index}
-                                    button
-                                    onClick={() => {
-                                        setSelectedOption(button.url)
-                                        history.push(`${match.url}/${button.url}`)
-                                    }
-                                    }
-                                >
-                                    <ListItemIcon>
-                                        {button.icon}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={button.name}>
-                                    </ListItemText>
-                                </ListItem>
-                            )
-                        }
-                        <MyPlaces
-                         setSelectedOption={setSelectedOption}
-                         selectedOption={selectedOption} />
-                        <MyBusinessChains />
-                    </List>
-                </Scrollbars>
-            </Paper>
-        </Grid >
+        <Slide direction="right" in={true} timeout={500}>
+            <Grid
+                item
+                lg={2}
+            >
+                <Paper sx={{ height: '100%', bgcolor: 'navi.main' }} elevation={4}>
+                    <Scrollbars autoHide>
+                        <Grid container justifyContent="center">
+                            <CardMedia
+                                image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
+                                style={{ height: 190, width: 180 }}
+                            />
+                        </Grid>
+                        <ListItem style={{ marginBottom: 20, }}>
+                            <ListItemAvatar>
+                                <Avatar alt={userData.fullName} src={userData.img as string} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={userData.fullName}
+                                secondary="Standard user"
+                            />
+                        </ListItem>
+                        <List>
+                            <ListSubheader disableSticky>Settings</ListSubheader>
+                            {
+                                generateNavigationButtons(places).map((button, index) =>
+                                    <ListItem
+                                        key={index}
+                                        button
+                                        onClick={() => {
+                                            setSelectedOption(button.url)
+                                            history.push(`${match.url}/${button.url}`)
+                                        }
+                                        }
+                                    >
+                                        <ListItemIcon>
+                                            {button.icon}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={button.name}>
+                                        </ListItemText>
+                                    </ListItem>
+                                )
+                            }
+                            <MyPlaces
+                                setSelectedOption={setSelectedOption}
+                                selectedOption={selectedOption} />
+                            <MyBusinessChains />
+                        </List>
+                    </Scrollbars>
+                </Paper>
+            </Grid >
+
+        </Slide>
     )
 }

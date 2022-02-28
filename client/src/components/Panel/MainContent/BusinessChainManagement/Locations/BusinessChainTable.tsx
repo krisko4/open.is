@@ -12,6 +12,7 @@ import { LocationProps, RawPlaceDataProps } from '../../../../../contexts/PlaceP
 import { setPlace } from '../../../../../store/actions/setCurrentPlace';
 import { convertToCurrentPlace } from '../../../../../utils/place_data_utils';
 import DialogTransition from '../../../../reusable/DialogTransition';
+import { Destinations } from '../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
 
 export const BusinessChainTable: FC = () => {
@@ -39,19 +40,16 @@ export const BusinessChainTable: FC = () => {
         setDialogOpen(true)
     }
 
-
-
     const chooseLocation = (location: LocationProps) => {
         const businessChainCopy = { ...businessChain }
         businessChainCopy.locations = [location]
         const currentPlaces = convertToCurrentPlace(businessChainCopy)
         const currentPlace = currentPlaces[0]
-        dispatch(setPlace(currentPlace))
-        history.push({
-            pathname: `/panel/management/${currentPlace._id}`,
-            state: { place: currentPlace, businessChainId: businessChain._id }
+        if (currentPlace.isActive) {
+            history.push(`/panel/management/${currentPlace._id}/${Destinations.HOME}`)
+            return
         }
-        )
+        history.push(`/panel/management/${currentPlace._id}/${Destinations.OPENING_HOURS}`)
     }
     return (
         <TableContainer component={Box} sx={{ mt: 3, flexGrow: 1 }}>

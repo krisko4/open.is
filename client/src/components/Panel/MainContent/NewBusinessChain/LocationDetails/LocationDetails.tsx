@@ -30,7 +30,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
     const { setSaveButtonClicked, saveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
     const [validationStateChanged, setValidationStateChanged] = useState(false)
     const [isValid, setValid] = useState(false)
-    const {mode} = useColorMode()
+    const { mode } = useColorMode()
 
     useEffect(() => {
         setValid(!selectedLocations.some(loc => !loc.isValid))
@@ -83,47 +83,50 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
 
 
     return (
-        <Grid container style={{ height: '100%', paddingTop: 1 }}>
-            <Paper square sx={{ flexGrow: 1, height: '100%' }}>
-                {selectedLocations.length === 0 ?
-                    <Fade in={true} timeout={1000}>
-                        <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
-                            <Typography variant="h3">Waiting for the first location...</Typography>
-                            <Grid item lg={8} style={{ marginTop: 10 }}>
-                                <img src={mode === 'light' ? `${process.env.REACT_APP_BASE_URL}/images/location.gif` : `https://thumbs.gfycat.com/WastefulGiganticClumber-max-1mb.gif`} style={{ width: '100%' }} />
-                            </Grid>
-                        </Grid>
-                    </Fade>
-                    : <>
-                        <Grid container style={{ height: '90%' }}>
-                            <Scrollbars>
-                                <div style={{ flexGrow: 1 }}>
-                                    {
-                                        selectedLocations.map((location, index) =>
-                                            <Grid item key={location.address} style={{ width: '100%' }}>
-                                                <Location
-                                                    setValidationStateChanged={setValidationStateChanged}
-                                                    location={location}
-                                                />
-                                            </Grid>
-                                        )
-                                    }
-                                </div>
-                            </Scrollbars>
-                        </Grid>
-                        <Grid container style={{ height: '10%' }}>
-                            <Paper elevation={3} style={{ flexGrow: 1 }}>
-                                <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
-                                    <Button disabled={!isValid} style={{ marginRight: 20 }} onClick={handleClick} variant="contained" color="primary">Continue</Button>
+        <Slide in={true} direction="left" timeout={500}>
+            <Grid container style={{ height: '100%', paddingTop: 1 }}>
+                <Paper square sx={{ flexGrow: 1, height: '100%' }}>
+                    {selectedLocations.length === 0 ?
+                        <Fade in={true} timeout={1000}>
+                            <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
+                                <Typography variant="h3">Waiting for the first location...</Typography>
+                                <Grid item lg={8} style={{ marginTop: 10 }}>
+                                    <img src={mode === 'light' ? `${process.env.REACT_APP_BASE_URL}/images/location.gif` : `https://thumbs.gfycat.com/WastefulGiganticClumber-max-1mb.gif`} style={{ width: '100%' }} />
                                 </Grid>
-                            </Paper>
-                        </Grid>
-                    </>
-                }
+                            </Grid>
+                        </Fade>
+                        : <>
+                            <Grid container style={{ height: '90%' }}>
+                                <Scrollbars>
+                                    <div style={{ flexGrow: 1 }}>
+                                        {
+                                            selectedLocations.map((location, index) =>
+                                                <Grid item key={location.address} style={{ width: '100%' }}>
+                                                    <Location
+                                                        setValidationStateChanged={setValidationStateChanged}
+                                                        location={location}
+                                                    />
+                                                </Grid>
+                                            )
+                                        }
+                                    </div>
+                                </Scrollbars>
+                            </Grid>
+                            <Grid container style={{ height: '10%' }}>
+                                <Paper elevation={3} style={{ flexGrow: 1 }}>
+                                    <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
+                                        <Button disabled={!isValid} style={{ marginRight: 20 }} onClick={handleClick} variant="contained" color="primary">Continue</Button>
+                                    </Grid>
+                                </Paper>
+                            </Grid>
+                        </>
+                    }
 
-            </Paper>
+                </Paper>
 
-        </Grid >
+            </Grid >
+
+        </Slide>
 
     );
 }

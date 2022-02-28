@@ -90,7 +90,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
         setPlaceCardClicked(false)
         setPopupOpen(false)
         setPlaceCoords(currentCoords => {
-            return { ...currentCoords, mapZoom: 10 }
+            return { ...currentCoords, mapZoom: 5 }
         })
     }
 

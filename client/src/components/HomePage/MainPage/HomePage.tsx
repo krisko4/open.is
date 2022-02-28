@@ -41,13 +41,15 @@ const HomePage: FC = () => {
     // }, [])
 
     return (
+        <>
             <AuthContextProvider>
                 <Header />
                 <Auth />
                 <Banner />
                 <Content />
-                <Footer classes={classes} />
             </AuthContextProvider>
+            <Footer classes={classes} />
+        </>
     )
     {/* {
             loading ?

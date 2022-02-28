@@ -1,16 +1,16 @@
 import myAxios from "../axios/axios";
-import { LoginData } from "../components/Auth/Login/LoginForm";
-import { registrationFields } from "../components/Auth/Registration/RegistrationForm";
+import { LoginInputs } from "../components/Auth/Login/LoginForm";
+import { RegistrationInputs } from "../components/Auth/Registration/RegistrationForm";
 
 export const confirmRegistrationToken = (token: string) => myAxios.get(`/confirmation/${token}`)
 
 
-export const login = (loginData: LoginData) => myAxios.post('/login', { ...loginData })
+export const login = (loginData: LoginInputs) => myAxios.post('/login', { ...loginData })
 
 export const signOut = () =>
     myAxios.get('/logout')
 
-export const signUp = (userData: typeof registrationFields) =>
+export const signUp = (userData: RegistrationInputs) =>
     myAxios.post('/registration', { ...userData })
 
 export const auth = () =>

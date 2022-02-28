@@ -105,7 +105,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                     </Tooltip>
                 </Grid>
                 <Grid item lg={6} >
-                    <Controller
+                    {/* <Controller
                         name="phone"
                         control={control}
                         render={
@@ -118,7 +118,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                                 label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
                             />
                         }
-                    />
+                    /> */}
 
 
 

@@ -39,7 +39,7 @@ const useSection3Styles = makeStyles({
         width: 60,
         height: 60,
         backgroundColor: '#494949',
-        '&:hover': { 
+        '&:hover': {
             backgroundColor: '#303030'
         },
         borderRadius: '50%',
@@ -52,23 +52,30 @@ export const About: FC = () => {
     const section1Classes = useSection1Styles()
     const section2Classes = useSection2Styles()
     const section3Classes = useSection3Styles()
+    const [index, setIndex] = useState(0)
 
-    const [currentSection, setCurrentSection] = useState(0)
 
     const items = [
-        <Section1 classes={section1Classes} setCurrentSection={setCurrentSection} />,
-        <Section3 classes={section3Classes} setCurrentSection={setCurrentSection}/>,
-        <Section2 classes={section2Classes} setCurrentSection={setCurrentSection}/>,
+        <Section1 classes={section1Classes}  />,
+        <Section3 classes={section3Classes}  />,
+        <Section2 classes={section2Classes}  />,
 
     ]
     return (
         <AuthContextProvider>
             <Header />
-            <Carousel navButtonsAlwaysVisible fullHeightHover={false}  autoPlay={false} indicators={false}>
+            <Carousel
+                index={index}
+                onChange={(now) => setIndex(now as number)}
+                navButtonsAlwaysVisible
+                fullHeightHover={false}
+                autoPlay={false}
+                indicators={false}
+            >
                 {items.map((item, i) => <div key={i}>{item}</div>)
                 }
             </Carousel>
-            {currentSection === 2 && <Team/>}
+            {index === 1 && <Team />}
         </AuthContextProvider>
     )
 }

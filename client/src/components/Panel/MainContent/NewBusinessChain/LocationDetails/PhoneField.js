@@ -4,7 +4,7 @@ import React from "react";
 import ReactPhoneInput from "react-phone-input-material-ui";
 
 
-const styles = (theme : Theme) => ({
+const styles = (theme) => ({
     field: {
         margin: '10px 0',
     },
@@ -14,7 +14,7 @@ const styles = (theme : Theme) => ({
 });
 
 
-function PhoneField(props : any) {
+function PhoneField(props) {
     const { value, defaultCountry, onChange, classes } = props;
 
     return (

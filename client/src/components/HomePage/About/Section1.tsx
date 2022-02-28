@@ -3,11 +3,9 @@ import React, { FC, useEffect } from "react"
 
 
 
-export const Section1: FC<any> = ({classes, setCurrentSection}) => {
+export const Section1: FC<any> = ({classes}) => {
 
-    useEffect(() => {
-        setCurrentSection(0)
-    }, [])
+
     return (
         <Grid container alignItems="center" className={classes.background}>
             <Grid container justifyContent="flex-end">

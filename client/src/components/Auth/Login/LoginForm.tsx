@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -7,6 +8,7 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import { Field, Form, Formik } from "formik";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -17,38 +19,48 @@ import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../../reusable/LoadingButton";
 
 
-export interface LoginData {
-    email: string,
-    password: string
-}
-
-const loginFields = {
-    email: '',
-    password: ''
-}
 
 const LoginSchema = Yup.object().shape({
-    email: Yup.string().email().required(),
+    email: Yup.string().email('This is not a valid e-mail').required('This field is required'),
     password: Yup.string()
-        .required()
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/)
+        .required('This field is required')
+        .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+            "Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character"
+        ),
 })
+
+export interface LoginInputs {
+    email: string,
+    password: string | null,
+}
 export const LoginForm = () => {
 
 
+    const { register, getValues, formState: { isValid, errors } } = useForm<LoginInputs>(
+        {
+            resolver: yupResolver(LoginSchema),
+            mode: 'onChange',
+            defaultValues: {
+                email: '',
+                password: ''
+            }
+        }
+    )
     const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext()
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const dispatch = useDispatch()
-    const {userData, setUserData} = useLoginContext()
+    const { userData, setUserData } = useLoginContext()
 
-    const signIn = async (loginData:LoginData) => {
+    const signIn = async () => {
+        const loginData = getValues()
         setErrorMessage('')
         setLoading(true)
         dispatch(setEmail(userData.email))
         try {
-            const response = await login({...loginData})
+            const response = await login({ ...loginData })
             console.log(response.data)
             localStorage.setItem('uid', response.data.uid)
             localStorage.setItem('fullName', response.data.fullName)
@@ -78,65 +90,61 @@ export const LoginForm = () => {
     }
 
     return (
-        <Formik
-            initialValues={loginFields}
-            validationSchema={LoginSchema}
-            onSubmit={(values => signIn(values))}
-        >
-            {({ dirty, isValid }) => (
-                <Form>
-                    <DialogContent>
-                        <Card elevation={6} style={{ marginBottom: 10 }}>
-                            <CardContent>
-                                <Grid container justifyContent="center" style={{ marginBottom: 10 }}>
-                                    <Grid item lg={10} style={{ marginBottom: 10 }}>
-                                        <Typography variant="h6" style={{ fontWeight: 'bold' }}>Hello!</Typography>
-                                        <Typography variant="body2" style={{ color: 'grey' }}>Please sign in to continue</Typography>
-                                        {errorMessage && <Typography variant="body2" style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>{errorMessage}</Typography>}
-                                    </Grid>
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <Field as={TextField} name="email" type="email" fullWidth={true} style={{ marginBottom: 10 }}
-                                            label="E-mail" />
-                                    </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
-                                        <Field as={TextField} name="password" type="password" fullWidth={true}
-                                            label="Password" />
-                                        <Link variant="caption">I forgot my password</Link>
-                                    </Grid>
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <LoadingButton
-                                            loading={loading}
-                                            fullWidth={true}
-
-                                            type="submit"
-                                            color="error"
-                                            variant="contained"
-                                            disabled={(!(isValid && dirty) || loading)}
-                                        >
-                                            Sign in
-                                        </LoadingButton>
-                                    </Grid>
-                                    {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
+        <form style={{ flexGrow: 1 }}>
+            <Grid container justifyContent="center" alignItems="center">
+                <Grid container item lg={8} justifyContent="center" alignItems="center" direction="column" style={{ marginBottom: 10 }}>
+                    {/* <img src={`${process.env.REACT_APP_BASE_URL}/images/logo.png`} style={{ width: '300px' }} /> */}
+                    <Typography variant="h1">
+                        Hello!
+                    </Typography>
+                    <Typography variant="h6">
+                        Please sign in to continue
+                    </Typography>
+                    {errorMessage && <Typography variant="body2" style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>{errorMessage}</Typography>}
+                    <TextField
+                        type="email"
+                        {...register('email')}
+                        fullWidth
+                        error={errors.email?.message ? true : false}
+                        helperText={errors.email?.message}
+                        sx={{ mb: 1, mt: 3 }}
+                        label="E-mail" />
+                    <TextField
+                        type="password"
+                        {...register('password')}
+                        fullWidth
+                        error={errors.password?.message ? true : false}
+                        helperText={errors.password?.message}
+                        label="Password"
+                    />
+                    <Link sx={{mb: 1}} variant="caption">I forgot my password</Link>
+                    <LoadingButton
+                        loading={loading}
+                        fullWidth={true}
+                        size="large"
+                        color="primary"
+                        onClick={signIn}
+                        variant="contained"
+                        disabled={(!isValid || loading)}
+                    >
+                        Sign in
+                    </LoadingButton>
+                    {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
                                         <h4>OR</h4>
                                     </Grid> */}
-                                    {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
-                                    {/*    <GoogleLoginButton/>*/}
-                                    {/*</Grid>*/}
-                                    {/*<Grid item lg={10}>*/}
-                                    {/*    <FacebookLoginButton/>*/}
-                                    {/*</Grid>*/}
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <Typography variant="caption">Don't have an account? <Link onClick={() => {
-                                            setRegistrationOpen(true);
-                                            setLoginOpen(false)
-                                        }}>Click here to sign up</Link></Typography>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                        </Card>
-                    </DialogContent>
-                </Form>
-            )}
-        </Formik>
+                    {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
+                    {/*    <GoogleLoginButton/>*/}
+                    {/*</Grid>*/}
+                    {/*<Grid item lg={10}>*/}
+                    {/*    <FacebookLoginButton/>*/}
+                    {/*</Grid>*/}
+                        <Typography sx={{mt: 1}} variant="caption">Don't have an account? <Link onClick={() => {
+                            setRegistrationOpen(true);
+                            setLoginOpen(false)
+                        }}>Click here to sign up</Link></Typography>
+                </Grid>
+
+            </Grid>
+        </form >
     );
 }

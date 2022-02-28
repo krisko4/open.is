@@ -4,6 +4,7 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import { KeyboardArrowDown } from "@mui/icons-material";
 import React, { FC, useEffect } from "react";
 import {animateScroll as scroll} from 'react-scroll'
+import { Team } from "./Team";
 
 const items = [
     {
@@ -24,11 +25,8 @@ const items = [
 ]
 
 
-export const Section3: FC<any> = ({ classes, setCurrentSection }) => {
+export const Section3: FC<any> = ({ classes}) => {
 
-    useEffect(() => {
-        setCurrentSection(2)
-    }, [])
 
 
     return (

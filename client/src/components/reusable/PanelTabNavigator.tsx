@@ -1,15 +1,11 @@
 import { Grid, Paper, Tab, Tabs } from "@mui/material"
-import React, { useMemo, useState } from "react"
-import { FC, useRef, useEffect } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom"
 import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
 import { RawPlaceDataProps } from "../../contexts/PlaceProps"
 import { usePlacesSelector } from "../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from "../../utils/place_data_utils"
-import { OpeningHours } from "../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHours"
 import { Destinations } from "../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard"
-import { PlaceData } from "../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceData/PlaceData"
-import { PlaceSettings } from "../Panel/MainContent/PlaceManagement/PlaceBoard/Settings/PlaceSettings"
 
 
 interface MatchProps {
@@ -22,39 +18,20 @@ interface Props {
         url: string,
         content: any
     }[],
-    placeId: string
-}
-
-interface RCProps {
-    // location: any,
-    // url: string,
-    tabContent: JSX.Element,
-    value: string
-
+    placeId: string,
+    value: string,
+    setValue: any,
+    areBusinessChainTabs?: boolean
 }
 
 
-export const PanelTabNavigator: FC<Props> = (({ tabs, placeId }) => {
+export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, setValue, tabs, placeId }) => {
 
 
     const match = useRouteMatch<MatchProps>()
-    const [value, setValue] = useState(Destinations.HOME as string)
     const history = useHistory()
-    const location = useLocation()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    const places = usePlacesSelector()
+    const { currentPlace} = useCurrentPlaceContext()
 
-
-    useEffect(() => {
-        if (placeId !== currentPlace._id) {
-            const place = places.find(pl => pl.locations.some(loc => loc._id === placeId)) as RawPlaceDataProps
-            console.log(place)
-            const currentPlace = convertToCurrentPlace(place)[0]
-            setCurrentPlace(currentPlace)
-        }
-        const dest = location.pathname.substring(match.url.length + 1)
-        setValue(dest)
-    }, [match])
 
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
@@ -85,7 +62,7 @@ export const PanelTabNavigator: FC<Props> = (({ tabs, placeId }) => {
                             <Route
                                 key={`${match.url}/${tab.url}`}
                                 component={() => <>
-                                    {value === tab.url && placeId === currentPlace._id &&
+                                    {value === tab.url && (placeId === currentPlace._id || areBusinessChainTabs) &&
                                         tab.content
                                     }
                                 </>}

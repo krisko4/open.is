@@ -19,7 +19,7 @@ const MapContextProvider: FC<MapContextProps> = ({ children, isMarkerDraggable }
 const useProviderSettings = (isDraggable: boolean) => {
 
     const [placeCoords, setPlaceCoords] = useState({
-        mapZoom: 10,
+        mapZoom: 5,
         lat: 53.13333,
         lng: 23.16433
     })

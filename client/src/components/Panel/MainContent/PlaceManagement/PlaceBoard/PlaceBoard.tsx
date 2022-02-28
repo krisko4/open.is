@@ -1,7 +1,9 @@
-import { FC } from "react";
-import { useLocation, useRouteMatch } from 'react-router-dom';
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
+import { FC, useEffect, useState } from "react";
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
+import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
+import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { Opinions } from "./Opinions/Opinions";
@@ -22,7 +24,7 @@ export enum Destinations {
     NONE = ''
 }
 
-const TestComp : FC = () => <h1>Hello world</h1>
+const TestComp: FC = () => <h1>Hello world</h1>
 
 const tabs = [
     {
@@ -38,7 +40,7 @@ const tabs = [
     {
         name: 'Opening hours',
         url: Destinations.OPENING_HOURS,
-        content: <OpeningHours/>
+        content: <OpeningHours />
     },
     {
         name: 'Events',
@@ -48,7 +50,7 @@ const tabs = [
     {
         name: 'Opinions',
         url: Destinations.OPINIONS,
-        content: <Opinions/>
+        content: <Opinions />
     },
     {
         name: 'News',
@@ -63,7 +65,7 @@ const tabs = [
     {
         name: 'Settings',
         url: Destinations.SETTINGS,
-        content: <PlaceSettings/>
+        content: <PlaceSettings />
     },
     {
         name: 'Subscriptions',
@@ -84,8 +86,27 @@ interface MatchProps {
 export const PlaceBoard: FC<any> = () => {
 
     const match = useRouteMatch<MatchProps>()
+    const [value, setValue] = useState(Destinations.HOME as string)
+    const location = useLocation()
+    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const places = usePlacesSelector()
+
+    useEffect(() => {
+        const placeId = match.params.id
+        console.log(placeId)
+        console.log(currentPlace._id)
+        if (placeId !== currentPlace._id) {
+            const place = places.find(pl => pl.locations.some(loc => loc._id === placeId)) as RawPlaceDataProps
+            console.log(place)
+            place.locations = place.locations.filter(loc => loc._id === placeId)
+            const currentPlace = convertToCurrentPlace(place)[0]
+            setCurrentPlace(currentPlace)
+        }
+        const dest = location.pathname.substring(match.url.length + 1)
+        setValue(dest)
+    }, [match])
 
     return (
-        <PanelTabNavigator placeId={match.params.id} tabs={tabs} />
+            <PanelTabNavigator value={value} setValue={setValue} placeId={match.params.id} tabs={tabs} />
     )
 }

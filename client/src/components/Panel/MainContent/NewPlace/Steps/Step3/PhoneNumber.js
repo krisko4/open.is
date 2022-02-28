@@ -2,22 +2,23 @@ import { TextField } from "@mui/material"
 import React, { useRef } from "react"
 import { FC, useEffect } from "react"
 import { Controller, FieldValues, useFormContext, useWatch } from "react-hook-form"
-import ReactPhoneInput from "react-phone-input-material-ui"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
+import ReactPhoneInput from 'react-phone-input-material-ui';
 
-export const PhoneNumberContainer: FC = () => {
+
+export const PhoneNumberContainer = () => {
     const methods = useFormContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     return <PhoneNumber setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
 }
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
+// interface Props {
+//     currentPlace: CurrentPlaceProps,
+//     setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
+// }
 
-const PhoneNumber = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlace, control, setValue}) => {
+const PhoneNumber = React.memo(({ currentPlace, setCurrentPlace, control, setValue }) => {
 
     const phone = useWatch({
         control,
@@ -44,7 +45,7 @@ const PhoneNumber = React.memo<FieldValues & Props>(({ currentPlace, setCurrentP
             render={
                 ({ field }) =>
                     <ReactPhoneInput
-                        style={{flexGrow: 1}}
+                        style={{ flexGrow: 1 }}
                         defaultCountry={'pl'}
                         {...field}
                         component={TextField}

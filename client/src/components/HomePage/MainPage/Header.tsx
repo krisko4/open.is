@@ -1,5 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home';
-import { AppBar, Button, Grid, Grow, Toolbar } from '@mui/material';
+import { Slide, AppBar, Button, Grid, Grow, Toolbar } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FC, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from 'react-router-dom';
@@ -112,7 +112,7 @@ const Header: FC = () => {
             <Grid container justifyContent="center">
                 <Grid item style={{ flexGrow: 1 }} />
                 <Grid item lg={4}>
-                    <Grow in={true} timeout={2000} >
+                    <Slide in={true} timeout={1000} >
                         <Toolbar>
                             {location.pathname === '/' ?
                                 <Button onClick={() => history.push('/about')} variant="outlined"
@@ -141,7 +141,7 @@ const Header: FC = () => {
                             }
                         </Toolbar>
 
-                    </Grow>
+                    </Slide>
                 </Grid>
             </Grid>
         </AppBar>

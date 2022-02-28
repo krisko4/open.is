@@ -18,7 +18,7 @@ export const MyBusinessChains: FC = () => {
     const match = useRouteMatch()
     const choosePlace = (place: RawPlaceDataProps) => {
         history.push({
-            pathname: `${match.url}/business-chain/${place._id}`,
+            pathname: `${match.url}/business-chain/${place._id}/dashboard`,
             state: { place }
         }
         )

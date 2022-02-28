@@ -1,11 +1,9 @@
 import { Fade, Slide, Grid, Typography } from "@mui/material";
 import React, { FC, useEffect } from "react";
 
-export const Section2: FC<any> = ({ classes, setCurrentSection }) => {
+export const Section2: FC<any> = ({ classes}) => {
 
-    useEffect(() => {
-        setCurrentSection(1)
-    }, [])
+    
     return (
         <Grid container alignItems="center" className={classes.background}>
             <Grid container>
