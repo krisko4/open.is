@@ -41,6 +41,7 @@ export const getPlacesBySearchParams = async (searchParams: SearchParams[]) => {
     const params: any = {}
     if (addresses.length > 0) params['address'] = addresses.join('|')
     if (names.length > 0) params['name'] = names.join('|')
+    console.log(params)
     return getPlacesWithParams('/places/active', params)
 }
 

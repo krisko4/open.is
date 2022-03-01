@@ -13,6 +13,12 @@ const useStyles = makeStyles({
     popup: {
         '& .leaflet-popup-content': {
             width: 160
+        },
+        '& .leaflet-popup-content-wrapper': {
+            background: 'green'
+        },
+        '& .leaflet-popup-tip' : {
+            background: 'green'
         }
     },
     icon: {

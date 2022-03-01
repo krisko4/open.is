@@ -121,7 +121,7 @@ export const SecondHeader: FC = () => {
         <Paper>
             <Toolbar disableGutters>
                 <Grid container >
-                    <Grid item xs={10} sm={9} md={8} lg={5} style={{ paddingLeft: 5, paddingRight: 5 }}>
+                    <Grid item xs={10} sm={9} md={8} lg={5} sx={{p: 1}}>
                         <Searcher />
                     </Grid>
                     <Grid justifyContent="center" container lg={7} item alignItems="center">

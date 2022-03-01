@@ -97,6 +97,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
     return (
         <Card
             // className={classes.card}
+            sx={{flexGrow: 1}}
             elevation={elevation}
             onMouseEnter={() => setElevation(10)}
             onMouseLeave={() => setElevation(3)}
@@ -111,7 +112,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                             <Typography variant="h6">
                                 {currentPlace.name}
                             </Typography>
-                            <Typography variant="body1" >
+                            <Typography variant="body1" sx={{color: 'text.secondary'}} >
                                 {currentPlace.subtitle}
                             </Typography>
                             <Grid container alignItems="center">

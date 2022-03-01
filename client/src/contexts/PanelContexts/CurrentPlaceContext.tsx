@@ -1,7 +1,7 @@
 
 import { createContext, useContext, FC, useState, useEffect } from "react";
 import { defaultNews, defaultOpinions } from "../../utils/defaults";
-import { CurrentPlaceProps } from "../PlaceProps";
+import { CurrentPlaceProps, VisitProps } from "../PlaceProps";
 
 export const CurrentPlaceContext = createContext<CurrentPlaceContextData | null>(null)
 
@@ -47,11 +47,6 @@ export const clearPlace = {
     alwaysOpen: false
 }
 
-interface VisitProps {
-    date: string,
-    placeId: string,
-    visitCount: number
-}
 
 
 

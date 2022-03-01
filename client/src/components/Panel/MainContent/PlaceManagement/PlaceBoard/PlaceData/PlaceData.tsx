@@ -16,7 +16,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { Status } from "../../../../../../contexts/PlaceProps";
+import { Status, VisitProps } from "../../../../../../contexts/PlaceProps";
 import { setPlaceStatus } from "../../../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../../../store/actions/setPlaces";
 import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
@@ -28,6 +28,7 @@ import { ActivityChart } from '../../Charts/ActivityChart';
 import { RatingChart } from '../../Charts/RatingChart';
 import { PlaceSettings } from "../../PlaceSettings";
 import { Destinations } from "../PlaceBoard";
+import { PlaceStatus } from "./PlaceStatus";
 import { TotalOpinions } from './TotalOpinions';
 import { TotalVisits } from './TotalVisits';
 import { VisitsToday } from './VisitsToday';
@@ -50,30 +51,6 @@ export const PlaceData: FC = () => {
 
     }
 
-    const setStatus = async (status: Status) => {
-        // setLoading(true)
-        // try {
-        //     await setPlaceStatus(currentPlace._id as string, status)
-        //     if (currentPlace) {
-        //         let oldPlace = places.find(place => place.locations.find(location => location._id = currentPlace._id))
-        //         let updatedPlace = { ...currentPlace }
-        //         updatedPlace.status = status
-        //         const rawPlaceData = convertToRawPlaceData(updatedPlace)
-        //         if (oldPlace) places[places.indexOf(oldPlace)] = rawPlaceData
-        //         dispatch(setPlaces([...places]))
-        //         setCurrentPlace(updatedPlace)
-        //     }
-        //     if (status === Status.OPEN) {
-        //         enqueueSuccessSnackbar('Your place is now open')
-        //         return
-        //     }
-        //     enqueueSuccessSnackbar('Your place is now closed')
-        // } catch (err) {
-        //     enqueueErrorSnackbar()
-        // } finally {
-        //     setLoading(false)
-        // }
-    }
 
 
     return <>
@@ -102,24 +79,7 @@ export const PlaceData: FC = () => {
                     <Grid item container direction="column" lg={5} style={{ paddingRight: 10 }}>
                         <Grid container spacing={2}>
                             <Grid item lg={6}>
-                                <Card style={{ background: '#2196f3' }}>
-                                    <CardContent>
-                                        <Typography variant="subtitle2" style={{ color: 'white' }}>
-                                            Press the button below to <span>{currentPlace.status === Status.OPEN ? 'close' : 'open'}</span> your business
-                                        </Typography>
-                                        <Grid container style={{ marginTop: 20 }} justifyContent="space-between" alignItems="center">
-                                            {currentPlace.status === Status.OPEN ? <>
-                                                <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setStatus(Status.CLOSED)} >Close</LoadingButton>
-                                                <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
-                                            </>
-                                                : <>
-                                                    <LoadingButton color="primary" disabled={loading} loading={loading} variant="outlined" style={{ color: 'white', borderColor: 'white' }} onClick={() => setStatus(Status.OPEN)}>Open</LoadingButton>
-                                                    <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
-                                                </>
-                                            }
-                                        </Grid>
-                                    </CardContent>
-                                </Card>
+                            <PlaceStatus />
                             </Grid>
                             <Grid item lg={6}>
                                 <Card style={{ background: '#2196f3' }}>
@@ -174,7 +134,7 @@ export const PlaceData: FC = () => {
                                         <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
                                             The following chart represents historical data of user activity in your place
                                         </Typography>
-                                        <ActivityChart visits={currentPlace.visits} />
+                                        <ActivityChart visits={currentPlace.visits as VisitProps[]} />
                                     </CardContent>
                                 </Card>
                             </Grid>

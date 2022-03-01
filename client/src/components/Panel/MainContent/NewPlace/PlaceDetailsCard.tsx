@@ -15,7 +15,7 @@ import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImageCarous
 import { News } from "../../../reusable/News";
 import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
 import { Opinions } from "../../../reusable/Opinions/Opinions";
-import { ContactDetailsContainer} from "./PlaceDetailsCard/ContactDetails";
+import { ContactDetailsContainer } from "./PlaceDetailsCard/ContactDetails";
 import { MemoizedPlaceDescription } from "./PlaceDetailsCard/PlaceDescription";
 import { PlaceLogo } from "./PlaceDetailsCard/PlaceLogo";
 import { MemoizedPlaceName } from "./PlaceDetailsCard/PlaceName";
@@ -86,31 +86,31 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                             <Rating
                                 style={{ marginTop: 20 }}
                                 name="simple-controlled"
-                                value={currentPlace.averageNote?.average || 5}
+                                value={currentPlace.averageNote?.average || 0}
                                 readOnly
                             />
-                        </Grid>
-                        <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                            <MemoizedPlaceName name={currentPlace.name} />
-                            <MemoizedPlaceSubtitle subtitle={currentPlace.subtitle} />
-                            <MemoizedPlaceType type={currentPlace.type} />
-                            <MemoizedSocialIcons facebook={currentPlace.facebook} instagram={currentPlace.instagram} />
-                        </Grid>
                     </Grid>
-                    <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
-                        <Grid item lg={10}>
-                            <MemoizedPlaceDescription description={currentPlace.description} />
-                        </Grid>
-                        <Grid item lg={10} style={{ marginTop: 20 }}>
-                            <Divider sx={{ width: '100%' }}></Divider>
-                        </Grid>
+                    <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
+                        <MemoizedPlaceName name={currentPlace.name} />
+                        <MemoizedPlaceSubtitle subtitle={currentPlace.subtitle} />
+                        <MemoizedPlaceType type={currentPlace.type} />
+                        <MemoizedSocialIcons facebook={currentPlace.facebook} instagram={currentPlace.instagram} />
                     </Grid>
-                    <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
-                        <ContactDetailsContainer />
+                </Grid>
+                <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
+                    <Grid item lg={10}>
+                        <MemoizedPlaceDescription description={currentPlace.description} />
                     </Grid>
-                    <MemoizedPlaceTabs currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />
-                </Card>
-            </div>
+                    <Grid item lg={10} style={{ marginTop: 20 }}>
+                        <Divider sx={{ width: '100%' }}></Divider>
+                    </Grid>
+                </Grid>
+                <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
+                    <ContactDetailsContainer />
+                </Grid>
+                <MemoizedPlaceTabs currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />
+            </Card>
+        </div>
 
         </Slide >
     );

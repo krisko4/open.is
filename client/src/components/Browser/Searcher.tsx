@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
@@ -19,6 +19,56 @@ import { CurrentPlaceProps, RawPlaceDataProps } from "../../contexts/PlaceProps"
 
 
 const provider = new OpenStreetMapProvider({});
+
+const StyledAutocomplete = styled(Autocomplete)({
+    root: {
+        "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+            color: 'lightgrey'
+        },
+        "& .MuiInputLabel-outlined": {
+            color: "#ff5252"
+        }
+
+    },
+    tag: {
+        backgroundColor: '#ff5252',
+        "& .MuiChip-label": {
+            color: 'white'
+        },
+    },
+    clearIndicator: {
+        color: '#ff5252'
+    },
+    loading: {
+        color: 'grey'
+    },
+    noOptions: {
+        color: '#2C2C2C'
+    },
+    popupIndicator: {
+        visibility: 'hidden'
+    },
+    paper: {
+        backgroundColor: '#2C2C2C',
+        elevation: 10
+    },
+    inputRoot: {
+        color: "white",
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "grey",
+            borderRadius: 1,
+
+        },
+        "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#ff5252"
+        },
+        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#ff5252"
+        },
+
+    }
+})
+
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -100,7 +150,7 @@ const Searcher: FC = () => {
         }
         setLoading(true)
         const delaySearch = setTimeout(async () => {
-            const names = await getPlacesByName(inputValue) 
+            const names = await getPlacesByName(inputValue)
             if (names.length === 0) {
                 const result = await provider.search({ query: inputValue })
                 result.length > 0 ? setAvailableAddresses([{ name: inputValue, foundBy: 'address' }]) : setAvailableAddresses([])
@@ -116,6 +166,8 @@ const Searcher: FC = () => {
 
 
     const selectPlace = async (searchParams: SearchParams[]) => {
+        console.log('hello')
+        console.log(searchParams)
         const places: RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
         let currentPlaces = places.map(place => convertToCurrentPlace(place))
         let chosenCriterias: CurrentPlaceProps[] = []
@@ -135,11 +187,11 @@ const Searcher: FC = () => {
             }}
             multiple
             autoHighlight
-            classes={classes}
+            // classes={classes}
             freeSolo={true}
             options={availableAddresses}
             getOptionLabel={(option: any) => option.name}
-            onChange={(event, value) => selectPlace(value)}
+            onChange={(event, value: any) => selectPlace(value)}
             noOptionsText="No options"
             renderInput={(params) =>
                 <TextField
@@ -158,57 +210,42 @@ const Searcher: FC = () => {
                         ),
                     }}
                 />}
-            renderOption={(option: any, { inputValue }) => {
+            renderOption={(props, option: any) => {
                 const label = option.name
                 const matches = match(label, inputValue);
                 const parts = parse(label, matches);
-                if (option.foundBy === "name") {
-                    return (
-                        <Grid container alignItems="center">
+                console.log(props)
+                return (
+                    <li {...props}>
+                        <Grid container alignItems="center" justifyContent="space-evenly" sx={{ p: 2 }}>
                             <Grid item>
-                                <HomeIcon style={{ marginRight: 10, color: '#2196f3' }} />
+                                {option.foundBy === "name" ?
+                                    <HomeIcon color="primary" />
+                                    :
+                                    <PlaceTwoToneIcon color="primary" />
+                                }
                             </Grid>
                             <Grid item lg={11} container justifyContent="space-between" alignItems="center">
                                 <Grid item>
                                     {
                                         parts.map((part, index) => (
                                             <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                                                <span style={{ color: 'white' }}>{part.text}</span>
+                                                <span>{part.text}</span>
                                             </span>
                                         ))
-
                                     }
                                     <div>
-                                        <Typography variant="overline" style={{ color: 'lightgrey' }}>Found by name</Typography>
+                                        <Typography variant="overline" >
+                                            {option.foundBy === "name" ? 'Found by name' : 'Found by address'}
+                                        </Typography>
                                     </div>
                                 </Grid>
-                                <Button size="small" style={{ background: '#ff5252', color: 'white' }} variant="contained">Place</Button>
+                                <Button size="small" variant="contained">
+                                    {option.foundBy === "name" ? "Place" : "Address"}
+                                </Button>
                             </Grid>
                         </Grid>
-                    );
-                }
-                return (
-                    <Grid container alignItems="center">
-                        <Grid item>
-                            <PlaceTwoToneIcon style={{ marginRight: 10, color: '#2196f3' }} />
-                        </Grid>
-                        <Grid item lg={11} container justifyContent="space-between" alignItems="center">
-                            <Grid item>
-                                {
-                                    parts.map((part, index) => (
-                                        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                                            <span style={{ color: 'white' }}>{part.text}</span>
-                                        </span>
-                                    ))
-
-                                }
-                                <div>
-                                    <Typography variant="overline" style={{ color: 'lightgrey' }}>Found by address</Typography>
-                                </div>
-                            </Grid>
-                            <Button size="small" variant="contained" color="error">Address</Button>
-                        </Grid>
-                    </Grid>
+                    </li>
                 );
             }}
 

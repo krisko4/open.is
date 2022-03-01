@@ -13,17 +13,6 @@ export const Step1: FC = () => {
     const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [input, setInput] = useState('')
 
-    // useEffect(() => {
-    //     setCurrentStep(0)
-    // }, [])
-
-    // useEffect(() => {
-    //     if (!input) {
-    //         steps[activeStep].isValid = false
-    //         return
-    //     }
-    //     steps[activeStep].isValid = true
-    // }, [input])
 
 
     useEffect(() => {

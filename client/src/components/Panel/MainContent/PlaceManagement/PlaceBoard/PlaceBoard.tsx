@@ -4,6 +4,7 @@ import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../..
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
+import { NotReady } from "../../../../reusable/NotReady";
 import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { Opinions } from "./Opinions/Opinions";
@@ -24,7 +25,6 @@ export enum Destinations {
     NONE = ''
 }
 
-const TestComp: FC = () => <h1>Hello world</h1>
 
 const tabs = [
     {
@@ -35,7 +35,7 @@ const tabs = [
     {
         name: 'Statistics',
         url: Destinations.STATISTICS,
-        content: <TestComp />
+        content: <NotReady />
     },
     {
         name: 'Opening hours',
@@ -45,7 +45,7 @@ const tabs = [
     {
         name: 'Events',
         url: Destinations.EVENTS,
-        content: <TestComp />
+        content: <NotReady />
     },
     {
         name: 'Opinions',
@@ -55,12 +55,12 @@ const tabs = [
     {
         name: 'News',
         url: Destinations.NEWS,
-        content: <TestComp />
+        content: <NotReady />
     },
     {
         name: 'Visits',
         url: Destinations.VISITS,
-        content: <TestComp />
+        content: <NotReady />
     },
     {
         name: 'Settings',
@@ -70,7 +70,7 @@ const tabs = [
     {
         name: 'Subscriptions',
         url: Destinations.SUBSCRIPTIONS,
-        content: <TestComp />
+        content: <NotReady />
     },
 ]
 

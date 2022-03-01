@@ -1,4 +1,4 @@
-import { Avatar, Grid, Typography } from "@mui/material";
+import { Paper, Avatar, Grid, Typography, styled } from "@mui/material";
 import { Rating } from '@mui/material';
 import axios from "axios";
 import L from 'leaflet';
@@ -13,7 +13,14 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 
 
 
-
+const StyledPopup = styled(Popup)(({theme}) => ({
+    '& .leaflet-popup-content': {
+        width: 160
+    },
+    '& .leaflet-popup-content-wrapper, .leaflet-popup-tip': {
+        background: theme.palette.background.paper
+    },
+}))
 
 interface Props {
     criterium: CurrentPlaceProps,
@@ -81,7 +88,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                     const criterias = [criterium]
                     setChosenCriterias(criterias)
                     const address = res.data
-                    const {osm_type, osm_id} = address.raw
+                    const { osm_type, osm_id } = address.raw
                     console.log(address)
                     setSelectedAddress({
                         label: address.display_name,
@@ -96,11 +103,12 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
             position={[criterium.lat, criterium.lng]}
             draggable={isMarkerDraggable}
         >
-            <Popup className={classes.popup}>
+            <StyledPopup>
                 <Grid container justifyContent="center" alignItems="center">
+
                     <Avatar style={{ width: 60, height: 60 }} src={criterium.logo as string} />
                     <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{color: 'primary.main'}}>
                             {criterium.name}
                         </Typography>
                     </Grid>
@@ -111,7 +119,7 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                         value={criterium.averageNote?.average || 0}
                     />
                 </Grid>
-            </Popup>
+            </StyledPopup>
         </Marker>
     );
 

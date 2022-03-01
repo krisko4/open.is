@@ -21,7 +21,6 @@ interface MatchProps {
 
 export const PlaceSettings: FC = () => {
 
-    console.log('chad')
 
     const { currentPlace} = useCurrentPlaceContext()
 

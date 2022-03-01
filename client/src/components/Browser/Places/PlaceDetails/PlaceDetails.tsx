@@ -1,4 +1,5 @@
 import { KeyboardReturn } from "@mui/icons-material";
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Button, Divider, Toolbar, Tooltip } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -124,6 +125,18 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                                 <KeyboardReturn />
                             </IconButton>
                             <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
+                                {
+                                    currentPlace.isUserOwner &&
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{mr: 1}}
+                                        startIcon={<SettingsIcon/>}
+                                        onClick={() => history.push(`/panel/management/${currentPlace._id}/home`)}
+                                    >
+                                        Manage
+                                    </Button>
+                                }
                                 {currentPlace.isUserSubscriber ?
                                     <Tooltip title={'Unsubscribe'} arrow >
                                         <span>

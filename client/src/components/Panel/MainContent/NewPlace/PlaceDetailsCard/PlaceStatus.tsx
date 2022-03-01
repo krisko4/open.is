@@ -7,9 +7,14 @@ export const PlaceStatus = () => {
     return useMemo(() => {
         return (
             <Tooltip title={'This is a current status of your place'}>
-                <Alert severity="error" variant="filled" >
-                    This place is now <b>{currentPlace.status?.toUpperCase() || 'CLOSED'}</b>
-                </Alert>
+                {currentPlace.status === 'open' ?
+                    <Alert severity="success" variant="filled" >
+                        This place is now {currentPlace.status?.toUpperCase() }
+                    </Alert>
+                    : <Alert severity="error" variant="filled" >
+                        This place is now {currentPlace.status?.toUpperCase() }
+                    </Alert>
+                }
             </Tooltip>
         )
     }, [currentPlace.status])

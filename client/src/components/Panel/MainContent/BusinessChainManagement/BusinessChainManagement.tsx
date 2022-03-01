@@ -5,6 +5,7 @@ import { useBusinessChainContext } from '../../../../contexts/PanelContexts/Busi
 import { CurrentPlaceContextProvider } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
 import { RawPlaceDataProps } from '../../../../contexts/PlaceProps';
 import { usePlacesSelector } from '../../../../store/selectors/PlacesSelector';
+import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
 const tabs = [
     {
         name: 'Dashboard',
-        content: <h1>Hello world</h1>,
+        content: <NotReady/>,
         url: 'dashboard'
     },
     {
@@ -24,7 +25,7 @@ const tabs = [
     },
     {
         name: 'Settings',
-        content: <h1>Hello world</h1>,
+        content: <NotReady/>,
         url: 'settings'
     },
 ]

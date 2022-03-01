@@ -1,8 +1,17 @@
 import { FC, useState } from "react"
+import { VisitProps } from "../../../../../contexts/PlaceProps"
 import { StatisticChart } from "../../Dashboard/StatisticChart"
 
 interface Props{
-    visits: any
+    visits: VisitProps[]
+}
+
+const generateVisitsData = (visits : VisitProps[]) => {
+    let count = 0;
+    return visits.map(visit => {
+        count += visit.visitCount
+        return [visit.date, count]
+    })
 }
 
 export const ActivityChart: FC<Props> = ({visits}) => {
@@ -37,6 +46,9 @@ export const ActivityChart: FC<Props> = ({visits}) => {
         xaxis: {
             type: 'datetime',
         },
+        yaxis: {
+            min: 0
+        },
         tooltip: {
             x: {
                 format: 'dd MMM yyyy'
@@ -51,11 +63,12 @@ export const ActivityChart: FC<Props> = ({visits}) => {
                 stops: [0, 100]
             }
         }
+        
     })
 
     const series = [{
         name: 'visits',
-        data: visits.map((visit : any) => [visit.date, visit.visitCount])
+        data: generateVisitsData(visits)
     }]
 
     return (

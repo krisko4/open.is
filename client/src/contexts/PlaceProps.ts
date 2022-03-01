@@ -24,7 +24,7 @@ export interface CurrentPlaceProps extends LocationProps {
     isUserSubscriber?: boolean
 }
 
-interface VisitProps {
+export interface VisitProps {
     date: string,
     placeId: string,
     visitCount: number

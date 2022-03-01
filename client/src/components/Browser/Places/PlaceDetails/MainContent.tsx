@@ -68,7 +68,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                         <Typography variant="h2" sx={{fontWeight: 'bold' }}>
                             {place.name}
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography variant="h6" sx={{color: 'text.secondary'}}>
                             {place.subtitle}
                         </Typography>
                         <Typography variant="body1" color="primary">{place.type}</Typography>

@@ -1,7 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
+import CloudCircle from '@mui/icons-material/CloudCircle';
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import HomeIcon from "@mui/icons-material/Home";
-import { IconButton, Slide } from '@mui/material';
+import { Tooltip, IconButton, Slide } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Grid from "@mui/material/Grid";
 import Toolbar from '@mui/material/Toolbar';
@@ -30,22 +31,36 @@ const Header: FC = () => {
                 <Toolbar>
                     <Grid item container justifyContent="flex-end" alignItems="center">
                         <ColorModeSwitch />
+                        <Tooltip title="Home">
+                            <IconButton onClick={() => history.push('/')} color="inherit" size="large">
+                                <HomeIcon />
+                            </IconButton>
 
-                        <IconButton onClick={() => history.push('/')} color="inherit" size="large">
-                            <HomeIcon />
-                        </IconButton>
-                        <IconButton
-                            onClick={() => history.push(`${match.url}/dashboard`)}
-                            color="inherit"
-                            size="large">
-                            <DashboardIcon />
-                        </IconButton>
-                        <IconButton
-                            onClick={() => history.push(`${match.url}/new-place`)}
-                            color="inherit"
-                            size="large">
-                            <AddIcon />
-                        </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Dashboard">
+                            <IconButton
+                                onClick={() => history.push(`${match.url}/dashboard`)}
+                                color="inherit"
+                                size="large">
+                                <DashboardIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="New place">
+                            <IconButton
+                                onClick={() => history.push(`${match.url}/new-place`)}
+                                color="inherit"
+                                size="large">
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="New business chain">
+                            <IconButton
+                                onClick={() => history.push(`${match.url}/new-business-chain`)}
+                                color="inherit"
+                                size="large">
+                                <CloudCircle />
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
                 </Toolbar>
             </AppBar>
