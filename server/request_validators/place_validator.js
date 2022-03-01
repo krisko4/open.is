@@ -6,6 +6,7 @@ const placeValidator = {
         const { locations } = req.body
         for (const location of locations) {
             const { address, addressId } = location
+            console.log(address)
             const addressResponse = await axios.get(`https://nominatim.openstreetmap.org/lookup?osm_ids=${addressId}&format=json`)
             const addressData = addressResponse.data[0]
             console.log(location)

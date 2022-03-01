@@ -57,7 +57,7 @@ const placeController = {
 
             case 1:
                 let param = Object.keys(req.query)[0]
-                const paramValue = req.query[param]
+                const paramValue = req.query[param].trim()
                 if (param == 'address') param = 'locations.address'
                 let searchObj = {}
                 searchObj[param] = new RegExp(paramValue, 'i')
@@ -132,6 +132,7 @@ const placeController = {
         }))
         return places
     },
+
 
     getPlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
@@ -213,11 +214,11 @@ const placeController = {
                 userId: user._id,
             }
             let place
-            if(reqBody.editionMode){
+            if (reqBody.editionMode) {
                 placeData['_id'] = reqBody._id
                 place = await placeService.editPlace(placeData, user)
             }
-            else{
+            else {
                 place = await placeService.addPlace(placeData)
             }
             return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
@@ -270,7 +271,9 @@ const placeController = {
         favIds = favIds.split(',')
         try {
             let places = await placeService.getFavoritePlaces(favIds)
+            console.log(places)
             places = await placeController.getVisitsNewsOpinions(places, uid)
+            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -312,6 +315,7 @@ const placeController = {
         try {
             const { id } = req.params
             const { status } = req.body
+            console.log(status)
             await placeService.setStatus(id, status)
             res.sendStatus(200)
         } catch (err) {

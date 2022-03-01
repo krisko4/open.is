@@ -106,6 +106,7 @@ const userService = {
     },
 
     getSubscribedLocations: async (id) => {
+        
         const user = await User.findById(id).lean().exec()
         let subscribedLocations = []
         if (user.subscriptions) {
