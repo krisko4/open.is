@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import React, { FC, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
+import { AddNewBusiness } from './AddNewBusiness';
+import { NewPlaceChooser } from './NewPlaceChooser';
 
 
 const steps = [
@@ -36,30 +38,19 @@ const steps = [
 
 export const NoPlaces: FC = () => {
 
-    const [activeStep, setActiveStep] = useState(0)
     const history = useHistory()
     const match = useRouteMatch()
+    const [buttonClicked, setButtonClicked] = useState(false)
 
     return (
-        <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center">
-            <Grid container>
-                <Grow in={true} timeout={1200}>
-                    <Grid item lg={7}>
-                        <Stack spacing={2} justifyContent="space-evenly" sx={{ marginRight: 10, height: '100%' }} alignItems="center">
-                            <Typography variant="h2">Hello, {localStorage.getItem('fullName')?.split(' ')[0]}</Typography>
-                            <img src={`https://c.tenor.com/jCmPqgkv0vQAAAAC/hello.gif`} />
-                            <Grid item lg={8}>
-                                <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-                                    It seems you have not registered any places yet.
-                                    Please press the button below to add your business
-                                    and take advantage of functionality provided by our panel.
-                                </Typography>
-                            </Grid>
-                            <Button variant="contained" startIcon={<AddIcon />} onClick={() => history.push(`${match.url}/new-place`)} size="large" color="primary">Add new place</Button>
-                        </Stack>
-                    </Grid>
-                </Grow >
-                <Grid item container lg={4} alignItems="center">
+        <Grid container sx={{ height: '100%', overflow: 'hidden' }} justifyContent="center" alignItems="center">
+            {buttonClicked ?
+                <NewPlaceChooser />
+                :
+                <AddNewBusiness setButtonClicked={setButtonClicked} />
+            }
+
+            {/* <Grid item container lg={4} alignItems="center">
                     <Slide in={true} timeout={1000} direction="left">
                         <Card>
                             <CardContent>
@@ -75,8 +66,7 @@ export const NoPlaces: FC = () => {
                             </CardContent>
                         </Card>
                     </Slide>
-                </Grid>
-            </Grid>
+                </Grid> */}
         </Grid>
 
     )

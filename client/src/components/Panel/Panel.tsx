@@ -24,8 +24,11 @@ export const Panel: FC = () => {
         (async function () {
             try {
                 const uid: string = localStorage.getItem('uid') as string
+                if (!uid) {
+                    history.push('/')
+                    return
+                }
                 const places = await getPlacesByUserId(uid)
-                console.log(places)
                 dispatch(setPlaces(places))
                 if (places.length === 0) {
                     return

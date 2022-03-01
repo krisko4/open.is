@@ -18,23 +18,23 @@ const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
     {
         name: 'Dashboard',
         icon: <DashboardIcon color="primary" />,
-        url: places.length > 0 ? `dashboard` : '',
+        url: places.length > 0 ? `/dashboard` : '',
     },
     {
         name: 'My account',
         icon: <SettingsIcon color="primary" />,
-        url: `account`,
+        url: `/account`,
 
     },
     {
         name: 'New place',
         icon: <AddIcon color="primary" />,
-        url: `new-place`,
+        url: `/new-place`,
     },
     {
         name: 'New business chain',
         icon: <CloudCircle color="primary" />,
-        url: `new-business-chain`
+        url: `/new-business-chain`
     }
 ]
 
@@ -80,7 +80,7 @@ export const LeftNavigation: FC = () => {
                                         button
                                         onClick={() => {
                                             setSelectedOption(button.url)
-                                            history.push(`${match.url}/${button.url}`)
+                                            history.push(`${match.url}${button.url}`)
                                         }
                                         }
                                     >

@@ -33,7 +33,7 @@ export const MainContent: FC = () => {
         <Header />
       </Grid>
       <Grid container style={{ flexGrow: 1 }}>
-        {places.length === 0 && location.pathname === '/panel' && <NoPlaces />}
+        {places.length === 0 && (location.pathname === '/panel' || location.pathname === '/panel/') && <NoPlaces />}
         <Route
           path={`${match.url}/new-place`}
         >
