@@ -29,10 +29,17 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
     const { enqueueInfoSnackbar } = useCustomSnackbar()
     const { setSaveButtonClicked, saveButtonClicked, selectedLocations, setSelectedLocations } = useLocationContext()
     const [validationStateChanged, setValidationStateChanged] = useState(false)
+    const isFirstValidationRender = useRef(true)
     const [isValid, setValid] = useState(false)
+
     const { mode } = useColorMode()
 
     useEffect(() => {
+        console.log(selectedLocations)
+        if(isFirstValidationRender.current){
+            isFirstValidationRender.current = false
+            return
+        }
         setValid(!selectedLocations.some(loc => !loc.isValid))
     }, [validationStateChanged])
 
@@ -45,12 +52,6 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
         setActiveStep(step => step + 1)
     }, [saveButtonClicked])
 
-
-    // const registerNewBusiness = async () => {
-
-
-
-    // }
 
     const handleClick = () => {
         setSaveButtonClicked(state => !state)
@@ -68,6 +69,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
         const newLocation = {
             address: currentPlace.address,
             addressId: currentPlace.addressId,
+            addressLanguage: currentPlace.addressLanguage,
             lat: currentPlace.lat,
             lng: currentPlace.lng,
             phone: '',

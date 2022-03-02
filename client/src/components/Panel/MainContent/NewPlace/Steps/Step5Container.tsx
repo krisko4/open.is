@@ -24,6 +24,7 @@ export const Step5Container: FC<Props> = ({isEditionMode}) => {
             {
                 address: currentPlace.address,
                 addressId: currentPlace.addressId,
+                addressLanguage: currentPlace.addressLanguage,
                 lat: currentPlace.lat,
                 lng: currentPlace.lng,
                 phone: currentPlace.phone,

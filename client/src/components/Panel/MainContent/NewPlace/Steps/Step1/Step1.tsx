@@ -13,6 +13,7 @@ export const Step1: FC = () => {
     const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [input, setInput] = useState('')
 
+    console.log(currentPlace)
 
 
     useEffect(() => {

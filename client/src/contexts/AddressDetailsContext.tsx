@@ -22,7 +22,8 @@ interface SelectedAddressProps {
     lat: number,
     lng: number,
     postcode?: string,
-    addressId: string
+    addressId: string,
+    language: string
 }
 
 const useProviderSettings = (isEdition: boolean) => {
@@ -34,7 +35,8 @@ const useProviderSettings = (isEdition: boolean) => {
         label: '',
         lat: 0,
         lng: 0,
-        addressId: ''
+        addressId: '',
+        language: ''
     })
     return {
         availableAddresses,

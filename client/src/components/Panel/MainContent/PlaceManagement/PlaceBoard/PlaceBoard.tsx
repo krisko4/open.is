@@ -83,7 +83,7 @@ interface MatchProps {
     id: string
 }
 
-export const PlaceBoard: FC<any> = () => {
+export const PlaceBoard: FC = () => {
 
     const match = useRouteMatch<MatchProps>()
     const [value, setValue] = useState(Destinations.HOME as string)

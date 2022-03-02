@@ -9,10 +9,10 @@ export const PlaceStatus = () => {
             <Tooltip title={'This is a current status of your place'}>
                 {currentPlace.status === 'open' ?
                     <Alert severity="success" variant="filled" >
-                        This place is now {currentPlace.status?.toUpperCase() }
+                        This place is now OPEN
                     </Alert>
                     : <Alert severity="error" variant="filled" >
-                        This place is now {currentPlace.status?.toUpperCase() }
+                        This place is now CLOSED 
                     </Alert>
                 }
             </Tooltip>

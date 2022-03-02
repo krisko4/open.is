@@ -35,7 +35,7 @@ interface Props {
 }
 
 const schema = yup.object({
-    phone: yup.string().required('Phone number is required'),
+    phone: yup.string().required('Phone number is required').min(8).max(15),
     email: yup.string().email('This is not a valid e-mail address'),
     website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
     facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
@@ -44,12 +44,13 @@ const schema = yup.object({
 })
 
 export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateChanged }) => {
-    const { saveButtonClicked, fieldForAll, setFieldForAll, selectedLocations } = useLocationContext()
+   
+    const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext()
     const isFirstRender = useRef(true)
     const isFirstFieldForAllRender = useRef(true)
 
 
-    const { control, register, handleSubmit, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
+    const { control, register, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
         resolver: yupResolver(schema),
         mode: 'onChange',
         defaultValues: {
@@ -73,20 +74,16 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
     useEffect(() => {
         location.isValid = isValid
         setValidationStateChanged(state => !state)
-        // locationErrors.splice(index, 0, isValid)
     }, [isValid])
 
     useEffect(() => {
         if (isFirstRender.current) {
-            console.log('first')
             isFirstRender.current = false
             return
         }
+        console.log(getValues())
         location = Object.assign(location, getValues())
     }, [saveButtonClicked])
-
-
-
 
 
     return (
@@ -105,32 +102,20 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                     </Tooltip>
                 </Grid>
                 <Grid item lg={6} >
-                    {/* <Controller
+                    <Controller
                         name="phone"
                         control={control}
                         render={
                             ({ field }) =>
-                            <ReactPhoneInput
-                                defaultCountry={'pl'}
-                                {...field}
-                                component={TextField}
-
-                                label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
-                            />
+                                <ReactPhoneInput
+                                    defaultCountry={'pl'}
+                                    {...field}
+                                    //@ts-ignore
+                                    component={TextField}
+                                    label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
+                                />
                         }
-                    /> */}
-
-
-
-                    {/* <TextField
-                        type="number"
-                        label="Phone number"
-                        {...register('phone')}
-                        fullWidth
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start"><PhoneIcon color="primary" /></InputAdornment>
-                        }}
-                    /> */}
+                    />
                 </Grid>
             </Grid>
             <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
@@ -183,7 +168,6 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         InputProps={{
                             startAdornment: <InputAdornment position="start"><LanguageIcon color="primary" /></InputAdornment>
                         }}
-
                     />
                 </Grid>
             </Grid>
@@ -249,7 +233,6 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         inputProps={{
                             maxLength: 50
                         }}
-                        // focused
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">

@@ -1,4 +1,4 @@
-import { Grid, Paper, Tab, Tabs } from "@mui/material"
+import { Slide, Grid, Paper, Tab, Tabs } from "@mui/material"
 import React, { FC, useEffect, useState } from "react"
 import { Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom"
 import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
@@ -30,7 +30,7 @@ export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, set
 
     const match = useRouteMatch<MatchProps>()
     const history = useHistory()
-    const { currentPlace} = useCurrentPlaceContext()
+    const { currentPlace } = useCurrentPlaceContext()
 
 
 
@@ -40,21 +40,23 @@ export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, set
     };
 
     return (
-        <Grid container direction="column" style={{ flexGrow: 1 }}>
-            <Paper>
-                <Tabs
-                    value={value}
-                    indicatorColor="secondary"
-                    textColor="secondary"
-                    onChange={handleChange}
-                    // variant="fullWidth"
-                    sx={{ width: '100%' }}
-                >
-                    {tabs.map((tab) =>
-                        <Tab key={tab.name} value={tab.url} disableRipple label={tab.name} />
-                    )}
-                </Tabs>
-            </Paper>
+        <Grid container direction="column" style={{ overflow: 'hidden', flexGrow: 1 }}>
+            <Slide in={true} timeout={500}>
+                <Paper>
+                    <Tabs
+                        value={value}
+                        indicatorColor="secondary"
+                        textColor="secondary"
+                        onChange={handleChange}
+                        // variant="fullWidth"
+                        sx={{ width: '100%' }}
+                    >
+                        {tabs.map((tab) =>
+                            <Tab key={tab.name} value={tab.url} disableRipple label={tab.name} />
+                        )}
+                    </Tabs>
+                </Paper>
+            </Slide>
             <Grid container sx={{ flexGrow: 1 }}>
                 <Switch>
                     {
@@ -72,6 +74,7 @@ export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, set
                     }
                 </Switch>
             </Grid>
+
 
         </Grid>
     )

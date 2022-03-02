@@ -8,6 +8,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
 import { ImageUpload } from "../../../../reusable/ImageUpload";
+import * as _ from 'lodash'
 
 interface Props {
     isEditable: boolean | undefined,
@@ -31,6 +32,7 @@ const MemoizedPlaceLogo = React.memo<Props & PlaceProps>(({ isEditable, currentP
     const [isHover, setHover] = useState(true)
     const isFirstRender = useRef(true)
 
+    console.log(currentPlace.images)
 
     useEffect(() => {
         if (isFirstRender.current) {
@@ -46,7 +48,13 @@ const MemoizedPlaceLogo = React.memo<Props & PlaceProps>(({ isEditable, currentP
         <CardMedia
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            style={{ height: 200, overflow: 'hidden', marginTop: 10, borderRadius: 20 }}
+            style={{
+                height: 200,
+                overflow: 'hidden',
+                marginTop: 10,
+                borderRadius: 20,
+                backgroundSize: 'contain'
+            }}
             image={logo as string || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`} >
             {isEditable &&
                 <Slide direction="up" in={isHover} appear>
@@ -63,4 +71,9 @@ const MemoizedPlaceLogo = React.memo<Props & PlaceProps>(({ isEditable, currentP
         </CardMedia>
 
     )
-}, (prevProps, nextProps) => prevProps.currentPlace.logo === nextProps.currentPlace.logo)
+}, (prevProps, nextProps) => {
+    return prevProps.currentPlace.logo === nextProps.currentPlace.logo
+     && !prevProps.currentPlace.images.some((imgObj, index) => !_.isEqual(imgObj, nextProps.currentPlace.images[index]))
+}
+
+)

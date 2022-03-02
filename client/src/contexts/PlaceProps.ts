@@ -40,6 +40,7 @@ export interface LocationProps {
     _id?: string,
     address: string,
     addressId: string,
+    addressLanguage: string,
     lat: number,
     lng: number,
     phone: string,

@@ -1,6 +1,7 @@
 import { Grid, List, ListItem, ListItemText, Paper, Slide } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
+import { OpinionCharts } from './OpinionCharts';
 import { Overview } from './Overview';
 type Props = {
 
@@ -13,13 +14,19 @@ interface Option {
 const options = [
     {
         name: 'Overview'
-    }
+    },
+    {
+        name: 'Charts'
+    },
+
 ]
 
 const displayOptions = (option: Option) => {
     switch (option.name) {
         case 'Overview':
             return <Overview />
+        case 'Charts':
+            return <OpinionCharts/>
         default:
             return
     }

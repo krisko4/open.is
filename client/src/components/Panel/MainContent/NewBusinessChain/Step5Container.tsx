@@ -23,10 +23,11 @@ export const Step5Container: FC<Props> = ({isEditionMode}) => {
             type: currentPlace.type as string,
         }
         const locations = selectedLocations.map(location => {
-            delete location['isValid']
-            location.facebook = `https://facebook.com/` + location.facebook
-            location.instagram = `https://instagram.com/` + location.instagram
-            return location
+            const newLocation = {...location}
+            delete newLocation['isValid']
+            newLocation.facebook = `https://facebook.com/` + newLocation.facebook
+            newLocation.instagram = `https://instagram.com/` + newLocation.instagram
+            return newLocation
         }
         )
         let key: keyof typeof place

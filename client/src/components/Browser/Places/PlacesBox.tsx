@@ -152,7 +152,7 @@ const PlacesBox: FC = () => {
                 </Grid>
             }
             <Grid container style={{ flexGrow: 1 }} >
-                <Scrollbars ref={scrollbarRef}>
+                <Scrollbars autoHide ref={scrollbarRef}>
                     <Switch>
                         {chosenCriterias.map((place: any, index: number) =>
                             <Route

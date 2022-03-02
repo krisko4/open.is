@@ -34,7 +34,7 @@ export const Locations = (props: Props) => {
                                 <Grid container alignItems="center">
                                     <Grid item lg={2}>
                                         <CardMedia
-                                            style={{ height: 200, width: 200, marginTop: 10, borderRadius: 20 }}
+                                            style={{ height: 200, backgroundSize: 'contain',  width: 200, marginTop: 10, borderRadius: 20 }}
                                             image={businessChain.logo as string}
                                         />
                                     </Grid>

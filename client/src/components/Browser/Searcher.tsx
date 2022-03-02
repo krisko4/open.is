@@ -16,58 +16,10 @@ import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
 import { getPlacesByName, getPlacesBySearchParams } from "../../requests/PlaceRequests";
 import { convertToCurrentPlace } from "../../utils/place_data_utils";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../contexts/PlaceProps";
+import { useMapContext } from "../../contexts/MapContext/MapContext";
 
 
 const provider = new OpenStreetMapProvider({});
-
-const StyledAutocomplete = styled(Autocomplete)({
-    root: {
-        "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
-            color: 'lightgrey'
-        },
-        "& .MuiInputLabel-outlined": {
-            color: "#ff5252"
-        }
-
-    },
-    tag: {
-        backgroundColor: '#ff5252',
-        "& .MuiChip-label": {
-            color: 'white'
-        },
-    },
-    clearIndicator: {
-        color: '#ff5252'
-    },
-    loading: {
-        color: 'grey'
-    },
-    noOptions: {
-        color: '#2C2C2C'
-    },
-    popupIndicator: {
-        visibility: 'hidden'
-    },
-    paper: {
-        backgroundColor: '#2C2C2C',
-        elevation: 10
-    },
-    inputRoot: {
-        color: "white",
-        "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "grey",
-            borderRadius: 1,
-
-        },
-        "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#ff5252"
-        },
-        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#ff5252"
-        },
-
-    }
-})
 
 
 const useStyles = makeStyles((theme) =>
@@ -130,11 +82,9 @@ export interface SearchParams {
 
 const Searcher: FC = () => {
 
-    const classes = useStyles()
 
     const { availableAddresses, setAvailableAddresses, chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
     const [inputValue, setInputValue] = useState('')
-    const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const isFirstFind = useRef(true)
 
@@ -166,7 +116,6 @@ const Searcher: FC = () => {
 
 
     const selectPlace = async (searchParams: SearchParams[]) => {
-        console.log('hello')
         console.log(searchParams)
         const places: RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
         let currentPlaces = places.map(place => convertToCurrentPlace(place))
@@ -178,16 +127,7 @@ const Searcher: FC = () => {
     return (
         <Autocomplete
             loading={loading}
-            open={open}
-            onOpen={() => {
-                setOpen(true);
-            }}
-            onClose={() => {
-                setOpen(false);
-            }}
             multiple
-            autoHighlight
-            // classes={classes}
             freeSolo={true}
             options={availableAddresses}
             getOptionLabel={(option: any) => option.name}
@@ -214,7 +154,6 @@ const Searcher: FC = () => {
                 const label = option.name
                 const matches = match(label, inputValue);
                 const parts = parse(label, matches);
-                console.log(props)
                 return (
                     <li {...props}>
                         <Grid container alignItems="center" justifyContent="space-evenly" sx={{ p: 2 }}>

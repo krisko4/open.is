@@ -5,20 +5,22 @@ import { Controller, FieldValues, useFormContext, useWatch } from "react-hook-fo
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
 import ReactPhoneInput from 'react-phone-input-material-ui';
+import PhoneInput from "react-phone-input-material-ui"
+// import "react-phone-input-material-ui/lib/style.css";
 
 
-export const PhoneNumberContainer = () => {
+export const PhoneNumberContainer: FC = () => {
     const methods = useFormContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     return <PhoneNumber setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
 }
 
-// interface Props {
-//     currentPlace: CurrentPlaceProps,
-//     setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-// }
+interface Props {
+    currentPlace: CurrentPlaceProps,
+    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
+}
 
-const PhoneNumber = React.memo(({ currentPlace, setCurrentPlace, control, setValue }) => {
+const PhoneNumber = React.memo<Props & FieldValues>(({ currentPlace, setCurrentPlace, control, setValue, formState: { errors } }) => {
 
     const phone = useWatch({
         control,
@@ -45,9 +47,13 @@ const PhoneNumber = React.memo(({ currentPlace, setCurrentPlace, control, setVal
             render={
                 ({ field }) =>
                     <ReactPhoneInput
-                        style={{ flexGrow: 1 }}
-                        defaultCountry={'pl'}
+                        style={
+                            {
+                                flexGrow: 1,
+                            }
+                        }
                         {...field}
+                        //@ts-ignore
                         component={TextField}
                         label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
                     />

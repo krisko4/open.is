@@ -13,7 +13,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 
 
 
-const StyledPopup = styled(Popup)(({theme}) => ({
+const StyledPopup = styled(Popup)(({ theme }) => ({
     '& .leaflet-popup-content': {
         width: 160
     },
@@ -88,10 +88,10 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                     const criterias = [criterium]
                     setChosenCriterias(criterias)
                     const address = res.data
-                    const { osm_type, osm_id } = address.raw
-                    console.log(address)
+                    const { osm_type, osm_id } = address
                     setSelectedAddress({
                         label: address.display_name,
+                        language: navigator.language,
                         lat: lat,
                         lng: lng,
                         postcode: address.address.postcode,
@@ -106,9 +106,17 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
             <StyledPopup>
                 <Grid container justifyContent="center" alignItems="center">
 
-                    <Avatar style={{ width: 60, height: 60 }} src={criterium.logo as string} />
+                    <Avatar
+                        imgProps={{
+                            style: {
+                                objectFit: 'contain'
+                            }
+                        }}
+                        style={{ width: 60, height: 60 }}
+                        src={criterium.logo as string}
+                    />
                     <Grid container item style={{ textAlign: 'center' }} alignItems="center" direction="column">
-                        <Typography variant="h6" sx={{color: 'primary.main'}}>
+                        <Typography variant="h6" sx={{ color: 'primary.main' }}>
                             {criterium.name}
                         </Typography>
                     </Grid>

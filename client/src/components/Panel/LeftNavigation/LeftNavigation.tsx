@@ -64,7 +64,13 @@ export const LeftNavigation: FC = () => {
                         </Grid>
                         <ListItem style={{ marginBottom: 20, }}>
                             <ListItemAvatar>
-                                <Avatar alt={userData.fullName} src={userData.img as string} />
+                                <Avatar
+                                imgProps={{
+                                    style: {objectFit: 'contain'}
+                                }}
+                                 alt={userData.fullName}
+                                  src={userData.img as string}
+                                   />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={userData.fullName}

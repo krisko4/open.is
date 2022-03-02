@@ -20,9 +20,8 @@ interface Props {
     // currentPlace: CurrentPlaceProps,
     setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
     images: Image[],
-    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
 }
-export const ImageCarouselItem: FC<Props> = ({ item, setCurrentIndex, images, address, setCurrentPlace, isEditable, index }) => {
+export const ImageCarouselItem: FC<Props> = ({ item, images, address, setCurrentPlace, isEditable, index }) => {
 
 
     const [isHover, setHover] = useState(true)
@@ -30,12 +29,12 @@ export const ImageCarouselItem: FC<Props> = ({ item, setCurrentIndex, images, ad
     const [imageFile, setImageFile] = useState<File | null>(item.file)
     const isFirstRender = useRef(true)
 
+
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false
             return
         }
-        // setCurrentIndex(index)
         if (isEditable) {
             images[index] = {
                 img: img as string,
@@ -45,14 +44,6 @@ export const ImageCarouselItem: FC<Props> = ({ item, setCurrentIndex, images, ad
                 place.images = [...images]
                 return { ...place }
             })
-            // if (setCurrentPlace) setCurrentPlace(place => {
-            //     place.images[index] = {
-            //         img: img as string,
-            //         file: imageFile
-            //     }
-            //     place.images = [...place.images]
-            //     return { ...place }
-            // })
         }
     }, [img])
 

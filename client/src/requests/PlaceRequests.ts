@@ -12,7 +12,6 @@ const provider = new OpenStreetMapProvider({
 
 export const findByAddress = async (inputValue: string) => {
     const result = await provider.search({ query: inputValue })
-    console.log(result)
     if (result) {
         const inputArray = inputValue.split(' ')
         const upperCasedInputArray = inputArray.map((input) => {
@@ -24,7 +23,6 @@ export const findByAddress = async (inputValue: string) => {
             const filteredAddressArray = addressArray.filter((address: any) => {
                 return !upperCasedInputArray.includes(address)
             })
-            console.log(filteredAddressArray)
             filteredAddressArray.splice(0, 0, upperCasedInput)
             address.name = filteredAddressArray.toString()
             address.type = 'address'

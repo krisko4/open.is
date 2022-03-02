@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import {Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } from '@mui/material';
+import { Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
@@ -97,7 +97,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
     return (
         <Card
             // className={classes.card}
-            sx={{flexGrow: 1}}
+            sx={{ flexGrow: 1 }}
             elevation={elevation}
             onMouseEnter={() => setElevation(10)}
             onMouseLeave={() => setElevation(3)}
@@ -106,13 +106,22 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                 <Grid container justifyContent="space-between">
                     <Grid item container alignItems="center" >
                         <Grid item>
-                            <Avatar style={{ width: 80, height: 80 }} src={currentPlace.logo as string} alt={currentPlace.name} />
+                            <Avatar
+                                imgProps={{
+                                    style: {
+                                        objectFit: 'contain'
+                                    }
+                                }}
+                                style={{ width: 80, objectFit: 'contain', height: 80 }}
+                                src={currentPlace.logo as string}
+                                alt={currentPlace.name}
+                            />
                         </Grid>
                         <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
                             <Typography variant="h6">
                                 {currentPlace.name}
                             </Typography>
-                            <Typography variant="body1" sx={{color: 'text.secondary'}} >
+                            <Typography variant="body1" sx={{ color: 'text.secondary' }} >
                                 {currentPlace.subtitle}
                             </Typography>
                             <Grid container alignItems="center">

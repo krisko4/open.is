@@ -35,6 +35,9 @@ export const MyBusinessChains: FC = () => {
                     <ListItem key={place._id} button onClick={() => choosePlace(place)}>
                         <ListItemAvatar>
                             <Avatar
+                                imgProps={{
+                                    style: { objectFit: 'contain' }
+                                }}
                                 alt={place.name}
                                 src={place.logo as string} />
                         </ListItemAvatar>

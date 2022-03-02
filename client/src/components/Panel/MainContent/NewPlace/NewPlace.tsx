@@ -42,6 +42,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
     const { activeStep, setActiveStep } = useStepContext()
     const { enqueueInfoSnackbar } = useCustomSnackbar()
 
+
     useEffect(() => {
         isEditionMode && enqueueInfoSnackbar('In edition mode you can switch freely between steps. Click on the step label to check it out.')
 
@@ -118,7 +119,6 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                                                     </CardContent>
                                                 </Card>
                                             </div>
-
                                         </Slide>
                                     </Grid>
                                 }

@@ -28,6 +28,7 @@ import { ActivityChart } from '../../Charts/ActivityChart';
 import { RatingChart } from '../../Charts/RatingChart';
 import { PlaceSettings } from "../../PlaceSettings";
 import { Destinations } from "../PlaceBoard";
+import { OpinionsCard } from "./OpinionsCard";
 import { PlaceStatus } from "./PlaceStatus";
 import { TotalOpinions } from './TotalOpinions';
 import { TotalVisits } from './TotalVisits';
@@ -102,28 +103,7 @@ export const PlaceData: FC = () => {
                                 </Card>
                             </Grid>
                             <Grid item container>
-                                <Fade in={true} timeout={2000}>
-                                    <Card sx={{ flexGrow: 1 }} elevation={3}>
-                                        <CardContent>
-                                            <Typography variant="h5">
-                                                Rating
-                                            </Typography>
-                                            <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
-                                                The following chart represents the rating of your place
-                                            </Typography>
-                                            <Grid container justifyContent="center" alignItems="center">
-                                                <Rating
-                                                    size="large"
-                                                    name="simple-controlled"
-                                                    readOnly
-                                                    value={currentPlace.averageNote?.average || 0}
-                                                    style={{ marginTop: 10 }}
-                                                />
-                                                <RatingChart />
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
-                                </Fade>
+                                <OpinionsCard />
                             </Grid>
                             <Grid item container>
                                 <Card elevation={3} sx={{ flexGrow: 1 }}>

@@ -56,7 +56,7 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                 </Grid>
                 <Grid container item sx={{ mt: '20px' }}>
                     <Grid item lg={3} sx={{ ml: '20px', textAlign: 'center' }}>
-                        <CardMedia style={{ height: 200, marginTop: 10, borderRadius: 20 }} image={place.logo} />
+                        <CardMedia style={{ height: 200, backgroundSize: 'contain', marginTop: 10, borderRadius: 20 }} image={place.logo} />
                         <Rating
                             style={{ marginTop: 20 }}
                             name="simple-controlled"

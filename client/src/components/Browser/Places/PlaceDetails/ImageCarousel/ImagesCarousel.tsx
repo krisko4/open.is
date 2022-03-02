@@ -40,16 +40,6 @@ const useStyles = makeStyles({
 })
 
 
-// export const ImagesCarousel: FC<Props> = ({ isEditable }) => {
-//     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-//     console.log(currentPlace)
-//     return <MemoizedImagesCarousel
-//         currentPlace={currentPlace}
-//         setCurrentPlace={setCurrentPlace}
-//         isEditable={isEditable}
-//     />
-// }
-
 interface Props {
     isEditable?: boolean,
     images: Image[],
@@ -60,6 +50,9 @@ interface Props {
 export const ImagesCarousel: FC<Props> = React.memo(({ isEditable, images, address, setCurrentPlace }) => {
     const classes = useStyles()
     const [currentIndex, setCurrentIndex] = useState(1)
+
+    console.log(images)
+
     return (
         <Carousel
             stopAutoPlayOnHover
@@ -77,13 +70,12 @@ export const ImagesCarousel: FC<Props> = React.memo(({ isEditable, images, addre
                     key={index}
                 >
                     <ImageCarouselItem
-                        images={images}
+                        images={[...images]}
                         setCurrentPlace={setCurrentPlace}
                         isEditable={isEditable}
                         index={index}
                         item={item}
                         address={address}
-                        setCurrentIndex={setCurrentIndex}
                     />
                 </div>)
             }

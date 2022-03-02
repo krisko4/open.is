@@ -46,6 +46,9 @@ export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
                     >
                         <ListItemAvatar>
                             <Avatar
+                                imgProps={{
+                                    style: { objectFit: 'contain' }
+                                }}
                                 alt={place.name}
                                 src={place.logo as string} />
                         </ListItemAvatar>

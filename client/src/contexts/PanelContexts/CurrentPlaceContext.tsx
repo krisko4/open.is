@@ -24,6 +24,7 @@ export const clearPlace = {
     name: '',
     address: '',
     addressId: '',
+    addressLanguage: '',
     type: null,
     lat: 0,
     lng: 0,
@@ -53,6 +54,11 @@ export const clearPlace = {
 
 const useProviderSettings = (initialPlaceData? : CurrentPlaceProps) => {
 
+    useEffect(() => {
+        console.log('hej')
+        console.log(clearPlace)
+    }, [])
+    
     const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps>(initialPlaceData || {...clearPlace})
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [sub, setSub] = useState('')

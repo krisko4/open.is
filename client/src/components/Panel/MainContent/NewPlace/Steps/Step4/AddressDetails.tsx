@@ -23,10 +23,6 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
     const { setPlaceCoords } = useMapContext()
     const { enqueueErrorSnackbar } = useCustomSnackbar()
 
-    const [tileLayer, setTileLayer] = useState({
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    })
 
     const { setChosenCriterias, selectedAddress, isEditionMode, setSelectedAddress } = useAddressDetailsContext()
     const { currentPlace } = useCurrentPlaceContext()
@@ -35,15 +31,12 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
 
     const submitAddress = async () => {
         setSubmitLoading(true)
-        console.log(selectedAddress)
         try {
             const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng)
             if (!selectedAddress.postcode) {
                 setErrorMessage('This is not a valid address. Please provide a street number.')
                 return
             }
-            console.log(res.data)
-            console.log(currentPlace.address)
             if (res.data && (!isEditionMode || (isEditionMode && currentPlace.address !== res.data.locations[0].address))) {
                 setErrorMessage('Selected location is already occupied by another place. If your place is located on this address, try to change the position of a marker.')
                 return
@@ -52,10 +45,10 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
             currentPlace.addressId = selectedAddress.addressId 
             currentPlace.lat = selectedAddress.lat
             currentPlace.lng = selectedAddress.lng
+            currentPlace.addressLanguage = selectedAddress.language
             setActiveStep && setActiveStep(currentStep => currentStep + 1)
             setAddressSubmitted && setAddressSubmitted(addressSubmitted => !addressSubmitted)
         } catch (err) {
-            console.log(err)
             enqueueErrorSnackbar()
         }
         finally {
@@ -69,6 +62,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
             setSelectedAddress({
                 label: currentPlace.address,
                 lng: currentPlace.lng,
+                language: navigator.language,
                 lat: currentPlace.lat,
                 addressId: currentPlace.addressId,
                 postcode: 'default'
@@ -97,7 +91,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
                     </Grid>
                 </Fade>
                 <Grid style={{ height: 500, marginTop: 10 }} container>
-                    <MapBox tileLayer={tileLayer} />
+                    <MapBox />
                 </Grid>
                 <LoadingButton size="large" loading={submitLoading} disabled={!selectedAddress.postcode || submitLoading} variant="contained" onClick={() => submitAddress()} fullWidth={true} style={{ marginTop: 10 }} color="primary">Submit</LoadingButton>
             </Grid>

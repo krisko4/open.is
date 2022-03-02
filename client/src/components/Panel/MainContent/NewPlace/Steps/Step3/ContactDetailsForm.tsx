@@ -23,7 +23,7 @@ const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-
 
 
 const schema = Yup.object().shape({
-    phone: Yup.string().required('Phone number is required'),
+    phone: Yup.string().required('Phone number is required').min(8).max(15),
     email: Yup.string().email('This is not a valid e-mail address'),
     website: Yup.string().matches(urlRegExp, 'This is not a valid URL'),
     facebook: Yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
@@ -128,17 +128,6 @@ export const ContactDetailsForm: FC = () => {
                             }
                         />
                     </Grid>
-                    {/* <Button
-                        fullWidth={true}
-                        variant="contained"
-                        style={{ marginTop: 10 }}
-                        color="primary"
-                        size="large"
-                        disabled={!methods.formState.isValid}
-                        onClick={handleClick}
-                    >
-                        Submit
-                    </Button> */}
                     <SubmitButton />
                 </Grid>
             </form>

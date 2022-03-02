@@ -17,18 +17,6 @@ import { SecondHeader } from "./SecondHeader";
 const Browser: FC = () => {
 
 
-    const { mode } = useColorMode()
-
-
-    const tileLayer = useMemo(() =>
-        mode === 'dark' ? {
-            attribution: 'copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-            url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
-        } : {
-            attribution: 'copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        }
-        , [mode])
 
 
     return (
@@ -45,7 +33,7 @@ const Browser: FC = () => {
                             <PlacesBox />
                         </Grid>
                         <Grid item lg={7} xs={12}>
-                            <MapBox tileLayer={tileLayer} />
+                            <MapBox />
                         </Grid>
                     </Grid>
                 </MapContextProvider>
