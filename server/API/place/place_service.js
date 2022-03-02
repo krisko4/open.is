@@ -9,6 +9,20 @@ const cloudinary = require('../../config/cloudinary')
 
 const placeService = {
 
+    groupedPlaceObject: {
+        '_id': '$_id',
+        'name': { '$first': '$name' },
+        'type': { '$first': '$type' },
+        'logo': { '$first': '$logo' },
+        'images': { '$first': '$images' },
+        'description': { '$first': '$description' },
+        'createdAt': { '$first': '$createdAt' },
+        'subtitle': { '$first': '$subtitle' },
+        'userId': { '$first': '$userId' },
+        'locations': {
+            '$addToSet': '$locations'
+        }
+    },
 
     aggregateFavoriteLocations: (favIds) => {
         return [
@@ -51,16 +65,11 @@ const placeService = {
 
 
     getPlaces: () => Place.find().exec(),
-    getActivePlaces: () => Place.find({ 'locations.isActive': false }).exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
-    // getTop20PlacesSortedBy: (sortParam) => Place.aggregate(placeService.aggregateActiveLocations()).limit(20).exec(),
-
-
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: userId }).exec(),
 
-    getFavoritePlaces: (favIds) => {
+    getFavoritePlaces(favIds) {
         favIds = favIds.map(el => mongoose.Types.ObjectId(el))
-        console.log(favIds)
         return Place.aggregate()
             .unwind('locations')
             .match({
@@ -69,47 +78,53 @@ const placeService = {
                 },
                 'locations.isActive': true
             })
-            .group({
-                '_id': '$_id',
-                'name': { '$first': '$name' },
-                'type': { '$first': '$type' },
-                'img': { '$first': '$img' },
-                'description': { '$first': '$description' },
-                'createdAt': { '$first': '$createdAt' },
-                'subtitle': { '$first': '$subtitle' },
-                'userId': { '$first': '$userId' },
-                'locations': {
-                    '$addToSet': '$locations'
-                }
-            })
+            .group(this.groupedPlaceObject)
     },
 
-    getTop20PlacesSortedBy: (sortParam) => Place.aggregate()
-        .unwind('locations')
-        .match({ 'locations.isActive': true })
-        .limit(20)
-        .sort(sortParam)
-        .group({
-            '_id': '$_id',
-            'name': { '$first': '$name' },
-            'type': { '$first': '$type' },
-            'logo': { '$first': '$logo' },
-            'description': { '$first': '$description' },
-            'createdAt': { '$first': '$createdAt' },
-            'subtitle': { '$first': '$subtitle' },
-            'userId': { '$first': '$userId' },
-            'images': { '$first': '$images' },
-            'locations': {
-                '$addToSet': '$locations'
-            }
-        }),
-    getActivePlacesByAddressesAndNames: (addresses, names) => Place.find({ name: names, 'location.address': addresses }).lean().exec(),
+    getActivePlaces() {
+        return Place.aggregate()
+            .unwind('locations')
+            .match({ 'locations.isActive': true })
+            .group(this.groupedPlaceObject)
+    },
+    getTop20PlacesSortedBy(sortParam) {
+        return Place.aggregate()
+            .unwind('locations')
+            .match({ 'locations.isActive': true })
+            .limit(20)
+            .sort(sortParam)
+            .group(this.groupedPlaceObject)
+
+
+    },
+
+    getActivePlacesBy(param) {
+        return Place.aggregate()
+            .unwind('locations')
+            .match(
+                {
+                    'locations.isActive': true,
+                    ...param
+                }
+            )
+            .group(this.groupedPlaceObject)
+    },
+
+    getActivePlacesByAddressesAndNames(addresses, names) {
+        return Place.aggregate()
+            .unwind('locations')
+            .match(
+                {
+                    'locations.isActive': true,
+                    name: names,
+                    'locations.address': addresses
+                }
+            )
+            .group(this.groupedPlaceObject)
+    },
     getPlaceByLocationId: (locationId) => Place.findOne({ 'locations._id': locationId }).exec(),
 
-
-
     setAlwaysOpen: async (alwaysOpen, locationId) => {
-        console.log(alwaysOpen)
         return Place.findOneAndUpdate(
             { 'locations._id': locationId },
             { 'locations.$.alwaysOpen': alwaysOpen, 'locations.$.isActive': true },
@@ -214,7 +229,6 @@ const placeService = {
     getPlaceByLatLng: (lat, lng) => Place.findOne({ 'locations.lat': lat, 'locations.lng': lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
     getPlacesBy: (param) => Place.find({ ...param }).exec(),
-    getActivePlacesBy: (param) => Place.find({ ...param, 'locations.isActive': true }).lean().exec(),
     getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).lean().exec(),
     getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true }).exec(),
     deleteAll: () => Place.deleteMany().exec(),

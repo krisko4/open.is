@@ -5,9 +5,9 @@ const placeValidator = {
     validatePlaceAddress: async (req, res, next) => {
         const { locations } = req.body
         for (const location of locations) {
-            const { address, addressId } = location
-            console.log(address)
-            const addressResponse = await axios.get(`https://nominatim.openstreetmap.org/lookup?osm_ids=${addressId}&format=json`)
+            const { address, addressId, addressLanguage } = location
+
+            const addressResponse = await axios.get(`https://nominatim.openstreetmap.org/lookup?osm_ids=${addressId}&format=json&accept-language=${addressLanguage}`)
             const addressData = addressResponse.data[0]
             console.log(location)
             console.log(addressData)

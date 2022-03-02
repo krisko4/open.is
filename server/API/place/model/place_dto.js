@@ -1,7 +1,6 @@
 
 const placeDto = (place, uid) => {
     const placeDto =  place._doc ? convertDoc({...place._doc}) : convertPlaceData(place)
-    console.log(placeDto)
     placeDto['logo'] = `${process.env.CLOUDI_URL}/${placeDto['logo']}`
     placeDto.images = placeDto.images.map(image => `${process.env.CLOUDI_URL}/${image}`)
     placeDto['isUserOwner'] = uid && place.userId == uid 
@@ -10,7 +9,6 @@ const placeDto = (place, uid) => {
 
 const convertPlaceData = (placeData) => {
     const placeDto = { ...placeData}
-    console.log(placeDto)
     delete placeDto['userId']
     delete placeDto['createdAt']
     placeDto.locations.forEach(location => {

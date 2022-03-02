@@ -70,9 +70,13 @@ const placeController = {
                     return next(err)
                 }
             case 0:
-                return placeService.getActivePlaces()
-                    .then(places => res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid))))
-                    .catch(err => next(err))
+                try {
+                    const places = await placeService.getActivePlaces()
+                    console.log(places)
+                    return res.status(200).json(places.map(place => placeDto(place, uid)))
+                } catch (err) {
+                    return next(err)
+                }
             default:
                 return next(ApiError.badRequest('Invalid request'))
         }
