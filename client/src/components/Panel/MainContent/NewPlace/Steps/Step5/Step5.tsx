@@ -34,7 +34,6 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
 
-    console.log(currentPlace)
 
     useEffect(() => {
         if (steps.some(step => !step.isValid)) {

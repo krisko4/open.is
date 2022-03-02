@@ -65,12 +65,12 @@ export const LeftNavigation: FC = () => {
                         <ListItem style={{ marginBottom: 20, }}>
                             <ListItemAvatar>
                                 <Avatar
-                                imgProps={{
-                                    style: {objectFit: 'contain'}
-                                }}
-                                 alt={userData.fullName}
-                                  src={userData.img as string}
-                                   />
+                                    imgProps={{
+                                        style: { objectFit: 'contain' }
+                                    }}
+                                    alt={userData.fullName}
+                                    src={userData.img as string}
+                                />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={userData.fullName}

@@ -116,7 +116,6 @@ const Searcher: FC = () => {
 
 
     const selectPlace = async (searchParams: SearchParams[]) => {
-        console.log(searchParams)
         const places: RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
         let currentPlaces = places.map(place => convertToCurrentPlace(place))
         let chosenCriterias: CurrentPlaceProps[] = []

@@ -32,6 +32,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
                     localStorage.removeItem('fullName')
                     localStorage.removeItem('email')
                     localStorage.removeItem('img')
+                    
                 }
                 // history.push('/')
             } finally {

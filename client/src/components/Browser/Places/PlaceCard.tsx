@@ -112,7 +112,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                                         objectFit: 'contain'
                                     }
                                 }}
-                                style={{ width: 80, objectFit: 'contain', height: 80 }}
+                                style={{ width: 80, height: 80 }}
                                 src={currentPlace.logo as string}
                                 alt={currentPlace.name}
                             />

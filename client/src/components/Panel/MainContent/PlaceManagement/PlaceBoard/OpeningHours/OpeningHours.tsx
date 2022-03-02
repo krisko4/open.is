@@ -51,10 +51,6 @@ export const OpeningHours: FC = () => {
 
     }, [currentPlace])
 
-    useEffect(() => {
-        console.log('fss')
-    }, [])
-
 
     const [openingHours, setOpeningHours] = useState<any>(
         {

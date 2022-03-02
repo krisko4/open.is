@@ -39,9 +39,6 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
     const { activeStep, setActiveStep } = useStepContext()
     const [addressSubmitted, setAddressSubmitted] = useState(false)
 
-
-
-
     return (
         <>
             {

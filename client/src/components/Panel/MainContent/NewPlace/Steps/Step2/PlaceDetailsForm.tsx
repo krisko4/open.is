@@ -43,7 +43,6 @@ export const PlaceDetailsForm: FC = () => {
 
     return (
         <FormProvider {...methods}>
-
             <form style={{ flexGrow: 1 }}>
                 <Grid item container>
                     <BusinessTypeContainer />
