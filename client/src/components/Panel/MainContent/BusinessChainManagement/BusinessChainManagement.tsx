@@ -55,6 +55,7 @@ export const BusinessChainManagement = (props: Props) => {
         // }
         if (id !== businessChain._id) {
             const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
+            console.log(businessChain)
             setBusinessChain(businessChain)
         }
         const dest = location.pathname.substring(match.url.length + 1)

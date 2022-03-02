@@ -93,13 +93,10 @@ export const PlaceBoard: FC = () => {
 
     useEffect(() => {
         const placeId = match.params.id
-        console.log(placeId)
-        console.log(currentPlace._id)
         if (placeId !== currentPlace._id) {
             const place = places.find(pl => pl.locations.some(loc => loc._id === placeId)) as RawPlaceDataProps
-            console.log(place)
-            place.locations = place.locations.filter(loc => loc._id === placeId)
-            const currentPlace = convertToCurrentPlace(place)[0]
+            const placeCopy = { ...place, locations: place.locations.filter(loc => loc._id === placeId)}
+            const currentPlace = convertToCurrentPlace(placeCopy)[0]
             setCurrentPlace(currentPlace)
         }
         const dest = location.pathname.substring(match.url.length + 1)
