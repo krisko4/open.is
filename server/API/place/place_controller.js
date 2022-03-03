@@ -13,14 +13,14 @@ const mongoose = require('mongoose')
 const placeController = {
 
 
-    deleteLocation: async (req, res, next) => {
-        const { placeId, locationId } = req.params
+    deleteLocations: async (req, res, next) => {
+        const { placeId } = req.params
+        const {locationIds} = req.query
         const { uid } = req.cookies
         const user = await userService.getUserById(uid)
         if (!user) throw ApiError.internal('Invalid uid')
         try {
-            console.log(userService)
-            await placeService.deleteLocation(user, placeId, locationId)
+            await placeService.deleteLocations(user, placeId, locationIds)
             return res.sendStatus(200)
         } catch (err) {
             return next(err)

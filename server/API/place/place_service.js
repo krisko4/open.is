@@ -49,18 +49,18 @@ const placeService = {
         ]
     },
 
-    async deleteLocation(user, placeId, locationId) {
+    async deleteLocations(user, placeId, locationIds) {
         const place = await placeService.getPlaceById(placeId)
         if (!place) throw ApiError.internal('Invalid placeId')
         if (place.userId.toString() !== user._id.toString()) throw ApiError.internal('Illegal operation')
-        if (place.locations.length === 1) {
+        if (locationIds.length === place.locations.length) {
             await Promise.all([
                 cloudinary.uploader.destroy(place.logo),
                 place.images.map(image => cloudinary.uploader.destroy(image))
             ])
             return Place.findByIdAndDelete(placeId)
         }
-        return Place.findByIdAndUpdate(placeId, { $pull: { 'locations': { '_id': locationId } } }, { new: true, upsert: true }).exec()
+        return Place.findByIdAndUpdate(placeId, { $pull: { 'locations': { '_id': locationIds } } }, { new: true, upsert: true }).exec()
     },
 
 

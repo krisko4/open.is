@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const placeController = require('../API/place/place_controller')
 const userService = require('../API/user/user_service')
-const { body, param, validationResult, cookie } = require('express-validator');
+const { query, body, param, validationResult, cookie } = require('express-validator');
 const ApiError = require('../errors/ApiError')
 const jwtController = require('../API/jwt/jwt_controller')
 const placeValidator = require('../request_validators/place_validator')
@@ -68,6 +68,7 @@ router.post('/',
     parseLocations,
     body('locations.*.address').notEmpty().isString(),
     body('locations.*.addressId').notEmpty().isString(),
+    body('locations.*.addressLanguage').notEmpty().isString(),
     placeValidator.validatePlaceAddress,
     // imageValidator.validateUploadedImages,
     cookie('uid').notEmpty().isMongoId(),
@@ -103,12 +104,13 @@ router.delete('/:placeId', (req, res, next) => {
     placeController.deletePlace(req, res, next)
 })
 
-router.delete('/:placeId/locations/:locationId',
+router.delete('/:placeId/locations',
     cookie('uid').notEmpty().isMongoId(),
     param('placeId').notEmpty().isMongoId(),
     param('locationId').notEmpty().isMongoId(),
+    query('locationIds.*').isMongoId(),
     (req, res, next) => {
-        placeController.deleteLocation(req, res, next)
+        placeController.deleteLocations(req, res, next)
     }
 
 )
