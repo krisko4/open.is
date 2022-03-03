@@ -9,6 +9,28 @@ const cloudinary = require('../../config/cloudinary')
 
 const placeService = {
 
+
+    async getPlaceOwnedByUser(placeId, userId) {
+        const place = await this.getPlaceById(placeId)
+        if (!place) throw ApiError.internal('Invalid placeId')
+        if (place.userId.toString() !== userId.toString()) throw ApiError.internal('Illegal operation')
+        return place
+    },
+
+    async addLocations(user, placeId, locations) {
+        const place = await this.getPlaceOwnedByUser(placeId, user._id)
+        const addressIds = locations.map(loc => loc.addressId)
+        const duplicateAddress = await this.getFirstPlaceByAddressIds(addressIds)
+        if (duplicateAddress) throw ApiError.internal('Occupied location addition attempt')
+        return Place.findByIdAndUpdate(placeId, { $push: { 'locations': locations } }, { new: true, upsert: true }).exec()
+
+
+    },
+
+    getFirstPlaceByAddressIds(addressIds) {
+        return Place.findOne({ 'locations.addressId': { $in: addressIds } }).exec()
+    },
+
     groupedPlaceObject: {
         '_id': '$_id',
         'name': { '$first': '$name' },
@@ -25,8 +47,7 @@ const placeService = {
     },
 
     aggregateFavoriteLocations: (favIds) => {
-        return [
-            {
+        return [{
                 $project: {
                     name: 1,
                     type: 1,
@@ -50,9 +71,7 @@ const placeService = {
     },
 
     async deleteLocations(user, placeId, locationIds) {
-        const place = await placeService.getPlaceById(placeId)
-        if (!place) throw ApiError.internal('Invalid placeId')
-        if (place.userId.toString() !== user._id.toString()) throw ApiError.internal('Illegal operation')
+        const place = await this.getPlaceOwnedByUser(placeId, user._id)
         if (locationIds.length === place.locations.length) {
             await Promise.all([
                 cloudinary.uploader.destroy(place.logo),
@@ -62,7 +81,6 @@ const placeService = {
         }
         return Place.findByIdAndUpdate(placeId, { $pull: { 'locations': { '_id': locationIds } } }, { new: true, upsert: true }).exec()
     },
-
 
     getPlaces: () => Place.find().exec(),
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
@@ -101,38 +119,31 @@ const placeService = {
     getActivePlacesBy(param) {
         return Place.aggregate()
             .unwind('locations')
-            .match(
-                {
-                    'locations.isActive': true,
-                    ...param
-                }
-            )
+            .match({
+                'locations.isActive': true,
+                ...param
+            })
             .group(this.groupedPlaceObject)
     },
 
     getActivePlacesByAddressesAndNames(addresses, names) {
         return Place.aggregate()
             .unwind('locations')
-            .match(
-                {
-                    'locations.isActive': true,
-                    name: names,
-                    'locations.address': addresses
-                }
-            )
+            .match({
+                'locations.isActive': true,
+                name: names,
+                'locations.address': addresses
+            })
             .group(this.groupedPlaceObject)
     },
     getPlaceByLocationId: (locationId) => Place.findOne({ 'locations._id': locationId }).exec(),
 
-    setAlwaysOpen: async (alwaysOpen, locationId) => {
-        return Place.findOneAndUpdate(
-            { 'locations._id': locationId },
-            { 'locations.$.alwaysOpen': alwaysOpen, 'locations.$.isActive': true },
-            { new: true, runValidators: true }).exec()
+    setAlwaysOpen: async(alwaysOpen, locationId) => {
+        return Place.findOneAndUpdate({ 'locations._id': locationId }, { 'locations.$.alwaysOpen': alwaysOpen, 'locations.$.isActive': true }, { new: true, runValidators: true }).exec()
     },
 
 
-    editPlace: async (placeData, user) => {
+    editPlace: async(placeData, user) => {
         const { lat, lng, logo, images, locations } = placeData
         console.log(placeData)
         console.log(locations)
@@ -143,7 +154,7 @@ const placeService = {
         if (duplicateAddress && duplicateAddress._id != placeData._id) throw ApiError.internal('This address is already occupied by another place')
         let editedPlace
         const session = await mongoose.startSession()
-        await session.withTransaction(async () => {
+        await session.withTransaction(async() => {
             const dataToChange = {
                 name: placeData.name,
                 subtitle: placeData.subtitle,
@@ -176,17 +187,15 @@ const placeService = {
                 }
                 dataToChange.images = urlImages
             }
-            editedPlace = await Place.findOneAndUpdate(
-                { 'locations._id': placeData._id },
-                dataToChange,
-                { new: true, session: session }
+            editedPlace = await Place.findOneAndUpdate({ 'locations._id': placeData._id },
+                dataToChange, { new: true, session: session }
             ).exec()
         })
         await session.endSession()
         return editedPlace
     },
 
-    addPlace: async (placeData) => {
+    addPlace: async(placeData) => {
         const { logo, images, locations } = placeData
         if (locations.length > 1) {
             placeData.isBusinessChain = true
@@ -199,7 +208,7 @@ const placeService = {
         // upload image to cloudinary
         const session = await mongoose.startSession()
         let newPlace
-        await session.withTransaction(async () => {
+        await session.withTransaction(async() => {
             const uploadResponse = await cloudinary.uploader.upload(logo.path, {
                 upload_preset: 'place_logos'
             })
@@ -228,19 +237,15 @@ const placeService = {
     findByLocationId: (id) => Place.findOne({ 'locations._id': id }).exec(),
     getPlaceByLatLng: (lat, lng) => Place.findOne({ 'locations.lat': lat, 'locations.lng': lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),
-    getPlacesBy: (param) => Place.find({ ...param }).exec(),
+    getPlacesBy: (param) => Place.find({...param }).exec(),
     getPlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid) }).lean().exec(),
     getActivePlacesByUserId: (uid) => Place.find({ userId: mongoose.Types.ObjectId(uid), isActive: true }).exec(),
     deleteAll: () => Place.deleteMany().exec(),
     incrementVisitCount: (id) => Place.find({ 'locations._id': id }, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
     setStatus: (id, status) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.status': status }, { new: true, runValidators: true }).exec(),
-    setOpeningHours: (id, hours) => Place.findOneAndUpdate(
-        { 'locations._id': id },
-        { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen': false },
-        { new: true, runValidators: true }
-    ).exec(),
+    setOpeningHours: (id, hours) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen': false }, { new: true, runValidators: true }).exec(),
 
-    deletePlace: async (id) => {
+    deletePlace: async(id) => {
         const place = await placeService.getPlaceById(id)
         if (!place) throw new Error('No place with provided id found')
         const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
@@ -252,7 +257,7 @@ const placeService = {
     },
 
 
-    updateNote: async (note, locationId, session) => {
+    updateNote: async(note, locationId, session) => {
         const place = await Place.findOne({ 'locations._id': locationId }).exec()
         const location = place.locations.find(loc => loc._id.toString() === locationId)
         let averageNote = location.averageNote
@@ -263,20 +268,21 @@ const placeService = {
         switch (note) {
             case 1:
                 averageNote['ones']++
-                break
+                    break
             case 2:
                 averageNote['twos']++
-                break
+                    break
             case 3:
                 averageNote['threes']++
-                break
+                    break
             case 4:
                 averageNote['fours']++
-                break
+                    break
             case 5:
                 averageNote['fives']++
-                break
-            default: throw new Error('Invalid note value')
+                    break
+            default:
+                throw new Error('Invalid note value')
         }
         const valueArray = Object.values(averageNote)
         averageNote['average'] = valueArray.reduce((a, b, index) => a + b * (index + 1)) / valueArray.reduce((a, b) => a + b)

@@ -9,21 +9,20 @@ const placeValidator = require('../request_validators/place_validator')
 const imageValidator = require('../request_validators/image_validator')
 const validateRequest = require('../request_validators/express_validator')
 const multer = require('multer')
-const upload = multer(
-    {
-        dest: '/tmp/',
-        limits: {
-            fileSize: 2000000
-        },
-        fileFilter: function (req, file, callback) {
-            console.log(file)
-            const mimetype = file.mimetype
-            if (!mimetype.startsWith('image/')) {
-                return callback(new Error('Only images are allowed'))
-            }
-            callback(null, true)
-        },
-    })
+const upload = multer({
+    dest: '/tmp/',
+    limits: {
+        fileSize: 2000000
+    },
+    fileFilter: function(req, file, callback) {
+        console.log(file)
+        const mimetype = file.mimetype
+        if (!mimetype.startsWith('image/')) {
+            return callback(new Error('Only images are allowed'))
+        }
+        callback(null, true)
+    },
+})
 router.get('/active/name', (req, res, next) => {
     placeController.findPlaceNames(req, res, next)
 })
@@ -100,9 +99,11 @@ router.get('/active/subscribed',
 //     placeController.deleteAll(req, res, next)
 // })
 
-router.delete('/:placeId', (req, res, next) => {
-    placeController.deletePlace(req, res, next)
-})
+router.delete('/:placeId',
+    param('placeId').notEmpty().isMongoId(),
+    (req, res, next) => {
+        placeController.deletePlace(req, res, next)
+    })
 
 router.delete('/:placeId/locations',
     cookie('uid').notEmpty().isMongoId(),
@@ -113,6 +114,22 @@ router.delete('/:placeId/locations',
         placeController.deleteLocations(req, res, next)
     }
 
+)
+
+router.patch('/:id/locations',
+    param('id').isMongoId().notEmpty(),
+    cookie('uid').notEmpty().isMongoId(),
+    body('locations.*.phone').isMobilePhone().notEmpty(),
+    body('locations.*.email').isEmail().optional({ nullable: true, checkFalsy: true }),
+    body('locations.*.website').optional({ nullable: true, checkFalsy: true }).isURL(),
+    body('locations.*.facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
+    body('locations.*.instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
+    body('locations.*.lat').isFloat().notEmpty(),
+    body('locations.*.lng').isFloat().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.addLocations(req, res, next)
+    }
 )
 
 
@@ -141,19 +158,30 @@ router.put('/',
     }
 )
 
-router.patch('/:id/visit-count', (req, res, next) => {
-    placeController.incrementVisitCount(req, res, next)
-})
+router.patch('/:id/visit-count',
+    param('id').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.incrementVisitCount(req, res, next)
+    })
 
-router.patch('/:id/status', (req, res, next) => {
-    placeController.setStatus(req, res, next)
-})
+router.patch('/:id/status',
+    param('id').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.setStatus(req, res, next)
+    })
 
-router.patch('/:id/note', (req, res, next) => {
-    placeController.updateNote(req, res, next)
-})
+router.patch('/:id/note',
+    param('id').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+
+        placeController.updateNote(req, res, next)
+    })
 
 router.patch('/:id/opening-hours',
+    param('id').isMongoId().notEmpty(),
     body('openingHours').notEmpty(),
     body('openingHours.*.start').notEmpty().isISO8601(),
     body('openingHours.*.end').notEmpty().isISO8601(),
