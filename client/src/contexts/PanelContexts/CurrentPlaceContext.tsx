@@ -54,16 +54,9 @@ export const clearPlace = {
 
 const useProviderSettings = (initialPlaceData? : CurrentPlaceProps) => {
 
-    useEffect(() => {
-        console.log('hej')
-        console.log(clearPlace)
-    }, [])
     
     const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps>(initialPlaceData || {...clearPlace})
     const [imageFile, setImageFile] = useState<File | null>(null)
-    const [sub, setSub] = useState('')
-    // const [news, setNews] = useState<NewsProps[]>(defaultNews)
-    // const [opinions, setOpinions] = useState<OpinionProps[]>(defaultOpinions)
     const [visits, setVisits] = useState<VisitProps[]>([])
     const [opinionCount, setOpinionCount] = useState(0)
 
@@ -77,7 +70,6 @@ const useProviderSettings = (initialPlaceData? : CurrentPlaceProps) => {
         imageFile,
         setImageFile,
         initialPlaceData,
-        sub,setSub
     }
 }
 

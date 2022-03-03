@@ -66,9 +66,7 @@ export const MainContent: FC = () => {
           path={`${match.url}/new-business-chain`}
         >
           <StepContextProvider steps={businessChainSteps}>
-            <LocationContextProvider>
               <NewBusinessChain />
-            </LocationContextProvider>
           </StepContextProvider>
         </Route>
 

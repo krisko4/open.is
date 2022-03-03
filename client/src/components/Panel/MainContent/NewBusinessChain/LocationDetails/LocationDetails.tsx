@@ -1,29 +1,28 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Paper, Slide, SlideProps, Typography } from "@mui/material"
-import { useSnackbar } from "notistack"
+import { Button, Fade, Grid, Paper, Slide, Typography } from "@mui/material"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
-import { useHistory } from "react-router-dom"
+import { useColorMode } from "../../../../../contexts/ColorModeContext"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
-import { registerNewPlace } from "../../../../../requests/PlaceRequests"
 import { useCustomSnackbar } from "../../../../../utils/snackbars"
-import { LoadingButton } from "../../../../reusable/LoadingButton"
 import { Location } from './Location'
-import { animateScroll as scroll } from 'react-scroll'
-import { useStepContext } from "../../../../../contexts/StepContext"
-import { useColorMode } from "../../../../../contexts/ColorModeContext"
+import { LocationsConfirmDialog } from "./LocationsConfirmDialog"
 
 
 interface Props {
     addressSubmitted: boolean,
+    setActiveStep?: React.Dispatch<React.SetStateAction<number>>,
+    isEditionMode?: boolean,
+    img?: File | ArrayBuffer | null | string,
+    setAddLocationsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>,
+
     // setLocations: React.Dispatch<React.SetStateAction<LocationProps[]>>,
     // locations: LocationProps[]
 }
 
-export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
+export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, isEditionMode, img, setAddLocationsDialogOpen }) => {
 
     const { currentPlace } = useCurrentPlaceContext()
-    const { setActiveStep } = useStepContext()
     const isFirstRenderAddress = useRef(true)
     const isFirstRenderSave = useRef(true)
     const { enqueueInfoSnackbar } = useCustomSnackbar()
@@ -31,12 +30,19 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
     const [validationStateChanged, setValidationStateChanged] = useState(false)
     const isFirstValidationRender = useRef(true)
     const [isValid, setValid] = useState(false)
-
     const { mode } = useColorMode()
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
+
+
+    useEffect(() => {
+        if (img) {
+            currentPlace.logo = img
+        }
+    }, [img])
 
     useEffect(() => {
         console.log(selectedLocations)
-        if(isFirstValidationRender.current){
+        if (isFirstValidationRender.current) {
             isFirstValidationRender.current = false
             return
         }
@@ -49,7 +55,11 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
             isFirstRenderSave.current = false
             return
         }
-        setActiveStep(step => step + 1)
+        if (isEditionMode) {
+            setConfirmDialogOpen(true)
+            return
+        }
+        setActiveStep && setActiveStep(step => step + 1)
     }, [saveButtonClicked])
 
 
@@ -117,18 +127,29 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted }) => {
                             <Grid container style={{ height: '10%' }}>
                                 <Paper elevation={3} style={{ flexGrow: 1 }}>
                                     <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="flex-end">
-                                        <Button disabled={!isValid} style={{ marginRight: 20 }} onClick={handleClick} variant="contained" color="primary">Continue</Button>
+                                        <Button
+                                            disabled={!isValid}
+                                            style={{ marginRight: 20 }}
+                                            onClick={handleClick}
+                                            variant="contained"
+                                            color="primary"
+                                        >
+                                            {isEditionMode ? 'Save changes' : 'Continue'}
+                                        </Button>
                                     </Grid>
                                 </Paper>
                             </Grid>
                         </>
                     }
-
                 </Paper>
-
+                {isEditionMode &&
+                    <LocationsConfirmDialog
+                        dialogOpen={confirmDialogOpen}
+                        setDialogOpen={setConfirmDialogOpen}
+                        setAddLocationsDialogOpen={setAddLocationsDialogOpen}
+                    />
+                }
             </Grid >
-
         </Slide>
-
     );
 }

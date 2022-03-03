@@ -5,8 +5,9 @@ import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Tooltip, Toolbar, alpha, Typography, IconButton } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import { useBusinessChainContext } from '../../../../../../contexts/PanelContexts/BusinessChainContext';
-import { DeleteConfirmationDialog } from '../DeleteConfirmationDialog';
+import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
+import { DeleteConfirmationDialog } from '../../DeleteConfirmationDialog';
+import { AddLocationsDialog } from './AddLocationsDialog';
 
 interface Props {
     selectedLocations: number[],
@@ -14,12 +15,9 @@ interface Props {
 }
 export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocations }) => {
 
-    const [dialogOpen, setDialogOpen] = useState(false)
-    const { businessChain } = useBusinessChainContext()
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [addDialogOpen, setAddDialogOpen] = useState(false)
 
-    const openDeleteDialog = () => {
-        setDialogOpen(true)
-    }
 
     return (
         <Toolbar
@@ -65,7 +63,7 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                        <IconButton onClick={openDeleteDialog}>
+                        <IconButton onClick={() => setDeleteDialogOpen(true)}>
                             <DeleteIcon color="error" />
                         </IconButton>
                     </Tooltip>
@@ -73,8 +71,8 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
             ) : (
                 <>
                     <Tooltip title="Add locations">
-                        <IconButton>
-                            <AddLocationAltIcon color="success" />
+                        <IconButton onClick={() => setAddDialogOpen(true)}>
+                            <AddLocationAltIcon  color="success" />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Filter list">
@@ -84,11 +82,16 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
                     </Tooltip>
                 </>
             )}
+            <AddLocationsDialog
+                dialogOpen={addDialogOpen}
+                // selectedLocations={selectedLocations}
+                // setSelectedLocations={setSelectedLocations}
+                setDialogOpen={setAddDialogOpen} />
             <DeleteConfirmationDialog
-                dialogOpen={dialogOpen}
+                dialogOpen={deleteDialogOpen}
                 selectedLocations={selectedLocations}
                 setSelectedLocations={setSelectedLocations}
-                setDialogOpen={setDialogOpen} />
+                setDialogOpen={setDeleteDialogOpen} />
         </Toolbar>
     );
 };

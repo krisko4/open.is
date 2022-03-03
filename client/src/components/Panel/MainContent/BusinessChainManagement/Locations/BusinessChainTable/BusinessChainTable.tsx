@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { useBusinessChainContext } from '../../../../../../contexts/PanelContexts/BusinessChainContext';
 import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
-import { TableToolbar } from './TableToolbar';
+import { TableToolbar } from './TableToolbar/TableToolbar';
 
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -80,7 +80,7 @@ export const BusinessChainTable: React.FC = () => {
     const [orderBy, setOrderBy] = useState<keyof Data>('visits');
     const [selectedIndexes, setSelectedIndexes] = useState<number[]>([])
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(businessChain.locations.length);
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,

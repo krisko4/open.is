@@ -10,13 +10,20 @@ import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils"
 import { BusinessChain } from './BusinessChain'
 
-export const MyBusinessChains: FC = () => {
+interface Props {
+    selectedOption: string,
+    setSelectedOption: React.Dispatch<React.SetStateAction<string>>
+}
+export const MyBusinessChains: FC<Props> = ({ selectedOption, setSelectedOption }) => {
 
     const places = usePlacesSelector()
     const history = useHistory()
-    const dispatch = useDispatch()
     const match = useRouteMatch()
     const choosePlace = (place: RawPlaceDataProps) => {
+        // if (place._id === selectedOption) {
+        //     return
+        // }
+        setSelectedOption(place._id as string)
         history.push({
             pathname: `${match.url}/business-chain/${place._id}/dashboard`,
             state: { place }

@@ -102,7 +102,10 @@ export const LeftNavigation: FC = () => {
                             <MyPlaces
                                 setSelectedOption={setSelectedOption}
                                 selectedOption={selectedOption} />
-                            <MyBusinessChains />
+                            <MyBusinessChains
+                                setSelectedOption={setSelectedOption}
+                                selectedOption={selectedOption}
+                            />
                         </List>
                     </Scrollbars>
                 </Paper>

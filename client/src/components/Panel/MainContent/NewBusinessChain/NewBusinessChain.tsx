@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useLocationContext } from "../../../../contexts/PanelContexts/LocationContext";
+import { LocationContextProvider } from "../../../../contexts/PanelContexts/LocationContext";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
 import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
@@ -54,91 +54,89 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                             </Paper>
                         }
                         <CurrentPlaceContextProvider>
-
-                            <Grid container sx={{ flexGrow: 1 }} >
-                                <Scrollbars>
-                                    <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                                        {activeStep === 2 ?
-                                            <Grid container sx={{ height: '100%' }}>
-                                                <Grid item container alignItems="center" lg={6}>
-                                                    <LocationSelection setAddressSubmitted={setAddressSubmitted} />
-                                                </Grid>
-                                                <Grid item lg={6}>
-                                                    <LocationDetails
-                                                        addressSubmitted={addressSubmitted}
-                                                    />
-                                                </Grid>
-                                            </Grid>
-                                            :
-                                            <Grid container item lg={11} justifyContent="space-evenly">
-                                                {activeStep !== 3 &&
-                                                    <Grid container item lg={activeStep === 3 || activeStep === 2 ? 6 : 5}>
-                                                        {getStepContent(activeStep)}
+                            <LocationContextProvider>
+                                <Grid container sx={{ flexGrow: 1 }} >
+                                    <Scrollbars>
+                                        <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+                                            {activeStep === 2 ?
+                                                <Grid container sx={{ height: '100%' }}>
+                                                    <Grid item container alignItems="center" lg={6}>
+                                                        <LocationSelection setAddressSubmitted={setAddressSubmitted} />
                                                     </Grid>
-                                                }
-                                                {activeStep === 3 && <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
-                                                    <Grid item lg={5}>
-                                                        <PlaceDetailsCard isEditable />
-                                                    </Grid>
-                                                    <Grid item lg={5}>
-                                                        <Step5Container isEditionMode={isEditionMode} />
+                                                    <Grid item lg={6}>
+                                                        <LocationDetails
+                                                            addressSubmitted={addressSubmitted}
+                                                            setActiveStep={setActiveStep}
+                                                        />
                                                     </Grid>
                                                 </Grid>
-                                                }
-                                                {activeStep === 1 ?
-                                                    <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
-                                                        <TransformWrapper
-                                                            limitToBounds={false}
-                                                            doubleClick={{
-                                                                disabled: true
-                                                            }}
-                                                            initialPositionY={-415}
-                                                            initialPositionX={80}
-                                                            initialScale={0.9}
-                                                            minScale={0.5}
-                                                        >
-                                                            <TransformComponent>
-                                                                <PlaceDetailsCard />
-                                                            </TransformComponent>
-                                                        </TransformWrapper>
+                                                :
+                                                <Grid container item lg={11} justifyContent="space-evenly">
+                                                    {activeStep !== 3 &&
+                                                        <Grid container item lg={activeStep === 3 || activeStep === 2 ? 6 : 5}>
+                                                            {getStepContent(activeStep)}
+                                                        </Grid>
+                                                    }
+                                                    {activeStep === 3 && <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
+                                                        <Grid item lg={5}>
+                                                            <PlaceDetailsCard isEditable />
+                                                        </Grid>
+                                                        <Grid item lg={5}>
+                                                            <Step5Container isEditionMode={isEditionMode} />
+                                                        </Grid>
                                                     </Grid>
-                                                    : activeStep !== 2 && activeStep !== 3 &&
-                                                    <Grid container item lg={5}>
-                                                        <Slide in={true} timeout={1000}>
-                                                            <div>
-                                                                <Card>
-                                                                    <CardContent>
-                                                                        <Typography variant="h2">
-                                                                            Step {activeStep + 1}
-                                                                        </Typography>
-                                                                        <Grid container style={{ marginTop: 10 }} lg={10}>
-                                                                            <Typography variant="body1">
-                                                                                {activeStep === 0 ?
-                                                                                    'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
-                                                                                    'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
-                                                                                }
+                                                    }
+                                                    {activeStep === 1 ?
+                                                        <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                                                            <TransformWrapper
+                                                                limitToBounds={false}
+                                                                doubleClick={{
+                                                                    disabled: true
+                                                                }}
+                                                                initialPositionY={-415}
+                                                                initialPositionX={80}
+                                                                initialScale={0.9}
+                                                                minScale={0.5}
+                                                            >
+                                                                <TransformComponent>
+                                                                    <PlaceDetailsCard />
+                                                                </TransformComponent>
+                                                            </TransformWrapper>
+                                                        </Grid>
+                                                        : activeStep !== 2 && activeStep !== 3 &&
+                                                        <Grid container item lg={5}>
+                                                            <Slide in={true} timeout={1000}>
+                                                                <div>
+                                                                    <Card>
+                                                                        <CardContent>
+                                                                            <Typography variant="h2">
+                                                                                Step {activeStep + 1}
                                                                             </Typography>
-                                                                            <NewPlaceStepper
-                                                                                orientation="vertical"
-                                                                            />
-                                                                        </Grid>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </div>
+                                                                            <Grid container style={{ marginTop: 10 }} lg={10}>
+                                                                                <Typography variant="body1">
+                                                                                    {activeStep === 0 ?
+                                                                                        'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
+                                                                                        'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
+                                                                                    }
+                                                                                </Typography>
+                                                                                <NewPlaceStepper
+                                                                                    orientation="vertical"
+                                                                                />
+                                                                            </Grid>
+                                                                        </CardContent>
+                                                                    </Card>
+                                                                </div>
+                                                            </Slide>
+                                                        </Grid>
+                                                    }
+                                                </Grid>
+                                            }
+                                        </Grid>
+                                    </Scrollbars>
+                                </Grid>
 
-                                                        </Slide>
-                                                    </Grid>
+                            </LocationContextProvider>
 
-                                                }
-
-                                            </Grid>
-
-
-                                        }
-
-                                    </Grid>
-                                </Scrollbars>
-                            </Grid>
                         </CurrentPlaceContextProvider>
                     </Grid>
                     :

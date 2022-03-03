@@ -76,8 +76,10 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
                     setCurrentPlace(place)
                     setPopupIndex(index)
                     setPopupOpen(true)
-                    setPlaceCardClicked(true)
-                    history.push(`${match.url}/${place._id}`)
+                    if (!isMarkerDraggable) {
+                        setPlaceCardClicked(true)
+                        history.push(`${match.url}/${place._id}`)
+                    }
                 },
                 dragend: async () => {
                     criterium.lat = placeMarker.current._latlng.lat
@@ -105,7 +107,6 @@ export const PlaceMarker: FC<Props> = ({ criterium, index, classes }) => {
         >
             <StyledPopup>
                 <Grid container justifyContent="center" alignItems="center">
-
                     <Avatar
                         imgProps={{
                             style: {
