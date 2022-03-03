@@ -5,17 +5,20 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext';
 import { RawPlaceDataProps } from '../../../../../contexts/PlaceProps';
-import { deleteLocation } from '../../../../../requests/PlaceRequests';
+import { deleteLocations } from '../../../../../requests/PlaceRequests';
 import { setPlaces } from '../../../../../store/actions/setPlaces';
 import { usePlacesSelector } from '../../../../../store/selectors/PlacesSelector';
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
 import DialogTransition from '../../../../reusable/DialogTransition';
+
 interface Props {
     dialogOpen: boolean,
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    selectedLocationId: string,
+    selectedLocations: number[],
+    setSelectedLocations: React.Dispatch<React.SetStateAction<number[]>>
 }
-export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocationId }) => {
+export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelectedLocations, setDialogOpen, selectedLocations }) => {
+
     const [value, setValue] = React.useState('')
     const [loading, setLoading] = React.useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
@@ -27,27 +30,27 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setDialo
     const handleClick = async () => {
         setLoading(true)
         try {
-            if (businessChain.locations.length === 1) {
-                await deleteLocation(businessChain._id as string, selectedLocationId)
+            const locationIds = businessChain.locations
+                .filter((loc, index) => selectedLocations.includes(index))
+                .map(loc => loc._id) as string[]
+            if (businessChain.locations.length === selectedLocations.length) {
+                await deleteLocations(businessChain._id as string, locationIds)
                 enqueueSuccessSnackbar('You have successfully deleted your business chain.')
                 const newPlaces = places.filter(place => place._id !== businessChain._id)
                 dispatch(setPlaces(newPlaces))
                 history.push('/panel/dashboard')
                 return
             }
-            await deleteLocation(businessChain._id as string, selectedLocationId)
-            enqueueSuccessSnackbar('You have successfully removed your location.')
-            businessChain.locations = businessChain.locations.filter(loc => loc._id !== selectedLocationId)
-            const business = places.find(place => place._id === businessChain._id) as RawPlaceDataProps
-            business.locations = business.locations.filter(loc => loc._id !== selectedLocationId)
+            await deleteLocations(businessChain._id as string, locationIds)
+            enqueueSuccessSnackbar('You have successfully removed selected locations.')
+            businessChain.locations = businessChain.locations.filter((loc, index) => !selectedLocations.includes(index))
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {
+            setSelectedLocations([])
             setLoading(false)
             setDialogOpen(false)
         }
-
-
     }
 
     return (
@@ -61,13 +64,14 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setDialo
             </DialogTitle>
             <DialogContent>
                 <Grid container justifyContent="center" >
-                    {businessChain.locations.length === 1 &&
+                    {businessChain.locations.length === selectedLocations.length &&
                         <Alert severity="warning" variant="filled">
-                            You are trying to remove the last location of your business. As a result, your whole business will be deleted.
+                            You are trying to remove all locations of your business. As a result, your whole business chain will be deleted.
                         </Alert>
                     }
                     <Typography sx={{ mt: 1 }}>
-                        Please insert <b>delete</b> in the field below to confirm location removal.
+                        You have selected <b>{selectedLocations.length}</b> locations to be removed.
+                        Please insert <b>delete</b> in the field below to confirm your decision.
                     </Typography>
                 </Grid>
                 <Grid sx={{ mt: 2 }} container justifyContent="center">

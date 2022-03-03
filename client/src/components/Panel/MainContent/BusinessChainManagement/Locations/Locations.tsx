@@ -1,25 +1,17 @@
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Alert, Card, CardContent, CardMedia, Fade, Grid, Paper, Toolbar, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { LoadingButton } from '@mui/lab';
-import { Tooltip, Box, Button, CardMedia, Fade, Grid, IconButton, Paper, Rating, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Toolbar, Typography, DialogTitle, Dialog, DialogContent, TextField, DialogActions } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import * as React from 'react';
-import { useState } from 'react';
+import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useDispatch } from 'react-redux';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext';
-import { LocationProps, RawPlaceDataProps } from '../../../../../contexts/PlaceProps';
-import { setPlace } from '../../../../../store/actions/setCurrentPlace';
-import { convertToCurrentPlace } from '../../../../../utils/place_data_utils';
-import DialogTransition from '../../../../reusable/DialogTransition';
-import { BusinessChainTable } from './BusinessChainTable';
-import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
-type Props = {
-
-};
+import { BusinessChainTable } from './BusinessChainTable/BusinessChainTable';
 
 
-export const Locations = (props: Props) => {
+export const Locations : FC = () => {
 
     const { businessChain } = useBusinessChainContext()
 
@@ -38,13 +30,40 @@ export const Locations = (props: Props) => {
                                             image={businessChain.logo as string}
                                         />
                                     </Grid>
-                                    <Grid container item lg={10} direction="column">
-                                        <Typography variant="h2">
+                                    <Grid container item lg={6} direction="column"> <Typography variant="h2">
                                             {businessChain.name}
                                         </Typography>
                                         <Typography variant="h6">
                                             {businessChain.subtitle}
                                         </Typography>
+                                    </Grid>
+                                    <Grid item lg={4}>
+                                        <Card variant="outlined">
+                                            <CardContent>
+                                                <Typography variant="h3">
+                                                    Location management
+                                                </Typography>
+                                                <Typography variant="subtitle1">
+                                                    In this section you can easily manage your locations.
+                                                    We have prepared some tips for you:
+                                                </Typography>
+                                                <Alert icon={<CheckBoxIcon/>} severity="info" variant="outlined" sx={{mb: 1, mt:1}}>
+                                                    Select locations from the table using checkboxes on the left side
+                                                </Alert>
+                                                <Alert icon={<QueryBuilderIcon/>} severity="info" variant="outlined" sx={{mb: 1}}>
+                                                    Modify opening hours of selected locations - all at once!
+                                                </Alert>
+                                                <Alert icon={<AddLocationAltIcon color="success"/>} sx={{mb: 1}} severity="info" variant="outlined">
+                                                    Add new locations to your business chain
+                                                </Alert>
+                                                <Alert icon={<SettingsIcon color="warning" />} sx={{mb: 1}} severity="info" variant="outlined">
+                                                    Modify contact details of selected locations
+                                                </Alert>
+                                                <Alert icon={<DeleteIcon color="error"/>} severity="info" variant="outlined">
+                                                    Remove selected locations from your business chain
+                                                </Alert>
+                                            </CardContent>
+                                        </Card>
                                     </Grid>
                                 </Grid>
                             </Toolbar>
