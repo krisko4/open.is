@@ -18,14 +18,24 @@ const placeService = {
     },
 
 
+    async setSelectedLocationsAlwaysOpen(user, placeId, locationIds) {
+        const place = await this.getPlaceOwnedByUser(placeId, user._id)
+        return Place.findByIdAndUpdate(
+            placeId,
+            { 'locations.$[item].alwaysOpen': true },
+            { arrayFilters: [{ 'item._id': { $in: locationIds } }], new: true, upsert: true }
+        ).exec()
+
+
+    },
+
+
     async addLocations(user, placeId, locations) {
         const place = await this.getPlaceOwnedByUser(placeId, user._id)
         const addressIds = locations.map(loc => loc.addressId)
         const duplicateAddress = await this.getFirstPlaceByAddressIds(addressIds)
         if (duplicateAddress) throw ApiError.internal('Occupied location addition attempt')
         return Place.findByIdAndUpdate(placeId, { $push: { 'locations': locations } }, { new: true, upsert: true }).exec()
-
-
     },
 
     getFirstPlaceByAddressIds(addressIds) {
@@ -69,6 +79,15 @@ const placeService = {
         }
 
         ]
+    },
+
+    async changeOpeningHoursForSelectedLocations(user, placeId, locationIds, openingHours) {
+        await this.getPlaceOwnedByUser(placeId, user._id)
+        return Place.findByIdAndUpdate(
+            placeId,
+            { 'locations.$[item].openingHours': openingHours, 'locations.$[item].isActive': true, 'locations.$[item].alwaysOpen': false },
+            { arrayFilters: [{ 'item._id': { $in: locationIds } }], new: true, upsert: true }
+        ).exec()
     },
 
     async changeContactDetailsForLocations(user, placeId, locationIds, contactDetails) {

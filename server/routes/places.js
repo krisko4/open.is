@@ -110,8 +110,7 @@ router.delete('/:placeId',
 router.delete('/:placeId/locations',
     cookie('uid').notEmpty().isMongoId(),
     param('placeId').notEmpty().isMongoId(),
-    param('locationId').notEmpty().isMongoId(),
-    query('locationIds.*').isMongoId(),
+    query('locationIds.*').isMongoId().notEmpty(),
     validateRequest,
     (req, res, next) => {
         placeController.deleteLocations(req, res, next)
@@ -119,11 +118,38 @@ router.delete('/:placeId/locations',
 
 )
 
+router.patch('/:id/locations/always-open',
+    param('id').isMongoId().notEmpty(),
+    cookie('uid').notEmpty().isMongoId(),
+    body('locationIds.*').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.setSelectedLocationsAlwaysOpen(req, res, next)
+    }
+
+)
+
+
+router.patch('/:id/locations/opening-hours',
+    param('id').isMongoId().notEmpty(),
+    cookie('uid').notEmpty().isMongoId(),
+    body('locationIds.*').isMongoId().notEmpty(),
+    body('openingHours').notEmpty(),
+    body('openingHours.*.start').notEmpty().isISO8601(),
+    body('openingHours.*.end').notEmpty().isISO8601(),
+    body('openingHours.*.open').isBoolean(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.changeOpeningHoursForSelectedLocations(req, res, next)
+    }
+
+)
+
 router.patch('/:id/locations/contact-details',
     param('id').isMongoId().notEmpty(),
-    cookie('uid').notEmpty().isMongoId().notEmpty(),
+    cookie('uid').notEmpty().isMongoId(),
     body('locationIds.*').isMongoId().notEmpty(),
-    body('contactDetails.phone').isMobilePhone().optional({nullable: true, checkFalsy: true}),
+    body('contactDetails.phone').isMobilePhone().optional({ nullable: true, checkFalsy: true }),
     body('contactDetails.email').isEmail().optional({ nullable: true, checkFalsy: true }),
     body('contactDetails.website').optional({ nullable: true, checkFalsy: true }).isURL(),
     body('contactDetails.facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),

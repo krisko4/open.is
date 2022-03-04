@@ -29,6 +29,36 @@ const placeController = {
 
     },
 
+    async setSelectedLocationsAlwaysOpen(req, res, next) {
+        try {
+            const { id } = req.params
+            const { locationIds, openingHours } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.setSelectedLocationsAlwaysOpen(user, id, locationIds)
+            return res.sendStatus(200)
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+
+    async changeOpeningHoursForSelectedLocations (req, res, next) {
+        try {
+            const { id } = req.params
+            const { locationIds, openingHours } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.changeOpeningHoursForSelectedLocations(user, id, locationIds, openingHours)
+            return res.sendStatus(200)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
     async changeContactDetailsForLocations(req, res, next) {
         try {
             const { id } = req.params
