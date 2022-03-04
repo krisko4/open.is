@@ -20,7 +20,7 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
             const place = await placeService.addLocations(user, id, locations)
-            return res.status(200).json(placeDto({...place._doc }, uid))
+            return res.status(200).json(placeDto({ ...place._doc }, uid))
 
 
         } catch (err) {
@@ -29,14 +29,29 @@ const placeController = {
 
     },
 
-
-    deleteLocations: async(req, res, next) => {
-        const { placeId } = req.params
-        const { locationIds } = req.query
-        const { uid } = req.cookies
-        const user = await userService.getUserById(uid)
-        if (!user) throw ApiError.internal('Invalid uid')
+    async changeContactDetailsForLocations(req, res, next) {
         try {
+            const { id } = req.params
+            const { locationIds, contactDetails } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.changeContactDetailsForLocations(user, id, locationIds, contactDetails)
+            return res.sendStatus(200)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+
+    deleteLocations: async (req, res, next) => {
+        try {
+            const { placeId } = req.params
+            const { locationIds } = req.query
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
             await placeService.deleteLocations(user, placeId, locationIds)
             return res.sendStatus(200)
         } catch (err) {
@@ -44,10 +59,10 @@ const placeController = {
         }
     },
 
-    setAlwaysOpen: async(req, res, next) => {
-        const { alwaysOpen } = req.body
-        const { id } = req.params
+    setAlwaysOpen: async (req, res, next) => {
         try {
+            const { alwaysOpen } = req.body
+            const { id } = req.params
             await placeService.setAlwaysOpen(alwaysOpen, id)
             return res.sendStatus(200)
         } catch (err) {
@@ -55,7 +70,7 @@ const placeController = {
         }
     },
 
-    getActivePlaces: async(req, res, next) => {
+    getActivePlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
         const { cookies } = req
         const { uid } = cookies
@@ -99,7 +114,7 @@ const placeController = {
         }
     },
 
-    findPlaceNames: async(req, res, next) => {
+    findPlaceNames: async (req, res, next) => {
         const { name } = req.query
         if (!name) return next(ApiError.badRequest('Name is required'))
         try {
@@ -117,7 +132,7 @@ const placeController = {
 
     },
 
-    getVisitsNewsOpinionsForPlace: async(place, uid) => {
+    getVisitsNewsOpinionsForPlace: async (place, uid) => {
         for (const location of place.locations) {
             const [visits, opinions, news] = await Promise.all([
                 visitService.getVisitsByLocationId(place._id, location._id, uid),
@@ -130,11 +145,11 @@ const placeController = {
         }
         return place
     },
-    getSubscribedPlaces: async(req, res, next) => {
+    getSubscribedPlaces: async (req, res, next) => {
         const { uid } = req.cookies
         try {
             let places = await userService.getSubscribedPlaces(uid)
-            places = await Promise.all(places.map(async(place) => {
+            places = await Promise.all(places.map(async (place) => {
                 return placeController.getVisitsNewsOpinionsForPlace(place, uid)
             }))
             return res.status(200).json(places.map(place => placeDto(place, uid)))
@@ -143,9 +158,9 @@ const placeController = {
         }
     },
 
-    getVisitsNewsOpinions: async(places, uid) => {
+    getVisitsNewsOpinions: async (places, uid) => {
         const subscribedLocations = uid && await userService.getSubscribedLocations(uid)
-        places = await Promise.all(places.map(async(place) => {
+        places = await Promise.all(places.map(async (place) => {
             place.locations.forEach(loc => {
                 loc['isUserSubscriber'] = subscribedLocations && subscribedLocations.some(location => location._id.toString() === loc._id.toString())
             })
@@ -155,7 +170,7 @@ const placeController = {
     },
 
 
-    getPlaces: async(req, res, next) => {
+    getPlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
         const { cookies } = req
         const { uid } = cookies
@@ -177,14 +192,14 @@ const placeController = {
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
-                        return res.status(200).json(places.map(place => placeDto({...place._doc }, uid)))
+                        return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
                     }
                 } catch (err) {
                     return next(err)
                 }
             case 0:
                 return placeService.getPlaces()
-                    .then(places => res.status(200).json(places.map(place => placeDto({...place._doc }, uid))))
+                    .then(places => res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid))))
                     .catch(err => next(err))
 
             default:
@@ -192,11 +207,11 @@ const placeController = {
         }
     },
 
-    deletePlace: async(req, res, next) => {
+    deletePlace: async (req, res, next) => {
         const { placeId } = req.params
         try {
             const session = await mongoose.startSession()
-            await session.withTransaction(async() => {
+            await session.withTransaction(async () => {
                 await Promise.all([
                     placeService.deletePlace(placeId),
                     opinionService.deleteOpinionsByPlaceId(placeId),
@@ -212,7 +227,7 @@ const placeController = {
 
     },
 
-    addPlace: async(req, res, next) => {
+    addPlace: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
         const reqBody = req.body
@@ -223,8 +238,8 @@ const placeController = {
             if (!reqBody.editionMode) {
                 if (!logo) throw ApiError.badRequest('Request is missing necessary upload files')
                 if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
-            }
-            const placeData = {
+            }     
+             const placeData = {
                 name: reqBody.name,
                 type: reqBody.type,
                 description: reqBody.description,
@@ -234,6 +249,7 @@ const placeController = {
                 locations: reqBody.locations,
                 userId: user._id,
             }
+            placeData.isBusinessChain = JSON.parse(reqBody.isBusinessChain)
             let place
             if (reqBody.editionMode) {
                 placeData['_id'] = reqBody._id
@@ -241,7 +257,7 @@ const placeController = {
             } else {
                 place = await placeService.addPlace(placeData)
             }
-            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({...place._doc }, uid) })
+            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
         } catch (err) {
             return next(err)
         }
@@ -250,7 +266,7 @@ const placeController = {
 
 
 
-    deleteAll: async(req, res, next) => {
+    deleteAll: async (req, res, next) => {
         try {
             await placeService.deleteAll()
             res.sendStatus(200)
@@ -259,7 +275,7 @@ const placeController = {
         }
     },
 
-    incrementVisitCount: async(req, res, next) => {
+    incrementVisitCount: async (req, res, next) => {
         try {
             const { id } = req.params
             await placeService.incrementVisitCount(id)
@@ -270,7 +286,7 @@ const placeController = {
     },
 
 
-    getRecentlyAddedPlaces: async(req, res, next) => {
+    getRecentlyAddedPlaces: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
         try {
@@ -283,7 +299,7 @@ const placeController = {
 
     },
 
-    getFavoritePlaces: async(req, res, next) => {
+    getFavoritePlaces: async (req, res, next) => {
         const { cookies } = req
         let { uid, favIds } = cookies
         if (!favIds) return res.status(200).json([])
@@ -302,7 +318,7 @@ const placeController = {
     },
 
 
-    getTopRatedPlaces: async(req, res, next) => {
+    getTopRatedPlaces: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
         try {
@@ -316,7 +332,7 @@ const placeController = {
     },
 
 
-    getPopularPlaces: async(req, res, next) => {
+    getPopularPlaces: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
         try {
@@ -330,7 +346,7 @@ const placeController = {
         }
     },
 
-    setStatus: async(req, res, next) => {
+    setStatus: async (req, res, next) => {
         try {
             const { id } = req.params
             const { status } = req.body
@@ -342,7 +358,7 @@ const placeController = {
         }
     },
 
-    setOpeningHours: async(req, res, next) => {
+    setOpeningHours: async (req, res, next) => {
         const { id } = req.params
         const { openingHours } = req.body
         console.log(openingHours)
@@ -355,7 +371,7 @@ const placeController = {
         }
     },
 
-    updateNote: async(req, res, next) => {
+    updateNote: async (req, res, next) => {
         try {
             const { id } = req.params
             const { note } = req.body

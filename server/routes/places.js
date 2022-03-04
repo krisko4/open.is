@@ -14,7 +14,7 @@ const upload = multer({
     limits: {
         fileSize: 2000000
     },
-    fileFilter: function(req, file, callback) {
+    fileFilter: function (req, file, callback) {
         console.log(file)
         const mimetype = file.mimetype
         if (!mimetype.startsWith('image/')) {
@@ -68,6 +68,7 @@ router.post('/',
     body('locations.*.address').notEmpty().isString(),
     body('locations.*.addressId').notEmpty().isString(),
     body('locations.*.addressLanguage').notEmpty().isString(),
+    body('isBusinessChain').matches(/^(true|false)$/),
     placeValidator.validatePlaceAddress,
     // imageValidator.validateUploadedImages,
     cookie('uid').notEmpty().isMongoId(),
@@ -101,6 +102,7 @@ router.get('/active/subscribed',
 
 router.delete('/:placeId',
     param('placeId').notEmpty().isMongoId(),
+    validateRequest,
     (req, res, next) => {
         placeController.deletePlace(req, res, next)
     })
@@ -110,10 +112,26 @@ router.delete('/:placeId/locations',
     param('placeId').notEmpty().isMongoId(),
     param('locationId').notEmpty().isMongoId(),
     query('locationIds.*').isMongoId(),
+    validateRequest,
     (req, res, next) => {
         placeController.deleteLocations(req, res, next)
     }
 
+)
+
+router.patch('/:id/locations/contact-details',
+    param('id').isMongoId().notEmpty(),
+    cookie('uid').notEmpty().isMongoId().notEmpty(),
+    body('locationIds.*').isMongoId().notEmpty(),
+    body('contactDetails.phone').isMobilePhone().optional({nullable: true, checkFalsy: true}),
+    body('contactDetails.email').isEmail().optional({ nullable: true, checkFalsy: true }),
+    body('contactDetails.website').optional({ nullable: true, checkFalsy: true }).isURL(),
+    body('contactDetails.facebook').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['facebook.com'] }),
+    body('contactDetails.instagram').optional({ nullable: true, checkFalsy: true }).isURL({ require_protocol: true, protocols: ['http', 'https'], require_host: true, host_whitelist: ['instagram.com'] }),
+    validateRequest,
+    (req, res, next) => {
+        placeController.changeContactDetailsForLocations(req, res, next)
+    }
 )
 
 router.patch('/:id/locations',
