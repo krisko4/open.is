@@ -45,6 +45,7 @@ const Description = React.memo<FieldValues & Props>(({ currentPlace, setCurrentP
             {...register('description')}
             label="This is a description of my business!"
             multiline
+            color="success"
             name="description"
             rows={10}
             variant="outlined"

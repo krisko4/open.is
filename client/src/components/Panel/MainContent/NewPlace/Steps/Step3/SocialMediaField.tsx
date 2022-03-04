@@ -13,7 +13,8 @@ interface Props {
     icon?: any,
     prefix?: string,
     placeholder?: string,
-    shouldUpdateCurrentPlace?: boolean
+    shouldUpdateCurrentPlace?: boolean,
+    color?: any
 }
 
 
@@ -44,7 +45,9 @@ const SocialMediaField: FC<Props & InnerProps & FieldValues> = React.memo((
         label,
         prefix,
         socialMedia,
-        icon
+        icon,
+        color
+        
     }) => {
 
     const isFirstRender = useRef(true)
@@ -75,6 +78,7 @@ const SocialMediaField: FC<Props & InnerProps & FieldValues> = React.memo((
 
     return (
         <TextField
+            color={color}
             label={label}
             fullWidth={true}
             variant="outlined"
@@ -91,7 +95,7 @@ const SocialMediaField: FC<Props & InnerProps & FieldValues> = React.memo((
                         {
                             prefix &&
                             <InputAdornment position="start">
-                                <p style={{ color: 'lightgrey' }}>{prefix}</p>
+                                <p>{prefix}</p>
                             </InputAdornment>
                         }
                     </>

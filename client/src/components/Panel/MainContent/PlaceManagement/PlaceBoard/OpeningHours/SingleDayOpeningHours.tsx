@@ -80,6 +80,8 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                     {
                         openingHours[day].open ? <>
                             <LocalizationProvider locale={frLocale} dateAdapter={AdapterDateFns}>
+                                <Fade in={true} timeout={500}>
+                                    <Grid container justifyContent="space-evenly">
                                         <StaticTimePicker
                                             toolbarTitle="Opening hour"
                                             displayStaticWrapperAs="mobile"
@@ -98,7 +100,8 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
-
+                                    </Grid>
+                                </Fade>
                             </LocalizationProvider>
                         </>
                             :

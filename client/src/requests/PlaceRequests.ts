@@ -1,8 +1,16 @@
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import myAxios from "../axios/axios";
 import { SearchParams } from "../components/Browser/Searcher";
-import { LocationProps, Status } from "../contexts/PlaceProps";
+import { ContactDetails, LocationProps, Status } from "../contexts/PlaceProps";
 
+export interface ContactData {
+    website?: string,
+    phone?: string,
+    email?: string,
+    facebook?: string,
+    instagram?: string
+
+}
 
 const provider = new OpenStreetMapProvider({
     params: {
@@ -57,10 +65,17 @@ export const deleteLocations = (businessId: string, locationIds: string[]) =>
         }
     })
 
-export const addLocations = (businessId: string, locations: LocationProps[]) => 
+export const changeContactDetailsForSelectedLocations = (businessId: string, locationIds: string[], contactDetails: ContactData) =>
+    myAxios.patch(`/places/${businessId}/locations/contact-details`, {
+        locationIds: locationIds,
+        contactDetails: contactDetails
+    })
+
+export const addLocations = (businessId: string, locations: LocationProps[]) =>
     myAxios.patch(`/places/${businessId}/locations`, {
         locations: locations
     })
+
 
 export const getPlaceByLatLng = (lat: number, lng: number) => {
     return myAxios.get('/places', {
@@ -72,53 +87,53 @@ export const getPlaceByLatLng = (lat: number, lng: number) => {
 }
 
 
-    export const incrementVisitCount = (placeId: string) => {
-        return myAxios.patch(`/places/${placeId}/visit-count`)
+export const incrementVisitCount = (placeId: string) => {
+    return myAxios.patch(`/places/${placeId}/visit-count`)
+}
+
+export const getPlaces = async (url: string) => {
+    try {
+        const response = await myAxios.get(url)
+        return response.data
+    } catch (err) {
+        console.log(err)
     }
 
-    export const getPlaces = async (url: string) => {
-        try {
-            const response = await myAxios.get(url)
-            return response.data
-        } catch (err) {
-            console.log(err)
-        }
+}
 
+export const registerNewPlace = (data: FormData) => myAxios.post('/places', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
     }
+})
 
-    export const registerNewPlace = (data: FormData) => myAxios.post('/places', data, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+export const updatePlaceData = (data: FormData) => myAxios.put('/places', data, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+})
+
+export const setPlaceStatus = (placeId: string, status: Status) =>
+    myAxios.patch(`/places/${placeId}/status`, {
+        status: status
     })
 
-    export const updatePlaceData = (data: FormData) => myAxios.put('/places', data, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
+export const deletePlace = (placeId: string) =>
+    myAxios.delete(`/places/${placeId}`)
 
-    export const setPlaceStatus = (placeId: string, status: Status) =>
-        myAxios.patch(`/places/${placeId}/status`, {
-            status: status
+
+export const getPlacesByName = (name: string) => getPlacesWithParams('/places/active/name', { name: name })
+
+export const getPlacesByUserId = (uid: string) => getPlacesWithParams('/places', { uid: uid })
+
+const getPlacesWithParams = async (url: string, params: any) => {
+    try {
+        const response = await myAxios.get(url, {
+            params: params,
         })
-
-    export const deletePlace = (placeId: string) =>
-        myAxios.delete(`/places/${placeId}`)
-
-
-    export const getPlacesByName = (name: string) => getPlacesWithParams('/places/active/name', { name: name })
-
-    export const getPlacesByUserId = (uid: string) => getPlacesWithParams('/places', { uid: uid })
-
-    const getPlacesWithParams = async (url: string, params: any) => {
-        try {
-            const response = await myAxios.get(url, {
-                params: params,
-            })
-            return response.data
-        } catch (err) {
-            console.log(err)
-        }
-
+        return response.data
+    } catch (err) {
+        console.log(err)
     }
+
+}

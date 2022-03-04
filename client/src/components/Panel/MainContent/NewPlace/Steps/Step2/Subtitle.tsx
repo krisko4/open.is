@@ -40,6 +40,7 @@ const Subtitle = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlac
             {...register('subtitle')}
             variant="outlined"
             placeholder="Please enter a short subtitle"
+            color="secondary"
             helperText={
                 errors.subtitle?.message ||
                 `${subtitle.length}/100`

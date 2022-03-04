@@ -3,8 +3,8 @@ import { Alert, AlertTitle, Card, CardContent, Checkbox, Fade, FormControlLabel,
 import _ from "lodash"
 import React, { FC, useEffect, useState } from "react"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { LocationProps } from "../../../../../../contexts/PlaceProps"
-import { setPlaceAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
+import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps"
+import { setPlaceAlwaysOpen, setSelectedLocationsAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
 import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import { OpeningHoursDialog } from "./OpeningHoursDialog"
@@ -14,6 +14,16 @@ import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
 const defaultStartHour = new Date(0, 0, 0, 8)
 const defaultEndHour = new Date(0, 0, 0, 18)
 
+const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+
+]
 // const areOpeningHoursEqual = (h1:any, h2: any) => {
 //     console.log(h1)
 //     console.log(h2)
@@ -26,8 +36,13 @@ const defaultEndHour = new Date(0, 0, 0, 18)
 //     }
 //     return true
 // }
+interface Props {
+    selectedLocations?: string[],
+    businessChain?: RawPlaceDataProps,
+    setBusinessChain?: React.Dispatch<React.SetStateAction<RawPlaceDataProps>>
+}
 
-export const OpeningHours: FC = () => {
+export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, businessChain }) => {
 
     const { setCurrentPlace, currentPlace } = useCurrentPlaceContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
@@ -46,7 +61,7 @@ export const OpeningHours: FC = () => {
             for (const day of Object.keys(hours)) {
                 hours[day].valid = true
             }
-            setOpeningHours({...hours})
+            setOpeningHours({ ...hours })
         }
 
     }, [currentPlace])
@@ -118,17 +133,27 @@ export const OpeningHours: FC = () => {
         }
         setLoading(true)
         try {
-            await setPlaceAlwaysOpen(currentPlace._id as string, checked)
-            enqueueSuccessSnackbar('You have successfully updated your opening hours')
-            if (!currentPlace.isActive) {
-                const newCurrentPlace = { ...currentPlace }
-                newCurrentPlace.alwaysOpen = true
-                newCurrentPlace.isActive = true
-                setCurrentPlace(newCurrentPlace)
+            if (businessChain && selectedLocations) {
+                await setSelectedLocationsAlwaysOpen(businessChain._id as string, selectedLocations)
+                selectedLocations.forEach(locId => {
+                    const location = businessChain.locations.find(loc => loc._id === locId) as LocationProps
+                    location.alwaysOpen = true
+                    location.isActive = true
+                })
             }
-            const place = places.find(place => place._id === currentPlace.businessId)
-            const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
-            location.alwaysOpen = true
+            else {
+                if (!currentPlace.isActive) {
+                    const newCurrentPlace = { ...currentPlace }
+                    newCurrentPlace.alwaysOpen = true
+                    newCurrentPlace.isActive = true
+                    setCurrentPlace(newCurrentPlace)
+                }
+                await setPlaceAlwaysOpen(currentPlace._id as string)
+                const place = places.find(place => place._id === currentPlace.businessId)
+                const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
+                location.alwaysOpen = true
+            }
+            enqueueSuccessSnackbar('You have successfully updated your opening hours')
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {
@@ -138,20 +163,14 @@ export const OpeningHours: FC = () => {
     }
 
 
-    const days = [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-
-    ]
 
     return (
         <Grid container sx={{ height: '100%', overflow: 'hidden' }} direction="column">
-            {currentPlace.isActive ||
+            {selectedLocations ?
+                <Alert variant="filled" severity="info">
+                    You have selected {selectedLocations.length} {selectedLocations.length === 1 ? 'location' : 'locations'}. The changes will be applied to each selected location.
+                </Alert>
+                : currentPlace.isActive ||
                 <Alert variant="filled" severity="warning">
                     Your place is currently not visible in the browser. Please set opening hours to activate your business.
                 </Alert>
@@ -159,7 +178,7 @@ export const OpeningHours: FC = () => {
             <Grid sx={{ flexGrow: 1 }} container alignItems="center">
                 <Grid container justifyContent="space-evenly">
                     <Grid item lg={6} sx={checked ? { opacity: '0.4', pointerEvents: 'none' } : {}}>
-                        <Fade in={true} timeout={1000}>
+                        <Slide direction="right" in={true} timeout={1000}>
                             <Card sx={{ height: '100%' }}>
                                 <Grid container direction="column" sx={{ height: '100%' }}>
                                     <Paper>
@@ -177,7 +196,7 @@ export const OpeningHours: FC = () => {
                                     />
                                 </Grid>
                             </Card>
-                        </Fade>
+                        </Slide>
                     </Grid>
                     <Grid item lg={5}>
                         <Slide in={true} timeout={1000} direction="left">
@@ -230,9 +249,9 @@ export const OpeningHours: FC = () => {
                                     onClick={saveChanges}
                                     disabled={
                                         (!areHoursValid && !checked) ||
-                                        (checked && currentPlace.alwaysOpen) 
+                                        (checked && currentPlace.alwaysOpen)
                                     }
-                                        // (areOpeningHoursEqual(openingHours, currentPlace.openingHours) && !checked)}
+                                    // (areOpeningHoursEqual(openingHours, currentPlace.openingHours) && !checked)}
                                     size="large"
                                     color="primary"
                                 >
@@ -246,7 +265,10 @@ export const OpeningHours: FC = () => {
 
             </Slide>
             <OpeningHoursDialog
+                businessChain={businessChain}
+                setBusinessChain={setBusinessChain}
                 openingHours={openingHours}
+                selectedLocations={selectedLocations}
                 dialogOpen={dialogOpen}
                 setDialogOpen={setDialogOpen} />
         </Grid>

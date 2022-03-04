@@ -8,15 +8,20 @@ import { FC, useEffect, useState } from "react";
 import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
 import { DeleteConfirmationDialog } from '../../DeleteConfirmationDialog';
 import { AddLocationsDialog } from './AddLocationsDialog';
+import { ContactDetailsDialog } from './ContactDetailsDialog';
+import { SetOpeningHoursDialog } from './SetOpeningHoursDialog';
+import { CurrentPlaceContextProvider } from '../../../../../../../contexts/PanelContexts/CurrentPlaceContext';
 
 interface Props {
-    selectedLocations: number[],
-    setSelectedLocations: React.Dispatch<React.SetStateAction<number[]>>
+    selectedLocations: string[],
+    setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>
 }
 export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocations }) => {
 
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [addDialogOpen, setAddDialogOpen] = useState(false)
+    const [contactDetailsDialogOpen, setContactDetailsDialogOpen] = useState(false)
+    const [openingHoursDialogOpen, setOpeningHoursDialogOpen] = useState(false)
 
 
     return (
@@ -53,12 +58,12 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
             {selectedLocations.length > 0 ? (
                 <>
                     <Tooltip title="Set contact details">
-                        <IconButton>
+                        <IconButton onClick={() => setContactDetailsDialogOpen(true)}>
                             <SettingsIcon color="warning" />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Set opening hours">
-                        <IconButton>
+                        <IconButton onClick={() => setOpeningHoursDialogOpen(true)}>
                             <QueryBuilderIcon color="primary" />
                         </IconButton>
                     </Tooltip>
@@ -72,7 +77,7 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
                 <>
                     <Tooltip title="Add locations">
                         <IconButton onClick={() => setAddDialogOpen(true)}>
-                            <AddLocationAltIcon  color="success" />
+                            <AddLocationAltIcon color="success" />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Filter list">
@@ -84,14 +89,21 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
             )}
             <AddLocationsDialog
                 dialogOpen={addDialogOpen}
-                // selectedLocations={selectedLocations}
-                // setSelectedLocations={setSelectedLocations}
                 setDialogOpen={setAddDialogOpen} />
             <DeleteConfirmationDialog
                 dialogOpen={deleteDialogOpen}
                 selectedLocations={selectedLocations}
                 setSelectedLocations={setSelectedLocations}
                 setDialogOpen={setDeleteDialogOpen} />
+            <ContactDetailsDialog
+                dialogOpen={contactDetailsDialogOpen}
+                selectedLocations={selectedLocations}
+                setDialogOpen={setContactDetailsDialogOpen} />
+            <SetOpeningHoursDialog
+                dialogOpen={openingHoursDialogOpen}
+                selectedLocations={selectedLocations}
+                setDialogOpen={setOpeningHoursDialogOpen} />
+
         </Toolbar>
     );
 };

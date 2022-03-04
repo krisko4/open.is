@@ -14,8 +14,8 @@ import DialogTransition from '../../../../reusable/DialogTransition';
 interface Props {
     dialogOpen: boolean,
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    selectedLocations: number[],
-    setSelectedLocations: React.Dispatch<React.SetStateAction<number[]>>
+    selectedLocations: string[],
+    setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>
 }
 export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelectedLocations, setDialogOpen, selectedLocations }) => {
 
@@ -30,20 +30,17 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
     const handleClick = async () => {
         setLoading(true)
         try {
-            const locationIds = businessChain.locations
-                .filter((loc, index) => selectedLocations.includes(index))
-                .map(loc => loc._id) as string[]
             if (businessChain.locations.length === selectedLocations.length) {
-                await deleteLocations(businessChain._id as string, locationIds)
+                await deleteLocations(businessChain._id as string, selectedLocations)
                 enqueueSuccessSnackbar('You have successfully deleted your business chain.')
                 const newPlaces = places.filter(place => place._id !== businessChain._id)
                 dispatch(setPlaces(newPlaces))
                 history.push('/panel/dashboard')
                 return
             }
-            await deleteLocations(businessChain._id as string, locationIds)
+            await deleteLocations(businessChain._id as string, selectedLocations)
             enqueueSuccessSnackbar('You have successfully removed selected locations.')
-            businessChain.locations = businessChain.locations.filter((loc, index) => !selectedLocations.includes(index))
+            businessChain.locations = businessChain.locations.filter(loc => !selectedLocations.includes(loc._id as string))
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {

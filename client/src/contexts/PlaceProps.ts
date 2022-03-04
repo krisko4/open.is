@@ -36,21 +36,24 @@ export interface NewsProps {
     content: string
 }
 
-export interface LocationProps {
+export interface ContactDetails {
+    phone: string,
+    email: string,
+    website: string,
+    facebook: string,
+    instagram: string,
+}
+
+export interface LocationProps extends ContactDetails {
     _id?: string,
     address: string,
     addressId: string,
     addressLanguage: string,
     lat: number,
     lng: number,
-    phone: string,
     isValid?: boolean,
-    email: string,
-    website: string,
-    instagram: string,
     news?: NewsProps[],
     opinions?: OpinionProps[],
-    facebook: string,
     visits?: VisitProps[],
     averageNote?: {
         ones: number,

@@ -5,7 +5,7 @@ import { FC } from "react";
 type Order = 'asc' | 'desc';
 
 interface Props {
-    selectedLocations: number[],
+    selectedLocations: string[],
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;

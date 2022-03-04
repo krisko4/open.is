@@ -21,6 +21,7 @@ export const Step5Container: FC<Props> = ({isEditionMode}) => {
             subtitle: currentPlace.subtitle,
             description: currentPlace.description,
             type: currentPlace.type as string,
+            isBusinessChain:  "true"
         }
         const locations = selectedLocations.map(location => {
             const newLocation = {...location}

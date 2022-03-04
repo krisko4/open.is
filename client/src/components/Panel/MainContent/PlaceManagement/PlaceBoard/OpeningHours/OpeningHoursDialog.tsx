@@ -3,7 +3,7 @@ import { LoadingButton } from "@mui/lab"
 import CloseIcon from '@mui/icons-material/Close'
 import { format } from "date-fns";
 import React, { FC, useState } from "react";
-import { changeOpeningHours } from "../../../../../../requests/OpeningHoursRequests";
+import { changeOpeningHours, changeOpeningHoursForSelectedLocations } from "../../../../../../requests/OpeningHoursRequests";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import { OpeningHoursCard } from "./OpeningHoursCard";
@@ -18,10 +18,13 @@ interface Props {
     dialogOpen: boolean,
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
     openingHours: any,
+    businessChain?: RawPlaceDataProps,
+    selectedLocations?: string[],
+    setBusinessChain?: React.Dispatch<React.SetStateAction<RawPlaceDataProps>>
 
 }
 
-export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, openingHours }) => {
+export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen, setBusinessChain, businessChain, openingHours }) => {
 
     const [loading, setLoading] = useState(false)
     const { currentPlace } = useCurrentPlaceContext()
@@ -38,11 +41,23 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, openi
         }
         )
         try {
-            await changeOpeningHours(currentPlace._id as string, openingHours)
-            const place = places.find(place => place._id === currentPlace.businessId)
-            const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
-            location.openingHours = openingHours
-            location.isActive = true
+            // this means that openingHoursDialog is opened in business chain management 
+            if (businessChain && selectedLocations && setBusinessChain) {
+                await changeOpeningHoursForSelectedLocations(businessChain._id as string, openingHours, selectedLocations)
+                selectedLocations.forEach(locId => {
+                    const location = businessChain.locations.find(loc => loc._id === locId) as LocationProps
+                    location.openingHours = openingHours
+                    location.isActive = true
+                })
+                setBusinessChain({...businessChain})
+            }
+            else {
+                await changeOpeningHours(currentPlace._id as string, openingHours)
+                const place = places.find(place => place._id === currentPlace.businessId)
+                const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
+                location.openingHours = openingHours
+                location.isActive = true
+            }
             currentPlace.openingHours = openingHours
             currentPlace.isActive = true
             enqueueSuccessSnackbar('You have successfully updated your opening hours')

@@ -5,5 +5,17 @@ export const changeOpeningHours = (locationId: string, hours: any) => {
     return myAxios.patch(`/places/${locationId}/opening-hours`, { openingHours: hours })
 }
 
-export const setPlaceAlwaysOpen = (locationId: string, alwaysOpen: boolean) =>
-    myAxios.patch(`/places/${locationId}/always-open`, { alwaysOpen: alwaysOpen })
+
+export const changeOpeningHoursForSelectedLocations = (businessId: string, openingHours: any, locationIds: string[]) =>
+    myAxios.patch(`/places/${businessId}/locations/opening-hours`, {
+        openingHours: openingHours,
+        locationIds: locationIds
+    })
+
+export const setSelectedLocationsAlwaysOpen = (businessId: string, locationIds: string[]) =>
+    myAxios.patch(`/places/${businessId}/locations/always-open`, {
+        locationIds: locationIds
+    })
+
+export const setPlaceAlwaysOpen = (locationId: string) =>
+    myAxios.patch(`/places/${locationId}/always-open`)

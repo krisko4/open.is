@@ -69,7 +69,7 @@ const SubmitButton: FC = () => {
 
 export const ContactDetailsForm: FC = () => {
 
-    const {steps, activeStep} = useStepContext()
+    const { steps, activeStep } = useStepContext()
 
     const methods = useForm<Inputs>({
         resolver: yupResolver(schema),
@@ -97,6 +97,7 @@ export const ContactDetailsForm: FC = () => {
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
                         <SocialMediaFieldContainer
+                            color="secondary"
                             label="Website address"
                             shouldUpdateCurrentPlace={true}
                             socialMedia="website"
@@ -108,6 +109,7 @@ export const ContactDetailsForm: FC = () => {
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
                         <SocialMediaFieldContainer
+                            color="success"
                             label="https://facebook.com/my-profile"
                             prefix="https://facebook.com/"
                             socialMedia="facebook"
@@ -119,6 +121,7 @@ export const ContactDetailsForm: FC = () => {
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
                         <SocialMediaFieldContainer
+                            color="warning"
                             label="https://instagram.com/my-profile"
                             socialMedia="instagram"
                             placeholder="my-profile"

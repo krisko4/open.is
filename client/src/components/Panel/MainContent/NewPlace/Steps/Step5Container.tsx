@@ -19,6 +19,7 @@ export const Step5Container: FC<Props> = ({isEditionMode}) => {
             subtitle: currentPlace.subtitle,
             description: currentPlace.description,
             type: currentPlace.type as string,
+            isBusinessChain: "false"
         }
         const locations = [
             {
@@ -32,6 +33,7 @@ export const Step5Container: FC<Props> = ({isEditionMode}) => {
                 website: currentPlace.website,
                 facebook: `https://facebook.com/${currentPlace.facebook}`,
                 instagram: `https://instagram.com/${currentPlace.instagram}`,
+
             }
         ]
         const formData = new FormData()
