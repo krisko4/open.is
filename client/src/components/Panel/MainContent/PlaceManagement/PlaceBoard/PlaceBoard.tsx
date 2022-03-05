@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
@@ -26,58 +26,7 @@ export enum Destinations {
 }
 
 
-const tabs = [
-    {
-        name: 'Home',
-        url: Destinations.HOME,
-        content: <PlaceData />
-    },
-    {
-        name: 'Statistics',
-        url: Destinations.STATISTICS,
-        content: <NotReady />
-    },
-    {
-        name: 'Opening hours',
-        url: Destinations.OPENING_HOURS,
-        content: <OpeningHours />
-    },
-    {
-        name: 'Events',
-        url: Destinations.EVENTS,
-        content: <NotReady />
-    },
-    {
-        name: 'Opinions',
-        url: Destinations.OPINIONS,
-        content: <Opinions />
-    },
-    {
-        name: 'News',
-        url: Destinations.NEWS,
-        content: <NotReady />
-    },
-    {
-        name: 'Visits',
-        url: Destinations.VISITS,
-        content: <NotReady />
-    },
-    {
-        name: 'Settings',
-        url: Destinations.SETTINGS,
-        content: <PlaceSettings />
-    },
-    {
-        name: 'Subscriptions',
-        url: Destinations.SUBSCRIPTIONS,
-        content: <NotReady />
-    },
-]
 
-interface LocationState {
-    place: CurrentPlaceProps,
-    businessId: string
-}
 
 interface MatchProps {
     id: string
@@ -90,13 +39,68 @@ export const PlaceBoard: FC = () => {
     const location = useLocation()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const places = usePlacesSelector()
+    const tabs = useMemo(() => {
+        const settingsTab = {
+            name: 'Settings',
+            url: Destinations.SETTINGS,
+            content: <PlaceSettings />
+        }
+
+        const tabs = [
+            {
+                name: 'Home',
+                url: Destinations.HOME,
+                content: <PlaceData />
+            },
+            {
+                name: 'Statistics',
+                url: Destinations.STATISTICS,
+                content: <NotReady />
+            },
+            {
+                name: 'Opening hours',
+                url: Destinations.OPENING_HOURS,
+                content: <OpeningHours />
+            },
+            {
+                name: 'Events',
+                url: Destinations.EVENTS,
+                content: <NotReady />
+            },
+            {
+                name: 'Opinions',
+                url: Destinations.OPINIONS,
+                content: <Opinions />
+            },
+            {
+                name: 'News',
+                url: Destinations.NEWS,
+                content: <NotReady />
+            },
+            {
+                name: 'Visits',
+                url: Destinations.VISITS,
+                content: <NotReady />
+            },
+            {
+                name: 'Subscriptions',
+                url: Destinations.SUBSCRIPTIONS,
+                content: <NotReady />
+            },
+        ]
+        if(!currentPlace.isBusinessChain) tabs.push(settingsTab)
+        return tabs
+
+    }, [currentPlace.isBusinessChain])
+
 
     useEffect(() => {
         const placeId = match.params.id
         if (placeId !== currentPlace._id) {
             const place = places.find(pl => pl.locations.some(loc => loc._id === placeId)) as RawPlaceDataProps
-            const placeCopy = { ...place, locations: place.locations.filter(loc => loc._id === placeId)}
+            const placeCopy = { ...place, locations: place.locations.filter(loc => loc._id === placeId) }
             const currentPlace = convertToCurrentPlace(placeCopy)[0]
+
             setCurrentPlace(currentPlace)
         }
         const dest = location.pathname.substring(match.url.length + 1)
@@ -104,6 +108,6 @@ export const PlaceBoard: FC = () => {
     }, [match])
 
     return (
-            <PanelTabNavigator value={value} setValue={setValue} placeId={match.params.id} tabs={tabs} />
+        <PanelTabNavigator value={value} setValue={setValue} placeId={match.params.id} tabs={tabs} />
     )
 }

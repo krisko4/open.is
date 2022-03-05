@@ -43,7 +43,7 @@ const StyledRating = styled(Rating)({
         color: '#ff3d47',
     },
     '& .MuiRating-iconEmpty': {
-        color: 'white',
+        color: '#ff6d75',
     },
 });
 
@@ -138,7 +138,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                                         }}
                                         style={{ marginLeft: 5 }}
                                         icon={<Favorite fontSize="inherit" />}
-                                        emptyIcon={<FavoriteBorder fontSize="inherit" />}
+                                        emptyIcon={<FavoriteBorder  fontSize="inherit" />}
                                         max={1}
                                     />
                                 </Tooltip>
@@ -147,7 +147,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                                 Address: {currentPlace.address}
                             </Typography>
                         </Grid>
-                        <Grid item style={{ flexGrow: 1, color: 'white' }}>
+                        <Grid item style={{ flexGrow: 1 }}>
                             <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
                                 {currentPlace.status === 'open' ?
                                     <Tooltip title="This place is now open">

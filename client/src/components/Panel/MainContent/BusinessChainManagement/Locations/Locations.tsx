@@ -17,7 +17,7 @@ export const Locations: FC = () => {
 
 
     return (
-        <Scrollbars>
+        <Scrollbars autoHide>
             <Fade in={true} timeout={1000}>
                 <Grid container sx={{ height: '100%' }}>
                     {/* <Paper variant="outlined" sx={{ flexGrow: 1 }} square>

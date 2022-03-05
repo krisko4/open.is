@@ -17,9 +17,9 @@ const StyledPopup = styled(Popup)(({ theme }) => ({
     '& .leaflet-popup-content': {
         width: 160
     },
-    '& .leaflet-popup-content-wrapper, .leaflet-popup-tip': {
-        background: theme.palette.background.paper
-    },
+    // '& .leaflet-popup-content-wrapper, .leaflet-popup-tip': {
+    //     background: theme.palette.background.paper
+    // },
 }))
 
 interface Props {

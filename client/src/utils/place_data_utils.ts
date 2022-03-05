@@ -68,7 +68,8 @@ export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
             logo: place.logo,
             images: images,
             userId: place.userId,
-            isUserOwner: place.isUserOwner
+            isUserOwner: place.isUserOwner,
+            isBusinessChain: place.isBusinessChain
 
         }
     })

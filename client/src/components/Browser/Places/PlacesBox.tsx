@@ -1,5 +1,5 @@
 import { FiberNew, Timelapse, Star, Favorite, Subscriptions } from "@mui/icons-material";
-import { Paper, Tab, Grid, Tabs, Fade, ListItem, Tooltip } from "@mui/material";
+import { Paper, Tab, Grid, Tabs, Fade, ListItem, Tooltip, Backdrop, CircularProgress } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -10,6 +10,7 @@ import { useMapContext } from "../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../contexts/PlaceProps";
 import { getPlaces } from "../../../requests/PlaceRequests";
 import { convertToCurrentPlace } from "../../../utils/place_data_utils";
+import { useCustomSnackbar } from "../../../utils/snackbars";
 import { PlaceCard } from "./PlaceCard";
 import { PlaceDetails } from "./PlaceDetails/PlaceDetails";
 
@@ -48,6 +49,7 @@ const PlacesBox: FC = () => {
 
 
     const { chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
+    const { enqueueErrorSnackbar } = useCustomSnackbar()
     const { isPlaceCardClicked, currentPlace } = useMapContext()
     const { userData: { isLoggedIn } } = useLoginContext()
     const [tabIndex, setTabIndex] = useState(0)
@@ -55,36 +57,43 @@ const PlacesBox: FC = () => {
     const scrollbarRef = useRef<any>()
     const history = useHistory()
     let match = useRouteMatch();
+    const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
         (async () => {
-            let places: RawPlaceDataProps[]
-            switch (tabIndex) {
-                case tabType.POPULAR:
-                    places = await getPlaces('/places/active/popular')
-                    break
-                case tabType.RECENTLY_ADDED:
-                    places = await getPlaces('/places/active/new')
-                    break
-                case tabType.TOP_RATED:
-                    places = await getPlaces('/places/active/top')
-                    break
-                case tabType.FAVORITE:
-                    places = await getPlaces('/places/active/favorite')
-                    break
-                case tabType.SUBSCRIPTIONS:
-                    places = await getPlaces(`/places/active/subscribed`)
-                    break
-                default:
-                    places = []
-                    console.log('Invalid tab index')
+            try {
+                setLoading(true)
+                let places: RawPlaceDataProps[]
+                switch (tabIndex) {
+                    case tabType.POPULAR:
+                        places = await getPlaces('/places/active/popular')
+                        break
+                    case tabType.RECENTLY_ADDED:
+                        places = await getPlaces('/places/active/new')
+                        break
+                    case tabType.TOP_RATED:
+                        places = await getPlaces('/places/active/top')
+                        break
+                    case tabType.FAVORITE:
+                        places = await getPlaces('/places/active/favorite')
+                        break
+                    case tabType.SUBSCRIPTIONS:
+                        places = await getPlaces(`/places/active/subscribed`)
+                        break
+                    default:
+                        places = []
+                        console.log('Invalid tab index')
+                }
+                let currentPlaces = places.map(place => convertToCurrentPlace(place))
+                let chosenCriterias: CurrentPlaceProps[] = []
+                currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
+                setChosenCriterias(chosenCriterias)
+            } catch (err) {
+                enqueueErrorSnackbar()
+            } finally {
+                setLoading(false)
             }
-
-            let currentPlaces = places.map(place => convertToCurrentPlace(place))
-            let chosenCriterias: CurrentPlaceProps[] = []
-            currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
-            setChosenCriterias(chosenCriterias)
         })()
 
     }, [tabIndex])
@@ -121,14 +130,6 @@ const PlacesBox: FC = () => {
                             variant="fullWidth"
                             selectionFollowsFocus
                             scrollButtons
-
-                            // TabScrollButtonProps={
-                            //     {
-                            //         style: {
-                            //             color: 'white'
-                            //         }
-                            //     }
-                            // }
                             value={tabIndex}
                             style={{ marginTop: 10 }}
                             onChange={(e, newIndex) => setTabIndex(newIndex)}
@@ -152,44 +153,51 @@ const PlacesBox: FC = () => {
                 </Grid>
             }
             <Grid container style={{ flexGrow: 1 }} >
-                <Scrollbars autoHide ref={scrollbarRef}>
-                    <Switch>
-                        {chosenCriterias.map((place: any, index: number) =>
-                            <Route
-                                key={index}
-                                path={`${match.url}/${place._id}`}
-                            >
-                                <PlaceDetails currentPlace={place} popupIndex={index} />
-                            </Route>
+                {loading ?
+                    <Grid container alignItems="center" justifyContent="center">
+                        <CircularProgress size={100} />
+                    </Grid>
+                    :
+                    <Scrollbars autoHide ref={scrollbarRef}>
+                        <Switch>
+                            {chosenCriterias.map((place: any, index: number) =>
+                                <Route
+                                    key={index}
+                                    path={`${match.url}/${place._id}`}
+                                >
+                                    <PlaceDetails currentPlace={place} popupIndex={index} />
+                                </Route>
 
-                        )}
-                    </Switch>
-                    {
-                        chosenCriterias.map((place: any, index: number) => <div key={place._id}>
-                            {isPlaceCardClicked ||
-                                <Fade in={true} timeout={1000}>
-                                    <ListItem
-                                        disableGutters
-                                        disablePadding
-                                        sx={{ mt: 1, mb: 1, ml: 1, mr: 1, width: 'inherit' }}
-                                        onClick={() => openPlaceDetails(place)}
-                                        // sx={{ mt: '8px', mr: '8px', padding: 0, mb: '8px', width: 'none' }}
-                                        key={place._id}
-                                        button
-                                    >
-                                        <PlaceCard
-                                            currentPlace={place}
-                                            tabIndex={tabIndex}
-                                        />
-                                    </ListItem>
-                                </Fade>
+                            )}
+                        </Switch>
+                        {
+                            chosenCriterias.map((place: any, index: number) => <div key={place._id}>
+                                {isPlaceCardClicked ||
+                                    <Fade in={true} timeout={1000}>
+                                        <ListItem
+                                            disableGutters
+                                            disablePadding
+                                            sx={{ mt: 1, mb: 1, ml: 1, mr: 1, width: 'inherit' }}
+                                            onClick={() => openPlaceDetails(place)}
+                                            // sx={{ mt: '8px', mr: '8px', padding: 0, mb: '8px', width: 'none' }}
+                                            key={place._id}
+                                            button
+                                        >
+                                            <PlaceCard
+                                                currentPlace={place}
+                                                tabIndex={tabIndex}
+                                            />
+                                        </ListItem>
+                                    </Fade>
 
-                            }
-                        </div>
+                                }
+                            </div>
 
-                        )
-                    }
-                </Scrollbars >
+                            )
+                        }
+                    </Scrollbars >
+
+                }
             </Grid >
         </Grid >
 

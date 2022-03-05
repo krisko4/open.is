@@ -8,6 +8,7 @@ import { usePlacesSelector } from '../../../../store/selectors/PlacesSelector';
 import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
+import { BusinessChainSettings } from './Settings/BusinessChainSettings';
 type Props = {
 
 };
@@ -25,7 +26,7 @@ const tabs = [
     },
     {
         name: 'Settings',
-        content: <NotReady/>,
+        content: <BusinessChainSettings/>,
         url: 'settings'
     },
 ]

@@ -55,6 +55,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        console.log(currentPlace)
         setChecked(currentPlace.alwaysOpen)
         if (currentPlace.openingHours) {
             const hours = currentPlace.openingHours
@@ -140,6 +141,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
                     location.alwaysOpen = true
                     location.isActive = true
                 })
+                setBusinessChain && setBusinessChain({...businessChain})
             }
             else {
                 if (!currentPlace.isActive) {
