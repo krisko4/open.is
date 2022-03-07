@@ -1,10 +1,5 @@
-import { Autocomplete, Fade, Grid, TextField, Typography } from "@mui/material";
-import { Formik } from "formik";
-import React, { FC, useEffect, useState } from "react";
-import * as Yup from 'yup';
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useStepContext } from "../../../../../../contexts/StepContext";
-import { BusinessType } from "../../../NewBusinessChain/BusinessInformation/BusinessInformationForm/Fields/BusinessType";
+import { Fade, Grid, Typography } from "@mui/material";
+import React, { FC } from "react";
 import { PlaceDetailsForm } from "./PlaceDetailsForm";
 
 

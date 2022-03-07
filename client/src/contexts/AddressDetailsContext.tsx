@@ -1,4 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from "react";
+import { CurrentPlaceProps } from "./PlaceProps";
 
 
 export const AddressDetailsContext = createContext<AddressDetailsContextData | null>(null)
@@ -28,7 +29,7 @@ interface SelectedAddressProps {
 
 const useProviderSettings = (isEdition: boolean) => {
     const [availableAddresses, setAvailableAddresses] = useState<any>([])
-    const [chosenCriterias, setChosenCriterias] = useState<any>([])
+    const [selectedPlaces, setSelectedPlaces] = useState<CurrentPlaceProps[]>([])
     const [isEditionMode, setEditionMode] = useState(isEdition)
 
     const [selectedAddress, setSelectedAddress] = useState<SelectedAddressProps>({
@@ -41,8 +42,8 @@ const useProviderSettings = (isEdition: boolean) => {
     return {
         availableAddresses,
         setAvailableAddresses,
-        chosenCriterias,
-        setChosenCriterias,
+        selectedPlaces,
+        setSelectedPlaces,
         isEditionMode,
         setEditionMode,
         selectedAddress,

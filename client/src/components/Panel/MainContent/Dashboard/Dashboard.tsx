@@ -1,21 +1,18 @@
-import { Avatar, Button, Fade, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import AddIcon from "@mui/icons-material/Add";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { Avatar, Button, Fade, Rating, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
-import AddIcon from "@mui/icons-material/Add";
-import EqualizerIcon from "@mui/icons-material/Equalizer";
-import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { Rating } from '@mui/material';
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
-import { useHistory, useRouteMatch } from "react-router";
-import { ActivityChart } from './Charts/ActivityChart';
-import { RawPlaceDataProps, VisitProps } from "../../../../contexts/PlaceProps";
 import Scrollbars from "react-custom-scrollbars";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
+import { RawPlaceDataProps, VisitProps } from "../../../../contexts/PlaceProps";
+import { ActivityChart } from './Charts/ActivityChart';
 
 const generateVisitsData = (visits: VisitProps[]) => {
     let count = 0;
@@ -36,12 +33,12 @@ export const Dashboard: FC = () => {
     const [totalVisitsDiff, setTotalVisitsDiff] = useState(0)
     const [totalOpinionsDiff, setTotalOpinionsDiff] = useState(0)
     const [activityChartSeries, setActivityChartSeries] = useState<any>()
-    const history = useHistory()
-    const match = useRouteMatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         // @ts-ignore
-        const mostPopularPlace = places.sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
+
+        const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
         setMostPopularPlace(mostPopularPlace)
         setActivityChartSeries(places.map(place => {
             const visits = place.locations[0].visits as VisitProps[]
@@ -78,13 +75,13 @@ export const Dashboard: FC = () => {
                                 <Grid item lg={10}>
                                     Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
                                 </Grid>
-                                <Grid item container justifyContent="flex-end" lg={2} >
+                                {/* <Grid item container justifyContent="flex-end" lg={2} >
                                     <Grid item style={{ marginRight: 5 }}>
-                                        <Button onClick={() => history.push(`new-place`)} startIcon={<AddIcon />} variant="contained" color="primary">
+                                        <Button onClick={() => navigate(`new-place`)} startIcon={<AddIcon />} variant="contained" color="primary">
                                             New place
                                         </Button>
                                     </Grid>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Typography>
                         <Typography variant="body1" >welcome to your personal dashboard</Typography>

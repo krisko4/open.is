@@ -8,7 +8,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useBusinessChainContext } from '../../../../../../contexts/PanelContexts/BusinessChainContext';
 import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
@@ -63,7 +63,7 @@ interface Data {
 export const BusinessChainTable: React.FC = () => {
 
     const { businessChain } = useBusinessChainContext()
-    const history = useHistory()
+    const navigate = useNavigate()
     const rows = useMemo(() => {
         return businessChain.locations.map(location => (
             {
@@ -127,7 +127,7 @@ export const BusinessChainTable: React.FC = () => {
 
     const chooseLocation = (index: number) => {
         const location = businessChain.locations[index]
-        history.push(`/panel/management/${location._id}/${location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS}`)
+        navigate(`/panel/management/${location._id}/${location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS}`)
     }
 
     return (

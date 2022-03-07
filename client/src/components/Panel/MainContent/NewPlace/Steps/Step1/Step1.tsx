@@ -5,24 +5,26 @@ import React, { FC, useEffect, useState } from "react";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { setName, useNameSelector } from "redux-toolkit/slices/currentPlaceSlice";
 
 
 export const Step1: FC = () => {
 
     const { activeStep, setCurrentStep, steps, setActiveStep } = useStepContext()
-    const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [input, setInput] = useState('')
+    const dispatch = useAppDispatch()
+    const name = useNameSelector()
 
-    console.log(currentPlace)
 
 
     useEffect(() => {
-        setInput(currentPlace.name)
-    }, [currentPlace])
+        setInput(name)
+    }, [name])
 
 
     const submitName = () => {
-        currentPlace.name = input
+        dispatch(setName(input))
         setCurrentStep(activeStep => activeStep + 1)
         setActiveStep(activeStep => activeStep + 1)
     }

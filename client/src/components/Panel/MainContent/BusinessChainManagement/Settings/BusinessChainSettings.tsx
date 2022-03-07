@@ -1,25 +1,23 @@
-import { Paper, Grid, Typography, Divider, Rating } from "@mui/material"
-import { FC, useEffect, useState } from "react"
+import { Divider, Grid, Paper, Rating } from "@mui/material"
+import { FC } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
-import { clearPlace, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { Image } from "../../../../../contexts/PlaceProps"
-import { convertToCurrentPlace } from "../../../../../utils/place_data_utils"
-import { ImagesCarousel } from "../../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel"
-import { ContactDetailsContainer } from "../../NewPlace/PlaceDetailsCard/ContactDetails"
-import { MemoizedPlaceDescription } from "../../NewPlace/PlaceDetailsCard/PlaceDescription"
-import { PlaceLogo } from "../../NewPlace/PlaceDetailsCard/PlaceLogo"
-import { MemoizedPlaceName } from "../../NewPlace/PlaceDetailsCard/PlaceName"
-import { MemoizedPlaceSubtitle } from "../../NewPlace/PlaceDetailsCard/PlaceSubtitle"
-import { MemoizedPlaceType } from "../../NewPlace/PlaceDetailsCard/PlaceType"
-import { MemoizedSocialIcons } from "../../NewPlace/PlaceDetailsCard/SocialIcons"
+import { ImagesCarousel } from "../../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarouselMemo"
+import { PlaceDescription } from "../../NewPlace/PlaceDetailsCard/PlaceDescription"
+import { PlaceLogo } from "../../NewPlace/PlaceDetailsCard/MemoizedPlaceLogo"
+import { PlaceName } from "../../NewPlace/PlaceDetailsCard/PlaceName"
+import { PlaceSubtitle } from "../../NewPlace/PlaceDetailsCard/PlaceSubtitle"
+import { PlaceType } from "../../NewPlace/PlaceDetailsCard/PlaceType"
+import { SocialIcons } from "../../NewPlace/PlaceDetailsCard/SocialIcons"
+import { ContactDetails } from "../../NewPlace/PlaceDetailsCard/ContactDetails"
 
 export const BusinessChainSettings: FC = () => {
     const { businessChain } = useBusinessChainContext()
     const { imageFile, setImageFile, currentPlace, setCurrentPlace } = useCurrentPlaceContext()
 
 
-    console.log(currentPlace)
 
 
     return (
@@ -49,22 +47,22 @@ export const BusinessChainSettings: FC = () => {
                                 />
                             </Grid>
                             <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                                <MemoizedPlaceName name={currentPlace.name} />
-                                <MemoizedPlaceSubtitle subtitle={currentPlace.subtitle} />
-                                <MemoizedPlaceType type={currentPlace.type} />
-                                <MemoizedSocialIcons facebook={currentPlace.facebook} instagram={currentPlace.instagram} />
+                                <PlaceName />
+                                <PlaceSubtitle />
+                                <PlaceType />
+                                <SocialIcons />
                             </Grid>
                         </Grid>
                         <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
                             <Grid item lg={10}>
-                                <MemoizedPlaceDescription description={currentPlace.description} />
+                                <PlaceDescription  />
                             </Grid>
                             <Grid item lg={10} style={{ marginTop: 20 }}>
                                 <Divider sx={{ width: '100%' }}></Divider>
                             </Grid>
                         </Grid>
                         <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
-                            <ContactDetailsContainer />
+                            <ContactDetails />
                         </Grid>
                     </Paper>
                 </Scrollbars>

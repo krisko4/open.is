@@ -13,25 +13,14 @@ const MyTab = (props: any) => {
     return <Tab {...rest} label={label} disableRipple />
 }
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
-const PlaceTabs: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
+export const PlaceTabs: FC = () => {
 
     const [value, setValue] = useState(0)
 
     const tabs = [
-        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
-        <OpeningHours
-            setCurrentPlace={setCurrentPlace}
-            currentPlace={currentPlace}
-
-        />,
-        <Opinions
-            currentPlace={currentPlace}
-            setCurrentPlace={setCurrentPlace}
-        />
+        // <News />,
+        // <OpeningHours/>,
+        // <Opinions/>
     ]
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -56,18 +45,12 @@ const PlaceTabs: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
             </Paper>
             <Grid container style={{ height: 495 }}>
                 <Scrollbars>
-                    {tabs[value]}
+                    {/* {tabs[value]} */}
                 </Scrollbars>
             </Grid>
         </Grid>
     )
 }
 
-export const MemoizedPlaceTabs = React.memo(PlaceTabs,
-    (prevProps, nextProps) =>
-        prevProps.currentPlace.news === nextProps.currentPlace.news ||
-        prevProps.currentPlace.opinions === nextProps.currentPlace.opinions ||
-        prevProps.currentPlace.openingHours === nextProps.currentPlace.openingHours
 
-)
 

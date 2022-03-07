@@ -5,36 +5,36 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { useHistory, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
 import { RawPlaceDataProps } from '../../../contexts/PlaceProps';
 import { usePlacesSelector } from '../../../redux-toolkit/slices/placesSlice';
 import { useAppDispatch } from '../../../redux-toolkit/hooks';
+import { useNavigate } from 'react-router-dom';
 
 
 const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
     {
         name: 'Dashboard',
         icon: <DashboardIcon color="primary" />,
-        url: places.length > 0 ? `/dashboard` : '',
+        url: places.length > 0 ? `dashboard` : '',
     },
     {
         name: 'My account',
         icon: <SettingsIcon color="primary" />,
-        url: `/account`,
+        url: `account`,
 
     },
     {
         name: 'New place',
         icon: <AddIcon color="primary" />,
-        url: `/new-place`,
+        url: `new-place`,
     },
     {
         name: 'New business chain',
         icon: <CloudCircle color="primary" />,
-        url: `/new-business-chain`
+        url: `new-business-chain`
     }
 ]
 
@@ -42,8 +42,7 @@ export const LeftNavigation: FC = () => {
 
     const places = usePlacesSelector()
     const dispatch = useAppDispatch()
-    const history = useHistory()
-    const match = useRouteMatch()
+    const navigate = useNavigate()
     const { userData } = useLoginContext()
     const [selectedOption, setSelectedOption] = useState<string>('')
 
@@ -86,7 +85,7 @@ export const LeftNavigation: FC = () => {
                                         button
                                         onClick={() => {
                                             setSelectedOption(button.url)
-                                            history.push(`${match.url}${button.url}`)
+                                            navigate(`${button.url}`)
                                         }
                                         }
                                     >

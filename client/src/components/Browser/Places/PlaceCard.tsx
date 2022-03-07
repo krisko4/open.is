@@ -53,7 +53,7 @@ const StyledRating = styled(Rating)({
 export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
     // const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
-    const { setChosenCriterias } = useAddressDetailsContext()
+    const { setSelectedPlaces } = useAddressDetailsContext()
     const [elevation, setElevation] = useState(3)
 
 
@@ -79,7 +79,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
         if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
         if (index !== -1) {
             favIdsArray.splice(index, 1)
-            tabIndex === tabType.FAVORITE && setChosenCriterias((criterias: any) => criterias.filter((criterium: any) => currentPlace._id !== criterium._id))
+            tabIndex === tabType.FAVORITE && setSelectedPlaces((places) => places.filter((place => currentPlace._id !== place._id)))
             if (favIdsArray.length === 0) {
                 Cookies.remove('favIds')
                 return

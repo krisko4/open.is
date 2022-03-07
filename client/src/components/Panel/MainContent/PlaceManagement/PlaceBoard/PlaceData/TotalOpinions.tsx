@@ -3,15 +3,15 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { Card, CardContent, Fade, Grid, Typography } from "@mui/material";
 import { isToday } from "date-fns";
 import { FC, useEffect, useState } from "react";
+import { useOpinionsSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 
 export const TotalOpinions: FC<any> = () => {
 
     const [opinionsDiff, setOpinionsDiff] = useState(0)
-    const { currentPlace } = useCurrentPlaceContext()
+    const opinions = useOpinionsSelector()
 
     useEffect(() => {
-        const opinions = currentPlace.opinions
         if (opinions) {
             const opinionsToday = opinions.filter(opinion => isToday(new Date(opinion.date))).length
             if (opinionsToday === opinions.length) {
@@ -20,7 +20,7 @@ export const TotalOpinions: FC<any> = () => {
             }
             opinions.length > 0 && setOpinionsDiff(Math.round(((opinions.length / (opinions.length - opinionsToday)) * 100 - 100) * 10) / 10)
         }
-    }, [currentPlace.opinions])
+    }, [opinions])
 
 
     return (
@@ -32,7 +32,7 @@ export const TotalOpinions: FC<any> = () => {
                         <Grid container item alignItems="center" justifyContent="space-between">
                             <Grid item style={{ flexGrow: 1 }}>
                                 <Grid container item alignItems="center">
-                                    {opinionsDiff === 0 || (currentPlace.opinions && currentPlace.opinions.length === 0) ? <>
+                                    {opinionsDiff === 0 || (opinions && opinions.length === 0) ? <>
                                         <TrendingFlatIcon style={{ color: '#ffbf00' }} />
                                         <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
                                     </> : <>
@@ -41,7 +41,7 @@ export const TotalOpinions: FC<any> = () => {
                                     </>
                                     }
                                 </Grid>
-                                <Typography variant="h3">{currentPlace.opinions?.length}</Typography>
+                                <Typography variant="h3">{opinions?.length}</Typography>
                             </Grid>
                             {/* <TotalOpinionsChart /> */}
                         </Grid>

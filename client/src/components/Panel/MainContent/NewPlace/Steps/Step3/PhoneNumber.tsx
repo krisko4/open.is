@@ -6,23 +6,19 @@ import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts
 import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
 import ReactPhoneInput from 'react-phone-input-material-ui';
 import PhoneInput from "react-phone-input-material-ui"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { usePhoneSelector, setPhone } from "redux-toolkit/slices/currentPlaceSlice"
 // import "react-phone-input-material-ui/lib/style.css";
 
 
-export const PhoneNumberContainer: FC = () => {
-    const methods = useFormContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    return <PhoneNumber setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
-}
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
-}
 
-const PhoneNumber = React.memo<Props & FieldValues>(({ currentPlace, setCurrentPlace, control, setValue, formState: { errors } }) => {
+export const PhoneNumber: FC = () => {
 
-    const phone = useWatch({
+    const { control, register, formState: { errors }, setValue } = useFormContext()
+    const dispatch = useAppDispatch()
+    const phone = usePhoneSelector()
+    const currentPhone = useWatch({
         control,
         name: 'phone'
     })
@@ -31,15 +27,12 @@ const PhoneNumber = React.memo<Props & FieldValues>(({ currentPlace, setCurrentP
 
     useEffect(() => {
         if (isFirstRender.current) {
-            setValue('phone', currentPlace.phone)
+            setValue('phone', phone)
             isFirstRender.current = false
             return
         }
-        setCurrentPlace(place => {
-            place.phone = phone
-            return { ...place }
-        })
-    }, [phone])
+        dispatch(setPhone(currentPhone))
+    }, [currentPhone])
     return (
         <Controller
             name="phone"
@@ -60,6 +53,4 @@ const PhoneNumber = React.memo<Props & FieldValues>(({ currentPlace, setCurrentP
             }
         />
     )
-}, (prevProps, nextProps) => {
-    return prevProps.getValues('phone') === nextProps.getValues('phone')
-})
+}

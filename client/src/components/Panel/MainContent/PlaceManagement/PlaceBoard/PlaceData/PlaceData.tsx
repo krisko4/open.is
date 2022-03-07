@@ -1,29 +1,20 @@
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import NoMeetingRoomIcon from '@mui/icons-material/NoMeetingRoom';
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
     Button,
     Card,
     CardContent,
-    Dialog,
-    Fade,
-    Grid, Rating, Slide,
+    Dialog, Grid, Slide,
     SlideProps, Typography
 } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import React, { FC, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status, VisitProps } from "../../../../../../contexts/PlaceProps";
-import { setPlaceStatus } from "../../../../../../requests/PlaceRequests";
-import { setPlaces } from "../../../../../../store/actions/setPlaces";
-import { convertToRawPlaceData } from "../../../../../../utils/place_data_utils";
-import { useCustomSnackbar } from "../../../../../../utils/snackbars";
-import { LoadingButton } from "../../../../../reusable/LoadingButton";
 import { PlaceDetailsCard } from "../../../NewPlace/PlaceDetailsCard";
 import { ActivityChart } from '../../Charts/ActivityChart';
-import { RatingChart } from '../../Charts/RatingChart';
 import { PlaceSettings } from "../../PlaceSettings";
 import { Destinations } from "../PlaceBoard";
 import { OpinionsCard } from "./OpinionsCard";
@@ -40,13 +31,13 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 export const PlaceData: FC = () => {
 
     const [loading, setLoading] = useState(false)
-    const { currentPlace, } = useCurrentPlaceContext()
     const [settingsOpen, setSettingsOpen] = useState(false)
+    const currentPlace = useCurrentPlaceSelector()
     const [totalVisits, setTotalVisits] = useState(0)
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const handleSettingsButtonClick = () => {
-        history.push(`/panel/management/${currentPlace?._id}/${Destinations.SETTINGS}`)
+        navigate(`/panel/management/${currentPlace?._id}/${Destinations.SETTINGS}`)
 
     }
 

@@ -2,8 +2,9 @@ import { LoadingButton } from "@mui/lab"
 import { Alert, AlertTitle, Card, CardContent, Checkbox, Fade, FormControlLabel, FormGroup, Grid, Paper, Slide, Tab, Tabs, Toolbar, Typography } from "@mui/material"
 import _ from "lodash"
 import React, { FC, useEffect, useState } from "react"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { setAlwaysOpen, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps"
 import { setPlaceAlwaysOpen, setSelectedLocationsAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
@@ -24,18 +25,6 @@ const days = [
     'Sunday'
 
 ]
-// const areOpeningHoursEqual = (h1:any, h2: any) => {
-//     console.log(h1)
-//     console.log(h2)
-//     for(const key of Object.keys(h1)){
-//         for(const nestedKey of Object.keys(key)){
-//             if(h1[key][nestedKey] !== h2[key][nestedKey]){
-//                 return false
-//             }
-//         }
-//     }
-//     return true
-// }
 interface Props {
     selectedLocations?: string[],
     businessChain?: RawPlaceDataProps,
@@ -44,28 +33,17 @@ interface Props {
 
 export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, businessChain }) => {
 
-    const { setCurrentPlace, currentPlace } = useCurrentPlaceContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
+    const currentPlace = useCurrentPlaceSelector()
     const [value, setValue] = useState('monday');
     const places = usePlacesSelector()
     const [areHoursValid, setHoursValid] = useState(false)
     const [checked, setChecked] = useState(currentPlace.alwaysOpen)
     const [dialogOpen, setDialogOpen] = useState(false)
     const [loading, setLoading] = useState(false)
+    const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        console.log(currentPlace)
-        setChecked(currentPlace.alwaysOpen)
-        if (currentPlace.openingHours) {
-            const hours = currentPlace.openingHours
-            for (const day of Object.keys(hours)) {
-                hours[day].valid = true
-            }
-            setOpeningHours({ ...hours })
-        }
-
-    }, [currentPlace])
 
 
     const [openingHours, setOpeningHours] = useState<any>(
@@ -114,6 +92,18 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
             },
         }
     )
+
+    useEffect(() => {
+        setChecked(currentPlace.alwaysOpen)
+        if (currentPlace.openingHours) {
+            const hours = _.cloneDeep(currentPlace.openingHours) 
+            for (const day of Object.keys(hours)) {
+                hours[day].valid = true
+            }
+            setOpeningHours({ ...hours })
+        }
+    }, [currentPlace])
+
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue)
     }
@@ -141,14 +131,11 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
                     location.alwaysOpen = true
                     location.isActive = true
                 })
-                setBusinessChain && setBusinessChain({...businessChain})
+                setBusinessChain && setBusinessChain({ ...businessChain })
             }
             else {
                 if (!currentPlace.isActive) {
-                    const newCurrentPlace = { ...currentPlace }
-                    newCurrentPlace.alwaysOpen = true
-                    newCurrentPlace.isActive = true
-                    setCurrentPlace(newCurrentPlace)
+                    dispatch(setAlwaysOpen())
                 }
                 await setPlaceAlwaysOpen(currentPlace._id as string)
                 const place = places.find(place => place._id === currentPlace.businessId)

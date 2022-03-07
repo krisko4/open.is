@@ -83,7 +83,7 @@ export interface SearchParams {
 const Searcher: FC = () => {
 
 
-    const { availableAddresses, setAvailableAddresses, chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
+    const { availableAddresses, setAvailableAddresses, selectedPlaces, setSelectedPlaces} = useAddressDetailsContext()
     const [inputValue, setInputValue] = useState('')
     const [loading, setLoading] = useState(false)
     const isFirstFind = useRef(true)
@@ -118,9 +118,9 @@ const Searcher: FC = () => {
     const selectPlace = async (searchParams: SearchParams[]) => {
         const places: RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
         let currentPlaces = places.map(place => convertToCurrentPlace(place))
-        let chosenCriterias: CurrentPlaceProps[] = []
-        currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
-        setChosenCriterias(chosenCriterias)
+        let selectedPlaces: CurrentPlaceProps[] = []
+        currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => selectedPlaces.push(currentPlace)))
+        setSelectedPlaces(selectedPlaces)
     }
 
     return (

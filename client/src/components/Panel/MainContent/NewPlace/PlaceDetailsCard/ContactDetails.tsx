@@ -5,12 +5,8 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { FC, useMemo } from "react";
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { usePhoneSelector, useWebsiteSelector, useEmailSelector } from "redux-toolkit/slices/currentPlaceSlice";
 
-interface Props {
-    phone: string,
-    email: string,
-    website: string
-}
 
 interface SocialBoxProps {
     value: string,
@@ -18,7 +14,7 @@ interface SocialBoxProps {
 
 }
 
-const SocialBox = React.memo<SocialBoxProps>(({value, icon}) => {
+const SocialBox : FC<SocialBoxProps> = ({value, icon}) => {
     return (
         <Grid item lg={3} >
             <Card elevation={10}>
@@ -37,16 +33,18 @@ const SocialBox = React.memo<SocialBoxProps>(({value, icon}) => {
 
     )
 
-}, (prevProps, nextProps) => prevProps.value === nextProps.value)
+}
 
 
-export const ContactDetailsContainer: FC = () => {
-    const { currentPlace } = useCurrentPlaceContext()
+export const ContactDetails : FC = () => {
+    const phone = usePhoneSelector()
+    const email = useEmailSelector()
+    const website = useWebsiteSelector()
     return (
         <>
-            <SocialBox value={currentPlace.phone || 'Phone number'} icon={<PhoneIcon color="primary" />} />
-            <SocialBox value={currentPlace.email || 'E-mail address'} icon={<MailOutlineIcon color="primary" />} />
-            <SocialBox value={currentPlace.website || 'Website address'} icon={<LanguageIcon color="primary" />} />
+            <SocialBox value={phone || 'Phone number'} icon={<PhoneIcon color="primary" />} />
+            <SocialBox value={email || 'E-mail address'} icon={<MailOutlineIcon color="primary" />} />
+            <SocialBox value={website || 'Website address'} icon={<LanguageIcon color="primary" />} />
         </>
     )
 

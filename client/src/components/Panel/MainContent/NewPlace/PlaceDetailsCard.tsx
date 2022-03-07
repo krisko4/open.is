@@ -1,42 +1,38 @@
-import LanguageIcon from "@mui/icons-material/Language";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import PhoneIcon from "@mui/icons-material/Phone";
 import { LoadingButton } from "@mui/lab";
 import {
-    Card, Slide, Tab, Toolbar,
+    Card, Slide, Toolbar,
     Tooltip
 } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Rating from '@mui/material/Rating';
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
-import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { ImagesCarousel } from "../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarousel";
-import { News } from "../../../reusable/News";
-import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
-import { Opinions } from "../../../reusable/Opinions/Opinions";
-import { ContactDetailsContainer } from "./PlaceDetailsCard/ContactDetails";
-import { MemoizedPlaceDescription } from "./PlaceDetailsCard/PlaceDescription";
+import { ImageCarousel } from "components/Browser/Places/PlaceDetails/ImageCarousel/ImageCarousel";
+import React, { FC } from "react";
+import { ContactDetails } from "./PlaceDetailsCard/ContactDetails";
+import { ContactDetailsContainer } from "./PlaceDetailsCard/MemoizedContactDetails";
+import { PlaceDescription } from "./PlaceDetailsCard/PlaceDescription";
 import { PlaceLogo } from "./PlaceDetailsCard/PlaceLogo";
-import { MemoizedPlaceName } from "./PlaceDetailsCard/PlaceName";
+import { PlaceName } from "./PlaceDetailsCard/PlaceName";
+import { PlaceRating } from "./PlaceDetailsCard/PlaceRating";
 import { PlaceStatus } from "./PlaceDetailsCard/PlaceStatus";
-import { MemoizedPlaceSubtitle } from "./PlaceDetailsCard/PlaceSubtitle";
-import { MemoizedPlaceTabs } from "./PlaceDetailsCard/PlaceTabs";
-import { MemoizedPlaceType } from "./PlaceDetailsCard/PlaceType";
-import { MemoizedSocialIcons } from "./PlaceDetailsCard/SocialIcons";
+import { PlaceSubtitle } from "./PlaceDetailsCard/PlaceSubtitle";
+import { PlaceTabs } from "./PlaceDetailsCard/PlaceTabs";
+import { PlaceType } from "./PlaceDetailsCard/PlaceType";
+import { SocialIcons } from "./PlaceDetailsCard/SocialIcons";
 
 
 
 
 interface Props {
     isEditable?: boolean,
+    logoFile? : File | null,
+    setLogoFile? : React.Dispatch<React.SetStateAction<File | null>>
 }
 
 
-export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
+export const PlaceDetailsCard: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
 
 
-    const { currentPlace, setImageFile, setCurrentPlace } = useCurrentPlaceContext()
 
     return (
         <Slide in={true} timeout={1000}>
@@ -58,11 +54,8 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                         </Toolbar>
                     </Grid>
                     <Grid container>
-                        <ImagesCarousel
+                        <ImageCarousel
                             isEditable={isEditable}
-                            images={currentPlace.images}
-                            setCurrentPlace={setCurrentPlace}
-                            address={currentPlace.address}
                         />
                     </Grid>
                     <Grid container >
@@ -80,40 +73,34 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable }) => {
                     <Grid container item sx={{ mt: '20px' }}>
                         <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
                             <PlaceLogo
+                                logoFile={logoFile}
+                                setLogoFile={setLogoFile}
                                 isEditable={isEditable}
-                                setImageFile={setImageFile}
                             />
-                            <Rating
-                                style={{ marginTop: 20 }}
-                                name="simple-controlled"
-                                value={currentPlace.averageNote?.average || 0}
-                                readOnly
-                            />
+                            <PlaceRating />
+                        </Grid>
+                        <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
+                            <PlaceName />
+                            <PlaceSubtitle />
+                            <PlaceType />
+                            <SocialIcons />
+                        </Grid>
                     </Grid>
-                    <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                        <MemoizedPlaceName name={currentPlace.name} />
-                        <MemoizedPlaceSubtitle subtitle={currentPlace.subtitle} />
-                        <MemoizedPlaceType type={currentPlace.type} />
-                        <MemoizedSocialIcons facebook={currentPlace.facebook} instagram={currentPlace.instagram} />
+                    <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
+                        <Grid item lg={10}>
+                            <PlaceDescription  />
+                        </Grid>
+                        <Grid item lg={10} style={{ marginTop: 20 }}>
+                            <Divider sx={{ width: '100%' }}></Divider>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
-                    <Grid item lg={10}>
-                        <MemoizedPlaceDescription description={currentPlace.description} />
+                    <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
+                        <ContactDetails />
                     </Grid>
-                    <Grid item lg={10} style={{ marginTop: 20 }}>
-                        <Divider sx={{ width: '100%' }}></Divider>
-                    </Grid>
-                </Grid>
-                <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
-                    <ContactDetailsContainer />
-                </Grid>
-                <MemoizedPlaceTabs currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />
-            </Card>
-        </div>
+                    <PlaceTabs />
+                </Card>
+            </div>
 
         </Slide >
     );
 }
-
-export const MemoizedPlaceDetailsCard = React.memo(PlaceDetailsCard)

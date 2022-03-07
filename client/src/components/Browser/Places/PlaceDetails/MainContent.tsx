@@ -10,12 +10,12 @@ import { Alert } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
-interface PlaceTypes {
-    place: any,
-
+import { CurrentPlaceProps } from "contexts/PlaceProps";
+interface Props {
+    place: CurrentPlaceProps,
 }
 
-const MainContent: FC<PlaceTypes> = ({ place }) => {
+const MainContent: FC<Props> = ({ place }) => {
 
 
     const icons = [
@@ -43,10 +43,10 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
                                     {place.status === 'open' ? <Alert severity="success" variant="filled" >
-                                        This place is now {place.status.toUpperCase()}
+                                        This place is now {place.status?.toUpperCase()}
                                     </Alert>
                                         : <Alert severity="error" variant="filled" >
-                                            This place is now {place.status.toUpperCase()}
+                                            This place is now {place.status?.toUpperCase()}
                                         </Alert>
 
                                     }
@@ -56,11 +56,11 @@ const MainContent: FC<PlaceTypes> = ({ place }) => {
                 </Grid>
                 <Grid container item sx={{ mt: '20px' }}>
                     <Grid item lg={3} sx={{ ml: '20px', textAlign: 'center' }}>
-                        <CardMedia style={{ height: 200, backgroundSize: 'contain', marginTop: 10, borderRadius: 20 }} image={place.logo} />
+                        <CardMedia style={{ height: 200, backgroundSize: 'contain', marginTop: 10, borderRadius: 20 }} image={place.logo as string} />
                         <Rating
                             style={{ marginTop: 20 }}
                             name="simple-controlled"
-                            value={place.averageNote.average}
+                            value={place.averageNote?.average}
                             readOnly
                         />
                     </Grid>

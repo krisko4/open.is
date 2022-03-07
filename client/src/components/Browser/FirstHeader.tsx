@@ -1,40 +1,30 @@
-import AppBar from "@mui/material/AppBar";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import HomeIcon from '@mui/icons-material/Home';
+import { IconButton, Tooltip } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
 import { FC } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from "../../contexts/AuthContext";
-import { useAuthSelector } from "../../store/selectors/AuthSelector";
-import { Auth } from "../Auth/Auth";
-import HomeIcon from '@mui/icons-material/Home';
-import { IconButton, Tooltip } from "@mui/material";
-import { useHistory } from "react-router-dom";
-import { SignOutButton } from "../reusable/SignOutButton";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
+import { SignOutButton } from "../reusable/SignOutButton";
 const FirstHeader: FC = () => {
 
     const { setLoginOpen } = useAuthContext()
     const { userData } = useLoginContext()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return (
         <AppBar position="static"
-        // style={{
-        //     background: '#2C2C2C',
-        //     position: 'static',
-        //     borderColor: '#383838',
-        //     borderBottomStyle: 'solid',
-        //     borderWidth: 2
-
-        // }}
         >
             <Toolbar>
                 <Grid container alignItems="center" justifyContent="flex-end">
                     <ColorModeSwitch />
                     <Tooltip title="Home">
-                        <IconButton onClick={() => history.push('/')} color="inherit" size="large">
+                        <IconButton onClick={() => navigate('/')} color="inherit" size="large">
                             <HomeIcon />
                         </IconButton>
                     </Tooltip>
@@ -45,7 +35,7 @@ const FirstHeader: FC = () => {
                         :
                         <>
                             <Tooltip title="Panel">
-                                <IconButton sx={{ mr: 1 }} onClick={() => history.push('/panel')} color="inherit" size="large">
+                                <IconButton sx={{ mr: 1 }} onClick={() => navigate('/panel')} color="inherit" size="large">
                                     <AdminPanelSettingsIcon />
                                 </IconButton>
                             </Tooltip>

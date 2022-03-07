@@ -1,10 +1,10 @@
-import { PhotoCamera } from "@mui/icons-material"
+import { PhotoCamera } from "@mui/icons-material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { CardMedia, Slide, Grid, IconButton, Typography } from "@mui/material"
-import { FC, useEffect, useRef, useState } from "react"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
-import { ImageUpload } from "../../../../reusable/ImageUpload"
+import { CardMedia, Grid, IconButton, Slide, Typography } from "@mui/material";
+import { FC, useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { setConcreteImage, useAddressSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { ImageUpload } from "../../../../reusable/ImageUpload";
 
 
 interface Image {
@@ -16,14 +16,11 @@ interface Props {
     item: Image,
     index: number,
     isEditable?: boolean,
-    address: string,
-    // currentPlace: CurrentPlaceProps,
-    setCurrentPlace?: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>,
-    images: Image[],
 }
-export const ImageCarouselItem: FC<Props> = ({ item, images, address, setCurrentPlace, isEditable, index }) => {
+export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index }) => {
 
-
+    const address = useAddressSelector()
+    const dispatch = useAppDispatch()
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
     const [imageFile, setImageFile] = useState<File | null>(item.file)
@@ -36,29 +33,32 @@ export const ImageCarouselItem: FC<Props> = ({ item, images, address, setCurrent
             return
         }
         if (isEditable) {
-            images[index] = {
-                img: img as string,
-                file: imageFile
+            const updatedImage = {
+                image: {
+                    img: img as string,
+                    file: imageFile
+                },
+                index: index
             }
-            if (setCurrentPlace) setCurrentPlace(place => {
-                place.images = [...images]
-                return { ...place }
-            })
+            dispatch(setConcreteImage(updatedImage))
         }
     }, [img])
 
     const clearImage = () => {
         setImg(null)
         setImageFile(null)
-        // item.img = ''
-        images[index] = {
-            img: '',
-            file: null
+        const updatedImage = {
+            image: {
+                img: '',
+                file: null
+            },
+            index: index
         }
-        if (setCurrentPlace) setCurrentPlace(place => {
-            place.images = [...images]
-            return { ...place }
-        })
+        dispatch(setConcreteImage(updatedImage))
+        // if (setCurrentPlace) setCurrentPlace(place => {
+        //     place.images = [...images]
+        //     return { ...place }
+        // })
     }
 
     return (

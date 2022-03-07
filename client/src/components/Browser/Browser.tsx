@@ -1,8 +1,7 @@
 import Grid from "@mui/material/Grid";
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 import AddressDetailsContextProvider from "../../contexts/AddressDetailsContext";
 import { AuthContextProvider } from "../../contexts/AuthContext";
-import { useColorMode } from "../../contexts/ColorModeContext";
 import MapContextProvider from "../../contexts/MapContext/MapContext";
 import { Auth } from "../Auth/Auth";
 import FirstHeader from "./FirstHeader";
@@ -15,9 +14,6 @@ import { SecondHeader } from "./SecondHeader";
 
 
 const Browser: FC = () => {
-
-
-
 
     return (
         <Grid container direction="column" style={{ height: '100vh' }}>
@@ -39,7 +35,6 @@ const Browser: FC = () => {
                 </MapContextProvider>
             </AddressDetailsContextProvider>
         </Grid >
-
 
     )
 

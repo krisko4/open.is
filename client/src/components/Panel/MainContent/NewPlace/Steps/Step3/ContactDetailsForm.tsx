@@ -1,19 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LanguageIcon from '@mui/icons-material/Language';
-import MailIcon from '@mui/icons-material/Mail';
-import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
-import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import { ErrorMessage, FastField, Form, Formik } from "formik";
-import React, { FC, useEffect, useState } from "react";
+import { Button, Grid } from "@mui/material";
+import React, { FC, useEffect } from "react";
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-import { EmailContainer } from './Email';
-import { SocialMediaFieldContainer } from './SocialMediaField';
-import { PhoneNumberContainer } from './PhoneNumber';
+import { Email } from './Email';
+import { FacebookField } from './FacebookField';
+import { InstagramField } from './InstagramField';
+import { PhoneNumber } from './PhoneNumber';
+import { WebsiteField } from './WebsiteField';
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
 const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
@@ -42,12 +38,10 @@ interface Inputs {
 
 const SubmitButton: FC = () => {
     const { getValues, formState: { errors, isValid } } = useFormContext()
-    const { setCurrentPlace } = useCurrentPlaceContext()
     const { setActiveStep } = useStepContext()
 
 
     const handleClick = () => {
-        setCurrentPlace(place => Object.assign(place, getValues()))
         setActiveStep(step => step + 1)
     }
 
@@ -91,45 +85,18 @@ export const ContactDetailsForm: FC = () => {
         <FormProvider {...methods}>
             <form style={{ flexGrow: 1 }}>
                 <Grid item container >
-                    <PhoneNumberContainer />
+                    <PhoneNumber />
                     <Grid container sx={{ mt: 1, mb: 1 }}>
-                        <EmailContainer />
+                        <Email />
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
-                        <SocialMediaFieldContainer
-                            color="secondary"
-                            label="Website address"
-                            shouldUpdateCurrentPlace={true}
-                            socialMedia="website"
-                            placeholder={"https://www.example.com"}
-                            icon={
-                                <LanguageIcon color="primary" />
-                            }
-                        />
+                        <WebsiteField />
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
-                        <SocialMediaFieldContainer
-                            color="success"
-                            label="https://facebook.com/my-profile"
-                            prefix="https://facebook.com/"
-                            socialMedia="facebook"
-                            placeholder="my-profile"
-                            icon={
-                                <FacebookIcon color="primary" />
-                            }
-                        />
+                        <FacebookField />
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
-                        <SocialMediaFieldContainer
-                            color="warning"
-                            label="https://instagram.com/my-profile"
-                            socialMedia="instagram"
-                            placeholder="my-profile"
-                            prefix="https://instagram.com/"
-                            icon={
-                                <InstagramIcon color="primary" />
-                            }
-                        />
+                        <InstagramField />
                     </Grid>
                     <SubmitButton />
                 </Grid>

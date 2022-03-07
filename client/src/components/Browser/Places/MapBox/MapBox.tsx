@@ -31,13 +31,11 @@ const useStyles = makeStyles({
 
 
 
-
-
-
 export const MapBox: FC = () => {
 
     const { placeCoords } = useMapContext()
-    const { chosenCriterias } = useAddressDetailsContext()
+    const { selectedPlaces } = useAddressDetailsContext()
+    console.log(selectedPlaces)
     const classes = useStyles()
     const layerRef = useRef<any>(null)
     const { mode } = useColorMode()
@@ -53,7 +51,6 @@ export const MapBox: FC = () => {
             attribution: attribution,
             url: url
         }
-
     }, [mode])
 
 
@@ -69,11 +66,11 @@ export const MapBox: FC = () => {
                 ref={layerRef}
                 url={tileLayer.url}
             />
-            {chosenCriterias.map((criterium: any, index: number) =>
+            {selectedPlaces.map((place, index: number) =>
                 <PlaceMarker
                     key={index}
                     index={index}
-                    criterium={criterium}
+                    place={place}
                     classes={classes}
                 />
             )}

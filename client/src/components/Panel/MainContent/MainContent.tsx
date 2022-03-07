@@ -1,10 +1,9 @@
 import { Grid } from "@mui/material";
-import React, { FC, useEffect } from "react";
-import { Route, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import React, { FC } from "react";
+import { Route, useLocation, Outlet } from "react-router-dom";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { BusinessChainContextProvider } from "../../../contexts/PanelContexts/BusinessChainContext";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
-import { LocationContextProvider } from "../../../contexts/PanelContexts/LocationContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import Header from "../Header";
 import { BusinessChainManagement } from "./BusinessChainManagement/BusinessChainManagement";
@@ -19,11 +18,8 @@ import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
 
 export const MainContent: FC = () => {
 
-  let match = useRouteMatch();
   const places = usePlacesSelector()
   const location = useLocation()
-  const history = useHistory()
-
 
 
 
@@ -34,46 +30,50 @@ export const MainContent: FC = () => {
       </Grid>
       <Grid container style={{ flexGrow: 1 }}>
         {places.length === 0 && (location.pathname === '/panel' || location.pathname === '/panel/') && <NoPlaces />}
-        <Route
-          path={`${match.url}/new-place`}
-        >
-          <StepContextProvider steps={newPlaceSteps}>
-            <NewPlace />
-          </StepContextProvider>
-        </Route>
-        <Route
-          path={`${match.url}/management/:id`}
-        >
-          <CurrentPlaceContextProvider>
-            <PlaceBoard />
-          </CurrentPlaceContextProvider>
-        </Route>
-        <Route
-          path={`${match.url}/dashboard`}
-        >
-          <Dashboard />
-        </Route>
-        <Route
-          path={`${match.url}/account`}
-          component={AccountSettings}
+        <Outlet />
+        {/* <Route
+          path={`new-place`}
+          element={
+            <StepContextProvider steps={newPlaceSteps}>
+              <NewPlace />
+            </StepContextProvider>
+          }
         />
-        <Route path={`${match.url}/business-chain/:id`}>
-          <BusinessChainContextProvider>
-            <BusinessChainManagement />
-          </BusinessChainContextProvider>
-        </Route>
         <Route
-          path={`${match.url}/new-business-chain`}
-        >
-          <StepContextProvider steps={businessChainSteps}>
+          path={`management/:id`}
+          element={
+            <CurrentPlaceContextProvider>
+              <PlaceBoard />
+            </CurrentPlaceContextProvider>
+          }
+        />
+        <Route
+          path={`dashboard`}
+          element={
+            <Dashboard />
+          }
+        />
+        <Route
+          path={`account`}
+          element={<AccountSettings />}
+        />
+        <Route path={`business-chain/:id`}
+          element={
+            <BusinessChainContextProvider>
+              <BusinessChainManagement />
+            </BusinessChainContextProvider>
+          }
+        />
+        <Route
+          path={`new-business-chain`}
+          element={
+            <StepContextProvider steps={businessChainSteps}>
               <NewBusinessChain />
-          </StepContextProvider>
-        </Route>
-
+            </StepContextProvider>
+          }
+        /> */}
       </Grid>
-
     </Grid >
-
   )
 }
 

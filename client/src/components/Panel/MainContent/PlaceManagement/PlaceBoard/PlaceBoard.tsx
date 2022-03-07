@@ -1,8 +1,10 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
-import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
+import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { NotReady } from "../../../../reusable/NotReady";
 import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
@@ -26,19 +28,26 @@ export enum Destinations {
 }
 
 
-
-
-interface MatchProps {
-    id: string
-}
-
 export const PlaceBoard: FC = () => {
 
-    const match = useRouteMatch<MatchProps>()
-    const [value, setValue] = useState(Destinations.HOME as string)
-    const location = useLocation()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const places = usePlacesSelector()
+    const { id } = useParams()
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    const currentPlace = useCurrentPlaceSelector()
+    const [value, setValue] = useState('home')
+
+    useEffect(() => {
+        const place = places.find(pl => pl.locations.some(loc => loc._id === id)) as RawPlaceDataProps
+        const currentPlace = convertToCurrentPlace(place)[0]
+        dispatch(setCurrentPlace(currentPlace))
+    }, [id])
+
+
+    useEffect(() => {
+        navigate(value)
+    }, [value])
+
     const tabs = useMemo(() => {
         const settingsTab = {
             name: 'Settings',
@@ -88,26 +97,14 @@ export const PlaceBoard: FC = () => {
                 content: <NotReady />
             },
         ]
-        if(!currentPlace.isBusinessChain) tabs.push(settingsTab)
+        if (!currentPlace.isBusinessChain) tabs.push(settingsTab)
         return tabs
 
     }, [currentPlace.isBusinessChain])
 
 
-    useEffect(() => {
-        const placeId = match.params.id
-        if (placeId !== currentPlace._id) {
-            const place = places.find(pl => pl.locations.some(loc => loc._id === placeId)) as RawPlaceDataProps
-            const placeCopy = { ...place, locations: place.locations.filter(loc => loc._id === placeId) }
-            const currentPlace = convertToCurrentPlace(placeCopy)[0]
-
-            setCurrentPlace(currentPlace)
-        }
-        const dest = location.pathname.substring(match.url.length + 1)
-        setValue(dest)
-    }, [match])
 
     return (
-        <PanelTabNavigator value={value} setValue={setValue} placeId={match.params.id} tabs={tabs} />
+        <PanelTabNavigator value={value} setValue={setValue} placeId={currentPlace._id as string} tabs={tabs} />
     )
 }

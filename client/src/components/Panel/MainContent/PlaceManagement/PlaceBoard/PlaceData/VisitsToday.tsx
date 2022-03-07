@@ -5,22 +5,22 @@ import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { isToday, isYesterday } from "date-fns";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useVisitsSelector } from "redux-toolkit/slices/currentPlaceSlice";
 
 export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
 
-    const { currentPlace } = useCurrentPlaceContext()
     const [visitsToday, setVisitsToday] = useState(0)
     const [visitsYesterday, setVisitsYesterday] = useState(0)
+    const visits = useVisitsSelector()
 
     useEffect(() => {
-        const { visits } = currentPlace
         if (visits) {
             const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)
             setVisitsYesterday(visits.filter(visit => isYesterday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0))
             setVisitsToday(visitsToday)
         }
 
-    }, [currentPlace.visits])
+    }, [visits])
 
     return (
         <Fade in={true} timeout={2200}>

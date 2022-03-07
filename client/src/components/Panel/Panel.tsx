@@ -1,11 +1,11 @@
 import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React, { FC, useEffect, useState } from "react";
-import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { setPlaces } from "redux-toolkit/slices/placesSlice";
 import { useLoginContext } from "../../contexts/LoginContext";
 import { useAppDispatch } from "../../redux-toolkit/hooks";
 import { getPlacesByUserId } from "../../requests/PlaceRequests";
-import { setPlaces } from '../../store/actions/setPlaces';
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
 import { MainContent } from "./MainContent/MainContent";
 
@@ -14,10 +14,10 @@ export const Panel: FC = () => {
 
     const [loading, setLoading] = useState(true)
     const { userData } = useLoginContext()
-    const history = useHistory()
-    const match = useRouteMatch()
+    const navigate = useNavigate()
     const location = useLocation()
     const dispatch = useAppDispatch()
+
 
 
     useEffect(() => {
@@ -25,21 +25,23 @@ export const Panel: FC = () => {
             try {
                 const uid: string = localStorage.getItem('uid') as string
                 if (!uid) {
-                    history.push('/')
+                    navigate('/')
                     return
                 }
+                console.log(location)
                 const places = await getPlacesByUserId(uid)
                 dispatch(setPlaces(places))
-                if (places.length === 0) {
-                    return
-                }
-                if (location.pathname === '/panel/') {
-                    history.push('dashboard')
-                    return
-                }
-                if (location.pathname === '/panel') {
-                    history.push(`${match.url}/dashboard`)
-                }
+                // navigate('dashboard')
+                // if (places.length === 0) {
+                //     return
+                // }
+                // if (location.pathname === '/panel/') {
+                //     navigate('dashboard')
+                //     return
+                // }
+                // if (location.pathname === '/panel') {
+                //     navigate(`dashboard`)
+                // }
             } catch (err) {
                 console.log(err)
             } finally {

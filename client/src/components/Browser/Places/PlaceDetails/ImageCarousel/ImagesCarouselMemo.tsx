@@ -8,7 +8,7 @@ import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/Cu
 import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../../contexts/StepContext";
 import { ImageUpload } from "../../../../reusable/ImageUpload";
-import { ImageCarouselItem } from "./ImageCarouselItem";
+import { ImageCarouselItem } from "./ImageCarouselMemoItem";
 import { Image } from '../../../../../contexts/PlaceProps'
 
 

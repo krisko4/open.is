@@ -1,15 +1,11 @@
 import { LoadingButton } from "@mui/lab"
-import { Slide, Card, CardContent, Typography, Grid, Divider, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Tooltip, SlideProps } from "@mui/material"
-import _ from "lodash"
-import React, { useEffect } from "react"
-import { FC, useState } from "react"
-import Scrollbars from "react-custom-scrollbars"
-import { useHistory } from "react-router-dom"
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Tooltip, Typography } from "@mui/material"
+import { RawPlaceDataProps } from "contexts/PlaceProps"
+import React, { FC, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "redux-toolkit/hooks"
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext"
-import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
+import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { addPlace, usePlacesSelector } from "redux-toolkit/slices/placesSlice"
 import { useStepContext } from "../../../../../../contexts/StepContext"
 import { registerNewPlace, updatePlaceData } from "../../../../../../requests/PlaceRequests"
 import { setPlaces } from "../../../../../../store/actions/setPlaces"
@@ -27,12 +23,12 @@ interface Props {
 export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const [isOpen, setOpen] = useState(false)
     const { activeStep, steps } = useStepContext()
-    const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [isLoading, setLoading] = useState(false)
     const dispatch = useAppDispatch()
-    const history = useHistory()
+    const navigate = useNavigate()
     const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+    const currentPlace = useCurrentPlaceSelector()
 
 
     useEffect(() => {
@@ -50,10 +46,10 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
             if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
             dispatch(setPlaces([...places]))
             //@ts-ignore
-            setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0])
+            dispatch(setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0]))
             enqueueSuccessSnackbar('You have successfully modified your place')
             setOpen(false)
-            history.push(Destinations.HOME)
+            navigate(Destinations.HOME)
         } catch (err) {
             console.log(err)
             enqueueErrorSnackbar()
@@ -72,15 +68,10 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
         }
         registerNewPlace(formData).then(res => {
             console.log(res.data)
-            const newPlace = res.data.place
-            newPlace.logo = res.data.place.logo
-            newPlace.visits = []
-            newPlace.opinions = []
-            newPlace.news = []
-            places.push(newPlace)
-            dispatch(setPlaces(places))
+            const newPlace : RawPlaceDataProps = res.data.place
+            dispatch(addPlace(newPlace))
             enqueueSuccessSnackbar('You have successfully registered new place')
-            history.push(`dashboard`)
+            navigate(`dashboard`)
         }).catch(err => {
             console.log(err)
             enqueueErrorSnackbar()
@@ -135,15 +126,14 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
                         </Dialog>
                         {
                             !currentPlace.logo ?
-
                                 <Tooltip arrow title="Please upload a logo picture">
                                     <Grid container>
                                         <Button
                                             fullWidth
                                             variant="contained"
-                                            disabled={
-                                                !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
-                                            }
+                                            // disabled={
+                                            //     !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
+                                            // }
                                             size="large"
                                             onClick={() => setOpen(true)}
                                         >
@@ -160,7 +150,7 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
                                     variant="contained"
                                     disabled={
                                         !currentPlace.logo ||
-                                        (isEditionMode && _.isEqual(currentPlace, initialPlaceData)) ||
+                                        // (isEditionMode && _.isEqual(currentPlace, initialPlaceData)) ||
                                         steps.some(step => !step.isValid)
                                     }
 

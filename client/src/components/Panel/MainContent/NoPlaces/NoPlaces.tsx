@@ -1,14 +1,7 @@
-import AddIcon from '@mui/icons-material/Add';
 import {
-    Button, Card,
-    CardContent,
-    Grid,
-    Grow, Slide, Stack
+    Grid
 } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import React, { FC, useState } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
 import { AddNewBusiness } from './AddNewBusiness';
 import { NewPlaceChooser } from './NewPlaceChooser';
 
@@ -38,8 +31,6 @@ const steps = [
 
 export const NoPlaces: FC = () => {
 
-    const history = useHistory()
-    const match = useRouteMatch()
     const [buttonClicked, setButtonClicked] = useState(false)
 
     return (
@@ -50,23 +41,6 @@ export const NoPlaces: FC = () => {
                 <AddNewBusiness setButtonClicked={setButtonClicked} />
             }
 
-            {/* <Grid item container lg={4} alignItems="center">
-                    <Slide in={true} timeout={1000} direction="left">
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h2">How does it work?</Typography>
-                                <Grid style={{ marginTop: 10 }} container lg={10}>
-                                    <Typography variant="body1">
-                                        In order to register your business, you will have to complete some simple steps:
-                                    </Typography>
-                                    <NewPlaceStepper
-                                        orientation="vertical"
-                                    />
-                                </Grid>
-                            </CardContent>
-                        </Card>
-                    </Slide>
-                </Grid> */}
         </Grid>
 
     )

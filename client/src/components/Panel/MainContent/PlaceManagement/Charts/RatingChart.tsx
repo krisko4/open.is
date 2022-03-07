@@ -1,4 +1,5 @@
 import { FC, useState } from "react"
+import { useAverageNoteSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { StatisticChart } from "../../Dashboard/StatisticChart"
 
@@ -54,13 +55,13 @@ export const RatingChart: FC = () => {
         }]
     })
 
-    const { currentPlace } = useCurrentPlaceContext()
-    const { ones, twos, threes, fours, fives } = currentPlace.averageNote || defaultOptions
+    const averageNote = useAverageNoteSelector()
+    const { ones, twos, threes, fours, fives } = averageNote || defaultOptions
     const ratingSeries = [ones, twos, threes, fours, fives]
 
     return (
         <>
-            {currentPlace.averageNote &&
+            {averageNote &&
                 <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
             }
         </>

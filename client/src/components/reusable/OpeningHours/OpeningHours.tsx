@@ -1,13 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Dialog, DialogTitle, Grid, Slide, SlideProps, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import React, { FC, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useColorMode } from '../../../contexts/ColorModeContext';
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
 import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
 import { Destinations } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard';
-import { OpeningHoursForm } from './OpeningHoursForm';
 
 interface Props {
     currentPlace?: CurrentPlaceProps,
@@ -22,10 +21,10 @@ export const OpeningHours: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
     const openingHours = currentPlace && currentPlace.openingHours
     const [dialogOpen, setDialogOpen] = useState(false)
     const { mode } = useColorMode()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const navigateToOpeningHours = () => {
-        history.push(`/panel/management/${currentPlace?._id}/${Destinations.OPENING_HOURS}`)
+        navigate(`/panel/management/${currentPlace?._id}/${Destinations.OPENING_HOURS}`)
 
     }
 

@@ -3,24 +3,23 @@ import { RawPlaceDataProps } from "../../contexts/PlaceProps";
 import { useAppSelector } from "../hooks";
 import { RootState } from "../store";
 
-interface StateProps{
-    places : RawPlaceDataProps[]
-}
 
-const initialState : StateProps = {
-    places : []
-} 
+const initialState : RawPlaceDataProps[] = []
+ 
 
 const placesSlice = createSlice({
-    name : 'places',
+    name : 'placessszs',
     initialState,
     reducers: {
         setPlaces: (state, action : PayloadAction<RawPlaceDataProps[]>) => {
-            state.places = action.payload
+            return action.payload
+        },
+        addPlace : (state, action: PayloadAction<RawPlaceDataProps>) => {
+            state.push(action.payload)
         }
     }
 })
 
-export const usePlacesSelector = () => useAppSelector(state => state.places.places) 
-export const {setPlaces} = placesSlice.actions
+export const usePlacesSelector = () => useAppSelector(state => state.places) 
+export const {setPlaces, addPlace} = placesSlice.actions
 export const placesReducer = placesSlice.reducer

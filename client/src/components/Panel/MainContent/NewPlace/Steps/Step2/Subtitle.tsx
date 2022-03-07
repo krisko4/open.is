@@ -1,23 +1,16 @@
 import { TextField } from "@mui/material"
-import React, { useRef } from "react"
-import { FC, useEffect } from "react"
-import { FieldValues, useFormContext, useWatch } from "react-hook-form"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
+import { FC, useRef, useEffect } from "react"
+import { useFormContext, useWatch } from "react-hook-form"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { useSubtitleSelector, setSubtitle } from "redux-toolkit/slices/currentPlaceSlice"
 
-export const SubtitleContainer: FC = () => {
-    const methods = useFormContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    return <Subtitle setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
-}
+export const Subtitle : FC = () => {
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
+    const {control, register, formState: {errors}, setValue} = useFormContext()
+    const subtitle = useSubtitleSelector()
+    const dispatch = useAppDispatch()
 
-const Subtitle = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlace, control, formState:{errors, isValid}, setValue, register }) => {
-    const subtitle = useWatch({
+    const sub = useWatch({
         control,
         name: 'subtitle'
     })
@@ -26,15 +19,12 @@ const Subtitle = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlac
     
     useEffect(() => {
         if (isFirstRender.current) {
-            setValue('subtitle', currentPlace.subtitle)
+            setValue('subtitle', subtitle)
             isFirstRender.current = false
             return
         }
-        setCurrentPlace(place => {
-            place.subtitle = subtitle
-            return { ...place }
-        })
-    }, [subtitle])
+        dispatch(setSubtitle(sub))
+    }, [sub])
     return (
         <TextField
             {...register('subtitle')}
@@ -53,6 +43,4 @@ const Subtitle = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlac
             }}
         />
     )
-}, (prevProps, nextProps) => {
-    return prevProps.getValues('subtitle') === nextProps.getValues('subtitle') && prevProps.formState === nextProps.formState
-})
+}

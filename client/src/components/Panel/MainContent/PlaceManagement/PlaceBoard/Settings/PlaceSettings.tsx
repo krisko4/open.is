@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo } from "react";
-import { useRouteMatch } from "react-router-dom";
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
 import { StepContextProvider } from "../../../../../../contexts/StepContext";

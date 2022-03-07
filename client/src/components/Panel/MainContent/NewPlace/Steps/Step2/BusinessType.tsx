@@ -1,26 +1,16 @@
 import { Autocomplete, TextField } from "@mui/material"
-import React, { useRef } from "react"
-import { FC, useState, useEffect } from "react"
-import { Controller, FieldValues, useFormContext, useWatch } from "react-hook-form"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
-import { getBusinessTypes } from "../../../../../../requests/BusinessTypeRequests"
+import { FC, useState, useEffect, useRef } from "react"
+import { useWatch, Controller, useFormContext } from "react-hook-form"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { setType, useTypeSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { getBusinessTypes } from "requests/BusinessTypeRequests"
 
-export const BusinessTypeContainer: FC = () => {
-    const methods = useFormContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    return <BusinessType setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
-}
+export const BusinessType: FC = () => {
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
-
-const BusinessType = React.memo<FieldValues & Props>(({ setValue, currentPlace, setCurrentPlace, control, formState: { errors } }) => {
-    // const { control, formState: { errors } } = useFormContext()
     const [businessTypes, setBusinessTypes] = useState<any>([])
-    // const { setCurrentPlace } = useCurrentPlaceContext()
+    const dispatch = useAppDispatch()
+    const businessType = useTypeSelector()
+    const {control, setValue, formState: {errors}} = useFormContext()
     useEffect(() => {
         getBusinessTypes().then(res => setBusinessTypes(res.data))
             .catch(err => console.log(err))
@@ -31,20 +21,18 @@ const BusinessType = React.memo<FieldValues & Props>(({ setValue, currentPlace, 
         control,
         name: 'type'
     })
-    
+
     const isFirstRender = useRef(true)
 
     useEffect(() => {
         if (isFirstRender.current) {
-            setValue('type', currentPlace.type)
+            setValue('type', businessType)
             isFirstRender.current = false
             return
         }
-        setCurrentPlace(place => {
-            place.type = type
-            return { ...place }
-        })
+        dispatch(setType(type))
     }, [type])
+
 
     return (
         <Controller
@@ -71,8 +59,4 @@ const BusinessType = React.memo<FieldValues & Props>(({ setValue, currentPlace, 
             }
         />
     )
-},
-    (prevProps, nextProps) => {
-    return prevProps.getValues('type') === nextProps.getValues('type') && prevProps.formState === nextProps.formState
-    }
-)
+}

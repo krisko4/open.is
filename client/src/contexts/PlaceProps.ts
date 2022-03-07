@@ -8,6 +8,18 @@ export interface Image {
     img: string,
     file: File | null
 }
+
+export interface AverageNoteProps {
+    ones: number,
+    twos: number,
+    threes: number,
+    fours: number,
+    fives: number,
+    average: number
+}
+
+export type ImageType = string | ArrayBuffer | null | File
+
 export interface CurrentPlaceProps extends LocationProps {
     status?: Status,
     businessId?: string,
@@ -16,12 +28,13 @@ export interface CurrentPlaceProps extends LocationProps {
     type: string | null,
     description: string,
     subtitle: string,
-    logo: string | ArrayBuffer | null | File,
+    logo: ImageType,
     images: Image[],
-    isBusinessChain? : boolean,
+    isBusinessChain?: boolean,
     userId?: string,
     isUserOwner?: boolean,
-    isUserSubscriber?: boolean
+    isUserSubscriber?: boolean,
+    logoFile? : File | null
 }
 
 export interface VisitProps {
@@ -44,25 +57,21 @@ export interface ContactDetails {
     instagram: string,
 }
 
-export interface LocationProps extends ContactDetails {
-    _id?: string,
+export interface AddressDataProps {
     address: string,
     addressId: string,
     addressLanguage: string,
     lat: number,
     lng: number,
+}
+
+export interface LocationProps extends ContactDetails, AddressDataProps{
+    _id?: string,
     isValid?: boolean,
     news?: NewsProps[],
     opinions?: OpinionProps[],
     visits?: VisitProps[],
-    averageNote?: {
-        ones: number,
-        twos: number,
-        threes: number,
-        fours: number,
-        fives: number,
-        average: number
-    },
+    averageNote?: AverageNoteProps,
     openingHours?: any,
     alwaysOpen?: boolean,
     isActive?: boolean

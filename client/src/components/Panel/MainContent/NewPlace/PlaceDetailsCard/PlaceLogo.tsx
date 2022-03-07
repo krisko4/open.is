@@ -1,48 +1,32 @@
-import { PhotoCamera } from "@mui/icons-material";
-import {
-    CardMedia,
-    IconButton, Slide
-} from "@mui/material";
-import Grid from "@mui/material/Grid";
-import React, { FC, useEffect, useRef, useState } from "react";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
-import { ImageUpload } from "../../../../reusable/ImageUpload";
-import * as _ from 'lodash'
+import { PhotoCamera } from "@mui/icons-material"
+import { CardMedia, Slide, Grid, IconButton } from "@mui/material"
+import { ImageUpload } from "components/reusable/ImageUpload"
+import { FC, useState, useRef, useEffect } from "react"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { setCurrentPlace, setLogo, setLogoFile, useLogoSelector } from "redux-toolkit/slices/currentPlaceSlice"
 
 interface Props {
-    isEditable: boolean | undefined,
-    setImageFile: any,
-
+    isEditable?: boolean,
+    logoFile? : File | null,
+    setLogoFile? : React.Dispatch<React.SetStateAction<File | null>>
 }
 
-export const PlaceLogo: FC<Props> = (props) => {
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    return <MemoizedPlaceLogo {...props} currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />
-}
+export const PlaceLogo: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
 
-interface PlaceProps {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
-
-const MemoizedPlaceLogo = React.memo<Props & PlaceProps>(({ isEditable, currentPlace, setCurrentPlace, setImageFile }) => {
-
-    const [logo, setLogo] = useState(currentPlace.logo)
+    const logo = useLogoSelector()
+    const dispatch = useAppDispatch()
+    const [currentLogo, setCurrentLogo] = useState(logo)
     const [isHover, setHover] = useState(true)
     const isFirstRender = useRef(true)
 
-    console.log(currentPlace.images)
 
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false
             return
         }
-        const newCurrentPlace = { ...currentPlace }
-        newCurrentPlace.logo = logo
-        setCurrentPlace(newCurrentPlace)
-    }, [logo])
+        dispatch(setLogo(currentLogo))
+    }, [currentLogo])
 
     return (
         <CardMedia
@@ -55,25 +39,19 @@ const MemoizedPlaceLogo = React.memo<Props & PlaceProps>(({ isEditable, currentP
                 borderRadius: 20,
                 backgroundSize: 'contain'
             }}
-            image={logo as string || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`} >
+            image={currentLogo as string || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`} >
             {isEditable &&
                 <Slide direction="up" in={isHover} appear>
                     <Grid justifyContent="center" alignItems="center" container sx={{ height: '100%', background: 'black', opacity: '50%' }}>
-                        <ImageUpload name="logo-upload" img={logo} setImg={setLogo} setImageFile={setImageFile}>
+                        <ImageUpload name="logo-upload" img={currentLogo} setImg={setCurrentLogo} setImageFile={setLogoFile}>
                             <IconButton color="primary" component="span">
                                 <PhotoCamera />
                             </IconButton>
                         </ImageUpload>
                     </Grid>
                 </Slide>
-
             }
         </CardMedia>
-
     )
-}, (prevProps, nextProps) => {
-    return prevProps.currentPlace.logo === nextProps.currentPlace.logo
-     && !prevProps.currentPlace.images.some((imgObj, index) => !_.isEqual(imgObj, nextProps.currentPlace.images[index]))
-}
 
-)
+}

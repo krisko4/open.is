@@ -1,22 +1,17 @@
 import { FC, useEffect } from "react";
-import { useHistory, useParams } from "react-router";
+import {  useNavigate, useParams } from "react-router";
 import { confirmEmailChange } from "../../requests/AuthRequests";
 import { useCustomSnackbar } from "../../utils/snackbars";
 
-interface Params {
-    token: string,
-    email: string
-}
 
 export const EmailChangeConfirmation: FC = () => {
 
-    const { email, token } = useParams<Params>()
-    const history = useHistory()
+    const { email, token } = useParams()
+    const navigate = useNavigate()
     const {enqueueSuccessSnackbar, enqueueWarningSnackbar, enqueueErrorSnackbar} = useCustomSnackbar()
 
     useEffect(() => {
-        console.log(email, token)
-        confirmEmailChange(email, token).then(() => {
+        confirmEmailChange(email as string, token as string).then(() => {
             enqueueSuccessSnackbar(`You have successfully changed your e-mail address.`)
         })
             .catch(err => {
@@ -26,7 +21,7 @@ export const EmailChangeConfirmation: FC = () => {
                 }
                 enqueueErrorSnackbar()
             }).finally(() => {
-                history.push('/')
+                navigate('/')
             })
     }, [])
 

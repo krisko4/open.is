@@ -1,16 +1,13 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
 import { useBusinessChainContext } from '../../../../contexts/PanelContexts/BusinessChainContext';
 import { CurrentPlaceContextProvider } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
-import { RawPlaceDataProps } from '../../../../contexts/PlaceProps';
 import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
 import { BusinessChainSettings } from './Settings/BusinessChainSettings';
-import { Image } from '../../../../contexts/PlaceProps'
-import { convertToCurrentPlace } from '../../../../utils/place_data_utils';
-import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
 type Props = {
 
 };
@@ -43,22 +40,21 @@ export const BusinessChainManagement = (props: Props) => {
     const location = useLocation()
     const places = usePlacesSelector()
     const { businessChain, setBusinessChain } = useBusinessChainContext()
-    const match = useRouteMatch<StateType>()
 
 
-    useEffect(() => {
-        const { id } = match.params
-        if (id !== businessChain._id) {
-            const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
-            setBusinessChain(businessChain)
-        }
-        const dest = location.pathname.substring(match.url.length + 1)
-        setValue(dest)
-    }, [match])
+    // useEffect(() => {
+    //     const { id } = match.params
+    //     if (id !== businessChain._id) {
+    //         const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
+    //         setBusinessChain(businessChain)
+    //     }
+    //     const dest = location.pathname.substring(match.url.length + 1)
+    //     setValue(dest)
+    // }, [match])
 
     return (
         <CurrentPlaceContextProvider>
-            <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={match.params.id} tabs={tabs} />
+            <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={businessChain._id as string} tabs={tabs} />
         </CurrentPlaceContextProvider>
     );
 };

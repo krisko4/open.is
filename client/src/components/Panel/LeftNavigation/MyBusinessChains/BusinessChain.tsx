@@ -1,13 +1,13 @@
 import { Avatar, Collapse, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
 import { StarBorder } from "@mui/icons-material"
 import { FC, useState } from "react"
-import { useHistory, useRouteMatch } from "react-router"
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { setPlace } from "../../../../store/actions/setCurrentPlace"
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils"
 import { LocationProps, RawPlaceDataProps } from "../../../../contexts/PlaceProps"
 import { useAppDispatch } from "redux-toolkit/hooks"
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
     place: RawPlaceDataProps
@@ -16,9 +16,8 @@ interface Props {
 export const BusinessChain: FC<Props> = ({ place }) => {
 
     const [open, setOpen] = useState(false)
-    const history = useHistory()
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const match = useRouteMatch()
 
     const choosePlace = (place: RawPlaceDataProps, location: LocationProps) => {
         const placeCopy = { ...place }
@@ -26,11 +25,11 @@ export const BusinessChain: FC<Props> = ({ place }) => {
         const currentPlaces = convertToCurrentPlace(placeCopy)
         const currentPlace = currentPlaces[0]
         dispatch(setPlace(currentPlace))
-        history.push({
-            pathname: `${match.url}/management/${currentPlace._id}`,
-            state: { place: currentPlace }
-        }
-        )
+        // navigate({
+        //     pathname: `${match.url}/management/${currentPlace._id}`,
+        //     state: { place: currentPlace }
+        // }
+        // )
 
     }
 

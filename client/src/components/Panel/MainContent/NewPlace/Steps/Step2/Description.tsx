@@ -1,23 +1,16 @@
 import { TextField } from "@mui/material"
-import React, { FC, useEffect, useRef } from "react"
-import { FieldValues, useFormContext, useWatch } from "react-hook-form"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
+import { FC, useRef, useEffect } from "react"
+import { useFormContext, useWatch } from "react-hook-form"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { useDescriptionSelector, setDescription } from "redux-toolkit/slices/currentPlaceSlice"
 
-export const DescriptionContainer: FC = () => {
-    const methods = useFormContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    return <Description setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
+export const Description: FC = () => {
 
-}
+    const {control, register, formState: {errors}, setValue} = useFormContext()
+    const description = useDescriptionSelector()
+    const dispatch = useAppDispatch()
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
-
-const Description = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlace, control, register, setValue, formState: {errors} }) => {
-    const description = useWatch({
+    const desc = useWatch({
         control,
         name: 'description'
     })
@@ -27,16 +20,13 @@ const Description = React.memo<FieldValues & Props>(({ currentPlace, setCurrentP
 
 
     useEffect(() => {
-        if(isFirstRender.current){
-            setValue('description', currentPlace.description)
+        if (isFirstRender.current) {
+            setValue('description', description)
             isFirstRender.current = false
             return
         }
-        setCurrentPlace(place => {
-            place.description = description
-            return { ...place }
-        })
-    }, [description])
+        dispatch(setDescription(desc))
+    }, [desc])
 
 
     return (
@@ -60,6 +50,4 @@ const Description = React.memo<FieldValues & Props>(({ currentPlace, setCurrentP
             }}
         />
     )
-}, (prevProps, nextProps) => {
-    return prevProps.getValues('description') === nextProps.getValues('description') && prevProps.formState === nextProps.formState
-})
+}

@@ -1,17 +1,15 @@
-import { SlideProps, Slide, Dialog, AppBar, Toolbar, IconButton, Typography, Grid, Alert, Card, Divider, CardContent, Button } from "@mui/material";
-import { LoadingButton } from "@mui/lab"
-import CloseIcon from '@mui/icons-material/Close'
-import { format } from "date-fns";
+import CloseIcon from '@mui/icons-material/Close';
+import { LoadingButton } from "@mui/lab";
+import { Alert, AppBar, Dialog, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
-import { changeOpeningHours, changeOpeningHoursForSelectedLocations } from "../../../../../../requests/OpeningHoursRequests";
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useCustomSnackbar } from "../../../../../../utils/snackbars";
-import { OpeningHoursCard } from "./OpeningHoursCard";
-import { setPlaces } from "../../../../../../store/actions/setPlaces";
-import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
-import DialogTransition from "../../../../../reusable/DialogTransition";
 import { useAppDispatch } from "redux-toolkit/hooks";
+import { setOpeningHours, useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
+import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
+import { changeOpeningHours, changeOpeningHoursForSelectedLocations } from "../../../../../../requests/OpeningHoursRequests";
+import { useCustomSnackbar } from "../../../../../../utils/snackbars";
+import DialogTransition from "../../../../../reusable/DialogTransition";
+import { OpeningHoursCard } from "./OpeningHoursCard";
 
 
 interface Props {
@@ -27,10 +25,10 @@ interface Props {
 export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen, setBusinessChain, businessChain, openingHours }) => {
 
     const [loading, setLoading] = useState(false)
-    const { currentPlace } = useCurrentPlaceContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const places = usePlacesSelector()
     const dispatch = useAppDispatch()
+    const currentPlace = useCurrentPlaceSelector()
 
     const saveChanges = async () => {
         setLoading(true)
@@ -58,8 +56,7 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, s
                 location.openingHours = openingHours
                 location.isActive = true
             }
-            currentPlace.openingHours = openingHours
-            currentPlace.isActive = true
+            dispatch(setOpeningHours(openingHours))
             enqueueSuccessSnackbar('You have successfully updated your opening hours')
             setDialogOpen(false)
         } catch (err) {

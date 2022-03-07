@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import React, { FC, useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface StyleProps {
     gradient1: number,
@@ -31,7 +31,7 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
 
 export const Banner: FC = () => {
 
-    const history = useHistory()
+    const navigate = useNavigate()
     const [gradient1, setGradient1] = useState(0.3)
     const [gradient2, setGradient2] = useState(0)
     const classes = useStyles({ gradient1: gradient1, gradient2: gradient2 })
@@ -62,7 +62,7 @@ export const Banner: FC = () => {
 
                         </Collapse>
                         <Fade in={window.scrollY < 150} timeout={2000}>
-                            <Button color="error" className={classes.button} onClick={() => history.push('/search')}
+                            <Button color="error" className={classes.button} onClick={() => navigate('/search')}
                                 variant="contained">Get started</Button>
                         </Fade>
                     </Grid>

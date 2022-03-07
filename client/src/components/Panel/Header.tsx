@@ -8,9 +8,9 @@ import Grid from "@mui/material/Grid";
 import Toolbar from '@mui/material/Toolbar';
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, useRouteMatch } from 'react-router';
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
+import { useNavigate } from 'react-router-dom'
 
 
 const Header: FC = () => {
@@ -18,10 +18,9 @@ const Header: FC = () => {
     // const { setPanelOpen } = usePageContext()
     // const { places, setSelectedOption} = usePanelContext()
 
-    let match = useRouteMatch();
     const places = usePlacesSelector()
     const dispatch = useDispatch()
-    const history = useHistory()
+    const navigate = useNavigate()
 
 
 
@@ -32,14 +31,14 @@ const Header: FC = () => {
                     <Grid item container justifyContent="flex-end" alignItems="center">
                         <ColorModeSwitch />
                         <Tooltip title="Home">
-                            <IconButton onClick={() => history.push('/')} color="inherit" size="large">
+                            <IconButton onClick={() => navigate('/')} color="inherit" size="large">
                                 <HomeIcon />
                             </IconButton>
 
                         </Tooltip>
                         <Tooltip title="Dashboard">
                             <IconButton
-                                onClick={() => history.push(`${match.url}/dashboard`)}
+                                onClick={() => navigate(`dashboard`)}
                                 color="inherit"
                                 size="large">
                                 <DashboardIcon />
@@ -47,7 +46,7 @@ const Header: FC = () => {
                         </Tooltip>
                         <Tooltip title="New place">
                             <IconButton
-                                onClick={() => history.push(`${match.url}/new-place`)}
+                                onClick={() => navigate(`new-place`)}
                                 color="inherit"
                                 size="large">
                                 <AddIcon />
@@ -55,7 +54,7 @@ const Header: FC = () => {
                         </Tooltip>
                         <Tooltip title="New business chain">
                             <IconButton
-                                onClick={() => history.push(`${match.url}/new-business-chain`)}
+                                onClick={() => navigate(`new-business-chain`)}
                                 color="inherit"
                                 size="large">
                                 <CloudCircle />

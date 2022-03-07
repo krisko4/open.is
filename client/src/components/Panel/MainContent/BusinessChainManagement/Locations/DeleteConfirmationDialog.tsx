@@ -1,7 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Alert } from '@mui/material';
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
 import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext';
@@ -10,6 +9,7 @@ import { deleteLocations } from '../../../../../requests/PlaceRequests';
 import { setPlaces } from '../../../../../store/actions/setPlaces';
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
 import DialogTransition from '../../../../reusable/DialogTransition';
+import {useNavigate} from 'react-router-dom'
 
 interface Props {
     dialogOpen: boolean,
@@ -23,7 +23,7 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
     const [loading, setLoading] = React.useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
     const { businessChain, setBusinessChain } = useBusinessChainContext()
-    const history = useHistory()
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const places = usePlacesSelector()
 
@@ -35,7 +35,7 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
                 enqueueSuccessSnackbar('You have successfully deleted your business chain.')
                 const newPlaces = places.filter(place => place._id !== businessChain._id)
                 dispatch(setPlaces(newPlaces))
-                history.push('/panel/dashboard')
+                navigate('/panel/dashboard')
                 return
             }
             await deleteLocations(businessChain._id as string, selectedLocations)

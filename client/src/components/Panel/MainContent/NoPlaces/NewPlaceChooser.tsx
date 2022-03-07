@@ -1,10 +1,9 @@
 import { CardActions, Slide, Button, Alert, Divider, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material"
 import { FC } from "react"
-import { useHistory, useRouteMatch } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export const NewPlaceChooser: FC = () => {
-    const match = useRouteMatch()
-    const history = useHistory()
+    const navigate = useNavigate()
     return (
         <Grid container justifyContent="space-evenly">
             <Grid item lg={5}>
@@ -32,7 +31,7 @@ export const NewPlaceChooser: FC = () => {
                                         Detailed analysis of user activity across the location of your business, without additional unnecessary settings
                                     </Alert>
                                 </Grid>
-                                <Button onClick={() => history.push(`${match.url}/new-place`)} fullWidth size="large" variant="contained" color="primary">
+                                <Button onClick={() => navigate(`new-place`)} fullWidth size="large" variant="contained" color="primary">
                                     Register new place
                                 </Button>
 
@@ -65,7 +64,7 @@ export const NewPlaceChooser: FC = () => {
                                     Detailed analysis of user activity across specific locations of your business and a whole business as a unit
                                 </Alert>
                             </Grid>
-                            <Button onClick={() => history.push(`${match.url}/new-business-chain`)} fullWidth size="large" variant="contained" color="primary">
+                            <Button onClick={() => navigate(`new-business-chain`)} fullWidth size="large" variant="contained" color="primary">
                                 Register new business chain
                             </Button>
                         </CardContent>

@@ -1,11 +1,10 @@
 import { Card, CardContent, Typography } from "@mui/material"
 import React from 'react'
 import { FC } from "react"
+import { useDescriptionSelector } from "redux-toolkit/slices/currentPlaceSlice"
 
-interface Props {
-    description: string
-}
-export const PlaceDescription: FC<Props> = ({ description }) => {
+export const PlaceDescription: FC = () => {
+    const description = useDescriptionSelector()
     return (
         <Card elevation={10} style={{ flexGrow: 1 }}>
             <CardContent>
@@ -19,5 +18,3 @@ export const PlaceDescription: FC<Props> = ({ description }) => {
     )
 
 }
-
-export const MemoizedPlaceDescription = React.memo(PlaceDescription)

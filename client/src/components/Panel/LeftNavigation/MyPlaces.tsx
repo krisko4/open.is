@@ -1,6 +1,6 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
 import { FC, useState } from "react"
-import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
+import { useNavigate, useLocation} from "react-router-dom"
 import { RawPlaceDataProps } from "contexts/PlaceProps"
 import { convertToCurrentPlace } from 'utils/place_data_utils'
 import {usePlacesSelector} from 'redux-toolkit/slices/placesSlice'
@@ -13,9 +13,8 @@ interface Props {
 export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
 
     const places = usePlacesSelector()
-    const history = useHistory()
+    const navigate = useNavigate()
     const location = useLocation()
-    const match = useRouteMatch()
 
     const choosePlace = (place: RawPlaceDataProps, index: number) => {
         if (place._id === selectedOption) {
@@ -24,10 +23,10 @@ export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
         setSelectedOption(place._id as string)
         const currentPlace = convertToCurrentPlace(place)[0]
         if (currentPlace.isActive) {
-            history.push(`${match.url}/management/${currentPlace._id}/${Destinations.HOME}`)
+            navigate(`management/${currentPlace._id}/${Destinations.HOME}`)
             return
         }
-        history.push(`${match.url}/management/${currentPlace._id}/${Destinations.OPENING_HOURS}`)
+        navigate(`management/${currentPlace._id}/${Destinations.OPENING_HOURS}`)
     }
 
     return <>

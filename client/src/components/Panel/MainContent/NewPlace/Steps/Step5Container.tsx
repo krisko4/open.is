@@ -1,20 +1,20 @@
-import { FC } from "react"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { FC, useMemo } from "react"
+import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { Step5 } from "./Step5/Step5"
 
-interface Props{
-    isEditionMode?: boolean
+interface Props {
+    isEditionMode?: boolean,
+    logoFile: File | null
 }
 
-export const Step5Container: FC<Props> = ({isEditionMode}) => {
+export const Step5Container: FC<Props> = ({ isEditionMode, logoFile }) => {
 
-    const { imageFile, currentPlace } = useCurrentPlaceContext()
+    const currentPlace = useCurrentPlaceSelector()
 
-
-    const prepareFormData = () => {
+    const formData = useMemo(() => {
         const images: any = currentPlace.images.filter(image => image.file !== null).map(image => image.file)
         const place = {
-            logo: imageFile as File,
+            logo: logoFile as File,
             name: currentPlace.name,
             subtitle: currentPlace.subtitle,
             description: currentPlace.description,
@@ -44,8 +44,8 @@ export const Step5Container: FC<Props> = ({isEditionMode}) => {
             formData.append('images', image)
         }
         return formData
-    }
+    }, [logoFile, currentPlace.images ])
 
-    return <Step5 isEditionMode={isEditionMode} formData={prepareFormData()} />
+    return <Step5 isEditionMode={isEditionMode} formData={formData} />
 
 }

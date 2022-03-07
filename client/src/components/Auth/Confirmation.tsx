@@ -1,31 +1,29 @@
 import { FC, useEffect } from "react";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { confirmRegistrationToken } from "../../requests/AuthRequests";
 import { useCustomSnackbar } from "../../utils/snackbars";
 
-interface Params {
-    token: string
-}
 
 export const Confirmation: FC = () => {
 
-    const { token } = useParams<Params>()
-    const history = useHistory()
+    const { token } = useParams()
+    const navigate = useNavigate()
     const {enqueueWarningSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     useEffect(() => {
-        confirmRegistrationToken(token).then(() => {
+        confirmRegistrationToken(token as string).then(() => {
             enqueueSuccessSnackbar(`Your account has been activated. You can sign in now.`)
-            history.push('/')
+            navigate('/')
         })
             .catch(err => {
                 if (err.response.data === `Provided token has expired.`) {
                     enqueueWarningSnackbar(`Your activation token has expired. Please try to sign in again.`)
-                    history.push('/')
+                    navigate('/')
                     return
                 }
                 enqueueErrorSnackbar()
-                history.push('/')
+                navigate('/')
             })
     }, [])
 

@@ -1,37 +1,18 @@
-import { CircularProgress, Grid, Paper, Popper, TextField } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
-import { Autocomplete } from '@mui/material';
-import match from 'autosuggest-highlight/match'
-import parse from 'autosuggest-highlight/parse'
-import React, { FC, useEffect, useRef, useState } from "react"
-import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext"
-import { useMapContext } from "../../contexts/MapContext/MapContext"
-import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
-import { findByAddress } from "../../requests/PlaceRequests"
-import { styled } from "@mui/styles";
+import { Autocomplete, CircularProgress, TextField } from "@mui/material";
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { setAddressData, useAddressDataSelector, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
+import { useMapContext } from "../../contexts/MapContext/MapContext";
+import { findByAddress } from "../../requests/PlaceRequests";
 
 interface Props {
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
     errorMessage: string
 }
 
-// const useStyles = makeStyles({
-//     input: {
-//         '& .MuiInputBase-root, .MuiFormHelperText-root': {
-//             color: 'white'
-//         },
-//     },
-//     paper: {
-//         color: 'white',
-//         background: '#18202b'
-//     },
-//     clearIndicator: {
-//         color: 'red'
-//     },
-//     loading: {
-//         color: 'white'
-//     }
-// })
 
 
 
@@ -39,11 +20,14 @@ interface Props {
 export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) => {
 
     const { setPlaceCoords } = useMapContext()
-    const { availableAddresses, setAvailableAddresses, setChosenCriterias, setSelectedAddress } = useAddressDetailsContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const { availableAddresses, setAvailableAddresses, setSelectedPlaces, setSelectedAddress } = useAddressDetailsContext()
+    console.log('search')
     const [inputValue, setInputValue] = useState('')
     const isFirstFind = useRef(true)
     const [loading, setLoading] = useState(false)
+    const addressData = useAddressDataSelector()
+    const dispatch = useAppDispatch()
+    const currentPlace = useCurrentPlaceSelector()
 
 
     const selectPlace = async (place: any) => {
@@ -52,9 +36,7 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
             if (!place.raw.address.postcode) {
                 setErrorMessage('This is not a valid address. Your address should include street number and postcode.')
             }
-            console.log(place)
             const { osm_type, osm_id } = place.raw
-
             setSelectedAddress({
                 label: place.label,
                 lng: place.x,
@@ -68,30 +50,33 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
                 lng: place.x,
                 mapZoom: 20
             })
-            const newCurrentPlace = { ...currentPlace }
-            newCurrentPlace.lat = place.y
-            newCurrentPlace.lng = place.x
-            setCurrentPlace(newCurrentPlace)
-            setChosenCriterias([newCurrentPlace])
+            const newAddressData = {
+                ...addressData,
+                lat: place.y,
+                lng: place.x
+            }
+            dispatch(setAddressData(newAddressData))
+            // setSelectedPlaces([])
+            setSelectedPlaces([{ ...currentPlace, lat: place.y, lng: place.x }])
         }
     }
 
 
     useEffect(() => {
-        if (currentPlace.address !== '') {
+        if (addressData.address !== '') {
             setSelectedAddress({
-                label: currentPlace.address,
-                lng: currentPlace.lng,
-                lat: currentPlace.lat,
+                label: addressData.address,
+                lng: addressData.lng,
+                lat: addressData.lat,
                 language: navigator.language,
-                addressId: currentPlace.addressId
+                addressId: addressData.addressId
             })
             setPlaceCoords({
-                lat: currentPlace.lat,
-                lng: currentPlace.lng,
+                lat: addressData.lat,
+                lng: addressData.lng,
                 mapZoom: 20
             })
-            setChosenCriterias([{ ...currentPlace }])
+            setSelectedPlaces([{ ...currentPlace, lat: addressData.lat, lng: addressData.lng }])
         }
     }, [])
 

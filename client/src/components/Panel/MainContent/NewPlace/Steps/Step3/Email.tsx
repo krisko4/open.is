@@ -1,25 +1,23 @@
 
+
 import MailIcon from '@mui/icons-material/Mail';
-import { InputAdornment, TextField } from "@mui/material"
-import React, { FC, useEffect, useRef } from "react"
-import { FieldValues, useFormContext, useWatch } from "react-hook-form"
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
+import { InputAdornment, TextField } from "@mui/material";
+import React, { FC, useEffect, useRef } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { setEmail } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useEmailSelector } from 'store/selectors/EmailSelector';
 
-export const EmailContainer: FC = () => {
-    const methods = useFormContext()
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
-    return <Email setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} {...methods} />
 
-}
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<React.SetStateAction<CurrentPlaceProps>>
-}
+export const Email: FC = () => {
 
-const Email = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlace, control, register, setValue, formState: { errors } }) => {
-    const email = useWatch({
+    const {control, register, formState: {errors}, setValue} = useFormContext()
+    const dispatch = useAppDispatch()
+    const email = useEmailSelector()
+    
+
+    const currentEmail = useWatch({
         control,
         name: 'email'
     })
@@ -28,15 +26,12 @@ const Email = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlace, 
 
     useEffect(() => {
         if (isFirstRender.current) {
-            setValue('email', currentPlace.email)
+            setValue('email', email)
             isFirstRender.current = false
             return
         }
-        setCurrentPlace(place => {
-            place.email = email
-            return { ...place }
-        })
-    }, [email])
+        dispatch(setEmail(currentEmail))
+    }, [currentEmail])
 
     return (
         <TextField
@@ -52,6 +47,4 @@ const Email = React.memo<FieldValues & Props>(({ currentPlace, setCurrentPlace, 
             }}
         />
     )
-}, (prevProps, nextProps) => {
-    return prevProps.getValues('email') === nextProps.getValues('email') && prevProps.formState === nextProps.formState
-})
+}

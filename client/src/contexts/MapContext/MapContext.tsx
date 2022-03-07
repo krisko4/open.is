@@ -1,5 +1,4 @@
 import React, { createContext, FC, useContext, useState } from "react";
-import { CurrentPlaceProps } from "../PlaceProps";
 import MapContextProps from "./MapContextProps";
 
 
@@ -27,7 +26,6 @@ const useProviderSettings = (isDraggable: boolean) => {
     const [popupOpen, setPopupOpen] = useState(false)
     const [popupIndex, setPopupIndex] = useState(0)
     const [isPlaceCardClicked, setPlaceCardClicked] = useState(false)
-    const [currentPlace, setCurrentPlace] = useState<CurrentPlaceProps | null>(null)
     return {
         popupOpen,
         setPopupOpen,
@@ -37,8 +35,6 @@ const useProviderSettings = (isDraggable: boolean) => {
         setPlaceCoords,
         isPlaceCardClicked,
         setPlaceCardClicked,
-        currentPlace,
-        setCurrentPlace,
         isMarkerDraggable,
         setMarkerDraggable
 

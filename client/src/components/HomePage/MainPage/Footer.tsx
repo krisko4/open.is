@@ -4,8 +4,8 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import React, { FC } from "react";
-import { useHistory } from "react-router";
 import { SocialIcon } from "react-social-icons";
+import {useNavigate} from 'react-router-dom'
 
 
 
@@ -16,13 +16,13 @@ interface Props {
 const Footer: FC<Props> = ({ classes }) => {
 
 
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return (
         <Grid container className={classes.footer} alignItems="center" direction="column">
             <div>
-                <Button onClick={() => history.push('/contact')} style={{ color: 'white' }}>Contact</Button>
-                <Button onClick={() => history.push('/about')} style={{ color: 'white' }}>About us</Button>
+                <Button onClick={() => navigate('/contact')} style={{ color: 'white' }}>Contact</Button>
+                <Button onClick={() => navigate('/about')} style={{ color: 'white' }}>About us</Button>
             </div>
             <Grid item xs={8} style={{textAlign: 'center'}}>
                 <Typography variant="body1" className={classes.text}>

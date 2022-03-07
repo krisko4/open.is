@@ -1,8 +1,7 @@
 
 import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
 import { FC, useState } from "react"
-import { useHistory, useRouteMatch } from "react-router"
-import { match } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { RawPlaceDataProps } from "../../../../contexts/PlaceProps"
 import { usePlacesSelector } from "../../../../redux-toolkit/slices/placesSlice"
 import { setPlace } from "../../../../store/actions/setCurrentPlace"
@@ -16,18 +15,17 @@ interface Props {
 export const MyBusinessChains: FC<Props> = ({ selectedOption, setSelectedOption }) => {
 
     const places = usePlacesSelector()
-    const history = useHistory()
-    const match = useRouteMatch()
+    const navigate = useNavigate()
     const choosePlace = (place: RawPlaceDataProps) => {
         // if (place._id === selectedOption) {
         //     return
         // }
         setSelectedOption(place._id as string)
-        history.push({
-            pathname: `${match.url}/business-chain/${place._id}/dashboard`,
-            state: { place }
-        }
-        )
+        // navigate({
+        //     pathname: `business-chain/${place._id}/dashboard`,
+        //     state: { place }
+        // }
+        // )
     }
 
 

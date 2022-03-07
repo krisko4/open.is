@@ -1,15 +1,8 @@
-import { Slide, Grid, Paper, Tab, Tabs } from "@mui/material"
-import React, { FC, useEffect, useState } from "react"
-import { Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom"
-import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
-import { RawPlaceDataProps } from "../../contexts/PlaceProps"
-import { convertToCurrentPlace } from "../../utils/place_data_utils"
-import { Destinations } from "../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard"
+import { Grid, Paper, Slide, Tab, Tabs } from "@mui/material"
+import React, { FC } from "react"
+import { Outlet, useNavigate } from "react-router-dom"
 
 
-interface MatchProps {
-    id: string
-}
 
 interface Props {
     tabs: {
@@ -27,15 +20,12 @@ interface Props {
 export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, setValue, tabs, placeId }) => {
 
 
-    const match = useRouteMatch<MatchProps>()
-    const history = useHistory()
-    const { currentPlace } = useCurrentPlaceContext()
-
+    const navigate = useNavigate()
 
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
         setValue(newValue);
-        history.push(`${match.url}/${newValue}`)
+        // navigate(newValue)
     };
 
     return (
@@ -57,21 +47,21 @@ export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, set
                 </Paper>
             </Slide>
             <Grid container sx={{ flexGrow: 1 }}>
-                <Switch>
-                    {
-                        tabs.map((tab) =>
-                            <Route
-                                key={`${match.url}/${tab.url}`}
-                                component={() => <>
-                                    {value === tab.url && (placeId === currentPlace._id || areBusinessChainTabs) &&
-                                        tab.content
-                                    }
-                                </>}
-                                path={`${match.url}/${tab.url}`}
-                            />
-                        )
-                    }
-                </Switch>
+                {/* {
+                    tabs.map((tab) =>
+                        <Route
+                            key={tab.url}
+                            element={() => tab.content}
+                            // component={() => <>
+                            //     {value === tab.url && (placeId === currentPlace._id || areBusinessChainTabs) &&
+                            //         tab.content
+                            //     }
+                            // </>}
+                            path={tab.url}
+                        />
+                    )
+                } */}
+                <Outlet/>
             </Grid>
 
 

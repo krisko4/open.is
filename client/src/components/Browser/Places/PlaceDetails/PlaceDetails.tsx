@@ -6,10 +6,10 @@ import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
 import React, { FC, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { setCurrentPlace, setSubscription, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { useLoginContext } from "../../../../contexts/LoginContext";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
@@ -17,10 +17,7 @@ import { removeSubscription } from "../../../../requests/SubscriptionRequests";
 import { addNewVisit } from "../../../../requests/VisitRequests";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import { LoadingButton } from "../../../reusable/LoadingButton";
-import { News } from "../../../reusable/News";
-import { OpeningHours } from "../../../reusable/OpeningHours/OpeningHours";
-import { Opinions } from "../../../reusable/Opinions/Opinions";
-import { ImagesCarousel } from './ImageCarousel/ImagesCarousel';
+import { ImagesCarousel } from './ImageCarousel/ImagesCarouselMemo';
 import MainContent from "./MainContent";
 import { SubscribeDialog } from './SubscribeDialog';
 
@@ -37,25 +34,27 @@ const addVisit = async (place: CurrentPlaceProps) => {
 }
 
 interface Props {
-    currentPlace: CurrentPlaceProps,
-    popupIndex: number
-
+    popupIndex: number,
+    place : CurrentPlaceProps
 }
 
 
 
-export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
+export const PlaceDetails: FC<Props> = ({ popupIndex, place }) => {
 
-    const { setPopupOpen, setPlaceCoords, setCurrentPlace, setPlaceCardClicked, setPopupIndex } = useMapContext()
+    const { setPopupOpen, setPlaceCoords, setPlaceCardClicked, setPopupIndex } = useMapContext()
     const { userData } = useLoginContext()
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [value, setValue] = useState(0)
     const [loading, setLoading] = useState(false)
     const { enqueueInfoSnackbar, enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
+    const dispatch = useAppDispatch()
+    const currentPlace = useCurrentPlaceSelector()
 
 
     useEffect(() => {
         setPlaceCardClicked(true)
+        dispatch(setCurrentPlace(place))
         addVisit(currentPlace)
         setPopupOpen(true)
         setPopupIndex(popupIndex)
@@ -67,7 +66,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     }, [])
 
 
-    const history = useHistory()
+    const navigate = useNavigate()
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
@@ -77,17 +76,14 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
         return <Tab {...rest} label={label} disableRipple />
     }
     const tabContents = [
-        <News currentPlace={currentPlace} setCurrentPlace={setCurrentPlace} />,
-        <OpeningHours setCurrentPlace={setCurrentPlace} currentPlace={currentPlace} />,
-        <Opinions
-            currentPlace={currentPlace}
-            setCurrentPlace={setCurrentPlace}
-
-        />
+        // <News />,
+        // <OpeningHours />,
+        // <Opinions
+        // />
     ]
 
     const closePlaceDetails = () => {
-        history.push(`/search`)
+        navigate(`/search`)
         setPlaceCardClicked(false)
         setPopupOpen(false)
         setPlaceCoords(currentCoords => {
@@ -99,12 +95,9 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
     const unsubscribe = async () => {
         setLoading(true)
         try {
-            const res = await removeSubscription(currentPlace._id as string)
+            await removeSubscription(currentPlace._id as string)
             enqueueInfoSnackbar('You have cancelled your subscription')
-            const newCurrentPlace = { ...currentPlace }
-            newCurrentPlace.isUserSubscriber = false
-            setCurrentPlace(newCurrentPlace)
-            console.log(res.data)
+            dispatch(setSubscription(false))
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {
@@ -130,9 +123,9 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        sx={{mr: 1}}
-                                        startIcon={<SettingsIcon/>}
-                                        onClick={() => history.push(`/panel/management/${currentPlace._id}/home`)}
+                                        sx={{ mr: 1 }}
+                                        startIcon={<SettingsIcon />}
+                                        onClick={() => navigate(`/panel/management/${currentPlace._id}/home`)}
                                     >
                                         Manage
                                     </Button>
@@ -187,7 +180,7 @@ export const PlaceDetails: FC<Props> = ({ currentPlace, popupIndex }) => {
                     </Paper>
                     <Grid container item>
                         <Grid container style={{ height: 500 }}>
-                            {tabContents[value]}
+                            {/* {tabContents[value]} */}
                         </Grid>
                     </Grid>
                 </Grid>

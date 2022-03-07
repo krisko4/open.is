@@ -3,9 +3,11 @@ import { Alert } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { useSnackbar } from "notistack";
 import React, { FC, useState } from "react";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { useCurrentPlaceSelector, setSubscription } from "redux-toolkit/slices/currentPlaceSlice";
 import { useMapContext } from "../../../../contexts/MapContext/MapContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
-import { addSubscription } from "../../../../requests/SubscriptionRequests";
+import { subscribeToPlace } from "../../../../requests/SubscriptionRequests";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import DialogTransition from "../../../reusable/DialogTransition";
 import { LoadingButton } from "../../../reusable/LoadingButton";
@@ -35,23 +37,21 @@ const useStyles = makeStyles({
     }
 })
 
-export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDialogOpen }) => {
+export const SubscribeDialog: FC<Props> = ({ isDialogOpen, setDialogOpen }) => {
     const classes = useStyles()
-    const { setCurrentPlace } = useMapContext()
+    const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+    const currentPlace = useCurrentPlaceSelector()
 
 
-    const setSubscription = async () => {
+    const addSubscription = async () => {
         setLoading(true)
         try {
-            await addSubscription(currentPlace._id as string)
+            await subscribeToPlace(currentPlace._id as string)
             enqueueSuccessSnackbar('You have subscribed to a new place')
-            const newCurrentPlace = { ...currentPlace }
-            newCurrentPlace.isUserSubscriber = true
-            setCurrentPlace(newCurrentPlace)
+            dispatch(setSubscription(true))
             setDialogOpen(false)
-
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {
@@ -107,7 +107,7 @@ export const SubscribeDialog: FC<Props> = ({ currentPlace, isDialogOpen, setDial
             </DialogContent>
 
             <DialogActions>
-                <LoadingButton loading={loading} disabled={loading} onClick={() => setSubscription()} color="primary">
+                <LoadingButton loading={loading} disabled={loading} onClick={() => addSubscription()} color="primary">
                     Subscribe
                 </LoadingButton>
 

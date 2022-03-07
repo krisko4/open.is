@@ -2,6 +2,7 @@ import { LoadingButton } from "@mui/lab"
 import { Button, Fade, Grid, Paper, Slide, Typography } from "@mui/material"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
+import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { useColorMode } from "../../../../../contexts/ColorModeContext"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
@@ -16,14 +17,10 @@ interface Props {
     isEditionMode?: boolean,
     img?: File | ArrayBuffer | null | string,
     setAddLocationsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>,
-
-    // setLocations: React.Dispatch<React.SetStateAction<LocationProps[]>>,
-    // locations: LocationProps[]
 }
 
 export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, isEditionMode, img, setAddLocationsDialogOpen }) => {
 
-    const { currentPlace } = useCurrentPlaceContext()
     const isFirstRenderAddress = useRef(true)
     const isFirstRenderSave = useRef(true)
     const { enqueueInfoSnackbar } = useCustomSnackbar()
@@ -33,16 +30,16 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, is
     const [isValid, setValid] = useState(false)
     const { mode } = useColorMode()
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
+    const currentPlace = useCurrentPlaceSelector()
 
+
+    // useEffect(() => {
+    //     if (img) {
+    //         currentPlace.logo = img
+    //     }
+    // }, [img])
 
     useEffect(() => {
-        if (img) {
-            currentPlace.logo = img
-        }
-    }, [img])
-
-    useEffect(() => {
-        console.log(selectedLocations)
         if (isFirstValidationRender.current) {
             isFirstValidationRender.current = false
             return

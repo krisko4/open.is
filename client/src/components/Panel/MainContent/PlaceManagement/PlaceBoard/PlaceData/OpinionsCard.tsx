@@ -1,11 +1,12 @@
 import { Fade, Card, CardContent, Typography, Grid, Rating } from "@mui/material"
 import { FC } from "react"
+import { useAverageNoteSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { RatingChart } from "../../Charts/RatingChart"
 
 export const OpinionsCard: FC = () => {
 
-    const {currentPlace} = useCurrentPlaceContext()
+    const averageNote = useAverageNoteSelector()
 
     return (
         <Fade in={true} timeout={2000}>
@@ -22,7 +23,7 @@ export const OpinionsCard: FC = () => {
                             size="large"
                             name="simple-controlled"
                             readOnly
-                            value={currentPlace.averageNote?.average || 0}
+                            value={averageNote?.average || 0}
                             style={{ marginTop: 10 }}
                         />
                         <RatingChart />

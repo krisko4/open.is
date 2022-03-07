@@ -1,40 +1,25 @@
-import { FiberNew, Timelapse, Star, Favorite, Subscriptions } from "@mui/icons-material";
-import { Paper, Tab, Grid, Tabs, Fade, ListItem, Tooltip, Backdrop, CircularProgress } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Favorite, FiberNew, Star, Subscriptions, Timelapse } from "@mui/icons-material";
+import { CircularProgress, Fade, Grid, ListItem, Paper, Tab, Tabs, Tooltip } from "@mui/material";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
+import { Route, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { setPlaces } from "redux-toolkit/slices/placesSlice";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { useMapContext } from "../../../contexts/MapContext/MapContext";
-import { CurrentPlaceProps, RawPlaceDataProps } from "../../../contexts/PlaceProps";
+import { RawPlaceDataProps } from "../../../contexts/PlaceProps";
 import { getPlaces } from "../../../requests/PlaceRequests";
-import { convertToCurrentPlace } from "../../../utils/place_data_utils";
 import { useCustomSnackbar } from "../../../utils/snackbars";
 import { PlaceCard } from "./PlaceCard";
 import { PlaceDetails } from "./PlaceDetails/PlaceDetails";
 
 
-// const useStyles = makeStyles({
-//     myTab: {
-//         color: 'white',
-//         '&& .MuiTab-wrapper': {
-//             flexDirection: 'row',
-//             alignItems: 'unset'
-//         },
-//         '&& .MuiSvgIcon-root': {
-//             fill: 'white',
-//             marginRight: 2
-//         }
-//     }
-// })
-
 const MyTab = (props: any) => {
-    // const classes = useStyles()
     const { label, icon, ...rest } = props
     return <Tab {...rest} icon={icon} label={label} />
 }
-
 
 enum tabType {
     POPULAR = 0,
@@ -48,16 +33,17 @@ const PlacesBox: FC = () => {
 
 
 
-    const { chosenCriterias, setChosenCriterias } = useAddressDetailsContext()
+    const { selectedPlaces, setSelectedPlaces } = useAddressDetailsContext()
     const { enqueueErrorSnackbar } = useCustomSnackbar()
-    const { isPlaceCardClicked, currentPlace } = useMapContext()
+    const { isPlaceCardClicked } = useMapContext()
     const { userData: { isLoggedIn } } = useLoginContext()
     const [tabIndex, setTabIndex] = useState(0)
+    const dispatch = useAppDispatch()
     const isFirstRender = useRef(true)
     const scrollbarRef = useRef<any>()
-    const history = useHistory()
-    let match = useRouteMatch();
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
+    const currentPlace = useCurrentPlaceSelector()
 
 
     useEffect(() => {
@@ -85,10 +71,11 @@ const PlacesBox: FC = () => {
                         places = []
                         console.log('Invalid tab index')
                 }
-                let currentPlaces = places.map(place => convertToCurrentPlace(place))
-                let chosenCriterias: CurrentPlaceProps[] = []
-                currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => chosenCriterias.push(currentPlace)))
-                setChosenCriterias(chosenCriterias)
+                dispatch(setPlaces(places))
+                // let currentPlaces = places.map(place => convertToCurrentPlace(place))
+                // let newSelectedPlaces: CurrentPlaceProps[] = []
+                // currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => newSelectedPlaces.push(currentPlace)))
+                // setSelectedPlaces(newSelectedPlaces)
             } catch (err) {
                 enqueueErrorSnackbar()
             } finally {
@@ -100,10 +87,10 @@ const PlacesBox: FC = () => {
 
     const openPlaceDetails = (place: any) => {
         scrollbarRef.current?.scrollToTop()
-        history.push({
-            pathname: `${match.url}/${place._id}`,
-            state: { place: place }
-        })
+        // navigate({
+        //     pathname: `${place._id}`,
+        //     state: { place: place }
+        // })
     }
 
 
@@ -113,8 +100,8 @@ const PlacesBox: FC = () => {
             return
         }
         if (currentPlace) {
-            const newChosenCriterias = chosenCriterias.map((criterium: any) => criterium._id === currentPlace._id ? currentPlace : criterium)
-            setChosenCriterias(newChosenCriterias)
+            const newSelectedPlaces = selectedPlaces.map((place) => place._id === currentPlace._id ? currentPlace : place)
+            setSelectedPlaces(newSelectedPlaces)
         }
     }, [currentPlace])
 
@@ -157,18 +144,14 @@ const PlacesBox: FC = () => {
                     </Grid>
                     :
                     <Scrollbars autoHide ref={scrollbarRef}>
-                        <Switch>
-                            {chosenCriterias.map((place: any, index: number) =>
+                        {selectedPlaces.map((place, index: number) => (
+                            <div key={index}>
                                 <Route
-                                    key={index}
-                                    path={`${match.url}/${place._id}`}
-                                >
-                                    <PlaceDetails currentPlace={place} popupIndex={index} />
-                                </Route>
-                            )}
-                        </Switch>
-                        {
-                            chosenCriterias.map((place: any, index: number) => <div key={place._id}>
+                                    path={`${place._id}`}
+                                    element={
+                                        <PlaceDetails place={place} popupIndex={index} />
+                                    }
+                                />
                                 {isPlaceCardClicked ||
                                     <Fade in={true} timeout={1000}>
                                         <ListItem
@@ -186,20 +169,13 @@ const PlacesBox: FC = () => {
                                             />
                                         </ListItem>
                                     </Fade>
-
                                 }
                             </div>
-
-                            )
-                        }
+                        ))}
                     </Scrollbars >
-
                 }
             </Grid >
         </Grid >
-
-
-
     )
 }
 

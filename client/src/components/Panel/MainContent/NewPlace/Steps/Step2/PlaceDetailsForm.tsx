@@ -4,9 +4,12 @@ import React, { FC, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-import { BusinessTypeContainer } from "./BusinessType";
-import { DescriptionContainer } from "./Description";
-import { SubtitleContainer } from "./Subtitle";
+import { BusinessType } from "./BusinessType";
+import { BusinessTypeContainer } from "./BusinessTypeContainer";
+import { Description } from "./Description";
+import { DescriptionContainer } from "./DescriptionContainer";
+import { Subtitle } from "./Subtitle";
+import { SubtitleContainer } from "./SubtitleContainer";
 
 const schema = yup.object({
     subtitle: yup.string().required('This field is required').max(100),
@@ -45,11 +48,14 @@ export const PlaceDetailsForm: FC = () => {
         <FormProvider {...methods}>
             <form style={{ flexGrow: 1 }}>
                 <Grid item container>
-                    <BusinessTypeContainer />
+                    {/* <BusinessTypeContainer /> */}
+                    <BusinessType />
                     <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
-                        <SubtitleContainer />
+                        {/* <SubtitleContainer /> */}
+                        <Subtitle />
                     </Grid>
-                    <DescriptionContainer />
+                    {/* <DescriptionContainer /> */}
+                    <Description />
                     <Button
                         size="large"
                         fullWidth={true}
