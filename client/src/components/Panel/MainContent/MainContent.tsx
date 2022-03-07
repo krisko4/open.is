@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
 import React, { FC, useEffect } from "react";
 import { Route, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { BusinessChainContextProvider } from "../../../contexts/PanelContexts/BusinessChainContext";
 import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LocationContextProvider } from "../../../contexts/PanelContexts/LocationContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
-import { usePlacesSelector } from "../../../store/selectors/PlacesSelector";
 import Header from "../Header";
 import { BusinessChainManagement } from "./BusinessChainManagement/BusinessChainManagement";
 import { Dashboard } from "./Dashboard/Dashboard";

@@ -4,11 +4,13 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { useBusinessChainContext } from '../../../../contexts/PanelContexts/BusinessChainContext';
 import { CurrentPlaceContextProvider } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
 import { RawPlaceDataProps } from '../../../../contexts/PlaceProps';
-import { usePlacesSelector } from '../../../../store/selectors/PlacesSelector';
 import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
 import { BusinessChainSettings } from './Settings/BusinessChainSettings';
+import { Image } from '../../../../contexts/PlaceProps'
+import { convertToCurrentPlace } from '../../../../utils/place_data_utils';
+import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
 type Props = {
 
 };
@@ -16,7 +18,7 @@ type Props = {
 const tabs = [
     {
         name: 'Dashboard',
-        content: <NotReady/>,
+        content: <NotReady />,
         url: 'dashboard'
     },
     {
@@ -26,7 +28,7 @@ const tabs = [
     },
     {
         name: 'Settings',
-        content: <BusinessChainSettings/>,
+        content: <BusinessChainSettings />,
         url: 'settings'
     },
 ]
@@ -42,21 +44,12 @@ export const BusinessChainManagement = (props: Props) => {
     const places = usePlacesSelector()
     const { businessChain, setBusinessChain } = useBusinessChainContext()
     const match = useRouteMatch<StateType>()
-    const history = useHistory()
 
 
     useEffect(() => {
         const { id } = match.params
-        console.log(id)
-        console.log(location.pathname)
-        console.log(match.url)
-        // if (location.pathname === `${match.url}`) {
-        //     console.log('in')
-        //     history.push(`${match.url}/dashboard`)
-        // }
         if (id !== businessChain._id) {
             const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
-            console.log(businessChain)
             setBusinessChain(businessChain)
         }
         const dest = location.pathname.substring(match.url.length + 1)

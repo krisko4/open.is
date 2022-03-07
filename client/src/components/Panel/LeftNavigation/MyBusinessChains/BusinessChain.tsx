@@ -1,13 +1,13 @@
 import { Avatar, Collapse, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
 import { StarBorder } from "@mui/icons-material"
 import { FC, useState } from "react"
-import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { setPlace } from "../../../../store/actions/setCurrentPlace"
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils"
 import { LocationProps, RawPlaceDataProps } from "../../../../contexts/PlaceProps"
+import { useAppDispatch } from "redux-toolkit/hooks"
 
 interface Props {
     place: RawPlaceDataProps
@@ -17,7 +17,7 @@ export const BusinessChain: FC<Props> = ({ place }) => {
 
     const [open, setOpen] = useState(false)
     const history = useHistory()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const match = useRouteMatch()
 
     const choosePlace = (place: RawPlaceDataProps, location: LocationProps) => {

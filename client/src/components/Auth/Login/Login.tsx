@@ -5,8 +5,8 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import { LoginForm } from "./LoginForm";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import DialogTransition from '../../reusable/DialogTransition';
+import { useAuthContext } from "contexts/AuthContext";
+import DialogTransition from 'components/reusable/DialogTransition';
 
 
 

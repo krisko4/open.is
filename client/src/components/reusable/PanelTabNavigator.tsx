@@ -3,7 +3,6 @@ import React, { FC, useEffect, useState } from "react"
 import { Route, Switch, useHistory, useLocation, useRouteMatch } from "react-router-dom"
 import { useCurrentPlaceContext } from "../../contexts/PanelContexts/CurrentPlaceContext"
 import { RawPlaceDataProps } from "../../contexts/PlaceProps"
-import { usePlacesSelector } from "../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from "../../utils/place_data_utils"
 import { Destinations } from "../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard"
 

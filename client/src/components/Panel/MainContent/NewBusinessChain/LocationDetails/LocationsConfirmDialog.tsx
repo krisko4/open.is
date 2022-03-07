@@ -1,11 +1,11 @@
 import { LoadingButton } from "@mui/lab"
 import { DialogContent, Dialog, DialogTitle, DialogActions, Grid, Button } from "@mui/material"
 import { FC, useState } from "react"
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
 import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
 import { LocationProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps"
 import { addLocations } from "../../../../../requests/PlaceRequests"
-import { usePlacesSelector } from "../../../../../store/selectors/PlacesSelector"
 import { useCustomSnackbar } from "../../../../../utils/snackbars"
 
 interface Props {

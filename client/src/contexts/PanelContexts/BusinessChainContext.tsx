@@ -1,5 +1,5 @@
 import { createContext, useContext, FC, useState } from "react";
-import { defaultNews, defaultOpinions } from "../../utils/defaults";
+import { defaultImages, defaultNews, defaultOpinions } from "../../utils/defaults";
 import { RawPlaceDataProps, Status } from "../PlaceProps";
 
 export const BusinessChainContext = createContext<BusinessChainContextData | null>(null)
@@ -40,7 +40,7 @@ export const clearBusinessChain = {
     description: '',
     subtitle: '',
     logo: '',
-    images: [],
+    images: defaultImages,
     userId: '',
     isBusinessChain: true
 

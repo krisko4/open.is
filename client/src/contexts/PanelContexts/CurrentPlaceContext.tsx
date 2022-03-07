@@ -1,6 +1,6 @@
 
 import { createContext, useContext, FC, useState, useEffect } from "react";
-import { defaultNews, defaultOpinions } from "../../utils/defaults";
+import { defaultImages, defaultNews, defaultOpinions } from "../../utils/defaults";
 import { CurrentPlaceProps, VisitProps } from "../PlaceProps";
 
 export const CurrentPlaceContext = createContext<CurrentPlaceContextData | null>(null)
@@ -32,12 +32,7 @@ export const clearPlace = {
     subtitle: '',
     phone: '',
     logo: '',
-    images: [
-        { img: '', file: null },
-        { img: '', file: null },
-        { img: '', file: null },
-        { img: '', file: null },
-    ],
+    images: defaultImages,
     email: '',
     website: '',
     instagram: '',

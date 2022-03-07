@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import {Image} from '../contexts/PlaceProps'
 
 export const defaultNews = [
     {
@@ -19,6 +20,14 @@ export const defaultNews = [
 
     }
 
+]
+
+
+export const defaultImages : Image[] = [
+    { img: '', file: null },
+    { img: '', file: null },
+    { img: '', file: null },
+    { img: '', file: null },
 ]
 
 

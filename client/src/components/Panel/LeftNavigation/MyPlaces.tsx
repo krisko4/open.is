@@ -1,19 +1,17 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
 import { FC, useState } from "react"
-import { useDispatch } from "react-redux"
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
-import { RawPlaceDataProps } from "../../../contexts/PlaceProps"
-import { setPlace } from "../../../store/actions/setCurrentPlace"
-import { usePlacesSelector } from "../../../store/selectors/PlacesSelector"
-import { convertToCurrentPlace } from '../../../utils/place_data_utils'
+import { RawPlaceDataProps } from "contexts/PlaceProps"
+import { convertToCurrentPlace } from 'utils/place_data_utils'
+import {usePlacesSelector} from 'redux-toolkit/slices/placesSlice'
 import { Destinations } from "../MainContent/PlaceManagement/PlaceBoard/PlaceBoard"
+
 interface Props {
     selectedOption: string,
     setSelectedOption: React.Dispatch<React.SetStateAction<string>>
 }
 export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
 
-    const dispatch = useDispatch()
     const places = usePlacesSelector()
     const history = useHistory()
     const location = useLocation()

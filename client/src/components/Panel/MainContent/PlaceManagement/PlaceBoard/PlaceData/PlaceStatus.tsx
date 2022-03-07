@@ -9,15 +9,15 @@ import { convertToRawPlaceData } from "../../../../../../utils/place_data_utils"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import NoMeetingRoomIcon from '@mui/icons-material/NoMeetingRoom';
-import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
 
 export const PlaceStatus: FC = () => {
 
     const [loading, setLoading] = useState(false)
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const places = usePlacesSelector()
 
 

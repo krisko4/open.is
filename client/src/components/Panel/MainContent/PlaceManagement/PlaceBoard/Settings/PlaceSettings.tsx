@@ -3,7 +3,6 @@ import { useRouteMatch } from "react-router-dom";
 import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
 import { StepContextProvider } from "../../../../../../contexts/StepContext";
-import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils";
 import { NewPlace } from "../../../NewPlace/NewPlace";
 import newPlaceSteps from "../../../NewPlace/Steps/steps";

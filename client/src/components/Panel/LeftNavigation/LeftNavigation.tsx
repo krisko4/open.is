@@ -5,13 +5,13 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import React, { FC, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../../contexts/LoginContext";
-import { usePlacesSelector } from '../../../store/selectors/PlacesSelector';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
 import { RawPlaceDataProps } from '../../../contexts/PlaceProps';
+import { usePlacesSelector } from '../../../redux-toolkit/slices/placesSlice';
+import { useAppDispatch } from '../../../redux-toolkit/hooks';
 
 
 const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
@@ -41,7 +41,7 @@ const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
 export const LeftNavigation: FC = () => {
 
     const places = usePlacesSelector()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const history = useHistory()
     const match = useRouteMatch()
     const { userData } = useLoginContext()

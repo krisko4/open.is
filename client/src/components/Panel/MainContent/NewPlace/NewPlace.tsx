@@ -2,7 +2,7 @@ import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from "@mui/
 import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { clearPlace, CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
@@ -14,6 +14,9 @@ import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
 import { Step5 } from "./Steps/Step5/Step5";
 import { Step5Container } from "./Steps/Step5Container";
+import {setPlace} from '../../../../store/actions/setCurrentPlace'
+import { useAppDispatch } from "redux-toolkit/hooks";
+
 
 
 
@@ -41,11 +44,18 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
 
     const { activeStep, setActiveStep } = useStepContext()
     const { enqueueInfoSnackbar } = useCustomSnackbar()
+    const dispatch = useAppDispatch()
+
+
+
+
+
 
 
     useEffect(() => {
         isEditionMode && enqueueInfoSnackbar('In edition mode you can switch freely between steps. Click on the step label to check it out.')
-
+        dispatch(setPlace(initialPlaceData || clearPlace))
+        
     }, [])
 
     return (

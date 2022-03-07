@@ -10,12 +10,12 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { Rating } from '@mui/material';
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router";
-import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { ActivityChart } from './Charts/ActivityChart';
 import { RawPlaceDataProps, VisitProps } from "../../../../contexts/PlaceProps";
 import Scrollbars from "react-custom-scrollbars";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 
 const generateVisitsData = (visits: VisitProps[]) => {
     let count = 0;
@@ -28,7 +28,7 @@ const generateVisitsData = (visits: VisitProps[]) => {
 export const Dashboard: FC = () => {
 
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const places = usePlacesSelector()
     const [totalVisits, setTotalVisits] = useState(0)
     const [totalOpinions, setTotalOpinions] = useState(0)

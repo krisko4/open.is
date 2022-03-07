@@ -4,15 +4,15 @@ import _ from "lodash"
 import React, { useEffect } from "react"
 import { FC, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
-import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext"
 import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps"
 import { useStepContext } from "../../../../../../contexts/StepContext"
 import { registerNewPlace, updatePlaceData } from "../../../../../../requests/PlaceRequests"
 import { setPlaces } from "../../../../../../store/actions/setPlaces"
-import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import DialogTransition from "../../../../../reusable/DialogTransition"
@@ -29,7 +29,7 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const { activeStep, steps } = useStepContext()
     const { currentPlace, setCurrentPlace, initialPlaceData } = useCurrentPlaceContext()
     const [isLoading, setLoading] = useState(false)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const history = useHistory()
     const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()

@@ -1,12 +1,11 @@
 
 import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
 import { FC, useState } from "react"
-import { useDispatch } from "react-redux"
 import { useHistory, useRouteMatch } from "react-router"
 import { match } from "react-router-dom"
 import { RawPlaceDataProps } from "../../../../contexts/PlaceProps"
+import { usePlacesSelector } from "../../../../redux-toolkit/slices/placesSlice"
 import { setPlace } from "../../../../store/actions/setCurrentPlace"
-import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector"
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils"
 import { BusinessChain } from './BusinessChain'
 

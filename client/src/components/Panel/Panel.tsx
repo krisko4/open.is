@@ -1,9 +1,9 @@
 import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { useLoginContext } from "../../contexts/LoginContext";
+import { useAppDispatch } from "../../redux-toolkit/hooks";
 import { getPlacesByUserId } from "../../requests/PlaceRequests";
 import { setPlaces } from '../../store/actions/setPlaces';
 import { LeftNavigation } from "./LeftNavigation/LeftNavigation";
@@ -17,7 +17,7 @@ export const Panel: FC = () => {
     const history = useHistory()
     const match = useRouteMatch()
     const location = useLocation()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
 
     useEffect(() => {

@@ -6,11 +6,11 @@ import Dialog from "@mui/material/Dialog";
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import React, { FC, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { deletePlace } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
-import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import DialogTransition from "../../../reusable/DialogTransition";
 import { LoadingButton } from "../../../reusable/LoadingButton";
@@ -24,7 +24,7 @@ interface Props {
 
 export const PlaceSettings: FC<Props> = ({ open, setOpen }) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const places = usePlacesSelector()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const [initialPlaceData, setInitialPlaceData] = useState({ ...currentPlace })

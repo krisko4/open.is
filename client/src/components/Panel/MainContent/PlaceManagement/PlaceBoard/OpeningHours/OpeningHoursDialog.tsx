@@ -7,11 +7,11 @@ import { changeOpeningHours, changeOpeningHoursForSelectedLocations } from "../.
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import { OpeningHoursCard } from "./OpeningHoursCard";
-import { useDispatch } from "react-redux";
-import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
 import { setPlaces } from "../../../../../../store/actions/setPlaces";
 import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
 import DialogTransition from "../../../../../reusable/DialogTransition";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 
 
 interface Props {
@@ -30,7 +30,7 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, s
     const { currentPlace } = useCurrentPlaceContext()
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const places = usePlacesSelector()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const saveChanges = async () => {
         setLoading(true)

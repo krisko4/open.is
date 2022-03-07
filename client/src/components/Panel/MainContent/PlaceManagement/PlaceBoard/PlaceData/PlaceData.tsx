@@ -13,13 +13,11 @@ import {
 import Alert from '@mui/material/Alert';
 import React, { FC, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status, VisitProps } from "../../../../../../contexts/PlaceProps";
 import { setPlaceStatus } from "../../../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../../../store/actions/setPlaces";
-import { usePlacesSelector } from "../../../../../../store/selectors/PlacesSelector";
 import { convertToRawPlaceData } from "../../../../../../utils/place_data_utils";
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";

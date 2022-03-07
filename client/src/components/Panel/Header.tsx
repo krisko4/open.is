@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router';
-import { usePlacesSelector } from '../../store/selectors/PlacesSelector';
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
 
 

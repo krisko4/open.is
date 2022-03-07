@@ -98,8 +98,6 @@ const PlacesBox: FC = () => {
 
     }, [tabIndex])
 
-
-
     const openPlaceDetails = (place: any) => {
         scrollbarRef.current?.scrollToTop()
         history.push({
@@ -167,7 +165,6 @@ const PlacesBox: FC = () => {
                                 >
                                     <PlaceDetails currentPlace={place} popupIndex={index} />
                                 </Route>
-
                             )}
                         </Switch>
                         {

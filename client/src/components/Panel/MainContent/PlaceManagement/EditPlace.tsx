@@ -1,12 +1,12 @@
 import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slide, SlideProps, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { updatePlaceData } from "../../../../requests/PlaceRequests";
 import { setPlaces } from "../../../../store/actions/setPlaces";
-import { usePlacesSelector } from "../../../../store/selectors/PlacesSelector";
 import { convertToCurrentPlace } from "../../../../utils/place_data_utils";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
 import DialogTransition from "../../../reusable/DialogTransition";
@@ -26,7 +26,7 @@ export const EditPlace: FC<Props> = ({ initialPlaceData, setDialogOpen }) => {
     const { activeStep, setActiveStep, imageFile } = useStepContext()
     const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
     const places = usePlacesSelector()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [isLoading, setLoading] = useState(false)
     const [isOpen, setOpen] = useState(false)
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
