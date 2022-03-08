@@ -1,15 +1,14 @@
 import { LoadingButton } from '@mui/lab';
-import { Dialog, DialogTitle, DialogContent, Grid, Typography, TextField, DialogActions, Alert } from '@mui/material';
+import { Alert, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
+import { deleteSelectedLocations, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
-import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext';
-import { RawPlaceDataProps } from '../../../../../contexts/PlaceProps';
 import { deleteLocations } from '../../../../../requests/PlaceRequests';
 import { setPlaces } from '../../../../../store/actions/setPlaces';
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
 import DialogTransition from '../../../../reusable/DialogTransition';
-import {useNavigate} from 'react-router-dom'
 
 interface Props {
     dialogOpen: boolean,
@@ -22,7 +21,7 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
     const [value, setValue] = React.useState('')
     const [loading, setLoading] = React.useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const { businessChain, setBusinessChain } = useBusinessChainContext()
+    const businessChain = useBusinessChainSelector()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const places = usePlacesSelector()
@@ -40,7 +39,7 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
             }
             await deleteLocations(businessChain._id as string, selectedLocations)
             enqueueSuccessSnackbar('You have successfully removed selected locations.')
-            businessChain.locations = businessChain.locations.filter(loc => !selectedLocations.includes(loc._id as string))
+            dispatch(deleteSelectedLocations(selectedLocations))
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {

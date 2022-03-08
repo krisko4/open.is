@@ -1,9 +1,8 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams, useResolvedPath, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { NotReady } from "../../../../reusable/NotReady";

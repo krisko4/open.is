@@ -1,9 +1,10 @@
+import { RawPlaceDataProps } from 'contexts/PlaceProps';
 import * as React from 'react';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { setBusinessChain, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
-import { useBusinessChainContext } from '../../../../contexts/PanelContexts/BusinessChainContext';
-import { CurrentPlaceContextProvider } from '../../../../contexts/PanelContexts/CurrentPlaceContext';
 import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
@@ -36,9 +37,21 @@ export const BusinessChainManagement = (props: Props) => {
     const [value, setValue] = useState('dashboard')
     const location = useLocation()
     const places = usePlacesSelector()
-    const { businessChain, setBusinessChain } = useBusinessChainContext()
+    const dipatch = useAppDispatch()
+    const navigate = useNavigate()
+    const businessChain = useBusinessChainSelector()
+    const { id } = useParams()
 
 
+    useEffect(() => {
+        const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
+        dipatch(setBusinessChain(businessChain))
+    }, [id])
+
+
+    useEffect(() => {
+        navigate(value)
+    }, [value])
     // useEffect(() => {
     //     const { id } = match.params
     //     if (id !== businessChain._id) {
@@ -50,6 +63,6 @@ export const BusinessChainManagement = (props: Props) => {
     // }, [match])
 
     return (
-            <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={businessChain._id as string} tabs={tabs} />
+        <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={businessChain._id as string} tabs={tabs} />
     );
 };

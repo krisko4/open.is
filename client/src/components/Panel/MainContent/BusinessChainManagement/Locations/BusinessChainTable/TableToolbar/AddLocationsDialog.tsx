@@ -1,11 +1,8 @@
-import CloseIcon from '@mui/icons-material/Close';
-import { LoadingButton } from "@mui/lab";
-import { AppBar, Dialog, Grid, IconButton, Toolbar, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { FC, useState } from "react";
-import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
+import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { CurrentPlaceContextProvider } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LocationContextProvider } from '../../../../../../../contexts/PanelContexts/LocationContext';
-import DialogTransition from "../../../../../../reusable/DialogTransition";
 import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
 import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/LocationDetails';
 import { LocationSelection } from '../../../../NewBusinessChain/LocationDetails/LocationSelection';
@@ -16,7 +13,7 @@ interface Props {
 }
 export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
 
-    const { businessChain } = useBusinessChainContext()
+    const  businessChain  = useBusinessChainSelector()
     const [addressSubmitted, setAddressSubmitted] = useState(false)
 
 
@@ -28,7 +25,6 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
             setDialogOpen={setDialogOpen}
         >
             <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center" justifyContent="space-evenly">
-                <CurrentPlaceContextProvider>
                     <LocationContextProvider>
                         <Grid item container sx={{ height: '100%' }} alignItems="center" lg={6}>
                             <LocationSelection setAddressSubmitted={setAddressSubmitted} />
@@ -42,7 +38,6 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
                             />
                         </Grid>
                     </LocationContextProvider>
-                </CurrentPlaceContextProvider>
             </Grid>
 
         </FullHeightDialog>

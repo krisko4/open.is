@@ -13,6 +13,7 @@ import { useBusinessChainContext } from '../../../../../../../contexts/PanelCont
 import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
 import { changeContactDetailsForSelectedLocations, ContactData } from '../../../../../../../requests/PlaceRequests';
 import { ContactDetails, LocationProps } from '../../../../../../../contexts/PlaceProps';
+import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
@@ -72,7 +73,7 @@ const FieldStateButton: FC<FSProps> = ({ name, children, enabled, setEnabled, ..
 export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocations }) => {
 
     const [loading, setLoading] = useState(false)
-    const { businessChain } = useBusinessChainContext()
+    const  businessChain  = useBusinessChainSelector()
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
 
     const [phoneEnabled, setPhoneEnabled] = useState(false)

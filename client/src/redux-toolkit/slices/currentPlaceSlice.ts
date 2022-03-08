@@ -4,36 +4,36 @@ import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, NewsP
 import { defaultImages, defaultOpinions, defaultNews } from "../../utils/defaults";
 import { useAppSelector } from "../hooks";
 import { Image } from 'contexts/PlaceProps'
+import { clearPlace } from "contexts/PanelContexts/CurrentPlaceContext";
 
-const initialState: CurrentPlaceProps = {
-    name: '',
-    address: '',
-    addressId: '',
-    addressLanguage: '',
-    type: null,
-    lat: 0,
-    lng: 0,
-    description: '',
-    subtitle: '',
-    phone: '',
-    logo: '',
-    images: defaultImages,
-    email: '',
-    website: '',
-    instagram: '',
-    facebook: '',
-    opinions: defaultOpinions,
-    visits: [],
-    news: defaultNews,
-    alwaysOpen: false
-}
+const initialState: CurrentPlaceProps = { ...clearPlace }
+//     name: '', address: '',
+//     addressId: '',
+//     addressLanguage: '',
+//     type: null,
+//     lat: 0,
+//     lng: 0,
+//     description: '',
+//     subtitle: '',
+//     phone: '',
+//     logo: '',
+//     images: defaultImages,
+//     email: '',
+//     website: '',
+//     instagram: '',
+//     facebook: '',
+//     opinions: defaultOpinions,
+//     visits: [],
+//     news: defaultNews,
+//     alwaysOpen: false
+// }
 
 interface ConcreteImageProps {
     image: Image
     index: number
 }
 
-interface NewOpinionProps{
+interface NewOpinionProps {
     opinion: OpinionProps,
     averageNote: AverageNoteProps
 }

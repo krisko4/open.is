@@ -1,14 +1,14 @@
 import { Grid } from "@mui/material";
 import { NotReady } from "components/reusable/NotReady";
 import React, { FC } from "react";
-import { Route, useLocation, Outlet, Routes, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { NoMatch } from "Router";
-import { BusinessChainContextProvider } from "../../../contexts/PanelContexts/BusinessChainContext";
-import { CurrentPlaceContextProvider } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import Header from "../Header";
 import { BusinessChainManagement } from "./BusinessChainManagement/BusinessChainManagement";
+import { Locations } from "./BusinessChainManagement/Locations/Locations";
+import { BusinessChainSettings } from "./BusinessChainManagement/Settings/BusinessChainSettings";
 import { Dashboard } from "./Dashboard/Dashboard";
 import { AccountSettings } from "./MyAccount/AccountSettings";
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
@@ -17,10 +17,9 @@ import { NewPlace } from "./NewPlace/NewPlace";
 import newPlaceSteps from "./NewPlace/Steps/steps";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { OpeningHours } from "./PlaceManagement/PlaceBoard/OpeningHours/OpeningHours";
-import { Opinions } from "./PlaceManagement/PlaceBoard/Opinions/Opinions";
 import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
 import { PlaceDashboard } from "./PlaceManagement/PlaceBoard/PlaceDashboard/PlaceDashboard.";
-import { PlaceSettings } from "./PlaceManagement/PlaceSettings";
+import { PlaceSettings } from "./PlaceManagement/PlaceBoard/Settings/PlaceSettings";
 
 export const MainContent: FC = () => {
 
@@ -59,13 +58,11 @@ export const MainContent: FC = () => {
           <Route
             path={`management/:id`}
             element={
-              <CurrentPlaceContextProvider>
-                <PlaceBoard />
-              </CurrentPlaceContextProvider>
+              <PlaceBoard />
             }
           >
             <Route path="home" element={<PlaceDashboard />} />
-            <Route path="settings" element={<Opinions />} />
+            <Route path="settings" element={<PlaceSettings />} />
             <Route path="opening-hours" element={<OpeningHours />} />
             <Route path="statistics" element={<NotReady />} />
           </Route>
@@ -82,11 +79,13 @@ export const MainContent: FC = () => {
           />
           <Route path={`business-chain/:id`}
             element={
-              <BusinessChainContextProvider>
                 <BusinessChainManagement />
-              </BusinessChainContextProvider>
             }
-          />
+          >
+            <Route path="dashboard" element={<NotReady />} />
+            <Route path="locations" element={<Locations />} />
+            <Route path="settings" element={<BusinessChainSettings />} />
+          </Route>
         </Routes>
       </Grid>
     </Grid >

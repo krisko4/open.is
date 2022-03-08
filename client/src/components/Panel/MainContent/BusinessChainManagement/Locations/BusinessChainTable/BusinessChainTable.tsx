@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { useBusinessChainContext } from '../../../../../../contexts/PanelContexts/BusinessChainContext';
 import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
@@ -62,7 +63,7 @@ interface Data {
 
 export const BusinessChainTable: React.FC = () => {
 
-    const { businessChain } = useBusinessChainContext()
+    const  businessChain  = useBusinessChainSelector()
     const navigate = useNavigate()
     const rows = useMemo(() => {
         return businessChain.locations.map(location => (

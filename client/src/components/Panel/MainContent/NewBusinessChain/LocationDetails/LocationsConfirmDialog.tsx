@@ -1,8 +1,9 @@
 import { LoadingButton } from "@mui/lab"
 import { DialogContent, Dialog, DialogTitle, DialogActions, Grid, Button } from "@mui/material"
 import { FC, useState } from "react"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { useBusinessChainSelector, setLocations } from "redux-toolkit/slices/businessChainSlice"
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
-import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
 import { LocationProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps"
 import { addLocations } from "../../../../../requests/PlaceRequests"
@@ -16,10 +17,11 @@ interface Props {
 }
 export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, setAddLocationsDialogOpen }) => {
     const { selectedLocations } = useLocationContext()
-    const { businessChain, setBusinessChain } = useBusinessChainContext()
     const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+    const businessChain = useBusinessChainSelector()
     const places = usePlacesSelector()
+    const dispatch = useAppDispatch()
 
     const handleClick = async () => {
         setLoading(true)
@@ -33,9 +35,7 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
             })
             const res = await addLocations(businessChain._id as string, locations)
             console.log(res.data)
-            businessChain.locations = [...res.data.locations]
-            setBusinessChain({...businessChain})
-            setDialogOpen(false)
+            dispatch(setLocations(res.data.locations))
             if (setAddLocationsDialogOpen) setAddLocationsDialogOpen(false)
         } catch (err) {
             console.log(err)

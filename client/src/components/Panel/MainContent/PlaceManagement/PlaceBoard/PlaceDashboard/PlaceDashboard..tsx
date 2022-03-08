@@ -11,11 +11,9 @@ import React, { FC, useState } from "react";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useNavigate } from "react-router-dom";
 import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { Status, VisitProps } from "../../../../../../contexts/PlaceProps";
 import { PlaceDetailsCard } from "../../../NewPlace/PlaceDetailsCard";
 import { ActivityChart } from '../../Charts/ActivityChart';
-import { PlaceSettings } from "../../PlaceSettings";
 import { Destinations } from "../PlaceBoard";
 import { OpinionsCard } from "./OpinionsCard";
 import { PlaceStatus } from "./PlaceStatus";
@@ -24,14 +22,12 @@ import { TotalVisits } from './TotalVisits';
 import { VisitsToday } from './VisitsToday';
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
 
 export const PlaceDashboard: FC = () => {
 
     const [loading, setLoading] = useState(false)
-    const [settingsOpen, setSettingsOpen] = useState(false)
     const currentPlace = useCurrentPlaceSelector()
     const [totalVisits, setTotalVisits] = useState(0)
     const navigate = useNavigate()
@@ -81,13 +77,6 @@ export const PlaceDashboard: FC = () => {
                                             <Button onClick={handleSettingsButtonClick} variant="outlined" style={{ color: 'white', borderColor: 'white' }}>Settings</Button>
                                             <SettingsIcon style={{ color: 'white', width: 60, height: 60 }} />
                                         </Grid>
-                                        <Dialog
-                                            open={settingsOpen}
-                                            TransitionComponent={Transition}
-                                            fullScreen
-                                        >
-                                            <PlaceSettings open={settingsOpen} setOpen={setSettingsOpen} />
-                                        </Dialog>
                                     </CardContent>
                                 </Card>
                             </Grid>

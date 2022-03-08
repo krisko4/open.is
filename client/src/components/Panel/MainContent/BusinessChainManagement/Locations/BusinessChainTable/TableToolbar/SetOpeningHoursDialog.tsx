@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { useBusinessChainContext } from "../../../../../../../contexts/PanelContexts/BusinessChainContext"
+import { useBusinessChainSelector } from "redux-toolkit/slices/businessChainSlice"
 import { CurrentPlaceContextProvider } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { FullHeightDialog } from "../../../../../../reusable/FullHeightDialog"
 import { OpeningHours } from "../../../../PlaceManagement/PlaceBoard/OpeningHours/OpeningHours"
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const SetOpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocations }) => {
-    const {businessChain, setBusinessChain} = useBusinessChainContext()
+    const businessChain = useBusinessChainSelector()
     return (
         <FullHeightDialog
             title="Opening hours management"
@@ -19,7 +19,7 @@ export const SetOpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, se
             setDialogOpen={setDialogOpen}
         >
             <CurrentPlaceContextProvider>
-                <OpeningHours setBusinessChain={setBusinessChain} selectedLocations={selectedLocations} businessChain={businessChain} />
+                <OpeningHours selectedLocations={selectedLocations} businessChain={businessChain} />
             </CurrentPlaceContextProvider>
         </FullHeightDialog>
 

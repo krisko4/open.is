@@ -1,36 +1,28 @@
-import { FC, useEffect, useMemo } from "react";
-import { CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { CurrentPlaceProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
+import _ from "lodash";
+import { FC, useMemo } from "react";
+import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps";
 import { StepContextProvider } from "../../../../../../contexts/StepContext";
-import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils";
 import { NewPlace } from "../../../NewPlace/NewPlace";
 import newPlaceSteps from "../../../NewPlace/Steps/steps";
 
 
 
-interface LocationState {
-    place: CurrentPlaceProps,
-    businessId: string
-}
-
-interface MatchProps {
-    id: string
-}
-
 export const PlaceSettings: FC = () => {
 
 
-    const { currentPlace} = useCurrentPlaceContext()
+    const currentPlace = useCurrentPlaceSelector()
 
     const initialPlaceData = useMemo(() => {
-        while (currentPlace.images.length < 4) {
-            currentPlace.images.push({
+        const place = _.cloneDeep(currentPlace)
+        while (place.images.length < 4) {
+            place.images.push({
                 file: null,
                 img: ''
             })
         }
         return {
-            ...currentPlace,
+            ...place,
             facebook: currentPlace.facebook.substring(21),
             instagram: currentPlace.instagram.substring(22)
         }

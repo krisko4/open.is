@@ -9,11 +9,12 @@ import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext';
 import { BusinessChainTable } from './BusinessChainTable/BusinessChainTable';
+import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 
 
 export const Locations: FC = () => {
 
-    const { businessChain } = useBusinessChainContext()
+    const  businessChain  = useBusinessChainSelector()
 
 
     return (

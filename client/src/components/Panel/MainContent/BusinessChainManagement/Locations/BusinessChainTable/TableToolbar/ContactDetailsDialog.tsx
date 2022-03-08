@@ -1,5 +1,6 @@
 import { Button, Divider, ListItemText, List, ListItem, Dialog, AppBar, Toolbar, IconButton, Typography, Grid, Card, CardContent } from "@mui/material"
 import { FC } from "react"
+import { useBusinessChainSelector } from "redux-toolkit/slices/businessChainSlice"
 import { useBusinessChainContext } from "../../../../../../../contexts/PanelContexts/BusinessChainContext"
 import DialogTransition from "../../../../../../reusable/DialogTransition"
 import { FullHeightDialog } from "../../../../../../reusable/FullHeightDialog"
@@ -12,7 +13,7 @@ interface Props {
 }
 export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocations}) => {
 
-    const { businessChain } = useBusinessChainContext()
+    const  businessChain  = useBusinessChainSelector()
 
     return (
         <FullHeightDialog
