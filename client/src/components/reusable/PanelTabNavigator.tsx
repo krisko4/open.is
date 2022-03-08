@@ -20,9 +20,6 @@ interface Props {
 export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, setValue, tabs, placeId }) => {
 
 
-    const navigate = useNavigate()
-
-
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
         setValue(newValue);
         // navigate(newValue)
@@ -37,34 +34,17 @@ export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, set
                         indicatorColor="secondary"
                         textColor="secondary"
                         onChange={handleChange}
-                        // variant="fullWidth"
                         sx={{ width: '100%' }}
                     >
                         {tabs.map((tab) =>
-                            <Tab key={tab.name} value={tab.url} disableRipple label={tab.name} />
+                            <Tab key={tab.url} value={tab.url} disableRipple label={tab.name} />
                         )}
                     </Tabs>
                 </Paper>
             </Slide>
             <Grid container sx={{ flexGrow: 1 }}>
-                {/* {
-                    tabs.map((tab) =>
-                        <Route
-                            key={tab.url}
-                            element={() => tab.content}
-                            // component={() => <>
-                            //     {value === tab.url && (placeId === currentPlace._id || areBusinessChainTabs) &&
-                            //         tab.content
-                            //     }
-                            // </>}
-                            path={tab.url}
-                        />
-                    )
-                } */}
                 <Outlet/>
             </Grid>
-
-
         </Grid>
     )
 })

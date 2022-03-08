@@ -7,30 +7,25 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, InputAdornment, Slide, SlideProps, TextField } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, InputAdornment, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { ClassNameMap } from "@mui/styles";
+import { NewsProps } from 'contexts/PlaceProps';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useRef, useState } from "react";
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useCurrentPlaceSelector , setNews} from 'redux-toolkit/slices/currentPlaceSlice';
 import { useLoginContext } from "../../contexts/LoginContext";
-import { CurrentPlaceProps } from '../../contexts/PlaceProps';
 import { addNews } from "../../requests/NewsRequests";
 import { useCustomSnackbar } from "../../utils/snackbars";
+import DialogTransition from './DialogTransition';
 import { LoadingButton } from "./LoadingButton";
 
 
 
-interface Props {
-    
-
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<any>,
-
-}
 
 type OpenNews = {
     isOpen: boolean,
@@ -38,9 +33,8 @@ type OpenNews = {
 }
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
+export const News: FC = () => {
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -48,27 +42,32 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
     const [newsContent, setNewsContent] = useState('')
     const emojiSource = useRef<'title' | 'content'>('title')
     const { userData } = useLoginContext()
+    const currentPlace = useCurrentPlaceSelector()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
+    const dispatch = useAppDispatch()
     const [openNews, setOpenNews] = useState<OpenNews>({
         isOpen: false,
         newsIndex: 0
     })
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
-    const submitNews = () => {
+    const submitNews = async () => {
         setLoading(true)
-        addNews(newsTitle, newsContent, currentPlace._id as string)
-            .then(res => {
-                currentPlace.news = currentPlace.news && [res.data, ...currentPlace.news]
-                setCurrentPlace({ ...currentPlace })
-                enqueueSuccessSnackbar('News added successfully')
-                setDialogOpen(false)
-            }).catch(err => {
-                console.log(err)
-                enqueueErrorSnackbar()
-            }).finally(() => {
-                setLoading(false)
-            })
+        try {
+            const res  = await addNews(newsTitle, newsContent, currentPlace._id as string)
+            dispatch(setNews(res.data as NewsProps))
+            enqueueSuccessSnackbar('News added successfully')
+
+            setDialogOpen(false)
+
+
+        } catch (err) {
+
+            enqueueErrorSnackbar()
+        } finally {
+            setLoading(false)
+        }
+
     }
 
     const handleEmoji = (emoji: IEmojiData) => {
@@ -123,8 +122,8 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                         <Dialog
                             open={openNews.isOpen}
                             onClose={() => setOpenNews({ isOpen: false, newsIndex: 0 })}
-                            TransitionComponent={Transition}
-                           
+                            TransitionComponent={DialogTransition}
+
                         >
                             <DialogTitle>
                                 <Grid container direction="column">
@@ -155,7 +154,7 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                 <Grid justifyContent="center" style={{ height: 500 }} direction="column" alignItems="center" container >
                     <Typography variant="h6">This place has not provided any news yet.</Typography>
                     {userData.isLoggedIn && currentPlace.isUserOwner && <Grid item style={{ textAlign: 'center' }}>
-                        <Typography  variant="subtitle1">Press the button below to add your first news.</Typography>
+                        <Typography variant="subtitle1">Press the button below to add your first news.</Typography>
                         <Button startIcon={<AddIcon />} onClick={() => setDialogOpen(true)} style={{ marginTop: 10 }} variant="contained" color="primary">Add news</Button>
                     </Grid>
                     }
@@ -164,9 +163,9 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
             {userData.isLoggedIn &&
                 <Dialog
                     open={dialogOpen}
-                    TransitionComponent={Transition}
+                    TransitionComponent={DialogTransition}
                     onClose={() => setDialogOpen(false)}
-                   
+
                 >
                     <DialogTitle className="dialogTitle">Add news</DialogTitle>
                     <DialogContent>
@@ -181,7 +180,7 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                                 value={newsTitle}
                                 onChange={(e) => setNewsTitle(e.target.value)}
                                 InputProps={{
-                                
+
                                     endAdornment:
                                         <InputAdornment position="end">
                                             <IconButton
@@ -191,7 +190,7 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                                             </IconButton>
                                         </InputAdornment>
                                 }}
-                              
+
                             />
                         </Grid>
                         <Grid container style={{ marginTop: 20 }}>
@@ -215,7 +214,7 @@ export const News: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
                                             </IconButton>
                                         </InputAdornment>
                                 }}
-                              
+
 
                             >
                             </TextField>

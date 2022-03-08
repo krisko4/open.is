@@ -4,12 +4,12 @@ import makeStyles from '@mui/styles/makeStyles';
 import React from "react";
 import { FC, useEffect, useRef, useState } from "react";
 import Carousel from "react-material-ui-carousel";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { CurrentPlaceProps } from "../../../../../contexts/PlaceProps";
-import { useStepContext } from "../../../../../contexts/StepContext";
-import { ImageUpload } from "../../../../reusable/ImageUpload";
+import { useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
+import { useStepContext } from "../../../../contexts/StepContext";
+import { ImageUpload } from "../../ImageUpload";
 import { ImageCarouselItem } from "./ImageCarouselMemoItem";
-import { Image } from '../../../../../contexts/PlaceProps'
+import { Image } from '../../../../contexts/PlaceProps'
 
 
 const useStyles = makeStyles({

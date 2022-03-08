@@ -7,8 +7,8 @@ import { setCurrentPlace, setLogo, setLogoFile, useLogoSelector } from "redux-to
 
 interface Props {
     isEditable?: boolean,
-    logoFile? : File | null,
-    setLogoFile? : React.Dispatch<React.SetStateAction<File | null>>
+    logoFile?: File | null,
+    setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>
 }
 
 export const PlaceLogo: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
@@ -19,6 +19,9 @@ export const PlaceLogo: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
     const [isHover, setHover] = useState(true)
     const isFirstRender = useRef(true)
 
+    useEffect(() => {
+        setCurrentLogo(logo)
+    }, [logo])
 
     useEffect(() => {
         if (isFirstRender.current) {
@@ -26,7 +29,7 @@ export const PlaceLogo: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
             return
         }
         dispatch(setLogo(currentLogo))
-    }, [currentLogo])
+    }, [logoFile])
 
     return (
         <CardMedia

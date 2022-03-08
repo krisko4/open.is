@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useResolvedPath, useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
@@ -10,7 +10,7 @@ import { NotReady } from "../../../../reusable/NotReady";
 import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
 import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { Opinions } from "./Opinions/Opinions";
-import { PlaceData } from "./PlaceData/PlaceData";
+import { PlaceDashboard } from "./PlaceDashboard/PlaceDashboard.";
 import { PlaceSettings } from "./Settings/PlaceSettings";
 
 
@@ -33,6 +33,7 @@ export const PlaceBoard: FC = () => {
     const places = usePlacesSelector()
     const { id } = useParams()
     const dispatch = useAppDispatch()
+    const location = useLocation()
     const navigate = useNavigate()
     const currentPlace = useCurrentPlaceSelector()
     const [value, setValue] = useState('home')
@@ -59,7 +60,7 @@ export const PlaceBoard: FC = () => {
             {
                 name: 'Home',
                 url: Destinations.HOME,
-                content: <PlaceData />
+                content: <PlaceDashboard />
             },
             {
                 name: 'Statistics',

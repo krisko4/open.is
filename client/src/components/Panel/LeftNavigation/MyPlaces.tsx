@@ -21,12 +21,12 @@ export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
             return
         }
         setSelectedOption(place._id as string)
-        const currentPlace = convertToCurrentPlace(place)[0]
-        if (currentPlace.isActive) {
-            navigate(`management/${currentPlace._id}/${Destinations.HOME}`)
+        const {isActive, _id} = place.locations[0]
+        if (isActive) {
+            navigate(`management/${_id}/${Destinations.HOME}`)
             return
         }
-        navigate(`management/${currentPlace._id}/${Destinations.OPENING_HOURS}`)
+        navigate(`management/${_id}/${Destinations.OPENING_HOURS}`)
     }
 
     return <>

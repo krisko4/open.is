@@ -3,6 +3,7 @@ import { Grid, Rating, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import * as React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
+import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useCurrentPlaceContext } from '../../../../../../contexts/PanelContexts/CurrentPlaceContext';
 import { Opinions } from '../../../../../reusable/Opinions/Opinions';
 type Props = {
@@ -18,7 +19,7 @@ const StyledRating = styled(Rating)({
 })
 
 export const Overview = (props: Props) => {
-    const { currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    const currentPlace = useCurrentPlaceSelector()
     return (
         <Scrollbars>
             <Grid container sx={{ height: '100%' }} alignItems="center" direction="column" justifyContent="center">
@@ -28,8 +29,6 @@ export const Overview = (props: Props) => {
                 </Typography>
                 <Grid container sx={{ flexGrow: 1 }}>
                     <Opinions
-                        currentPlace={currentPlace}
-                        setCurrentPlace={setCurrentPlace}
                     />
                 </Grid>
             </Grid>

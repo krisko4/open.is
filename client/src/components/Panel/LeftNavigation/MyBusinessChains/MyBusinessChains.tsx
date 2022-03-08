@@ -20,7 +20,11 @@ export const MyBusinessChains: FC<Props> = ({ selectedOption, setSelectedOption 
         // if (place._id === selectedOption) {
         //     return
         // }
-        setSelectedOption(place._id as string)
+        // setSelectedOption(place._id as string)
+        navigate(
+            `business-chain/${place._id}/dashboard`
+        )
+
         // navigate({
         //     pathname: `business-chain/${place._id}/dashboard`,
         //     state: { place }

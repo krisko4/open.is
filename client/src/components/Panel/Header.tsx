@@ -38,7 +38,7 @@ const Header: FC = () => {
                         </Tooltip>
                         <Tooltip title="Dashboard">
                             <IconButton
-                                onClick={() => navigate(`dashboard`)}
+                                onClick={() => navigate(``)}
                                 color="inherit"
                                 size="large">
                                 <DashboardIcon />

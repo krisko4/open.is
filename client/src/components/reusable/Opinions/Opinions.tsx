@@ -12,20 +12,18 @@ import { addOpinion } from "../../../requests/OpinionRequests";
 import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../LoadingButton";
 import { OpinionCard } from './OpinionCard';
-import { CurrentPlaceProps } from "../../../contexts/PlaceProps";
+import { AverageNoteProps, CurrentPlaceProps, OpinionProps } from "../../../contexts/PlaceProps";
+import { useCurrentPlaceSelector, addNewOpinion } from "redux-toolkit/slices/currentPlaceSlice";
+import { useAppDispatch } from "redux-toolkit/hooks";
 
 
 
 const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
-interface Props {
-    currentPlace: CurrentPlaceProps,
-    setCurrentPlace: React.Dispatch<any>,
-}
 
 
-export const Opinions: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
+export const Opinions: FC = () => {
 
 
     const { userData } = useLoginContext()
@@ -34,6 +32,8 @@ export const Opinions: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
     const [noteValue, setNoteValue] = useState<number | null>(null)
     const [opinionText, setOpinionText] = useState('')
     const [loading, setLoading] = useState(false)
+    const currentPlace = useCurrentPlaceSelector()
+    const dispatch = useAppDispatch()
 
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
@@ -54,12 +54,12 @@ export const Opinions: FC<Props> = ({ currentPlace, setCurrentPlace }) => {
             }
             try {
                 const res = await addOpinion(opinion)
-                console.log(res.data)
-                const updatedPlace = { ...currentPlace }
-                updatedPlace.averageNote = res.data.averageNote
-                updatedPlace.opinions = currentPlace.opinions && [res.data.opinion, ...currentPlace.opinions]
-                console.log(updatedPlace)
-                setCurrentPlace(updatedPlace)
+                const newAverageNote : AverageNoteProps = res.data.averageNote
+                const newOpinion : OpinionProps = res.data.opinion
+                dispatch(addNewOpinion({
+                    opinion : newOpinion,
+                    averageNote: newAverageNote
+                }))
                 setDialogOpen(false)
                 enqueueSuccessSnackbar('Your opinion has been added successfully')
 

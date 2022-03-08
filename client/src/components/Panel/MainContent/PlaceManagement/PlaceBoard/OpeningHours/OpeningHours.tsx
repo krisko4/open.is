@@ -96,7 +96,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
     useEffect(() => {
         setChecked(currentPlace.alwaysOpen)
         if (currentPlace.openingHours) {
-            const hours = _.cloneDeep(currentPlace.openingHours) 
+            const hours = _.cloneDeep(currentPlace.openingHours)
             for (const day of Object.keys(hours)) {
                 hours[day].valid = true
             }
@@ -159,10 +159,15 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
                 <Alert variant="filled" severity="info">
                     You have selected {selectedLocations.length} {selectedLocations.length === 1 ? 'location' : 'locations'}. The changes will be applied to each selected location.
                 </Alert>
-                : currentPlace.isActive ||
-                <Alert variant="filled" severity="warning">
-                    Your place is currently not visible in the browser. Please set opening hours to activate your business.
-                </Alert>
+                :
+                <>
+                    {
+                        currentPlace.isActive ||
+                        <Alert variant="filled" severity="warning">
+                            Your place is currently not visible in the browser. Please set opening hours to activate your business.
+                        </Alert>
+                    }
+                </>
             }
             <Grid sx={{ flexGrow: 1 }} container alignItems="center">
                 <Grid container justifyContent="space-evenly">

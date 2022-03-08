@@ -31,9 +31,6 @@ const tabs = [
 ]
 
 
-interface StateType {
-    id: string
-}
 
 export const BusinessChainManagement = (props: Props) => {
     const [value, setValue] = useState('dashboard')
@@ -53,8 +50,6 @@ export const BusinessChainManagement = (props: Props) => {
     // }, [match])
 
     return (
-        <CurrentPlaceContextProvider>
             <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={businessChain._id as string} tabs={tabs} />
-        </CurrentPlaceContextProvider>
     );
 };

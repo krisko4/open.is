@@ -27,6 +27,7 @@ export const StepContextProvider: FC<Props> = ({ children, steps }) => {
 
 
 const useProviderSettings = (steps : Step[]) => {
+    
     const [activeStep, setActiveStep] = useState(0)
     const [currentStep, setCurrentStep] = useState(0)
     const [imageFile, setImageFile] = useState<File | null>(null)

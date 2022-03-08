@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, Status } from "../../contexts/PlaceProps";
+import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, NewsProps, OpinionProps, Status } from "../../contexts/PlaceProps";
 import { defaultImages, defaultOpinions, defaultNews } from "../../utils/defaults";
 import { useAppSelector } from "../hooks";
 import { Image } from 'contexts/PlaceProps'
@@ -31,6 +31,11 @@ const initialState: CurrentPlaceProps = {
 interface ConcreteImageProps {
     image: Image
     index: number
+}
+
+interface NewOpinionProps{
+    opinion: OpinionProps,
+    averageNote: AverageNoteProps
 }
 
 
@@ -86,6 +91,13 @@ const currentPlaceSlice = createSlice({
         setStatus: (state, action: PayloadAction<Status>) => {
             state.status = action.payload
         },
+        setNews: (state, action: PayloadAction<NewsProps>) => {
+            state.news?.push(action.payload)
+        },
+        addNewOpinion: (state, action: PayloadAction<NewOpinionProps>) => {
+            state.opinions?.push(action.payload.opinion)
+            state.averageNote = action.payload.averageNote
+        },
         setAddressData: (state, action: PayloadAction<AddressDataProps>) => {
             state.address = action.payload.address
             state.addressId = action.payload.addressId
@@ -118,6 +130,8 @@ export const {
     setEmail,
     setOpeningHours,
     setAlwaysOpen,
+    setNews,
+    addNewOpinion,
     setAddressData,
     setFacebook,
     setInstagram,

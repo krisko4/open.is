@@ -1,12 +1,9 @@
-import { Grid, Divider, Paper, Tabs, Tab } from "@mui/material"
-import React from "react"
-import { FC, useMemo, useState } from "react"
+import { Divider, Grid, Paper, Tab, Tabs } from "@mui/material"
+import React, { FC, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { CurrentPlaceProps, NewsProps, OpinionProps } from "../../../../../contexts/PlaceProps"
-import { News } from "../../../../reusable/News"
-import { OpeningHours } from "../../../../reusable/OpeningHours/OpeningHours"
-import { Opinions } from "../../../../reusable/Opinions/Opinions"
+import { News } from "../News"
+import { OpeningHours } from "../OpeningHours/OpeningHours"
+import { Opinions } from "../Opinions/Opinions"
 
 const MyTab = (props: any) => {
     const { label, ...rest } = props
@@ -18,9 +15,9 @@ export const PlaceTabs: FC = () => {
     const [value, setValue] = useState(0)
 
     const tabs = [
-        // <News />,
-        // <OpeningHours/>,
-        // <Opinions/>
+        <News />,
+        <OpeningHours/>,
+        <Opinions/>
     ]
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -45,7 +42,7 @@ export const PlaceTabs: FC = () => {
             </Paper>
             <Grid container style={{ height: 495 }}>
                 <Scrollbars>
-                    {/* {tabs[value]} */}
+                    {tabs[value]}
                 </Scrollbars>
             </Grid>
         </Grid>

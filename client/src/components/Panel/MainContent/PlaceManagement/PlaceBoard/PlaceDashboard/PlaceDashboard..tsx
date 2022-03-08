@@ -28,7 +28,7 @@ const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide 
 
 
 
-export const PlaceData: FC = () => {
+export const PlaceDashboard: FC = () => {
 
     const [loading, setLoading] = useState(false)
     const [settingsOpen, setSettingsOpen] = useState(false)
@@ -110,7 +110,7 @@ export const PlaceData: FC = () => {
                         </Grid>
                     </Grid>
                     <Grid item lg={7}>
-                        <PlaceDetailsCard  />
+                        <PlaceDetailsCard isEditable={false}  />
                     </Grid>
                 </Grid>
             </Grid>

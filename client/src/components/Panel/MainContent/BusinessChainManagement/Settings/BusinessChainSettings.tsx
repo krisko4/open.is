@@ -2,20 +2,10 @@ import { Divider, Grid, Paper, Rating } from "@mui/material"
 import { FC } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { Image } from "../../../../../contexts/PlaceProps"
-import { ImagesCarousel } from "../../../../Browser/Places/PlaceDetails/ImageCarousel/ImagesCarouselMemo"
-import { PlaceDescription } from "../../NewPlace/PlaceDetailsCard/PlaceDescription"
-import { PlaceLogo } from "../../NewPlace/PlaceDetailsCard/MemoizedPlaceLogo"
-import { PlaceName } from "../../NewPlace/PlaceDetailsCard/PlaceName"
-import { PlaceSubtitle } from "../../NewPlace/PlaceDetailsCard/PlaceSubtitle"
-import { PlaceType } from "../../NewPlace/PlaceDetailsCard/PlaceType"
-import { SocialIcons } from "../../NewPlace/PlaceDetailsCard/SocialIcons"
-import { ContactDetails } from "../../NewPlace/PlaceDetailsCard/ContactDetails"
 
 export const BusinessChainSettings: FC = () => {
     const { businessChain } = useBusinessChainContext()
-    const { imageFile, setImageFile, currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+    // const { imageFile, setImageFile, currentPlace, setCurrentPlace } = useCurrentPlaceContext()
 
 
 
@@ -27,7 +17,7 @@ export const BusinessChainSettings: FC = () => {
             <Grid item sx={{ height: '100%' }} lg={6}>
                 <Scrollbars>
                     <Paper sx={{ height: '100%' }}>
-                        <ImagesCarousel
+                        {/* <ImagesCarousel
                             isEditable={true}
                             images={businessChain.images as Image[]}
                             setCurrentPlace={setCurrentPlace}
@@ -63,7 +53,7 @@ export const BusinessChainSettings: FC = () => {
                         </Grid>
                         <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
                             <ContactDetails />
-                        </Grid>
+                        </Grid> */}
                     </Paper>
                 </Scrollbars>
             </Grid>

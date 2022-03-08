@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material"
 import { FC } from "react"
-import { OpinionsCard } from "../PlaceData/OpinionsCard"
-import { TotalOpinions } from "../PlaceData/TotalOpinions"
+import { OpinionsCard } from "../PlaceDashboard/OpinionsCard"
+import { TotalOpinions } from "../PlaceDashboard/TotalOpinions"
 
 export const OpinionCharts: FC = () => {
     return (

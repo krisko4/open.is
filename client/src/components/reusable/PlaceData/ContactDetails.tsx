@@ -4,7 +4,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { FC, useMemo } from "react";
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useCurrentPlaceContext } from "../../../contexts/PanelContexts/CurrentPlaceContext";
 import { usePhoneSelector, useWebsiteSelector, useEmailSelector } from "redux-toolkit/slices/currentPlaceSlice";
 
 
