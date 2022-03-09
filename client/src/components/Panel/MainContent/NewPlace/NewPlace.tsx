@@ -12,7 +12,6 @@ import { Step1 } from "./Steps/Step1/Step1";
 import { Step2 } from "./Steps/Step2/Step2";
 import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
-import { Step5 } from "./Steps/Step5/Step5";
 import { Step5Container } from "./Steps/Step5Container";
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { setCurrentPlace } from "redux-toolkit/slices/currentPlaceSlice";
@@ -47,7 +46,6 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
     const [logoFile, setLogoFile] = useState<File | null>(null)
     const dispatch = useAppDispatch()
 
-
     useEffect(() => {
         isEditionMode && enqueueInfoSnackbar('In edition mode you can switch freely between steps. Click on the step label to check it out.')
         if (initialPlaceData) {
@@ -55,7 +53,6 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
             return
         }
         dispatch(setCurrentPlace(clearPlace))
-
     }, [])
 
     return (

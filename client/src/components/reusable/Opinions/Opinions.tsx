@@ -1,20 +1,18 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Slide, SlideProps, TextField, Tooltip, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import AddIcon from '@mui/icons-material/Add';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import { Rating } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Rating, Slide, SlideProps, TextField, Typography } from "@mui/material";
 import Alert from '@mui/material/Alert';
-import { ClassNameMap } from "@mui/styles";
+import Grid from "@mui/material/Grid";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from "react";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { addNewOpinion, useIdSelector, useIsUserOwnerSelector, useOpinionsSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { useLoginContext } from "../../../contexts/LoginContext";
+import { AverageNoteProps, OpinionProps } from "../../../contexts/PlaceProps";
 import { addOpinion } from "../../../requests/OpinionRequests";
 import { useCustomSnackbar } from "../../../utils/snackbars";
 import { LoadingButton } from "../LoadingButton";
 import { OpinionCard } from './OpinionCard';
-import { AverageNoteProps, CurrentPlaceProps, OpinionProps } from "../../../contexts/PlaceProps";
-import { useCurrentPlaceSelector, addNewOpinion } from "redux-toolkit/slices/currentPlaceSlice";
-import { useAppDispatch } from "redux-toolkit/hooks";
 
 
 
@@ -32,9 +30,10 @@ export const Opinions: FC = () => {
     const [noteValue, setNoteValue] = useState<number | null>(null)
     const [opinionText, setOpinionText] = useState('')
     const [loading, setLoading] = useState(false)
-    const currentPlace = useCurrentPlaceSelector()
     const dispatch = useAppDispatch()
-
+    const opinions = useOpinionsSelector()
+    const isUserOwner = useIsUserOwnerSelector()
+    const placeId = useIdSelector()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
     const handleEmoji = (emoji: IEmojiData) => {
@@ -48,16 +47,16 @@ export const Opinions: FC = () => {
         if (noteValue) {
             const opinion = {
                 authorId: localStorage.getItem('uid') as string,
-                locationId: currentPlace._id as string,
+                locationId: placeId as string,
                 content: opinionText,
                 note: noteValue
             }
             try {
                 const res = await addOpinion(opinion)
-                const newAverageNote : AverageNoteProps = res.data.averageNote
-                const newOpinion : OpinionProps = res.data.opinion
+                const newAverageNote: AverageNoteProps = res.data.averageNote
+                const newOpinion: OpinionProps = res.data.opinion
                 dispatch(addNewOpinion({
-                    opinion : newOpinion,
+                    opinion: newOpinion,
                     averageNote: newAverageNote
                 }))
                 setDialogOpen(false)
@@ -77,16 +76,16 @@ export const Opinions: FC = () => {
     return (
         <Grid container style={{ height: '100%' }} justifyContent="center">
             <Grid container item xs={11} direction="column" style={{ marginTop: 20, marginBottom: 20 }}>
-                {currentPlace.opinions && currentPlace.opinions.length > 0 ?
+                {opinions && opinions.length > 0 ?
                     <div>
                         <Grid container justifyContent="space-between" >
-                            <Alert severity="info" variant="filled">{currentPlace.opinions?.length} {currentPlace.opinions && currentPlace.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
-                            {userData.isLoggedIn && !currentPlace.isUserOwner &&
+                            <Alert severity="info" variant="filled">{opinions?.length} {opinions && opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
+                            {userData.isLoggedIn && isUserOwner &&
                                 <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                             }
                         </Grid>
                         {
-                            currentPlace.opinions.map((opinion, index) =>
+                            opinions.map((opinion, index) =>
                                 <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
                                     <OpinionCard opinion={opinion} />
                                 </Grid>
@@ -96,10 +95,10 @@ export const Opinions: FC = () => {
                         <Typography variant="h6" >This place doesn't have any opinions yet.</Typography>
                         {userData.isLoggedIn ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
-                            {currentPlace.isUserOwner ?
+                            {isUserOwner ?
                                 // <Tooltip title='You cannot rate your own place' arrow>
                                 //     <div>
-                                        <Button style={{ marginTop: 10 }} disabled={true} startIcon={<AddIcon />} color="primary" variant="contained">New opinion</Button>
+                                <Button style={{ marginTop: 10 }} disabled={true} startIcon={<AddIcon />} color="primary" variant="contained">New opinion</Button>
                                 //     </div>
                                 // </Tooltip>
                                 :

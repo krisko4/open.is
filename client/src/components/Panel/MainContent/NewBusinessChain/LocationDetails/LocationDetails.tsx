@@ -2,7 +2,8 @@ import { LoadingButton } from "@mui/lab"
 import { Button, Fade, Grid, Paper, Slide, Typography } from "@mui/material"
 import React, { FC, useEffect, useRef, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
-import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { useAppDispatch } from "redux-toolkit/hooks"
+import { setLogo, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { useColorMode } from "../../../../../contexts/ColorModeContext"
 import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
 import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext'
@@ -31,13 +32,14 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, is
     const { mode } = useColorMode()
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
     const currentPlace = useCurrentPlaceSelector()
+    const dispatch = useAppDispatch()
 
 
-    // useEffect(() => {
-    //     if (img) {
-    //         currentPlace.logo = img
-    //     }
-    // }, [img])
+    useEffect(() => {
+        if (img) {
+            dispatch(setLogo(img))
+        }
+    }, [img])
 
     useEffect(() => {
         if (isFirstValidationRender.current) {

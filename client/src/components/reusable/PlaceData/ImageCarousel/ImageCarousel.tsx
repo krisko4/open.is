@@ -40,8 +40,7 @@ export const ImageCarousel: FC<Props> = ({ isEditable }) => {
     const classes = useStyles()
     const [currentIndex, setCurrentIndex] = useState(1)
     const images = useImagesSelector()
-
-
+    console.log('karuzela')
 
     return (
         <Carousel

@@ -1,8 +1,6 @@
-import { Button, Divider, ListItemText, List, ListItem, Dialog, AppBar, Toolbar, IconButton, Typography, Grid, Card, CardContent } from "@mui/material"
+import { Card, CardContent, Divider, Grid, List, ListItem, ListItemText, Typography } from "@mui/material"
 import { FC } from "react"
-import { useBusinessChainSelector } from "redux-toolkit/slices/businessChainSlice"
-import { useBusinessChainContext } from "../../../../../../../contexts/PanelContexts/BusinessChainContext"
-import DialogTransition from "../../../../../../reusable/DialogTransition"
+import { useLocationsSelector } from "redux-toolkit/slices/businessChainSlice"
 import { FullHeightDialog } from "../../../../../../reusable/FullHeightDialog"
 import { ContactDetailsEditForm } from "./ContactDetailsEditForm"
 
@@ -13,7 +11,7 @@ interface Props {
 }
 export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocations}) => {
 
-    const  businessChain  = useBusinessChainSelector()
+    const locations = useLocationsSelector()
 
     return (
         <FullHeightDialog
@@ -44,14 +42,14 @@ export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, sel
                                 <List>
                                     {
                                         selectedLocations.map((locId) => {
-                                            return <>
+                                            return <div key={locId}>
                                                 <Divider />
                                                 <ListItem key={locId}>
                                                     <ListItemText
-                                                        secondary={businessChain.locations.find(loc => loc._id === locId)?.address}
+                                                        secondary={locations.find(loc => loc._id === locId)?.address}
                                                     />
                                                 </ListItem>
-                                            </>
+                                            </div>
                                         })
                                     }
                                 </List>

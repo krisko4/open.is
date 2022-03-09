@@ -28,10 +28,9 @@ const days = [
 interface Props {
     selectedLocations?: string[],
     businessChain?: RawPlaceDataProps,
-    setBusinessChain?: React.Dispatch<React.SetStateAction<RawPlaceDataProps>>
 }
 
-export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, businessChain }) => {
+export const OpeningHours: FC<Props> = ({ selectedLocations,  businessChain }) => {
 
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
@@ -131,7 +130,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
                     location.alwaysOpen = true
                     location.isActive = true
                 })
-                setBusinessChain && setBusinessChain({ ...businessChain })
+                // setBusinessChain && setBusinessChain({ ...businessChain })
             }
             else {
                 if (!currentPlace.isActive) {
@@ -260,7 +259,6 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, setBusinessChain, b
             </Slide>
             <OpeningHoursDialog
                 businessChain={businessChain}
-                setBusinessChain={setBusinessChain}
                 openingHours={openingHours}
                 selectedLocations={selectedLocations}
                 dialogOpen={dialogOpen}

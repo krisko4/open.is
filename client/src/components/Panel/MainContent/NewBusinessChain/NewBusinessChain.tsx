@@ -46,8 +46,6 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
 
     useEffect(() => {
         dispatch(setCurrentPlace(clearPlace))
-        console.log('haloooo')
-        console.log(activeStep)
     }, [])
 
     return (

@@ -9,8 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { useBusinessChainContext } from '../../../../../../contexts/PanelContexts/BusinessChainContext';
+import { useLocationsSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
 import { TableToolbar } from './TableToolbar/TableToolbar';
@@ -63,10 +62,20 @@ interface Data {
 
 export const BusinessChainTable: React.FC = () => {
 
-    const  businessChain  = useBusinessChainSelector()
+    const locations  = useLocationsSelector()
     const navigate = useNavigate()
+
+
+
+    const [order, setOrder] = useState<Order>('asc');
+    const [orderBy, setOrderBy] = useState<keyof Data>('visits');
+    const [selectedLocations, setSelectedLocations] = useState<string[]>([])
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(locations.length);
+
     const rows = useMemo(() => {
-        return businessChain.locations.map(location => (
+        setRowsPerPage(locations.length)
+        return locations.map(location => (
             {
                 address: location.address,
                 visits: location.visits?.reduce((a, b) => a + b.visitCount, 0) || 0,
@@ -76,14 +85,7 @@ export const BusinessChainTable: React.FC = () => {
                 id: location._id
             }
         ))
-    }, [businessChain.locations])
-
-    const [order, setOrder] = useState<Order>('asc');
-    const [orderBy, setOrderBy] = useState<keyof Data>('visits');
-    const [selectedLocations, setSelectedLocations] = useState<string[]>([])
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(businessChain.locations.length);
-
+    }, [locations])
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
         property: keyof Data,
@@ -127,7 +129,7 @@ export const BusinessChainTable: React.FC = () => {
 
 
     const chooseLocation = (index: number) => {
-        const location = businessChain.locations[index]
+        const location = locations[index]
         navigate(`/panel/management/${location._id}/${location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS}`)
     }
 
@@ -190,7 +192,7 @@ export const BusinessChainTable: React.FC = () => {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, { value: businessChain.locations.length, label: 'All' }]}
+                    rowsPerPageOptions={[5, 10, 25, { value: locations.length, label: 'All' }]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
@@ -202,74 +204,4 @@ export const BusinessChainTable: React.FC = () => {
 
         </Paper>
     );
-    // <TableContainer component={Box} sx={{ mt: 3, flexGrow: 1 }}>
-    //     <Grid container justifyContent="flex-end" sx={{ mb: 1, pr: 1 }}>
-    //         <Button startIcon={<SettingsIcon />} variant="contained" color="primary">Manage locations</Button>
-    //     </Grid>
-    //     <Table>
-    //         <TableHead>
-    //             <TableRow>
-    //                 <TableCell>Address</TableCell>
-    //                 <TableCell align="right">Visits</TableCell>
-    //                 <TableCell align="right">Opinions</TableCell>
-    //                 <TableCell align="right">Rating</TableCell>
-    //                 <TableCell align="center">State</TableCell>
-    //                 <TableCell align="center"></TableCell>
-    //             </TableRow>
-    //         </TableHead>
-    //         <TableBody>
-    //             {businessChain.locations.map((loc) => (
-    //                 <TableRow
-    //                     hover
-    //                     onClick={() => chooseLocation(loc)}
-    //                     key={loc._id}
-    //                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-    //                 >
-    //                     <TableCell>
-    //                         {loc.address}
-    //                     </TableCell>
-    //                     <TableCell align="right"  >
-    //                         {loc.visits?.reduce((a, b) => a + b.visitCount, 0) || 0}
-    //                     </TableCell>
-    //                     <TableCell align="right">
-    //                         {loc.opinions?.length || 0}
-    //                     </TableCell>
-    //                     <TableCell align="right">
-    //                         <Rating readOnly value={loc.averageNote?.average || 0} />
-    //                         {/* {loc.averageNote?.average || 0} */}
-    //                     </TableCell>
-    //                     <TableCell align="right">
-    //                         <Button size="small" onClick={(e) => e.stopPropagation()} color={loc.isActive ? "success" : "error"}>
-    //                             {loc.isActive ? 'Active' : 'Inactive'}
-    //                         </Button>
-    //                     </TableCell>
-    //                     <TableCell align="right">
-    //                         <Tooltip placement="top" arrow title="Delete location">
-    //                             <IconButton onClick={(e) => openDeleteDialog(e, loc._id as string)}>
-    //                                 <DeleteForeverIcon color="error" />
-    //                             </IconButton>
-
-    //                         </Tooltip>
-    //                     </TableCell>
-
-    //                 </TableRow>
-    //             ))}
-    //         </TableBody>
-    //     </Table>
-    //     <TablePagination
-    //         rowsPerPageOptions={[5, 10, 25]}
-    //         component="div"
-    //         count={businessChain.locations.length}
-    //         rowsPerPage={rowsPerPage}
-    //         page={page}
-    //         onPageChange={handleChangePage}
-    //         onRowsPerPageChange={handleChangeRowsPerPage}
-    //     />
-    //     <DeleteConfirmationDialog
-    //         dialogOpen={dialogOpen}
-    //         selectedLocationId={selectedLocationId}
-    //         setDialogOpen={setDialogOpen} />
-    // </TableContainer>
-
-
 }

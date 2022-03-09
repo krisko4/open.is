@@ -2,8 +2,8 @@ import { LoadingButton } from "@mui/lab"
 import { DialogContent, Dialog, DialogTitle, DialogActions, Grid, Button } from "@mui/material"
 import { FC, useState } from "react"
 import { useAppDispatch } from "redux-toolkit/hooks"
-import { useBusinessChainSelector, setLocations } from "redux-toolkit/slices/businessChainSlice"
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
+import { useBusinessChainSelector, setLocations, useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
+import { setLocationsForSelectedPlace, usePlacesSelector } from "redux-toolkit/slices/placesSlice"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
 import { LocationProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps"
 import { addLocations } from "../../../../../requests/PlaceRequests"
@@ -19,7 +19,7 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
     const { selectedLocations } = useLocationContext()
     const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const businessChain = useBusinessChainSelector()
+    const businessChainId = useBusinessChainIdSelector()
     const places = usePlacesSelector()
     const dispatch = useAppDispatch()
 
@@ -33,9 +33,11 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
                 newLocation.instagram = `https://instagram.com/` + newLocation.instagram
                 return newLocation
             })
-            const res = await addLocations(businessChain._id as string, locations)
-            console.log(res.data)
-            dispatch(setLocations(res.data.locations))
+            const res = await addLocations(businessChainId as string, locations)
+            const updatedLocations = res.data.locations
+            dispatch(setLocations(updatedLocations))
+            dispatch(setLocationsForSelectedPlace({ placeId : businessChainId as string, locations: updatedLocations}))
+            enqueueSuccessSnackbar('You have successfully added new locations')
             if (setAddLocationsDialogOpen) setAddLocationsDialogOpen(false)
         } catch (err) {
             console.log(err)

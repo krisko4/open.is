@@ -1,40 +1,23 @@
 
-import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
-import { FC, useState } from "react"
+import { Avatar, ListItem, ListItemAvatar, ListItemText, ListSubheader } from "@mui/material"
+import { FC } from "react"
 import { useNavigate } from "react-router-dom"
 import { RawPlaceDataProps } from "../../../../contexts/PlaceProps"
 import { usePlacesSelector } from "../../../../redux-toolkit/slices/placesSlice"
-import { setPlace } from "../../../../store/actions/setCurrentPlace"
-import { convertToCurrentPlace } from "../../../../utils/place_data_utils"
-import { BusinessChain } from './BusinessChain'
 
-interface Props {
-    selectedOption: string,
-    setSelectedOption: React.Dispatch<React.SetStateAction<string>>
-}
-export const MyBusinessChains: FC<Props> = ({ selectedOption, setSelectedOption }) => {
+export const MyBusinessChains: FC = () => {
 
     const places = usePlacesSelector()
     const navigate = useNavigate()
     const choosePlace = (place: RawPlaceDataProps) => {
-        // if (place._id === selectedOption) {
-        //     return
-        // }
-        // setSelectedOption(place._id as string)
         navigate(
-            `business-chain/${place._id}/dashboard`
+            `business-chain/${place._id}`
         )
-
-        // navigate({
-        //     pathname: `business-chain/${place._id}/dashboard`,
-        //     state: { place }
-        // }
-        // )
     }
 
 
     return <>
-        {places.filter(place => place.isBusinessChain).length > 0 &&
+        {places.filter(place => place.isBusinessChain ).length > 0 &&
             <>
                 <ListSubheader disableSticky>
                     My business chains

@@ -71,7 +71,7 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
             const newPlace : RawPlaceDataProps = res.data.place
             dispatch(addPlace(newPlace))
             enqueueSuccessSnackbar('You have successfully registered new place')
-            navigate(`dashboard`)
+            navigate(`/panel/dashboard`)
         }).catch(err => {
             console.log(err)
             enqueueErrorSnackbar()

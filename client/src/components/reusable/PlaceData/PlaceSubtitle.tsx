@@ -3,6 +3,7 @@ import React from "react"
 import { FC} from "react"
 import { useSubtitleSelector } from "redux-toolkit/slices/currentPlaceSlice"
 export const PlaceSubtitle: FC = () => {
+    
     const subtitle = useSubtitleSelector()
     return (
         <Typography variant="h6">

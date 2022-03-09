@@ -1,12 +1,10 @@
-import { Fade, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
 import DoneIcon from "@mui/icons-material/Done";
+import { Fade, Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { useNameSelector, setName } from "redux-toolkit/slices/currentPlaceSlice";
 import { useStepContext } from "../../../../../../contexts/StepContext";
 import { LoadingButton } from "../../../../../reusable/LoadingButton";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { setName, useNameSelector } from "redux-toolkit/slices/currentPlaceSlice";
 
 
 export const Step1: FC = () => {

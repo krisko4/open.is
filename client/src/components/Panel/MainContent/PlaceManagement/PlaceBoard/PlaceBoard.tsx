@@ -1,8 +1,10 @@
+import { CircularProgress, Grid } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
+import { getPlaceById, getPlacesByUserId } from "requests/PlaceRequests";
 import { RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { NotReady } from "../../../../reusable/NotReady";
@@ -26,22 +28,45 @@ export enum Destinations {
     NONE = ''
 }
 
+interface Props {
+    placeId: string
+}
 
-export const PlaceBoard: FC = () => {
+export const PlaceBoard: FC<Props> = ({ placeId }) => {
 
-    const places = usePlacesSelector()
-    const { id } = useParams()
     const dispatch = useAppDispatch()
-    const location = useLocation()
     const navigate = useNavigate()
     const currentPlace = useCurrentPlaceSelector()
     const [value, setValue] = useState('home')
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        const place = places.find(pl => pl.locations.some(loc => loc._id === id)) as RawPlaceDataProps
-        const currentPlace = convertToCurrentPlace(place)[0]
-        dispatch(setCurrentPlace(currentPlace))
-    }, [id])
+        (async () => {
+            try {
+                setLoading(true)
+                console.log(placeId)
+                if (!placeId) return
+                const res = await getPlaceById(placeId)
+                console.log(res.data)
+                const place = res.data as RawPlaceDataProps
+                console.log(place)
+                const currentPlace = convertToCurrentPlace(place)[0]
+                if (!currentPlace.isActive) {
+                    setValue('opening-hours')
+                    navigate('opening-hours')
+                }
+                else{
+                    navigate('home')
+                    setValue('home')
+                }
+                dispatch(setCurrentPlace(currentPlace))
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setLoading(false)
+            }
+        })()
+    }, [placeId])
 
 
     useEffect(() => {
@@ -105,6 +130,13 @@ export const PlaceBoard: FC = () => {
 
 
     return (
-        <PanelTabNavigator value={value} setValue={setValue} placeId={currentPlace._id as string} tabs={tabs} />
+        <>
+            {loading ?
+                <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+                    <CircularProgress size={100} />
+                </Grid> :
+                <PanelTabNavigator value={value} setValue={setValue} placeId={currentPlace._id as string} tabs={tabs} />
+            }
+        </>
     )
 }

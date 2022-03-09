@@ -1,32 +1,31 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, NewsProps, OpinionProps, Status } from "../../contexts/PlaceProps";
 import { defaultImages, defaultOpinions, defaultNews } from "../../utils/defaults";
 import { useAppSelector } from "../hooks";
 import { Image } from 'contexts/PlaceProps'
-import { clearPlace } from "contexts/PanelContexts/CurrentPlaceContext";
 
-const initialState: CurrentPlaceProps = { ...clearPlace }
-//     name: '', address: '',
-//     addressId: '',
-//     addressLanguage: '',
-//     type: null,
-//     lat: 0,
-//     lng: 0,
-//     description: '',
-//     subtitle: '',
-//     phone: '',
-//     logo: '',
-//     images: defaultImages,
-//     email: '',
-//     website: '',
-//     instagram: '',
-//     facebook: '',
-//     opinions: defaultOpinions,
-//     visits: [],
-//     news: defaultNews,
-//     alwaysOpen: false
-// }
+const initialState: CurrentPlaceProps = {
+    name: '', 
+    address: '',
+    addressId: '',
+    addressLanguage: '',
+    type: null,
+    lat: 0,
+    lng: 0,
+    description: '',
+    subtitle: '',
+    phone: '',
+    logo: '',
+    images: defaultImages,
+    email: '',
+    website: '',
+    instagram: '',
+    facebook: '',
+    opinions: defaultOpinions,
+    visits: [],
+    news: defaultNews,
+    alwaysOpen: false
+}
 
 interface ConcreteImageProps {
     image: Image
@@ -145,14 +144,18 @@ export const {
     setImages,
     setConcreteImage
 } = currentPlaceSlice.actions
+export const useOpinionsSelector = () => useAppSelector(state => state.currentPlace.opinions)
+export const useNewsSelector = () => useAppSelector(state => state.currentPlace.news)
+export const useIsAlwaysOpenSelector = () => useAppSelector(state => state.currentPlace.alwaysOpen)
+export const useIsUserOwnerSelector = () => useAppSelector(state => state.currentPlace.isUserOwner)
+export const useOpeningHoursSelector = () => useAppSelector(state => state.currentPlace.openingHours)
+export const useIdSelector = () => useAppSelector(state => state.currentPlace._id)
 export const useNameSelector = () => useAppSelector(state => state.currentPlace.name)
 export const useTypeSelector = () => useAppSelector(state => state.currentPlace.type)
 export const useCurrentPlaceSelector = () => useAppSelector(state => state.currentPlace)
 export const useDescriptionSelector = () => useAppSelector(state => state.currentPlace.description)
 export const useEmailSelector = () => useAppSelector(state => state.currentPlace.email)
 export const useFacebookSelector = () => useAppSelector(state => state.currentPlace.facebook)
-export const useOpinionsSelector = () => useAppSelector(state => state.currentPlace.opinions)
-export const useNewsSelector = () => useAppSelector(state => state.currentPlace.news)
 export const useInstagramSelector = () => useAppSelector(state => state.currentPlace.instagram)
 export const useLogoSelector = () => useAppSelector(state => state.currentPlace.logo)
 export const usePhoneSelector = () => useAppSelector(state => state.currentPlace.phone)

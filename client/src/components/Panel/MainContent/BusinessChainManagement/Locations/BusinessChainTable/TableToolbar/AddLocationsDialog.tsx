@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { FC, useState } from "react";
-import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useBusinessChainSelector, useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { CurrentPlaceContextProvider } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LocationContextProvider } from '../../../../../../../contexts/PanelContexts/LocationContext';
 import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
@@ -13,7 +13,7 @@ interface Props {
 }
 export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
 
-    const  businessChain  = useBusinessChainSelector()
+    const logo  = useLogoSelector()
     const [addressSubmitted, setAddressSubmitted] = useState(false)
 
 
@@ -31,7 +31,7 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
                         </Grid>
                         <Grid item lg={6} sx={{ height: '100%' }}>
                             <LocationDetails
-                                img={businessChain.logo}
+                                img={logo}
                                 addressSubmitted={addressSubmitted}
                                 isEditionMode={true}
                                 setAddLocationsDialogOpen={setDialogOpen}

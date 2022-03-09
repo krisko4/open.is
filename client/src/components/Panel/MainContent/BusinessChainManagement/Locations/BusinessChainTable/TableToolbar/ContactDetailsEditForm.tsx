@@ -13,7 +13,9 @@ import { useBusinessChainContext } from '../../../../../../../contexts/PanelCont
 import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
 import { changeContactDetailsForSelectedLocations, ContactData } from '../../../../../../../requests/PlaceRequests';
 import { ContactDetails, LocationProps } from '../../../../../../../contexts/PlaceProps';
-import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import {  useBusinessChainIdSelector, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { setContactDetailsForSelectedLocations } from 'redux-toolkit/slices/placesSlice';
 
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
@@ -73,7 +75,6 @@ const FieldStateButton: FC<FSProps> = ({ name, children, enabled, setEnabled, ..
 export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocations }) => {
 
     const [loading, setLoading] = useState(false)
-    const  businessChain  = useBusinessChainSelector()
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
 
     const [phoneEnabled, setPhoneEnabled] = useState(false)
@@ -81,33 +82,26 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
     const [websiteEnabled, setWebsiteEnabled] = useState(false)
     const [facebookEnabled, setFacebookEnabled] = useState(false)
     const [instagramEnabled, setInstagramEnabled] = useState(false)
+    const dispatch = useAppDispatch()
+    const businessChainId = useBusinessChainIdSelector()
 
 
 
     const handleClick = async () => {
         setLoading(true)
         try {
-            // const values: ContactDetails = {
-            //     phone: getValues('phone'),
-            //     email: getValues('email'),
-            //     website: getValues('website'),
-            //     facebook: `https://facebook.com/` + getValues('facebook'),
-            //     instagram: `https://instagram.com/` + getValues('instagram')
-            // }
             const values: ContactData = {}
             phoneEnabled && Object.assign(values, { phone: getValues('phone') })
             emailEnabled && Object.assign(values, { email: getValues('email') })
             websiteEnabled && Object.assign(values, { website: getValues('website') })
             facebookEnabled && Object.assign(values, { facebook: 'https://facebook.com/' + getValues('facebook') })
             instagramEnabled && Object.assign(values, { instagram: 'https://instagram.com/' + getValues('instagram') })
-            await changeContactDetailsForSelectedLocations(businessChain._id as string, selectedLocations, values)
-            selectedLocations.forEach(locId => {
-                let location = businessChain.locations.find(loc => loc._id === locId) as LocationProps
-                location = {
-                    ...location,
-                    ...values
-                }
-            })
+            await changeContactDetailsForSelectedLocations(businessChainId as string, selectedLocations, values)
+            dispatch(setContactDetailsForSelectedLocations({
+                placeId: businessChainId as string,
+                selectedLocations: selectedLocations,
+                contactDetails: values
+            }))
             enqueueSuccessSnackbar('You have successfully changed contact details')
             setDialogOpen(false)
         } catch (err) {

@@ -1,7 +1,7 @@
 import { Divider, Grid, Paper, Tab, Tabs } from "@mui/material"
 import React, { FC, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
-import { News } from "../News"
+import { News } from "../News/News"
 import { OpeningHours } from "../OpeningHours/OpeningHours"
 import { Opinions } from "../Opinions/Opinions"
 

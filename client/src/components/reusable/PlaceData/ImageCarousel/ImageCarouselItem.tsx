@@ -20,6 +20,7 @@ interface Props {
 export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index }) => {
 
     const address = useAddressSelector()
+    console.log('itemek')
     const dispatch = useAppDispatch()
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)
@@ -55,16 +56,12 @@ export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index }) => {
             index: index
         }
         dispatch(setConcreteImage(updatedImage))
-        // if (setCurrentPlace) setCurrentPlace(place => {
-        //     place.images = [...images]
-        //     return { ...place }
-        // })
     }
 
     return (
         <CardMedia
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={() => isEditable && setHover(true)}
+            onMouseLeave={() => isEditable && setHover(false)}
             sx={{
                 height: 400,
                 flexGrow: 1,

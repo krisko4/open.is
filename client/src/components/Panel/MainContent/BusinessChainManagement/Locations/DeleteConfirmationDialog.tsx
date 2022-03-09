@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { deleteSelectedLocations, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
+import { deletePlace, deleteSelectedLocationsFromSelectedPlace, usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
 import { deleteLocations } from '../../../../../requests/PlaceRequests';
 import { setPlaces } from '../../../../../store/actions/setPlaces';
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
@@ -29,17 +29,19 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
     const handleClick = async () => {
         setLoading(true)
         try {
+            await deleteLocations(businessChain._id as string, selectedLocations)
             if (businessChain.locations.length === selectedLocations.length) {
-                await deleteLocations(businessChain._id as string, selectedLocations)
                 enqueueSuccessSnackbar('You have successfully deleted your business chain.')
-                const newPlaces = places.filter(place => place._id !== businessChain._id)
-                dispatch(setPlaces(newPlaces))
+                dispatch(deletePlace(businessChain._id as string))
                 navigate('/panel/dashboard')
                 return
             }
-            await deleteLocations(businessChain._id as string, selectedLocations)
             enqueueSuccessSnackbar('You have successfully removed selected locations.')
             dispatch(deleteSelectedLocations(selectedLocations))
+            dispatch(deleteSelectedLocationsFromSelectedPlace({
+                placeId: businessChain._id as string,
+                selectedLocations: selectedLocations
+            }))
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {

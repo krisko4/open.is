@@ -44,8 +44,6 @@ export const LeftNavigation: FC = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const { userData } = useLoginContext()
-    const [selectedOption, setSelectedOption] = useState<string>('')
-
 
     return (
         <Slide direction="right" in={true} timeout={500}>
@@ -84,7 +82,6 @@ export const LeftNavigation: FC = () => {
                                         key={index}
                                         button
                                         onClick={() => {
-                                            setSelectedOption(button.url)
                                             navigate(`${button.url}`)
                                         }
                                         }
@@ -98,12 +95,8 @@ export const LeftNavigation: FC = () => {
                                     </ListItem>
                                 )
                             }
-                            <MyPlaces
-                                setSelectedOption={setSelectedOption}
-                                selectedOption={selectedOption} />
+                            <MyPlaces/>
                             <MyBusinessChains
-                                setSelectedOption={setSelectedOption}
-                                selectedOption={selectedOption}
                             />
                         </List>
                     </Scrollbars>

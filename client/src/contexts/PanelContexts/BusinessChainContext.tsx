@@ -18,6 +18,7 @@ export const BusinessChainContextProvider: FC = ({ children }) => {
 
 export const clearBusinessChain = {
     name: '',
+    _id: 'NEW_BUSINESS_CHAIN',
     locations: [
         {
             status: Status.CLOSED,

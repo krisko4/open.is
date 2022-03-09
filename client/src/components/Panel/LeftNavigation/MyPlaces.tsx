@@ -1,32 +1,18 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
-import { FC, useState } from "react"
-import { useNavigate, useLocation} from "react-router-dom"
+import { Avatar, ListItemAvatar, ListItemButton, ListItemText, ListSubheader } from "@mui/material"
 import { RawPlaceDataProps } from "contexts/PlaceProps"
-import { convertToCurrentPlace } from 'utils/place_data_utils'
-import {usePlacesSelector} from 'redux-toolkit/slices/placesSlice'
+import { FC } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
+import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice'
 import { Destinations } from "../MainContent/PlaceManagement/PlaceBoard/PlaceBoard"
 
-interface Props {
-    selectedOption: string,
-    setSelectedOption: React.Dispatch<React.SetStateAction<string>>
-}
-export const MyPlaces: FC<Props> = ({ selectedOption, setSelectedOption }) => {
+export const MyPlaces: FC = () => {
 
     const places = usePlacesSelector()
     const navigate = useNavigate()
     const location = useLocation()
 
     const choosePlace = (place: RawPlaceDataProps, index: number) => {
-        if (place._id === selectedOption) {
-            return
-        }
-        setSelectedOption(place._id as string)
-        const {isActive, _id} = place.locations[0]
-        if (isActive) {
-            navigate(`management/${_id}/${Destinations.HOME}`)
-            return
-        }
-        navigate(`management/${_id}/${Destinations.OPENING_HOURS}`)
+        navigate(`management/${place._id}`)
     }
 
     return <>

@@ -55,17 +55,21 @@ export const MainContent: FC = () => {
               </StepContextProvider>
             }
           />
-          <Route
-            path={`management/:id`}
-            element={
-              <PlaceBoard />
-            }
-          >
-            <Route path="home" element={<PlaceDashboard />} />
-            <Route path="settings" element={<PlaceSettings />} />
-            <Route path="opening-hours" element={<OpeningHours />} />
-            <Route path="statistics" element={<NotReady />} />
-          </Route>
+          {places.map(place => (
+            <Route
+              key={place._id}
+              path={`management/${place._id}`}
+              element={
+                <PlaceBoard placeId={place._id as string} />
+              }
+            >
+              <Route path="home" element={<PlaceDashboard />} />
+              <Route path="settings" element={<PlaceSettings />} />
+              <Route path="opening-hours" element={<OpeningHours />} />
+              <Route path="statistics" element={<NotReady />} />
+            </Route>
+
+          ))}
           {
             places.length === 0 ||
             <Route
@@ -77,15 +81,18 @@ export const MainContent: FC = () => {
             path={`account`}
             element={<AccountSettings />}
           />
-          <Route path={`business-chain/:id`}
-            element={
-                <BusinessChainManagement />
-            }
-          >
-            <Route path="dashboard" element={<NotReady />} />
-            <Route path="locations" element={<Locations />} />
-            <Route path="settings" element={<BusinessChainSettings />} />
-          </Route>
+          {places.filter(pl => pl.isBusinessChain).map((place, index) => (
+            <Route key={index} path={`business-chain/${place._id as string}`}
+              element={
+                <BusinessChainManagement placeId={place._id as string}/>
+              }
+            >
+              <Route path="dashboard" element={<NotReady />} />
+              <Route path="locations" element={<Locations />} />
+              <Route path="settings" element={<BusinessChainSettings />} />
+            </Route>
+
+          ))}
         </Routes>
       </Grid>
     </Grid >

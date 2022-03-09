@@ -1,17 +1,18 @@
+import { Grid, CircularProgress } from '@mui/material';
+import { clearPlace } from 'contexts/PanelContexts/CurrentPlaceContext';
 import { RawPlaceDataProps } from 'contexts/PlaceProps';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setBusinessChain, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { setBusinessChain, useBusinessChainIdSelector, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { setCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice';
 import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
+import { getPlaceById } from 'requests/PlaceRequests';
 import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
 import { BusinessChainSettings } from './Settings/BusinessChainSettings';
-type Props = {
-
-};
 
 const tabs = [
     {
@@ -31,38 +32,50 @@ const tabs = [
     },
 ]
 
+interface Props {
+    placeId: string
+}
 
-
-export const BusinessChainManagement = (props: Props) => {
+export const BusinessChainManagement: FC<Props> = ({ placeId }) => {
     const [value, setValue] = useState('dashboard')
-    const location = useLocation()
-    const places = usePlacesSelector()
-    const dipatch = useAppDispatch()
+    const dispatch = useAppDispatch()
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const businessChain = useBusinessChainSelector()
-    const { id } = useParams()
 
 
     useEffect(() => {
-        const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
-        dipatch(setBusinessChain(businessChain))
-    }, [id])
+        (async () => {
+            try {
+                setLoading(true)
+                if (!placeId) return
+                const res = await getPlaceById(placeId)
+                const place = res.data as RawPlaceDataProps
+                dispatch(setBusinessChain(place))
+                navigate('dashboard')
+                setValue('dashboard')
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setLoading(false)
+            }
+        })()
+    }, [placeId])
 
 
     useEffect(() => {
         navigate(value)
     }, [value])
-    // useEffect(() => {
-    //     const { id } = match.params
-    //     if (id !== businessChain._id) {
-    //         const businessChain = places.find(pl => pl._id === id) as RawPlaceDataProps
-    //         setBusinessChain(businessChain)
-    //     }
-    //     const dest = location.pathname.substring(match.url.length + 1)
-    //     setValue(dest)
-    // }, [match])
 
     return (
-        <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={businessChain._id as string} tabs={tabs} />
+        <>
+            {
+                loading ?
+                    <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center" >
+                        <CircularProgress size={100} />
+                    </Grid > :
+                    <PanelTabNavigator areBusinessChainTabs={true} value={value} setValue={setValue} placeId={businessChain._id as string} tabs={tabs} />
+            }
+        </>
     );
 };

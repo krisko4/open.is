@@ -19,7 +19,6 @@ export const Panel: FC = () => {
     const dispatch = useAppDispatch()
 
 
-
     useEffect(() => {
         (async function () {
             try {
