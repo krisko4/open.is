@@ -11,6 +11,7 @@ const placeService = {
 
 
     async getPlaceOwnedByUser(placeId, userId) {
+        console.log(placeId)
         const place = await this.getPlaceById(placeId)
         if (!place) throw ApiError.internal('Invalid placeId')
         if (place.userId.toString() !== userId.toString()) throw ApiError.internal('Illegal operation')
@@ -167,6 +168,19 @@ const placeService = {
             .group(this.groupedPlaceObject)
     },
 
+    async getPlaceByIdAndSelectedLocation(placeId, locationId, uid) {
+        const place = await Place.aggregate()
+            .unwind('locations')
+            .match({
+                '_id' : placeId,
+                'locations._id': locationId
+            })
+            .group(this.groupedPlaceObject)
+        if (!place) throw ApiError.internal('Invalid placeId')
+        if (place.userId.toString() !== uid.toString()) throw ApiError.internal('Illegal operation')
+        return place
+    },
+
     getActivePlacesByAddressesAndNames(addresses, names) {
         return Place.aggregate()
             .unwind('locations')
@@ -271,7 +285,7 @@ const placeService = {
     },
 
     activatePlace: (id) => Place.findByIdAndUpdate(id, { 'isActive': true }, { new: true }).exec(),
-    getPlaceById: (id) => Place.findById(id).exec(),
+    getPlaceById: (id) => Place.findById(id).lean().exec(),
     findByLocationId: (id) => Place.findOne({ 'locations._id': id }).exec(),
     getPlaceByLatLng: (lat, lng) => Place.findOne({ 'locations.lat': lat, 'locations.lng': lng }).exec(),
     getPlacesByAddress: (address) => Place.find({ address: address }).exec(),

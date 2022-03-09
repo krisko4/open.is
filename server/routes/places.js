@@ -53,7 +53,20 @@ router.get('/', (req, res, next) => {
     placeController.getPlaces(req, res, next)
 });
 
+router.get('/:placeId/locations/:locationId',
+    param('placeId').isMongoId().notEmpty(),
+    param('locationId').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getPlaceByIdAndSelectedLocation(req, res, next)
+    });
 
+router.get('/:id',
+    param('id').isMongoId().notEmpty(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getPlaceById(req, res, next)
+    });
 
 const parseLocations = (req, res, next) => {
     console.log(req.body.locations)

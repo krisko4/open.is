@@ -44,7 +44,7 @@ const placeController = {
     },
 
 
-    async changeOpeningHoursForSelectedLocations (req, res, next) {
+    async changeOpeningHoursForSelectedLocations(req, res, next) {
         try {
             const { id } = req.params
             const { locationIds, openingHours } = req.body
@@ -199,6 +199,34 @@ const placeController = {
         return places
     },
 
+    async getPlaceById(req, res, next)  {
+        try {
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            const { id } = req.params
+            let place = await placeService.getPlaceOwnedByUser(id, uid)
+            place = await this.getVisitsNewsOpinionsForPlace(place, uid)
+            console.log(place)
+            return res.status(200).json(placeDto(place, uid))
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    getPlaceByIdAndSelectedLocation: async (req, res, next) => {
+        try {
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            const { placeId, locationId } = req.params
+            const place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId, uid)
+            console.log(place)
+            return res.status(200).json(placeDto(place, uid))
+        } catch (err) {
+            return next(err)
+        }
+    },
 
     getPlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
@@ -265,11 +293,12 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
             const { logo, images } = req.files
+            console.log(req.files)
             if (!reqBody.editionMode) {
                 if (!logo) throw ApiError.badRequest('Request is missing necessary upload files')
                 if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
-            }     
-             const placeData = {
+            }
+            const placeData = {
                 name: reqBody.name,
                 type: reqBody.type,
                 description: reqBody.description,
