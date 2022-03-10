@@ -32,7 +32,7 @@ const placeController = {
     async setSelectedLocationsAlwaysOpen(req, res, next) {
         try {
             const { id } = req.params
-            const { locationIds, openingHours } = req.body
+            const { locationIds } = req.body
             const { uid } = req.cookies
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
@@ -52,7 +52,7 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
             await placeService.changeOpeningHoursForSelectedLocations(user, id, locationIds, openingHours)
-            return res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             return next(err)
         }
@@ -61,6 +61,7 @@ const placeController = {
 
     async changeContactDetailsForLocations(req, res, next) {
         try {
+            console.log('helou')
             const { id } = req.params
             const { locationIds, contactDetails } = req.body
             const { uid } = req.cookies
@@ -78,12 +79,12 @@ const placeController = {
     deleteLocations: async (req, res, next) => {
         try {
             const { placeId } = req.params
-            const { locationIds } = req.query
+            const { locationIds } = req.body
             const { uid } = req.cookies
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
             await placeService.deleteLocations(user, placeId, locationIds)
-            return res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             return next(err)
         }
@@ -134,7 +135,6 @@ const placeController = {
             case 0:
                 try {
                     const places = await placeService.getActivePlaces()
-                    console.log(places)
                     return res.status(200).json(places.map(place => placeDto(place, uid)))
                 } catch (err) {
                     return next(err)
@@ -199,7 +199,7 @@ const placeController = {
         return places
     },
 
-    async getPlaceById(req, res, next)  {
+    async getPlaceById(req, res, next) {
         try {
             const { uid } = req.cookies
             const user = await userService.getUserById(uid)
@@ -207,21 +207,20 @@ const placeController = {
             const { id } = req.params
             let place = await placeService.getPlaceOwnedByUser(id, uid)
             place = await this.getVisitsNewsOpinionsForPlace(place, uid)
-            console.log(place)
             return res.status(200).json(placeDto(place, uid))
         } catch (err) {
             return next(err)
         }
     },
 
-    getPlaceByIdAndSelectedLocation: async (req, res, next) => {
+    async getPlaceByIdAndSelectedLocation(req, res, next) {
         try {
             const { uid } = req.cookies
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
             const { placeId, locationId } = req.params
-            const place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId, uid)
-            console.log(place)
+            let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId, uid)
+            place = await this.getVisitsNewsOpinionsForPlace(place, uid)
             return res.status(200).json(placeDto(place, uid))
         } catch (err) {
             return next(err)
@@ -246,7 +245,6 @@ const placeController = {
                     let places
                     if (param === 'uid') {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
-                        places = await placeController.getVisitsNewsOpinions(places, uid)
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
@@ -265,25 +263,25 @@ const placeController = {
         }
     },
 
-    deletePlace: async (req, res, next) => {
-        const { placeId } = req.params
-        try {
-            const session = await mongoose.startSession()
-            await session.withTransaction(async () => {
-                await Promise.all([
-                    placeService.deletePlace(placeId),
-                    opinionService.deleteOpinionsByPlaceId(placeId),
-                    visitService.deleteVisitsByPlaceId(placeId),
-                    newsService.deleteNewsByPlaceId(placeId)
-                ])
-            })
-            await session.endSession()
-            return res.sendStatus(200)
-        } catch (err) {
-            return next(err)
-        }
+    // deletePlace: async (req, res, next) => {
+    //     const { placeId } = req.params
+    //     try {
+    //         const session = await mongoose.startSession()
+    //         await session.withTransaction(async () => {
+    //             await Promise.all([
+    //                 placeService.deletePlace(placeId),
+    //                 opinionService.deleteOpinionsByPlaceId(placeId),
+    //                 visitService.deleteVisitsByPlaceId(placeId),
+    //                 newsService.deleteNewsByPlaceId(placeId)
+    //             ])
+    //         })
+    //         await session.endSession()
+    //         return res.sendStatus(200)
+    //     } catch (err) {
+    //         return next(err)
+    //     }
 
-    },
+    // },
 
     addPlace: async (req, res, next) => {
         const { cookies } = req
@@ -316,7 +314,7 @@ const placeController = {
             } else {
                 place = await placeService.addPlace(placeData)
             }
-            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
+            return res.status(201).json(placeDto({ ...place._doc }, uid))
         } catch (err) {
             return next(err)
         }
@@ -365,9 +363,8 @@ const placeController = {
         favIds = favIds.split(',')
         try {
             let places = await placeService.getFavoritePlaces(favIds)
-            console.log(places)
+            
             places = await placeController.getVisitsNewsOpinions(places, uid)
-            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -383,7 +380,6 @@ const placeController = {
         try {
             let places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
             places = await placeController.getVisitsNewsOpinions(places, uid)
-            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
@@ -396,9 +392,7 @@ const placeController = {
         const { uid } = cookies
         try {
             let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
-            console.log(places)
             places = await placeController.getVisitsNewsOpinions(places, uid)
-            console.log(places)
             return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)

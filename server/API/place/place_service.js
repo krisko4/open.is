@@ -20,10 +20,13 @@ const placeService = {
 
 
     async setSelectedLocationsAlwaysOpen(user, placeId, locationIds) {
-        const place = await this.getPlaceOwnedByUser(placeId, user._id)
+        await this.getPlaceOwnedByUser(placeId, user._id)
         return Place.findByIdAndUpdate(
             placeId,
-            { 'locations.$[item].alwaysOpen': true },
+            {
+                'locations.$[item].alwaysOpen': true,
+                'locations.$[item].isActive': true
+            },
             { arrayFilters: [{ 'item._id': { $in: locationIds } }], new: true, upsert: true }
         ).exec()
 
@@ -169,13 +172,17 @@ const placeService = {
     },
 
     async getPlaceByIdAndSelectedLocation(placeId, locationId, uid) {
-        const place = await Place.aggregate()
+        console.log(placeId)
+        console.log(locationId)
+        console.log(uid)
+        const foundPlaces = await Place.aggregate()
             .unwind('locations')
             .match({
-                '_id' : placeId,
-                'locations._id': locationId
+                '_id': mongoose.Types.ObjectId(placeId),
+                'locations._id': mongoose.Types.ObjectId(locationId)
             })
             .group(this.groupedPlaceObject)
+        const place = foundPlaces[0]
         if (!place) throw ApiError.internal('Invalid placeId')
         if (place.userId.toString() !== uid.toString()) throw ApiError.internal('Illegal operation')
         return place
@@ -297,16 +304,16 @@ const placeService = {
     setStatus: (id, status) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.status': status }, { new: true, runValidators: true }).exec(),
     setOpeningHours: (id, hours) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen': false }, { new: true, runValidators: true }).exec(),
 
-    deletePlace: async (id) => {
-        const place = await placeService.getPlaceById(id)
-        if (!place) throw new Error('No place with provided id found')
-        const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
-        fs.unlink(imagePath, err => {
-            if (err) throw new Error(err)
-        })
-        await Place.findByIdAndDelete(id).exec()
+    // deletePlace: async (id) => {
+    //     const place = await placeService.getPlaceById(id)
+    //     if (!place) throw new Error('No place with provided id found')
+    //     const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
+    //     fs.unlink(imagePath, err => {
+    //         if (err) throw new Error(err)
+    //     })
+    //     await Place.findByIdAndDelete(id).exec()
 
-    },
+    // },
 
 
     updateNote: async (note, locationId, session) => {

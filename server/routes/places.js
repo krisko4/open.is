@@ -123,7 +123,7 @@ router.delete('/:placeId',
 router.delete('/:placeId/locations',
     cookie('uid').notEmpty().isMongoId(),
     param('placeId').notEmpty().isMongoId(),
-    query('locationIds.*').isMongoId().notEmpty(),
+    body('locationIds.*').isMongoId().notEmpty(),
     validateRequest,
     (req, res, next) => {
         placeController.deleteLocations(req, res, next)
