@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { NotReady } from "components/reusable/NotReady";
 import React, { FC } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
+import { useGetPlacesByUserId } from "redux-toolkit/api/placesApi";
 import { NoMatch } from "Router";
 import { StepContextProvider } from "../../../contexts/StepContext";
 import Header from "../Header";
@@ -16,15 +16,12 @@ import businessChainSteps from "./NewBusinessChain/steps";
 import { NewPlace } from "./NewPlace/NewPlace";
 import newPlaceSteps from "./NewPlace/Steps/steps";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
-import { OpeningHours } from "./PlaceManagement/PlaceBoard/OpeningHours/OpeningHours";
 import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
-import { PlaceDashboard } from "./PlaceManagement/PlaceBoard/PlaceDashboard/PlaceDashboard.";
-import { PlaceSettings } from "./PlaceManagement/PlaceBoard/Settings/PlaceSettings";
 
 export const MainContent: FC = () => {
 
-  const places = usePlacesSelector()
 
+    const { data : places } = useGetPlacesByUserId()
 
 
   return (
@@ -37,7 +34,7 @@ export const MainContent: FC = () => {
           <Route path="*" element={<NoMatch />} />
           <Route
             index
-            element={places.length === 0 ? <NoPlaces /> : <Navigate to="dashboard" />}
+            element={places && places.length === 0 ? <NoPlaces /> : <Navigate to="dashboard" />}
           />
           <Route
             path={`new-place`}
@@ -55,7 +52,7 @@ export const MainContent: FC = () => {
               </StepContextProvider>
             }
           />
-          {places.map(place => {
+          {places && places.map(place => {
             return place.locations.map(loc => (
               <Route
                 key={place._id}
@@ -69,7 +66,7 @@ export const MainContent: FC = () => {
             ))
           })}
           {
-            places.length === 0 ||
+            places && places.length === 0 ||
             <Route
               path={`dashboard`}
               element={<Dashboard />}
@@ -79,7 +76,7 @@ export const MainContent: FC = () => {
             path={`account`}
             element={<AccountSettings />}
           />
-          {places.filter(pl => pl.isBusinessChain).map((place, index) => (
+          {places && places.filter(pl => pl.isBusinessChain).map((place, index) => (
             <Route key={index} path={`business-chain/${place._id as string}/*`}
               element={
                 <BusinessChainManagement placeId={place._id as string} />

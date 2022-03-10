@@ -2,10 +2,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from "@mui/lab";
 import { Alert, AppBar, Dialog, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
+import { useChangeOpeningHoursForSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
 import { useAppDispatch } from "redux-toolkit/hooks";
-import {useBusinessChainIdSelector, setOpeningHoursForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
+import { useBusinessChainIdSelector, setOpeningHoursForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
 import { setOpeningHours, useCurrentPlaceSelector, useIdSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { changeOpeningHours, changeOpeningHoursForSelectedLocations } from "../../../../../../requests/OpeningHoursRequests";
+import { changeOpeningHours } from "../../../../../../requests/OpeningHoursRequests";
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import DialogTransition from "../../../../../reusable/DialogTransition";
 import { OpeningHoursCard } from "./OpeningHoursCard";
@@ -19,29 +20,33 @@ interface Props {
 
 }
 
-export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen,  openingHours }) => {
+export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen, openingHours }) => {
 
-    const [loading, setLoading] = useState(false)
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const dispatch = useAppDispatch()
     const currentPlaceId = useIdSelector()
     const businessChainId = useBusinessChainIdSelector()
 
+    const [changeOpeningHoursForSelectedLocations, { isLoading }] = useChangeOpeningHoursForSelectedLocationsMutation()
+
     const saveChanges = async () => {
-        setLoading(true)
         Object.keys(openingHours).forEach(day => {
             delete openingHours[day].valid
             openingHours[day].start = new Date(openingHours[day].start)
             openingHours[day].end = new Date(openingHours[day].end)
         })
         try {
-            // this means that openingHoursDialog is opened in business chain management 
-            if ( selectedLocations ) {
-                await changeOpeningHoursForSelectedLocations(businessChainId as string, openingHours, selectedLocations)
-                dispatch(setOpeningHoursForSelectedLocations({
+            // this means that openingHoursDialog is open in business chain management 
+            if (selectedLocations) {
+                await changeOpeningHoursForSelectedLocations({
+                    placeId: businessChainId as string,
                     openingHours: openingHours,
-                    selectedLocations: selectedLocations
-                }))
+                    locationIds: selectedLocations
+                }).unwrap()
+                // dispatch(setOpeningHoursForSelectedLocations({
+                //     openingHours: openingHours,
+                //     selectedLocations: selectedLocations
+                // }))
             }
             else {
                 await changeOpeningHours(currentPlaceId as string, openingHours)
@@ -52,8 +57,6 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, s
         } catch (err) {
             console.log(err)
             enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -79,7 +82,8 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, s
                         Summary
                     </Typography>
                     <LoadingButton
-                        loading={loading}
+                        loading={isLoading}
+                        disabled={isLoading}
                         color="primary"
                         variant="contained"
                         size="large"

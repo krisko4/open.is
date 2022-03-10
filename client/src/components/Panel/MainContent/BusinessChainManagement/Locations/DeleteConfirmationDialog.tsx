@@ -2,6 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Alert, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDeletePlaceMutation, useDeleteSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { deleteSelectedLocations, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { deletePlace, deleteSelectedLocationsFromSelectedPlace, usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
@@ -22,27 +23,32 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
     const [loading, setLoading] = React.useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
     const businessChain = useBusinessChainSelector()
+    const [deleteSelectedLocations, { isLoading }] = useDeleteSelectedLocationsMutation()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const places = usePlacesSelector()
 
     const handleClick = async () => {
-        setLoading(true)
         try {
-            await deleteLocations(businessChain._id as string, selectedLocations)
+            // await deleteLocations(businessChain._id as string, selectedLocations)
+            console.log('heyo')
+            await deleteSelectedLocations({
+                locationIds: selectedLocations,
+                placeId: businessChain._id as string
+            }).unwrap()
             if (businessChain.locations.length === selectedLocations.length) {
                 enqueueSuccessSnackbar('You have successfully deleted your business chain.')
-                dispatch(deletePlace(businessChain._id as string))
+                // dispatch(deletePlace(businessChain._id as string))
                 navigate('/panel/dashboard')
                 return
             }
             enqueueSuccessSnackbar('You have successfully removed selected locations.')
-            dispatch(deleteSelectedLocations(selectedLocations))
+            // dispatch(deleteSelectedLocations(selectedLocations))
         } catch (err) {
+            console.log(err)
             enqueueErrorSnackbar()
         } finally {
             setSelectedLocations([])
-            setLoading(false)
             setDialogOpen(false)
         }
     }
@@ -78,8 +84,8 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
             <DialogActions>
                 <Grid container justifyContent="flex-end">
                     <LoadingButton
-                        loading={loading}
-                        disabled={loading || value !== 'delete'}
+                        loading={isLoading}
+                        disabled={isLoading || value !== 'delete'}
                         onClick={handleClick}
                     >
                         Delete

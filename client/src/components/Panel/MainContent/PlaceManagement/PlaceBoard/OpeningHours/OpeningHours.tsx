@@ -2,11 +2,12 @@ import { LoadingButton } from "@mui/lab"
 import { Alert, AlertTitle, Card, CardContent, Checkbox, FormControlLabel, FormGroup, Grid, Paper, Slide, Tab, Tabs, Toolbar, Typography } from "@mui/material"
 import _ from "lodash"
 import React, { FC, useEffect, useState } from "react"
+import { useSetSelectedLocationsAlwaysOpenMutation } from "redux-toolkit/api/placesApi"
 import { useAppDispatch } from "redux-toolkit/hooks"
 import { setLocationsAlwaysOpen, useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
-import { setAlwaysOpen, useOpeningHoursDataSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { setAlwaysOpen, useIsAlwaysOpenSelector, useOpeningHoursDataSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { RawPlaceDataProps } from "../../../../../../contexts/PlaceProps"
-import { setPlaceAlwaysOpen, setSelectedLocationsAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
+import { setPlaceAlwaysOpen} from "../../../../../../requests/OpeningHoursRequests"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import { OpeningHoursDialog } from "./OpeningHoursDialog"
 import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
@@ -29,10 +30,12 @@ interface Props {
     selectedLocations?: string[],
 }
 
-export const OpeningHours: FC<Props> = ( {selectedLocations}) => {
+export const OpeningHours: FC<Props> = ({ selectedLocations }) => {
 
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const { openingHours, alwaysOpen, placeId, isActive } = useOpeningHoursDataSelector()
+    console.log(alwaysOpen)
+    // const alwaysOpen = useIsAlwaysOpenSelector()
 
     const [value, setValue] = useState('monday');
     const [areHoursValid, setHoursValid] = useState(false)
@@ -40,6 +43,7 @@ export const OpeningHours: FC<Props> = ( {selectedLocations}) => {
     const [dialogOpen, setDialogOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const businessChainId = useBusinessChainIdSelector()
+    const [setSelectedLocationsAlwaysOpen, { isLoading }] = useSetSelectedLocationsAlwaysOpenMutation()
     const dispatch = useAppDispatch()
 
 
@@ -123,10 +127,9 @@ export const OpeningHours: FC<Props> = ( {selectedLocations}) => {
         }
         // if always open is checked
         try {
-            setLoading(true)
             if (selectedLocations) {
-                await setSelectedLocationsAlwaysOpen(businessChainId as string, selectedLocations)
-                dispatch(setLocationsAlwaysOpen(selectedLocations))
+                await setSelectedLocationsAlwaysOpen({placeId : businessChainId as string, locationIds : selectedLocations})
+                // dispatch(setLocationsAlwaysOpen(selectedLocations))
             }
             else {
                 await setPlaceAlwaysOpen(placeId as string)
@@ -137,10 +140,7 @@ export const OpeningHours: FC<Props> = ( {selectedLocations}) => {
             enqueueSuccessSnackbar('You have successfully updated your opening hours')
         } catch (err) {
             enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
         }
-
     }
 
 
@@ -230,7 +230,7 @@ export const OpeningHours: FC<Props> = ( {selectedLocations}) => {
                                     />
                                 </FormGroup>
                                 <LoadingButton
-                                    loading={loading}
+                                    loading={isLoading}
                                     variant="contained"
                                     onClick={saveChanges}
                                     disabled={

@@ -3,19 +3,20 @@ import { ListItemLink } from "components/reusable/ListItemLink"
 import { RawPlaceDataProps } from "contexts/PlaceProps"
 import React, { FC, useMemo } from "react"
 import { Link as RouterLink, LinkProps } from "react-router-dom"
+import { useGetPlacesByUserId } from "redux-toolkit/api/placesApi"
 import { usePlacesSelector } from 'redux-toolkit/slices/placesSlice'
 
 export const MyPlaces: FC = () => {
 
-    const places = usePlacesSelector()
+    const { data : places } = useGetPlacesByUserId()
 
     return <>
-        {places.length > 0 &&
+        {places && places.length > 0 &&
             <>
                 <ListSubheader disableSticky>
                     My places
                 </ListSubheader>
-                {places.filter(place => !place.isBusinessChain).map((place, index) =>
+                { places && places.filter(place => !place.isBusinessChain).map((place, index) =>
                     <ListItemLink
                         key={place._id}
                         place={place}

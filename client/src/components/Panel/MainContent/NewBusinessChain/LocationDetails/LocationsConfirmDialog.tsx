@@ -1,12 +1,11 @@
 import { LoadingButton } from "@mui/lab"
-import { DialogContent, Dialog, DialogTitle, DialogActions, Grid, Button } from "@mui/material"
-import { FC, useState } from "react"
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
+import { FC } from "react"
+import { useAddLocationsMutation } from "redux-toolkit/api/placesApi"
 import { useAppDispatch } from "redux-toolkit/hooks"
-import { useBusinessChainSelector, setLocations, useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
-import { setLocationsForSelectedPlace, usePlacesSelector } from "redux-toolkit/slices/placesSlice"
+import { useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
 import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
-import { LocationProps, RawPlaceDataProps } from "../../../../../contexts/PlaceProps"
-import { addLocations } from "../../../../../requests/PlaceRequests"
+import { LocationProps } from "../../../../../contexts/PlaceProps"
 import { useCustomSnackbar } from "../../../../../utils/snackbars"
 
 interface Props {
@@ -17,13 +16,15 @@ interface Props {
 }
 export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, setAddLocationsDialogOpen }) => {
     const { selectedLocations } = useLocationContext()
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
     const businessChainId = useBusinessChainIdSelector()
+    const [addLocations, { isLoading }] = useAddLocationsMutation()
+
     const dispatch = useAppDispatch()
 
     const handleClick = async () => {
-        setLoading(true)
+        // setLoading(true)
         try {
             const locations: LocationProps[] = selectedLocations.map(location => {
                 const newLocation = { ...location }
@@ -32,16 +33,20 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
                 newLocation.instagram = `https://instagram.com/` + newLocation.instagram
                 return newLocation
             })
-            const res = await addLocations(businessChainId as string, locations)
-            const updatedLocations = res.data.locations
-            dispatch(setLocations(updatedLocations))
+            await addLocations({
+                placeId: businessChainId as string,
+                locations: locations
+            })
+            // const res = await addLocations(businessChainId as string, locations)
+            // const updatedLocations = res.data.locations
+            // dispatch(setLocations(updatedLocations))
             enqueueSuccessSnackbar('You have successfully added new locations')
             if (setAddLocationsDialogOpen) setAddLocationsDialogOpen(false)
         } catch (err) {
             console.log(err)
             enqueueErrorSnackbar()
         } finally {
-            setLoading(false)
+            // setLoading(false)
 
         }
     }
@@ -58,12 +63,12 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
             </DialogContent>
             <DialogActions>
                 <Grid container justifyContent="space-between">
-                    <Button disabled={loading} onClick={() => setDialogOpen(false)}>
+                    <Button disabled={isLoading} onClick={() => setDialogOpen(false)}>
                         Cancel
                     </Button>
                     <LoadingButton
-                        loading={loading}
-                        disabled={loading}
+                        loading={isLoading}
+                        disabled={isLoading}
                         onClick={handleClick}
                     >
                         Yes, I am sure

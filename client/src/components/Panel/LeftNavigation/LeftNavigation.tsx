@@ -12,6 +12,7 @@ import { RawPlaceDataProps } from '../../../contexts/PlaceProps';
 import { usePlacesSelector } from '../../../redux-toolkit/slices/placesSlice';
 import { useAppDispatch } from '../../../redux-toolkit/hooks';
 import { useNavigate } from 'react-router-dom';
+import { useGetPlacesByUserId } from 'redux-toolkit/api/placesApi';
 
 
 const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
@@ -40,7 +41,8 @@ const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
 
 export const LeftNavigation: FC = () => {
 
-    const places = usePlacesSelector()
+    // const places = usePlacesSelector()
+    const { data : places } = useGetPlacesByUserId()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const { userData } = useLoginContext()
@@ -77,7 +79,7 @@ export const LeftNavigation: FC = () => {
                         <List>
                             <ListSubheader disableSticky>Settings</ListSubheader>
                             {
-                                generateNavigationButtons(places).map((button, index) =>
+                                places && generateNavigationButtons(places).map((button, index) =>
                                     <ListItem
                                         key={index}
                                         button

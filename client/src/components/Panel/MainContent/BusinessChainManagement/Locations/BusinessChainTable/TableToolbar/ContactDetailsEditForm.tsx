@@ -12,8 +12,9 @@ import * as yup from "yup";
 import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
 import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
 import { changeContactDetailsForSelectedLocations, ContactData } from '../../../../../../../requests/PlaceRequests';
-import {  useBusinessChainIdSelector, setContactDetailsForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
+import { useBusinessChainIdSelector, setContactDetailsForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
 import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useChangeContactDetailsForSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
 
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
@@ -82,11 +83,11 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
     const [instagramEnabled, setInstagramEnabled] = useState(false)
     const dispatch = useAppDispatch()
     const businessChainId = useBusinessChainIdSelector()
+    const [changeContactDetailsForSelectedLocations, { isLoading }] = useChangeContactDetailsForSelectedLocationsMutation()
 
 
 
     const handleClick = async () => {
-        setLoading(true)
         try {
             const values: ContactData = {}
             phoneEnabled && Object.assign(values, { phone: getValues('phone') })
@@ -94,17 +95,19 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
             websiteEnabled && Object.assign(values, { website: getValues('website') })
             facebookEnabled && Object.assign(values, { facebook: 'https://facebook.com/' + getValues('facebook') })
             instagramEnabled && Object.assign(values, { instagram: 'https://instagram.com/' + getValues('instagram') })
-            await changeContactDetailsForSelectedLocations(businessChainId as string, selectedLocations, values)
-            dispatch(setContactDetailsForSelectedLocations({
-                selectedLocations: selectedLocations,
-                contactDetails: values
-            }))
+            await changeContactDetailsForSelectedLocations({
+                placeId: businessChainId as string,
+                contactDetails: values,
+                locationIds: selectedLocations
+            })
+            // dispatch(setContactDetailsForSelectedLocations({
+            //     selectedLocations: selectedLocations,
+            //     contactDetails: values
+            // }))
             enqueueSuccessSnackbar('You have successfully changed contact details')
             setDialogOpen(false)
         } catch (err) {
             enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -252,9 +255,9 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                     variant="contained"
                     size="large"
                     sx={{ mt: 2 }}
-                    loading={loading}
+                    loading={isLoading}
                     disabled={
-                        loading
+                        isLoading
                         || Object.keys(errors).length > 0
                         || (!phoneEnabled && !emailEnabled && !websiteEnabled && !facebookEnabled && !instagramEnabled)
                     }

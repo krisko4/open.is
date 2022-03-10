@@ -11,29 +11,29 @@ import newPlaceSteps from "../../../NewPlace/Steps/steps";
 export const PlaceSettings: FC = () => {
 
 
-    const currentPlace = useCurrentPlaceSelector()
+    // const currentPlace = useCurrentPlaceSelector()
 
-    const initialPlaceData = useMemo(() => {
-        const place = _.cloneDeep(currentPlace)
-        while (place.images.length < 4) {
-            place.images.push({
-                file: null,
-                img: ''
-            })
-        }
-        return {
-            ...place,
-            facebook: currentPlace.facebook.substring(21),
-            instagram: currentPlace.instagram.substring(22)
-        }
+    // const initialPlaceData = useMemo(() => {
+    //     const place = _.cloneDeep(currentPlace)
+    //     while (place.images.length < 4) {
+    //         place.images.push({
+    //             file: null,
+    //             img: ''
+    //         })
+    //     }
+    //     return {
+    //         ...place,
+    //         facebook: currentPlace.facebook.substring(21),
+    //         instagram: currentPlace.instagram.substring(22)
+    //     }
 
-    }, [currentPlace])
+    // }, [currentPlace])
 
     return (
         <StepContextProvider steps={newPlaceSteps}>
             <NewPlace
                 isEditionMode={true}
-                initialPlaceData={initialPlaceData}
+                // initialPlaceData={initialPlaceData}
             />
         </StepContextProvider>
     )

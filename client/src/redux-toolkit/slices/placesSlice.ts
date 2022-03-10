@@ -39,7 +39,7 @@ const placesSlice = createSlice({
             selectedPlace.locations = selectedPlace.locations.filter(loc => !action.payload.selectedLocations.includes(loc._id as string))
         },
         deletePlace: (state, action: PayloadAction<string>) => {
-            state= state.filter(place => place._id !== action.payload)
+            state = state.filter(place => place._id !== action.payload)
         },
         setLocationsForSelectedPlace: (state, action: PayloadAction<ModifiedLocationsProps>) => {
             const selectedPlace = state.find(place => place._id as string === action.payload.placeId) as RawPlaceDataProps

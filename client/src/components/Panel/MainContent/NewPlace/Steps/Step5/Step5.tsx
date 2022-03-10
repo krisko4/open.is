@@ -3,6 +3,7 @@ import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, Dialog
 import { RawPlaceDataProps } from "contexts/PlaceProps"
 import React, { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAddPlaceMutation } from "redux-toolkit/api/placesApi"
 import { useAppDispatch } from "redux-toolkit/hooks"
 import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { addPlace, usePlacesSelector } from "redux-toolkit/slices/placesSlice"
@@ -23,7 +24,7 @@ interface Props {
 export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const [isOpen, setOpen] = useState(false)
     const { activeStep, steps } = useStepContext()
-    const [isLoading, setLoading] = useState(false)
+    const [registerNewPlace, { data, isLoading }] = useAddPlaceMutation()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const places = usePlacesSelector()
@@ -36,6 +37,7 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
             enqueueWarningSnackbar('You have left some invalid data in previous steps. Please make sure all the fields are correctly filled.')
         }
     }, [])
+
 
     const editPlaceData = async () => {
         try {
@@ -54,30 +56,39 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
             console.log(err)
             enqueueErrorSnackbar()
         } finally {
-            setLoading(false)
+            // setLoading(false)
         }
     }
 
     const handleClick = async () => {
-        setLoading(true)
+        // setLoading(true)
         if (isEditionMode) {
             console.log(currentPlace)
             await editPlaceData()
-            setLoading(false)
+            // setLoading(false)
             return
         }
-        registerNewPlace(formData).then(res => {
-            const newPlace : RawPlaceDataProps = res.data.place
-            dispatch(addPlace(newPlace))
-            enqueueSuccessSnackbar('You have successfully registered new place')
+        try {
+            await registerNewPlace(formData)
+            enqueueSuccessSnackbar('You have successfully added new place')
             navigate(`/panel/dashboard`)
-        }).catch(err => {
-            console.log(err)
+
+        } catch (err) {
             enqueueErrorSnackbar()
-        }).finally(() => {
-            setLoading(false)
-            setOpen(false)
-        })
+        }
+
+        // registerNewPlace(formData).then(res => {
+        //     const newPlace : RawPlaceDataProps = res.data.place
+        //     dispatch(addPlace(newPlace))
+        //     enqueueSuccessSnackbar('You have successfully registered new place')
+        //     navigate(`/panel/dashboard`)
+        // }).catch(err => {
+        //     console.log(err)
+        //     enqueueErrorSnackbar()
+        // }).finally(() => {
+        //     setLoading(false)
+        //     setOpen(false)
+        // })
 
     }
 

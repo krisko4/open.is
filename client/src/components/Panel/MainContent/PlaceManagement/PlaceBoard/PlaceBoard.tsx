@@ -1,8 +1,10 @@
-import { CircularProgress, Grid } from "@mui/material";
+import { Fade, CircularProgress, Grid } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
+import { useGetPlaceByIdAndSelectedLocationQuery } from "redux-toolkit/api/placesApi";
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { setCurrentPlace, useCurrentPlaceSelector, useIsBusinessChainSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { getPlaceById, getPlaceByIdAndSelectedLocation } from "requests/PlaceRequests";
+import { useCustomSnackbar } from "utils/snackbars";
 import { RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { NotReady } from "../../../../reusable/NotReady";
@@ -34,34 +36,32 @@ interface Props {
 export const PlaceBoard: FC<Props> = ({ placeId, locationId }) => {
 
     const dispatch = useAppDispatch()
-    const [loading, setLoading] = useState(false)
-    const isBusinessChain = useIsBusinessChainSelector()
-    
+    const { enqueueErrorSnackbar } = useCustomSnackbar()
+    const { data: place, isLoading, isError } = useGetPlaceByIdAndSelectedLocationQuery({
+        placeId: placeId,
+        locationId: locationId
+    })
 
     useEffect(() => {
-        (async () => {
-            try {
-                setLoading(true)
-                if (!placeId) return
-                const res = await getPlaceByIdAndSelectedLocation(placeId, locationId)
-                const place = res.data as RawPlaceDataProps
-                const currentPlace = convertToCurrentPlace(place)[0]
-                dispatch(setCurrentPlace(currentPlace))
-            } catch (err) {
-                console.log(err)
-            } finally {
-                setLoading(false)
-            }
-        })()
-    }, [placeId])
+        if (isError) {
+            enqueueErrorSnackbar()
+        }
+    }, [isError])
 
+    useEffect(() => {
+        if (place) {
+            console.log(place)
+            const currentPlace = convertToCurrentPlace(place)[0]
+            dispatch(setCurrentPlace(currentPlace))
+        }
+    }, [place])
 
 
     const tabs = useMemo(() => {
         const settingsTab = {
             name: 'Settings',
             url: Destinations.SETTINGS,
-            content: <PlaceSettings  />
+            content: <PlaceSettings />
         }
 
         const tabs = [
@@ -106,16 +106,16 @@ export const PlaceBoard: FC<Props> = ({ placeId, locationId }) => {
                 content: <NotReady />
             },
         ]
-        if (!isBusinessChain) tabs.push(settingsTab)
+        if (!place?.isBusinessChain) tabs.push(settingsTab)
         return tabs
 
-    }, [isBusinessChain])
+    }, [place?.isBusinessChain])
 
 
 
     return (
         <>
-            {loading ?
+            {isLoading ?
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                     <CircularProgress size={100} />
                 </Grid> :
