@@ -11,7 +11,6 @@ interface Props {
 }
 
 export const SetOpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocations }) => {
-    const businessChain = useBusinessChainSelector()
     return (
         <FullHeightDialog
             title="Opening hours management"
@@ -19,7 +18,7 @@ export const SetOpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, se
             setDialogOpen={setDialogOpen}
         >
             <CurrentPlaceContextProvider>
-                <OpeningHours selectedLocations={selectedLocations} businessChain={businessChain} />
+                <OpeningHours selectedLocations={selectedLocations} />
             </CurrentPlaceContextProvider>
         </FullHeightDialog>
 

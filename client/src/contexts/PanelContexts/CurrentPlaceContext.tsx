@@ -21,7 +21,6 @@ export const CurrentPlaceContextProvider: FC<Props> = ({ children, initialPlaceD
 }
 
 export const clearPlace = {
-    _id : 'NEW_PLACE',
     name: '',
     address: '',
     addressId: '',

@@ -38,10 +38,6 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
             }
             enqueueSuccessSnackbar('You have successfully removed selected locations.')
             dispatch(deleteSelectedLocations(selectedLocations))
-            dispatch(deleteSelectedLocationsFromSelectedPlace({
-                placeId: businessChain._id as string,
-                selectedLocations: selectedLocations
-            }))
         } catch (err) {
             enqueueErrorSnackbar()
         } finally {

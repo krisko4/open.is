@@ -1,7 +1,8 @@
 import { Grid } from "@mui/material";
 import { FC, useState } from "react";
-import { useBusinessChainSelector, useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { CurrentPlaceContextProvider } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import {  useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { setAddressData } from "redux-toolkit/slices/currentPlaceSlice";
 import { LocationContextProvider } from '../../../../../../../contexts/PanelContexts/LocationContext';
 import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
 import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/LocationDetails';
@@ -15,6 +16,8 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
 
     const logo  = useLogoSelector()
     const [addressSubmitted, setAddressSubmitted] = useState(false)
+    const dispatch = useAppDispatch()
+    // dispatch(setAddressData())
 
 
     return (

@@ -20,7 +20,6 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
     const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
     const businessChainId = useBusinessChainIdSelector()
-    const places = usePlacesSelector()
     const dispatch = useAppDispatch()
 
     const handleClick = async () => {
@@ -36,7 +35,6 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
             const res = await addLocations(businessChainId as string, locations)
             const updatedLocations = res.data.locations
             dispatch(setLocations(updatedLocations))
-            dispatch(setLocationsForSelectedPlace({ placeId : businessChainId as string, locations: updatedLocations}))
             enqueueSuccessSnackbar('You have successfully added new locations')
             if (setAddLocationsDialogOpen) setAddLocationsDialogOpen(false)
         } catch (err) {

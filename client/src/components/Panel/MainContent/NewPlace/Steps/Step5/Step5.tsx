@@ -67,7 +67,6 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
             return
         }
         registerNewPlace(formData).then(res => {
-            console.log(res.data)
             const newPlace : RawPlaceDataProps = res.data.place
             dispatch(addPlace(newPlace))
             enqueueSuccessSnackbar('You have successfully registered new place')

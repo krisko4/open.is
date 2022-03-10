@@ -78,6 +78,7 @@ export const addLocations = (businessId: string, locations: LocationProps[]) =>
 
 export const getPlaceById = (placeId : string) => myAxios.get(`/places/${placeId}`)
 
+export const getPlaceByIdAndSelectedLocation = (placeId : string, locationId: string) => myAxios.get(`/places/${placeId}/locations/${locationId}`)
 
 export const getPlaceByLatLng = (lat: number, lng: number) => {
     return myAxios.get('/places', {

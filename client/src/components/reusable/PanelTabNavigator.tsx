@@ -1,6 +1,6 @@
 import { Grid, Paper, Slide, Tab, Tabs } from "@mui/material"
-import React, { FC } from "react"
-import { Outlet, useNavigate } from "react-router-dom"
+import React, { FC, useState, useEffect } from "react"
+import { useMatch, Routes, Outlet, Route, useNavigate, Link, useLocation, matchPath, resolvePath, useResolvedPath } from "react-router-dom"
 
 
 
@@ -10,41 +10,60 @@ interface Props {
         url: string,
         content: any
     }[],
-    placeId: string,
-    value: string,
-    setValue: any,
-    areBusinessChainTabs?: boolean
 }
 
+function useRouteMatch(patterns: readonly string[]) {
+    const location = useLocation();
+    const parent = useResolvedPath('.');
 
-export const PanelTabNavigator: FC<Props> = (({ value, areBusinessChainTabs, setValue, tabs, placeId }) => {
+    for (let i = 0; i < patterns.length; i += 1) {
+        const pattern = patterns[i];
+        const possibleMatch = matchPath(`${parent.pathname}/${pattern}`, location.pathname);
+        if (possibleMatch !== null) {
+            return pattern;
+        }
+    }
+    return null;
+}
 
+const NavigationTabs: FC<Props> = ({ tabs }) => {
 
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-        setValue(newValue);
-        // navigate(newValue)
-    };
+    const currentTab = useRouteMatch(tabs.map(tab => tab.url));
+
+    return (
+        <Tabs
+            value={currentTab}
+            indicatorColor="secondary"
+            textColor="secondary"
+            sx={{ width: '100%' }}
+        >
+            {tabs.map((tab) =>
+                <Tab key={tab.url} value={tab.url} component={Link} to={tab.url} disableRipple label={tab.name} />
+            )}
+        </Tabs>
+    )
+
+}
+
+export const PanelTabNavigator: FC<Props> = ({ tabs }) => {
+
+    console.log('uhuhu')
 
     return (
         <Grid container direction="column" style={{ overflow: 'hidden', flexGrow: 1 }}>
             <Slide in={true} timeout={500}>
                 <Paper>
-                    <Tabs
-                        value={value}
-                        indicatorColor="secondary"
-                        textColor="secondary"
-                        onChange={handleChange}
-                        sx={{ width: '100%' }}
-                    >
-                        {tabs.map((tab) =>
-                            <Tab key={tab.url} value={tab.url} disableRipple label={tab.name} />
-                        )}
-                    </Tabs>
+                    <NavigationTabs tabs={tabs} />
                 </Paper>
             </Slide>
             <Grid container sx={{ flexGrow: 1 }}>
-                <Outlet/>
+                <Routes>
+                    {tabs.map((tab) => (
+                        <Route key={tab.url} path={tab.url} element={tab.content} />)
+                    )}
+                </Routes>
             </Grid>
         </Grid>
     )
-})
+}
+

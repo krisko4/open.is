@@ -7,35 +7,35 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import * as React from 'react';
 import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useBusinessChainContext } from '../../../../../contexts/PanelContexts/BusinessChainContext';
 import { BusinessChainTable } from './BusinessChainTable/BusinessChainTable';
-import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useLogoSelector, useNameSelector, useSubtitleSelector } from 'redux-toolkit/slices/businessChainSlice';
 
 
 export const Locations: FC = () => {
 
-    const  businessChain  = useBusinessChainSelector()
+
+    const logo = useLogoSelector()
+    const name = useNameSelector()
+    const subtitle = useSubtitleSelector()
 
 
     return (
         <Scrollbars autoHide>
             <Fade in={true} timeout={1000}>
                 <Grid container sx={{ height: '100%' }}>
-                    {/* <Paper variant="outlined" sx={{ flexGrow: 1 }} square>
-                        <Paper sx={{ height: '100%', pt: 2 }} square> */}
                     <Toolbar sx={{ flexGrow: 1, pt: 2, pb: 2 }}>
                         <Grid container alignItems="center">
                             <Grid item lg={2}>
                                 <CardMedia
                                     style={{ height: 200, backgroundSize: 'contain', width: 200, marginTop: 10, borderRadius: 20 }}
-                                    image={businessChain.logo as string}
+                                    image={logo as string}
                                 />
                             </Grid>
                             <Grid container item lg={6} direction="column"> <Typography variant="h2">
-                                {businessChain.name}
+                                {name}
                             </Typography>
                                 <Typography variant="h6">
-                                    {businessChain.subtitle}
+                                    {subtitle}
                                 </Typography>
                             </Grid>
                             <Grid item lg={4}>
@@ -74,8 +74,6 @@ export const Locations: FC = () => {
                     <Grid container justifyContent="center" sx={{pb: 1}}>
                         <BusinessChainTable />
                     </Grid>
-                    {/* </Paper>
-                    </Paper> */}
                 </Grid>
             </Fade>
         </Scrollbars>

@@ -3,9 +3,8 @@ import { LoadingButton } from "@mui/lab";
 import { Alert, AppBar, Dialog, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { setOpeningHours, useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
-import { LocationProps, RawPlaceDataProps } from "../../../../../../contexts/PlaceProps";
+import {useBusinessChainIdSelector, setOpeningHoursForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
+import { setOpeningHours, useCurrentPlaceSelector, useIdSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { changeOpeningHours, changeOpeningHoursForSelectedLocations } from "../../../../../../requests/OpeningHoursRequests";
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import DialogTransition from "../../../../../reusable/DialogTransition";
@@ -16,19 +15,17 @@ interface Props {
     dialogOpen: boolean,
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
     openingHours: any,
-    businessChain?: RawPlaceDataProps,
     selectedLocations?: string[],
-    setBusinessChain?: React.Dispatch<React.SetStateAction<RawPlaceDataProps>>
 
 }
 
-export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen, setBusinessChain, businessChain, openingHours }) => {
+export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen,  openingHours }) => {
 
     const [loading, setLoading] = useState(false)
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    const places = usePlacesSelector()
     const dispatch = useAppDispatch()
-    const currentPlace = useCurrentPlaceSelector()
+    const currentPlaceId = useIdSelector()
+    const businessChainId = useBusinessChainIdSelector()
 
     const saveChanges = async () => {
         setLoading(true)
@@ -36,27 +33,20 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, s
             delete openingHours[day].valid
             openingHours[day].start = new Date(openingHours[day].start)
             openingHours[day].end = new Date(openingHours[day].end)
-        }
-        )
+        })
         try {
             // this means that openingHoursDialog is opened in business chain management 
-            if (businessChain && selectedLocations && setBusinessChain) {
-                await changeOpeningHoursForSelectedLocations(businessChain._id as string, openingHours, selectedLocations)
-                selectedLocations.forEach(locId => {
-                    const location = businessChain.locations.find(loc => loc._id === locId) as LocationProps
-                    location.openingHours = openingHours
-                    location.isActive = true
-                })
-                setBusinessChain({...businessChain})
+            if ( selectedLocations ) {
+                await changeOpeningHoursForSelectedLocations(businessChainId as string, openingHours, selectedLocations)
+                dispatch(setOpeningHoursForSelectedLocations({
+                    openingHours: openingHours,
+                    selectedLocations: selectedLocations
+                }))
             }
             else {
-                await changeOpeningHours(currentPlace._id as string, openingHours)
-                const place = places.find(place => place._id === currentPlace.businessId)
-                const location = place?.locations.find(loc => loc._id === currentPlace._id) as LocationProps
-                location.openingHours = openingHours
-                location.isActive = true
+                await changeOpeningHours(currentPlaceId as string, openingHours)
+                dispatch(setOpeningHours(openingHours))
             }
-            dispatch(setOpeningHours(openingHours))
             enqueueSuccessSnackbar('You have successfully updated your opening hours')
             setDialogOpen(false)
         } catch (err) {

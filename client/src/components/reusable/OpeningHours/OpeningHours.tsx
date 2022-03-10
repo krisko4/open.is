@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Grid, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  useIdSelector, useIsAlwaysOpenSelector, useIsUserOwnerSelector, useOpeningHoursSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import {useOpeningHoursDataSelector,  useIdSelector, useIsAlwaysOpenSelector, useIsUserOwnerSelector, useOpeningHoursSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useColorMode } from '../../../contexts/ColorModeContext';
 import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
 import { Destinations } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard';
@@ -34,9 +34,7 @@ const defaultHours = {
 
 export const OpeningHours: FC = () => {
 
-    const openingHours = useOpeningHoursSelector()
-    const alwaysOpen = useIsAlwaysOpenSelector()
-    const isUserOwner = useIsUserOwnerSelector()
+    const {openingHours, alwaysOpen, isUserOwner} = useOpeningHoursDataSelector()
     const placeId = useIdSelector()
     const { mode } = useColorMode()
     const navigate = useNavigate()

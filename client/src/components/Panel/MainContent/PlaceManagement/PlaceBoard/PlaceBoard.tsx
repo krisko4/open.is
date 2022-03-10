@@ -1,10 +1,8 @@
 import { CircularProgress, Grid } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
-import { getPlaceById, getPlacesByUserId } from "requests/PlaceRequests";
+import { setCurrentPlace, useCurrentPlaceSelector, useIsBusinessChainSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { getPlaceById, getPlaceByIdAndSelectedLocation } from "requests/PlaceRequests";
 import { RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
 import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { NotReady } from "../../../../reusable/NotReady";
@@ -29,36 +27,25 @@ export enum Destinations {
 }
 
 interface Props {
-    placeId: string
+    placeId: string,
+    locationId: string
 }
 
-export const PlaceBoard: FC<Props> = ({ placeId }) => {
+export const PlaceBoard: FC<Props> = ({ placeId, locationId }) => {
 
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-    const currentPlace = useCurrentPlaceSelector()
-    const [value, setValue] = useState('home')
     const [loading, setLoading] = useState(false)
+    const isBusinessChain = useIsBusinessChainSelector()
+    
 
     useEffect(() => {
         (async () => {
             try {
                 setLoading(true)
-                console.log(placeId)
                 if (!placeId) return
-                const res = await getPlaceById(placeId)
-                console.log(res.data)
+                const res = await getPlaceByIdAndSelectedLocation(placeId, locationId)
                 const place = res.data as RawPlaceDataProps
-                console.log(place)
                 const currentPlace = convertToCurrentPlace(place)[0]
-                if (!currentPlace.isActive) {
-                    setValue('opening-hours')
-                    navigate('opening-hours')
-                }
-                else{
-                    navigate('home')
-                    setValue('home')
-                }
                 dispatch(setCurrentPlace(currentPlace))
             } catch (err) {
                 console.log(err)
@@ -69,15 +56,12 @@ export const PlaceBoard: FC<Props> = ({ placeId }) => {
     }, [placeId])
 
 
-    useEffect(() => {
-        navigate(value)
-    }, [value])
 
     const tabs = useMemo(() => {
         const settingsTab = {
             name: 'Settings',
             url: Destinations.SETTINGS,
-            content: <PlaceSettings />
+            content: <PlaceSettings  />
         }
 
         const tabs = [
@@ -122,10 +106,10 @@ export const PlaceBoard: FC<Props> = ({ placeId }) => {
                 content: <NotReady />
             },
         ]
-        if (!currentPlace.isBusinessChain) tabs.push(settingsTab)
+        if (!isBusinessChain) tabs.push(settingsTab)
         return tabs
 
-    }, [currentPlace.isBusinessChain])
+    }, [isBusinessChain])
 
 
 
@@ -135,7 +119,7 @@ export const PlaceBoard: FC<Props> = ({ placeId }) => {
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                     <CircularProgress size={100} />
                 </Grid> :
-                <PanelTabNavigator value={value} setValue={setValue} placeId={currentPlace._id as string} tabs={tabs} />
+                <PanelTabNavigator tabs={tabs} />
             }
         </>
     )

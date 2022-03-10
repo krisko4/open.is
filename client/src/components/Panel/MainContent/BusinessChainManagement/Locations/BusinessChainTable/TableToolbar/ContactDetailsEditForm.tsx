@@ -12,10 +12,8 @@ import * as yup from "yup";
 import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
 import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
 import { changeContactDetailsForSelectedLocations, ContactData } from '../../../../../../../requests/PlaceRequests';
-import { ContactDetails, LocationProps } from '../../../../../../../contexts/PlaceProps';
-import {  useBusinessChainIdSelector, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import {  useBusinessChainIdSelector, setContactDetailsForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
 import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setContactDetailsForSelectedLocations } from 'redux-toolkit/slices/placesSlice';
 
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
@@ -98,7 +96,6 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
             instagramEnabled && Object.assign(values, { instagram: 'https://instagram.com/' + getValues('instagram') })
             await changeContactDetailsForSelectedLocations(businessChainId as string, selectedLocations, values)
             dispatch(setContactDetailsForSelectedLocations({
-                placeId: businessChainId as string,
                 selectedLocations: selectedLocations,
                 contactDetails: values
             }))

@@ -14,6 +14,13 @@ interface ContactDetailsProps {
 }
 
 
+interface OpeningHoursProps {
+    openingHours: any,
+    selectedLocations: string[],
+}
+
+
+
 
 const businessChainSlice = createSlice({
     name: 'businessChain',
@@ -34,12 +41,31 @@ const businessChainSlice = createSlice({
         deleteSelectedLocations: (state, action: PayloadAction<string[]>) => {
             state.locations = state.locations.filter(loc => !action.payload.includes(loc._id as string))
         },
+        setLocationsAlwaysOpen: (state, action: PayloadAction<string[]>) => {
+            state.locations = state.locations.filter(loc => action.payload.includes(loc._id as string)).map(loc => ({
+                ...loc,
+                alwaysOpen : true,
+                isActive: true
+            }))
+        },
         setContactDetailsForSelectedLocations: (state, action: PayloadAction<ContactDetailsProps>) => {
             state.locations = state.locations.map(loc => {
                 if (action.payload.selectedLocations.includes(loc._id as string)) {
                     return {
                         ...loc,
                         ...action.payload.contactDetails
+                    }
+                }
+                return loc
+            })
+        },
+        setOpeningHoursForSelectedLocations: (state, action: PayloadAction<OpeningHoursProps>) => {
+            state.locations = state.locations.map(loc => {
+                if (action.payload.selectedLocations.includes(loc._id as string)) {
+                    return {
+                        ...loc,
+                        isActive: true,
+                        ...action.payload.openingHours
                     }
                 }
                 return loc
@@ -53,11 +79,15 @@ export const {
     setLocations,
     addLocations,
     deleteSelectedLocations,
-    setContactDetailsForSelectedLocations
+    setContactDetailsForSelectedLocations,
+    setOpeningHoursForSelectedLocations,
+    setLocationsAlwaysOpen,
 } = businessChainSlice.actions
 
-export const useBusinessChainSelector = () => useAppSelector(state => state.businessChain)
+export const useSubtitleSelector = () => useAppSelector(state => state.businessChain.subtitle)
+export const useNameSelector = () => useAppSelector(state => state.businessChain.name)
 export const useLogoSelector = () => useAppSelector(state => state.businessChain.logo)
+export const useBusinessChainSelector = () => useAppSelector(state => state.businessChain)
 export const useLocationsSelector = () => useAppSelector(state => state.businessChain.locations)
 export const useBusinessChainIdSelector = () => useAppSelector(state => state.businessChain._id)
 

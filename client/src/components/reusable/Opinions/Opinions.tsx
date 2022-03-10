@@ -1,22 +1,22 @@
 import AddIcon from '@mui/icons-material/Add';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Rating, Slide, SlideProps, TextField, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, InputAdornment, Rating, TextField, Typography } from "@mui/material";
 import Alert from '@mui/material/Alert';
 import Grid from "@mui/material/Grid";
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from "react";
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { addNewOpinion, useIdSelector, useIsUserOwnerSelector, useOpinionsSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { addNewOpinion, useOpinionDataSelector } from "redux-toolkit/slices/currentPlaceSlice";
 import { useLoginContext } from "../../../contexts/LoginContext";
 import { AverageNoteProps, OpinionProps } from "../../../contexts/PlaceProps";
 import { addOpinion } from "../../../requests/OpinionRequests";
 import { useCustomSnackbar } from "../../../utils/snackbars";
+import DialogTransition from '../DialogTransition';
 import { LoadingButton } from "../LoadingButton";
 import { OpinionCard } from './OpinionCard';
 
 
 
-const Transition = React.forwardRef<unknown, SlideProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 
 
@@ -31,9 +31,7 @@ export const Opinions: FC = () => {
     const [opinionText, setOpinionText] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useAppDispatch()
-    const opinions = useOpinionsSelector()
-    const isUserOwner = useIsUserOwnerSelector()
-    const placeId = useIdSelector()
+    const {opinions, isUserOwner, placeId} = useOpinionDataSelector()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
     const handleEmoji = (emoji: IEmojiData) => {
@@ -96,11 +94,7 @@ export const Opinions: FC = () => {
                         {userData.isLoggedIn ? <Grid item style={{ textAlign: 'center' }}>
                             <Typography style={{ color: "grey" }} variant="subtitle1">Press the button below to be the first advisor.</Typography>
                             {isUserOwner ?
-                                // <Tooltip title='You cannot rate your own place' arrow>
-                                //     <div>
                                 <Button style={{ marginTop: 10 }} disabled={true} startIcon={<AddIcon />} color="primary" variant="contained">New opinion</Button>
-                                //     </div>
-                                // </Tooltip>
                                 :
                                 <Button style={{ marginTop: 10 }} onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} color="primary" variant="contained">New opinion</Button>
                             }
@@ -112,7 +106,7 @@ export const Opinions: FC = () => {
                 {userData.isLoggedIn &&
                     <Dialog
                         open={dialogOpen}
-                        TransitionComponent={Transition}
+                        TransitionComponent={DialogTransition}
                         onClose={() => setDialogOpen(false)}
 
 

@@ -1,11 +1,12 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createDraftSafeSelector, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, NewsProps, OpinionProps, Status } from "../../contexts/PlaceProps";
 import { defaultImages, defaultOpinions, defaultNews } from "../../utils/defaults";
 import { useAppSelector } from "../hooks";
 import { Image } from 'contexts/PlaceProps'
+import { RootState } from "redux-toolkit/store";
 
 const initialState: CurrentPlaceProps = {
-    name: '', 
+    name: '',
     address: '',
     addressId: '',
     addressLanguage: '',
@@ -26,6 +27,7 @@ const initialState: CurrentPlaceProps = {
     news: defaultNews,
     alwaysOpen: false
 }
+
 
 interface ConcreteImageProps {
     image: Image
@@ -144,6 +146,7 @@ export const {
     setImages,
     setConcreteImage
 } = currentPlaceSlice.actions
+export const useIsBusinessChainSelector = () => useAppSelector(state => state.currentPlace.isBusinessChain)
 export const useOpinionsSelector = () => useAppSelector(state => state.currentPlace.opinions)
 export const useNewsSelector = () => useAppSelector(state => state.currentPlace.news)
 export const useIsAlwaysOpenSelector = () => useAppSelector(state => state.currentPlace.alwaysOpen)
@@ -166,16 +169,38 @@ export const useAddressSelector = () => useAppSelector(state => state.currentPla
 export const useAverageNoteSelector = () => useAppSelector(state => state.currentPlace.averageNote)
 export const useStatusSelector = () => useAppSelector(state => state.currentPlace.status)
 export const useVisitsSelector = () => useAppSelector(state => state.currentPlace.visits)
-export const useAddressDataSelector = () => useAppSelector(state => {
-    const addressData: AddressDataProps = {
+export const useAddressDataSelector = () => useAppSelector(state => addressDataSelector(state))
+export const useOpeningHoursDataSelector = () => useAppSelector(state => openingHoursDataSelector(state))
+export const useOpinionDataSelector = () => useAppSelector(state => opinionDataSelector(state))
+
+const selectSelf = (state: RootState) => state
+export const addressDataSelector = createDraftSafeSelector(
+    selectSelf,
+    (state) => ({
         address: state.currentPlace.address,
         addressId: state.currentPlace.addressId,
         lat: state.currentPlace.lat,
         lng: state.currentPlace.lng,
         addressLanguage: state.currentPlace.addressLanguage
-    }
-    return addressData
-}
+    })
+)
+export const openingHoursDataSelector = createDraftSafeSelector(
+    selectSelf,
+    (state) => ({
+        openingHours : state.currentPlace.openingHours,
+        alwaysOpen : state.currentPlace.alwaysOpen,
+        isUserOwner : state.currentPlace.isUserOwner,
+        isActive : state.currentPlace.isActive,
+        placeId : state.currentPlace._id
+    })
+)
+export const opinionDataSelector = createDraftSafeSelector(
+    selectSelf,
+    (state) => ({
+        opinions : state.currentPlace.opinions,
+        placeId : state.currentPlace._id,
+        isUserOwner : state.currentPlace.isUserOwner
+    })
 )
 
 

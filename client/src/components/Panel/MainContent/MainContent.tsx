@@ -55,21 +55,19 @@ export const MainContent: FC = () => {
               </StepContextProvider>
             }
           />
-          {places.map(place => (
-            <Route
-              key={place._id}
-              path={`management/${place._id}`}
-              element={
-                <PlaceBoard placeId={place._id as string} />
-              }
-            >
-              <Route path="home" element={<PlaceDashboard />} />
-              <Route path="settings" element={<PlaceSettings />} />
-              <Route path="opening-hours" element={<OpeningHours />} />
-              <Route path="statistics" element={<NotReady />} />
-            </Route>
+          {places.map(place => {
+            return place.locations.map(loc => (
+              <Route
+                key={place._id}
+                path={`management/${loc._id}/*`}
+                element={
+                  <PlaceBoard placeId={place._id as string} locationId={loc._id as string} />
+                }
+              >
+              </Route>
 
-          ))}
+            ))
+          })}
           {
             places.length === 0 ||
             <Route
@@ -82,9 +80,9 @@ export const MainContent: FC = () => {
             element={<AccountSettings />}
           />
           {places.filter(pl => pl.isBusinessChain).map((place, index) => (
-            <Route key={index} path={`business-chain/${place._id as string}`}
+            <Route key={index} path={`business-chain/${place._id as string}/*`}
               element={
-                <BusinessChainManagement placeId={place._id as string}/>
+                <BusinessChainManagement placeId={place._id as string} />
               }
             >
               <Route path="dashboard" element={<NotReady />} />
