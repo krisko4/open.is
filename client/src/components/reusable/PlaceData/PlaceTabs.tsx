@@ -1,6 +1,7 @@
 import { Divider, Grid, Paper, Tab, Tabs } from "@mui/material"
 import React, { FC, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
+import { useIdSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { News } from "../News/News"
 import { OpeningHours } from "../OpeningHours/OpeningHours"
 import { Opinions } from "../Opinions/Opinions"
@@ -13,9 +14,10 @@ const MyTab = (props: any) => {
 export const PlaceTabs: FC = () => {
 
     const [value, setValue] = useState(0)
+    const id = useIdSelector()
 
     const tabs = [
-        <News />,
+        <News locationId={id as string} />,
         <OpeningHours/>,
         <Opinions/>
     ]

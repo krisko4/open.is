@@ -13,6 +13,7 @@ import { OpeningHours } from "./OpeningHours/OpeningHours";
 import { Opinions } from "./Opinions/Opinions";
 import { PlaceDashboard } from "./PlaceDashboard/PlaceDashboard.";
 import { PlaceSettings } from "./Settings/PlaceSettings";
+import {useNavigate, useParams} from 'react-router-dom'
 
 
 export enum Destinations {
@@ -28,18 +29,17 @@ export enum Destinations {
     NONE = ''
 }
 
-interface Props {
-    placeId: string,
-    locationId: string
-}
 
-export const PlaceBoard: FC<Props> = ({ placeId, locationId }) => {
+export const PlaceBoard: FC = () => {
 
     const dispatch = useAppDispatch()
     const { enqueueErrorSnackbar } = useCustomSnackbar()
-    const { data: place, isLoading, isError } = useGetPlaceByIdAndSelectedLocationQuery({
-        placeId: placeId,
-        locationId: locationId
+    const {placeId, locationId} = useParams()
+
+
+    const { data: place, isFetching, isError } = useGetPlaceByIdAndSelectedLocationQuery({
+        placeId: placeId as string,
+        locationId: locationId as string
     })
 
     useEffect(() => {
@@ -115,9 +115,9 @@ export const PlaceBoard: FC<Props> = ({ placeId, locationId }) => {
 
     return (
         <>
-            {isLoading ?
+            {isFetching ?
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                    <CircularProgress size={100} />
+                    <CircularProgress disableShrink size={100} />
                 </Grid> :
                 <PanelTabNavigator tabs={tabs} />
             }

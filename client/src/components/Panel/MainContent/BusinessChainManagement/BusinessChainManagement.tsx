@@ -12,6 +12,7 @@ import { Locations } from './Locations/Locations';
 import { BusinessChainSettings } from './Settings/BusinessChainSettings';
 import { setCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice'
 import { useGetPlaceByIdQuery } from 'redux-toolkit/api/placesApi';
+import { useParams } from 'react-router-dom';
 
 const tabs = [
     {
@@ -31,35 +32,23 @@ const tabs = [
     },
 ]
 
-interface Props {
-    placeId: string
-}
+// interface Props {
+//     placeId?: string
+// }
 
-export const BusinessChainManagement: FC<Props> = ({ placeId }) => {
+export const BusinessChainManagement: FC = () => {
     const dispatch = useAppDispatch()
-    const [loading, setLoading] = useState(false)
-    const { data, isLoading,  isSuccess, isFetching } = useGetPlaceByIdQuery(placeId)
+
+
+    const {placeId} = useParams()
+
+    const { data, isLoading, isFetching } = useGetPlaceByIdQuery(placeId as string)
 
     useEffect(() => {
         if (data) {
             dispatch(setBusinessChain(data))
         }
     }, [data])
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             if (!placeId) return
-    //             const res = await getPlaceById(placeId)
-    //             const place = res.data as RawPlaceDataProps
-    //             dispatch(setBusinessChain(place))
-    //         } catch (err) {
-    //             console.log(err)
-    //         } finally {
-    //             setLoading(false)
-    //         }
-    //     })()
-    // }, [placeId])
 
 
     return (

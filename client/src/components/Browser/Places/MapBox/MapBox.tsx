@@ -2,6 +2,8 @@ import makeStyles from '@mui/styles/makeStyles';
 import 'leaflet/dist/leaflet.css';
 import { FC, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { useMapDataSelector } from 'redux-toolkit/slices/mapSlice';
+import { useSelectedLocationsSelector } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
 import { useColorMode } from '../../../../contexts/ColorModeContext';
 import { useMapContext } from '../../../../contexts/MapContext/MapContext';
@@ -33,9 +35,11 @@ const useStyles = makeStyles({
 
 export const MapBox: FC = () => {
 
-    const { placeCoords } = useMapContext()
-    const { selectedPlaces } = useAddressDetailsContext()
-    console.log(selectedPlaces)
+    // const { placeCoords } = useMapContext()
+    const mapData = useMapDataSelector()
+    const selectedLocations = useSelectedLocationsSelector()
+    // const { selectedPlaces } = useAddressDetailsContext()
+    // console.log(selectedPlaces)
     const classes = useStyles()
     const layerRef = useRef<any>(null)
     const { mode } = useColorMode()
@@ -57,8 +61,8 @@ export const MapBox: FC = () => {
     return (
         <MapContainer
             style={{ height: '100%', flexGrow: 1 }}
-            center={{ lat: placeCoords.lat, lng: placeCoords.lng }}
-            zoom={placeCoords.mapZoom}
+            center={{ lat: mapData.lat, lng: mapData.lng }}
+            zoom={mapData.zoom}
             scrollWheelZoom={true}
         >
             <TileLayer
@@ -66,11 +70,11 @@ export const MapBox: FC = () => {
                 ref={layerRef}
                 url={tileLayer.url}
             />
-            {selectedPlaces.map((place, index: number) =>
+            {selectedLocations.map((location, index) =>
                 <PlaceMarker
-                    key={index}
+                    key={location.locationId}
                     index={index}
-                    place={place}
+                    location={location}
                     classes={classes}
                 />
             )}

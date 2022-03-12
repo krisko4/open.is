@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocationsSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useLocationsSelector, useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
 import { TableToolbar } from './TableToolbar/TableToolbar';
@@ -63,6 +63,7 @@ interface Data {
 export const BusinessChainTable: React.FC = () => {
 
     const locations  = useLocationsSelector()
+    const businessChainId = useBusinessChainIdSelector()
     const navigate = useNavigate()
 
 
@@ -130,7 +131,7 @@ export const BusinessChainTable: React.FC = () => {
 
     const chooseLocation = (index: number) => {
         const location = locations[index]
-        navigate(`/panel/management/${location._id}/${location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS}`)
+        navigate(`/panel/management/${businessChainId}/${location._id}/${location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS}`)
     }
 
     return (

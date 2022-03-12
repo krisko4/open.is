@@ -20,7 +20,7 @@ export const MyPlaces: FC = () => {
                     <ListItemLink
                         key={place._id}
                         place={place}
-                        to={`management/${place.locations[0]._id as string}/${place.locations[0].isActive ? 'home' : 'opening-hours'}`} />
+                        to={`management/${place._id}/${place.locations[0]._id as string}/${place.locations[0].isActive ? 'home' : 'opening-hours'}`} />
                 )}
             </>
         }

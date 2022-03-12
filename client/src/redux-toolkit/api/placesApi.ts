@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { LocationProps, RawPlaceDataProps } from 'contexts/PlaceProps'
+import { LocationProps, NewsProps, RawPlaceDataProps } from 'contexts/PlaceProps'
+import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice'
 import { ContactData } from 'requests/PlaceRequests'
 
 interface SelectedLocationsProps {
@@ -28,12 +29,24 @@ interface PlaceAndLocationProps {
 interface AddLocationsProps {
     placeId: string,
     locations: LocationProps[]
-
 }
+
+interface GetSelectedLocationsProps {
+    start: number,
+    limit: number
+}
+
+interface AddNewsProps{
+    content: string,
+    locationId: string,
+    title: string
+}
+
+
 export const placesApi = createApi({
     reducerPath: 'placesApi',
     baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BASE_URL}` }),
-    tagTypes: ['Places', 'SelectedBusinessChain', 'SelectedPlace'],
+    tagTypes: ['Places', 'SelectedBusinessChain', 'SelectedPlace', 'SelectedLocations', 'News'],
     endpoints: (builder) => ({
         getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
             query: (uid) => `places?uid=${uid}`,
@@ -43,9 +56,40 @@ export const placesApi = createApi({
             query: (id) => `places/${id}`,
             providesTags: [{ type: 'SelectedBusinessChain', id: 'BUSINESS_CHAIN' }]
         }),
+        getNewsByLocationId: builder.query<NewsProps[], string>({
+            query: (locationId) => ({
+                url: 'news',
+                params: {
+                    locationId: locationId
+                }
+            }),
+            providesTags: ['News']
+        }),
+        addNews: builder.mutation<void, AddNewsProps>({
+            query: ({ locationId, content, title }) => ({
+                url: `news`,
+                method: 'POST',
+                body: {
+                    locationId: locationId,
+                    content: content,
+                    title: title
+                }
+            }),
+            invalidatesTags: ['News'],
+        }),
         getPlaceByIdAndSelectedLocation: builder.query<RawPlaceDataProps, PlaceAndLocationProps>({
             query: ({ placeId, locationId }) => `places/${placeId}/locations/${locationId}`,
             providesTags: [{ type: 'SelectedPlace' }]
+        }),
+        getSelectedLocations: builder.query<SelectedLocationProps[], GetSelectedLocationsProps>({
+            query: ({ start, limit }) => ({
+                url: `places/active/popular`,
+                params: {
+                    start: start,
+                    limit: limit
+                }
+            }),
+            providesTags: ['SelectedLocations']
         }),
         changeContactDetailsForSelectedLocations: builder.mutation<void, ChangeContactDetailsProps>({
             query: ({ placeId, contactDetails, locationIds }) => ({
@@ -143,6 +187,9 @@ export const useGetPlacesByUserId = () => {
 }
 
 export const {
+    useAddNewsMutation,
+    useGetNewsByLocationIdQuery,
+    useGetSelectedLocationsQuery,
     useSetSelectedLocationsAlwaysOpenMutation,
     useChangeOpeningHoursForSelectedLocationsMutation,
     useDeletePlaceMutation,

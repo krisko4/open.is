@@ -2,7 +2,9 @@ import { configureStore, createStore } from "@reduxjs/toolkit";
 import { placesApi } from "./api/placesApi";
 import { businessChainReducer } from "./slices/businessChainSlice";
 import { currentPlaceReducer } from "./slices/currentPlaceSlice";
+import { mapDataReducer } from "./slices/mapSlice";
 import { placesReducer } from "./slices/placesSlice";
+import { selectedLocationsReducer } from "./slices/selectedLocationsSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
         businessChain: businessChainReducer,
         places: placesReducer,
         [placesApi.reducerPath]: placesApi.reducer,
+        selectedLocations: selectedLocationsReducer,
+        mapData: mapDataReducer
 
     },
     middleware: (getDefaultMiddleware) =>

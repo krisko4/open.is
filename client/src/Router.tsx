@@ -1,4 +1,5 @@
 import { CssBaseline } from "@mui/material";
+import { Test } from "components/Test";
 import React, { FC } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { Confirmation } from './components/Auth/Confirmation';
@@ -49,6 +50,7 @@ export const Router: FC = () => {
                 <Route path="/confirm/:token" element={<Confirmation />} />
                 <Route path="/:email/confirm/:token" element={<EmailChangeConfirmation />} />
                 <Route path="*" element={<NoMatch />} />
+                <Route path="/test" element={<Test/>} />
             </Routes>
         </BrowserRouter>
     )

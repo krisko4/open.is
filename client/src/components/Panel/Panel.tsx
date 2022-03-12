@@ -12,7 +12,7 @@ import { MainContent } from "./MainContent/MainContent";
 
 export const Panel: FC = () => {
 
-    const { isLoading, data, isSuccess} = useGetPlacesByUserId()
+    const { isFetching, data, isSuccess} = useGetPlacesByUserId()
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -68,9 +68,9 @@ export const Panel: FC = () => {
                 height: '100vh',
             }}
             container direction="column">
-            {isLoading ?
+            {isFetching ?
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                    <CircularProgress size={100} />
+                    <CircularProgress disableShrink size={100} />
                 </Grid> :
                 <Grid container direction="row" sx={{ flex: '1 1 auto' }}>
                     <LeftNavigation />

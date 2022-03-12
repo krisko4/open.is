@@ -18,6 +18,16 @@ const provider = new OpenStreetMapProvider({
     }
 });
 
+
+export const getLimitedPlaces = async (start: number, limit: number) => {
+    return myAxios.get('/places/active/popular', {
+        params: {
+            start : start,
+            limit: limit
+        }
+    })
+}
+
 export const findByAddress = async (inputValue: string) => {
     const result = await provider.search({ query: inputValue })
     if (result) {

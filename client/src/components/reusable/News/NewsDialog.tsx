@@ -9,6 +9,7 @@ import DialogTransition from "../DialogTransition";
 import { LoadingButton } from "../LoadingButton";
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import { useAppDispatch } from "redux-toolkit/hooks";
+import { useAddNewsMutation } from "redux-toolkit/api/placesApi";
 
 interface Props {
     dialogOpen: boolean,
@@ -17,11 +18,11 @@ interface Props {
 export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
     const [newsTitle, setNewsTitle] = useState('')
     const [newsContent, setNewsContent] = useState('')
-    const [loading, setLoading] = useState(false)
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
     const emojiSource = useRef<'title' | 'content'>('title')
     const dispatch = useAppDispatch()
     const placeId = useIdSelector()
+    const [addNews, { isLoading }] = useAddNewsMutation()
 
 
     const handleEmoji = (emoji: IEmojiData) => {
@@ -31,18 +32,18 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
 
     const submitNews = async () => {
-        setLoading(true)
         try {
-            const res  = await addNews(newsTitle, newsContent, placeId as string)
-            dispatch(setNews(res.data as NewsProps))
+            await addNews({
+                title : newsTitle, 
+                content :newsContent,
+                locationId: placeId as string
+            }).unwrap()
+            // dispatch(setNews(res.data as NewsProps))
             enqueueSuccessSnackbar('News added successfully')
             setDialogOpen(false)
         } catch (err) {
             enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
-        }
-
+        } 
     }
     return (
 
@@ -107,7 +108,7 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
                 </Dialog>
             </DialogContent>
             <DialogActions>
-                <LoadingButton loading={loading} onClick={submitNews} disabled={loading} variant="contained" color="primary">Submit</LoadingButton>
+                <LoadingButton loading={isLoading} onClick={submitNews} disabled={isLoading} variant="contained" color="primary">Submit</LoadingButton>
             </DialogActions>
         </Dialog>
     )

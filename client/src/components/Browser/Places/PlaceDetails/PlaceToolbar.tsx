@@ -14,7 +14,7 @@ import { useLoginContext } from "contexts/LoginContext";
 
 export const PlaceToolbar: FC = () => {
 
-    const { setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
+    // const { setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
     const [isDialogOpen, setDialogOpen] = useState(false)
     const [value, setValue] = useState(0)
     const { userData } = useLoginContext()
@@ -24,13 +24,13 @@ export const PlaceToolbar: FC = () => {
     const currentPlace = useCurrentPlaceSelector()
     const navigate = useNavigate()
 
-    const closePlaceDetails = () => {
-        navigate(`/search`)
-        setPopupOpen(false)
-        setPlaceCoords(currentCoords => {
-            return { ...currentCoords, mapZoom: 5 }
-        })
-    }
+    // const closePlaceDetails = () => {
+    //     navigate(`/search`)
+    //     setPopupOpen(false)
+    //     setPlaceCoords(currentCoords => {
+    //         return { ...currentCoords, mapZoom: 5 }
+    //     })
+    // }
 
     const unsubscribe = async () => {
         setLoading(true)
@@ -49,9 +49,9 @@ export const PlaceToolbar: FC = () => {
 
     return (
         <Toolbar style={{ flexGrow: 1 }} disableGutters>
-            <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
+            {/* <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
                 <KeyboardReturn />
-            </IconButton>
+            </IconButton> */}
             <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
                 {
                     currentPlace.isUserOwner &&

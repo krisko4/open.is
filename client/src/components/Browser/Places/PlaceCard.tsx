@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
 import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
+import { PlaceCardData } from './PlacesBox/PopularPlaces';
 
 
 
@@ -31,8 +32,9 @@ enum tabType {
     FAVORITE = 3
 }
 interface PlaceProps {
-    tabIndex: number,
-    currentPlace: CurrentPlaceProps,
+    tabIndex?: number,
+    currentPlace?: CurrentPlaceProps,
+    cardData: PlaceCardData
 }
 
 const StyledRating = styled(Rating)({
@@ -50,46 +52,46 @@ const StyledRating = styled(Rating)({
 
 
 
-export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
+export const PlaceCard: FC<PlaceProps> = ({ tabIndex, cardData, currentPlace }) => {
     // const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
     const { setSelectedPlaces } = useAddressDetailsContext()
     const [elevation, setElevation] = useState(3)
 
 
-    useEffect(() => {
-        const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === currentPlace._id)
-        isFavorite ? setValue(1) : setValue(null)
-    }, [])
+    // useEffect(() => {
+    //     const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === currentPlace._id)
+    //     isFavorite ? setValue(1) : setValue(null)
+    // }, [])
 
 
 
     const setFavoritePlace = (newValue: number | null) => {
-        let favIds = Cookies.get('favIds')
-        console.log(favIds)
-        setValue(newValue)
-        if (!favIds) {
-            newValue === 1 && Cookies.set('favIds', `${currentPlace._id}`)
-            console.log(Cookies.get())
-            return
-        }
-        const favIdsArray = favIds.split(',')
-        const index = favIdsArray.findIndex(id => id === currentPlace._id)
-        // index not found && no value || index found && value
-        if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
-        if (index !== -1) {
-            favIdsArray.splice(index, 1)
-            tabIndex === tabType.FAVORITE && setSelectedPlaces((places) => places.filter((place => currentPlace._id !== place._id)))
-            if (favIdsArray.length === 0) {
-                Cookies.remove('favIds')
-                return
-            }
-        } else {
-            currentPlace._id && favIdsArray.push(currentPlace._id)
-        }
-        favIds = favIdsArray.join(',')
-        Cookies.set('favIds', favIds)
-        console.log(Cookies.get())
+        // let favIds = Cookies.get('favIds')
+        // console.log(favIds)
+        // setValue(newValue)
+        // if (!favIds) {
+        //     newValue === 1 && Cookies.set('favIds', `${currentPlace._id}`)
+        //     console.log(Cookies.get())
+        //     return
+        // }
+        // const favIdsArray = favIds.split(',')
+        // const index = favIdsArray.findIndex(id => id === currentPlace._id)
+        // // index not found && no value || index found && value
+        // if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
+        // if (index !== -1) {
+        //     favIdsArray.splice(index, 1)
+        //     tabIndex === tabType.FAVORITE && setSelectedPlaces((places) => places.filter((place => currentPlace._id !== place._id)))
+        //     if (favIdsArray.length === 0) {
+        //         Cookies.remove('favIds')
+        //         return
+        //     }
+        // } else {
+        //     currentPlace._id && favIdsArray.push(currentPlace._id)
+        // }
+        // favIds = favIdsArray.join(',')
+        // Cookies.set('favIds', favIds)
+        // console.log(Cookies.get())
 
     }
 
@@ -113,24 +115,24 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                                     }
                                 }}
                                 style={{ width: 80, height: 80 }}
-                                src={currentPlace.logo as string}
-                                alt={currentPlace.name}
+                                src={cardData.logo as string}
+                                alt={cardData.name}
                             />
                         </Grid>
                         <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
                             <Typography variant="h6">
-                                {currentPlace.name}
+                                {cardData.name}
                             </Typography>
                             <Typography variant="body1" sx={{ color: 'text.secondary' }} >
-                                {currentPlace.subtitle}
+                                {cardData.subtitle}
                             </Typography>
                             <Grid container alignItems="center">
                                 <Typography variant="overline" >
-                                    {currentPlace.type}
+                                    {cardData.type}
                                 </Typography>
                                 <Tooltip title="Add to favorites">
                                     <StyledRating
-                                        name={`${currentPlace._id}`}
+                                        name={`${cardData._id}`}
                                         onClick={(event) => event.stopPropagation()}
                                         value={value}
                                         onChange={(event, newValue) => {
@@ -144,12 +146,12 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, currentPlace }) => {
                                 </Tooltip>
                             </Grid>
                             <Typography variant="body2" color="primary">
-                                Address: {currentPlace.address}
+                                Address: {cardData.address}
                             </Typography>
                         </Grid>
                         <Grid item style={{ flexGrow: 1 }}>
                             <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
-                                {currentPlace.status === 'open' ?
+                                {cardData.status === 'open' ?
                                     <Tooltip title="This place is now open">
                                         <Button variant="contained" color="success" size="small" >Open</Button>
                                     </Tooltip>
