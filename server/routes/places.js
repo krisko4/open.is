@@ -158,6 +158,10 @@ router.patch('/:id/locations/opening-hours',
 
 )
 
+router.get('/test/unwinded', (req, res, next) => {
+    placeController.getPlacesWithUnwindedLocations(req, res, next)
+})
+
 router.patch('/:id/locations/contact-details',
     param('id').isMongoId().notEmpty(),
     cookie('uid').notEmpty().isMongoId(),

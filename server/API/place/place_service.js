@@ -85,6 +85,27 @@ const placeService = {
         ]
     },
 
+    async getPlacesWithUnwindedLocations(start, limit) {
+
+        return Place.aggregate()
+            .unwind('locations')
+            .facet({
+                metadata: [
+                    { $count: 'total' },
+                    {
+                        $addFields: {
+                            start: start,
+                            limit: limit
+                        }
+                    }
+                ],
+                data: [
+                    { $skip: start },
+                    { $limit: limit },
+                ]
+            })
+    },
+
     async changeOpeningHoursForSelectedLocations(user, placeId, locationIds, openingHours) {
         await this.getPlaceOwnedByUser(placeId, user._id)
         return Place.findByIdAndUpdate(
@@ -157,8 +178,43 @@ const placeService = {
             .limit(20)
             .sort(sortParam)
             .group(this.groupedPlaceObject)
-
-
+    },
+    getTop20PlacesPaginatedSortedBy(start, limit, sortParam) {
+        return Place.aggregate()
+            .unwind('locations')
+            .match({ 'locations.isActive': true })
+            .sort(sortParam)
+            .facet({
+                metadata: [
+                    { $count: 'total' },
+                    {
+                        $addFields: {
+                            start: start,
+                            limit: limit
+                        }
+                    }
+                ],
+                data: [
+                    { $skip: start },
+                    { $limit: limit },
+                    {
+                        $project: {
+                            _id: 1,
+                            name: 1,
+                            subtitle: 1,
+                            type: 1,
+                            logo: {
+                                $concat: [`${process.env.CLOUDI_URL}/`, '$logo']
+                            },
+                            status: '$locations.status',
+                            locationId : '$locations._id',
+                            lat: '$locations.lat',
+                            lng: '$locations.lng',
+                            address : "$locations.address",
+                        }
+                    }
+                ]
+            })
     },
 
     getActivePlacesBy(param) {

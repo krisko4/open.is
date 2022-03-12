@@ -21,7 +21,6 @@ const newsController = {
     },
     getNews: async(req, res, next) => {
         const queryLength = Object.keys(req.query).length
-        console.log(queryLength)
         switch (queryLength) {
             case 1:
                 let param = Object.keys(req.query)[0]
@@ -44,7 +43,6 @@ const newsController = {
                 }
             default:
                 return next(ApiError.badRequest('Invalid request'))
-
         }
 
     },
