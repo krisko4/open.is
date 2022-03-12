@@ -18,10 +18,10 @@ const visitService = {
     },
 
 
-    getVisitsByLocationId: async (placeId, locationId, userId) => {
+    getVisitsByLocationId: async (locationId, userId) => {
         if (userId) {
-            const place = await placeService.getPlaceByIdAndUserId(placeId, userId)
-            if (!place) throw new Error('No place found for provided parameters')
+            // const place = await placeService.getPlaceByIdAndUserId(placeId, userId)
+            // if (!place) throw new Error('No place found for provided parameters')
             return Visit.find({ locationId: locationId }).sort({ date: 1 }).exec()
         }
     },

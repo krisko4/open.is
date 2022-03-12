@@ -207,16 +207,29 @@ const placeService = {
                                 $concat: [`${process.env.CLOUDI_URL}/`, '$logo']
                             },
                             status: '$locations.status',
-                            locationId : '$locations._id',
+                            locationId: '$locations._id',
                             lat: '$locations.lat',
                             lng: '$locations.lng',
-                            address : "$locations.address",
+                            address: "$locations.address",
                         }
                     }
                 ]
             })
     },
 
+    getStatus(locationId) {
+        return Place.findOne({ 'locations._id': locationId }, { status: '$locations.status' }).lean().exec()
+    },
+    getOpeningHours(locationId) {
+        return Place.findOne({ 'locations._id': locationId }, {
+            openingHours: '$locations.openingHours',
+            alwaysOpen: '$locations.alwaysOpen',
+            isActive : '$locations.isActive',
+        }).lean().exec()
+    },
+    getAverageNote(locationId) {
+        return Place.findOne({ 'locations._id': locationId }, { averageNote: '$locations.averageNote' }).lean().exec()
+    },
     getActivePlacesBy(param) {
         return Place.aggregate()
             .unwind('locations')

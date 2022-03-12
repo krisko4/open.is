@@ -45,7 +45,7 @@ const placeController = {
 
     async getPlacesWithUnwindedLocations(req, res, next) {
         try {
-            const {start, limit} = req.query
+            const { start, limit } = req.query
             console.log(start, limit)
             const places = await placeService.getPlacesWithUnwindedLocations(parseInt(start), parseInt(limit))
             return res.status(200).json(places[0])
@@ -175,11 +175,11 @@ const placeController = {
     getVisitsNewsOpinionsForPlace: async (place, uid) => {
         for (const location of place.locations) {
             const [visits, opinions, news] = await Promise.all([
-                visitService.getVisitsByLocationId(place._id, location._id, uid),
+                // visitService.getVisitsByLocationId(place._id, location._id, uid),
                 opinionService.getOpinionsBy({ locationId: location._id }),
                 // newsService.getNewsBy({ locationId: location._id }),
             ])
-            location.visits = visits && visits.map(visit => visitDto(visit))
+            // location.visits = visits && visits.map(visit => visitDto(visit))
             location.opinions = opinions.map(opinion => opinionDto(opinion))
             // location.news = news.map(news => newsDto(news))
         }
@@ -209,6 +209,16 @@ const placeController = {
         return places
     },
 
+    async getStatus(req, res, next) {
+        try {
+            const { locationId } = req.params
+            const statusData = await placeService.getStatus(locationId)
+            return res.status(200).json(statusData.status[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
     async getPlaceById(req, res, next) {
         try {
             const { uid } = req.cookies
@@ -216,7 +226,7 @@ const placeController = {
             if (!user) throw ApiError.internal('Invalid uid')
             const { id } = req.params
             let place = await placeService.getPlaceOwnedByUser(id, uid)
-            place = await this.getVisitsNewsOpinionsForPlace(place, uid)
+            // place = await this.getVisitsNewsOpinionsForPlace(place, uid)
             return res.status(200).json(placeDto(place, uid))
         } catch (err) {
             return next(err)
@@ -230,7 +240,7 @@ const placeController = {
             if (!user) throw ApiError.internal('Invalid uid')
             const { placeId, locationId } = req.params
             let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId, uid)
-            place = await this.getVisitsNewsOpinionsForPlace(place, uid)
+            // place = await this.getVisitsNewsOpinionsForPlace(place, uid)
             return res.status(200).json(placeDto(place, uid))
         } catch (err) {
             return next(err)
@@ -400,11 +410,11 @@ const placeController = {
     getPopularPlaces: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
-        const {start, limit} = req.query
+        const { start, limit } = req.query
         console.log(start, limit)
         try {
             // let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
-            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), {'locations.visitCount' : -1})
+            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { 'locations.visitCount': -1 })
             return res.status(200).json(places[0])
             // places = await placeController.getVisitsNewsOpinions(places, uid)
             // return res.status(200).json(places.map(place => placeDto(place, uid)))
@@ -413,13 +423,44 @@ const placeController = {
         }
     },
 
+    getOpeningHours: async (req, res, next) => {
+        try {
+            const { locationId } = req.params
+            const data = await placeService.getOpeningHours(locationId)
+            console.log(data)
+            if (data.openingHours.length > 0) {
+                delete data.openingHours[0]['_id']
+            }
+
+            return res.status(200).json({
+                openingHours: data.openingHours[0],
+                alwaysOpen: data.alwaysOpen[0],
+                isActive: data.isActive[0]
+            })
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    getAverageNote: async (req, res, next) => {
+        try {
+            const { locationId } = req.params
+            const data = await placeService.getAverageNote(locationId)
+
+            return res.status(200).json(data.averageNote[0])
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
     setStatus: async (req, res, next) => {
         try {
             const { id } = req.params
             const { status } = req.body
             console.log(status)
             await placeService.setStatus(id, status)
-            res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             next(err)
         }

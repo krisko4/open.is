@@ -142,6 +142,12 @@ router.patch('/:id/locations/always-open',
 
 )
 
+router.get('/:locationId/status', 
+    param('id').isMongoId().notEmpty(),
+    (req, res, next) => {
+        placeController.getStatus(req, res, next)
+    }
+)
 
 router.patch('/:id/locations/opening-hours',
     param('id').isMongoId().notEmpty(),
@@ -233,6 +239,19 @@ router.patch('/:id/status',
         placeController.setStatus(req, res, next)
     })
 
+router.get('/:locationId/average-note',
+    param('locationId').isMongoId().notEmpty(),
+    (req, res, next) => {
+        placeController.getAverageNote(req, res, next)
+    }
+)
+
+router.get('/:locationId/opening-hours',
+    param('locationId').isMongoId().notEmpty(),
+    (req, res, next) => {
+        placeController.getOpeningHours(req, res, next)
+    }
+)
 router.patch('/:id/note',
     param('id').isMongoId().notEmpty(),
     validateRequest,
@@ -240,6 +259,8 @@ router.patch('/:id/note',
 
         placeController.updateNote(req, res, next)
     })
+
+    router
 
 router.patch('/:id/opening-hours',
     param('id').isMongoId().notEmpty(),
