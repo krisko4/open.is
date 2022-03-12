@@ -5,7 +5,7 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import * as Yup from 'yup';
 import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { useStepContext } from "../../../../../../contexts/StepContext";
-import { Email } from './Email';
+import { EmailField } from './EmailField';
 import { FacebookField } from './FacebookField';
 import { InstagramField } from './InstagramField';
 import { PhoneNumber } from './PhoneNumber';
@@ -87,7 +87,7 @@ export const ContactDetailsForm: FC = () => {
                 <Grid item container >
                     <PhoneNumber />
                     <Grid container sx={{ mt: 1, mb: 1 }}>
-                        <Email />
+                        <EmailField />
                     </Grid>
                     <Grid container sx={{ mt: 1, mb: 1 }}>
                         <WebsiteField />

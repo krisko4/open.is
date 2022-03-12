@@ -46,6 +46,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
     const [logoFile, setLogoFile] = useState<File | null>(null)
     const dispatch = useAppDispatch()
 
+
     useEffect(() => {
         isEditionMode && enqueueInfoSnackbar('In edition mode you can switch freely between steps. Click on the step label to check it out.')
         if (initialPlaceData) {
@@ -77,10 +78,10 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                             {activeStep === 4 &&
                                 <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
                                     <Grid item lg={5}>
-                                        <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable />
+                                        <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable={true} />
                                     </Grid>
                                     <Grid item lg={5}>
-                                        <Step5Container logoFile={logoFile}  isEditionMode={isEditionMode} />
+                                        <Step5Container initialPlaceData={initialPlaceData} logoFile={logoFile}  isEditionMode={isEditionMode} />
                                     </Grid>
                                 </Grid>
                             }
@@ -97,7 +98,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                                         minScale={0.5}
                                     >
                                         <TransformComponent>
-                                            <PlaceDetailsCard />
+                                            <PlaceDetailsCard isEditable={true} />
                                         </TransformComponent>
                                     </TransformWrapper>
                                 </Grid>

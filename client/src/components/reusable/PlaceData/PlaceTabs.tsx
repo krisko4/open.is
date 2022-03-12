@@ -1,7 +1,10 @@
 import { Divider, Grid, Paper, Tab, Tabs } from "@mui/material"
-import React, { FC, useState } from "react"
+import React, { FC, useMemo, useState } from "react"
 import Scrollbars from "react-custom-scrollbars"
 import { useIdSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { CachedNews } from "../CachedPlaceData/CachedNews"
+import { CachedOpeningHours } from "../CachedPlaceData/CachedOpeningHours"
+import { CachedOpinions } from "../CachedPlaceData/CachedOpinions"
 import { News } from "../News/News"
 import { OpeningHours } from "../OpeningHours/OpeningHours"
 import { Opinions } from "../Opinions/Opinions"
@@ -11,16 +14,29 @@ const MyTab = (props: any) => {
     return <Tab {...rest} label={label} disableRipple />
 }
 
-export const PlaceTabs: FC = () => {
+interface Props {
+    isEditable?: boolean
+}
+
+export const PlaceTabs: FC<Props> = ({ isEditable }) => {
 
     const [value, setValue] = useState(0)
-    const id = useIdSelector()
 
-    const tabs = [
-        <News locationId={id as string} />,
-        <OpeningHours/>,
-        <Opinions/>
-    ]
+    const tabs = useMemo(() => {
+        if (isEditable) {
+            return [
+                <News />,
+                <OpeningHours />,
+                <Opinions />
+            ]
+        }
+        return [
+            <CachedNews />,
+            <CachedOpeningHours />,
+            <CachedOpinions />
+        ]
+
+    }, [isEditable])
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);

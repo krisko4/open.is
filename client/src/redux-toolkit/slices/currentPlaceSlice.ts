@@ -1,6 +1,6 @@
 import { createDraftSafeSelector, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, NewsProps, OpinionProps, Status } from "../../contexts/PlaceProps";
-import { defaultImages, defaultOpinions, defaultNews } from "../../utils/defaults";
+import { defaultImages,  defaultNews } from "../../utils/defaults";
 import { useAppSelector } from "../hooks";
 import { Image } from 'contexts/PlaceProps'
 import { RootState } from "redux-toolkit/store";
@@ -22,7 +22,7 @@ const initialState: CurrentPlaceProps = {
     website: '',
     instagram: '',
     facebook: '',
-    opinions: defaultOpinions,
+    opinions: [],
     visits: [],
     news: defaultNews,
     alwaysOpen: false

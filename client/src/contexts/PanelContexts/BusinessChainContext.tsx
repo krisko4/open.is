@@ -1,5 +1,5 @@
 import { createContext, useContext, FC, useState } from "react";
-import { defaultImages, defaultNews, defaultOpinions } from "../../utils/defaults";
+import { defaultImages, defaultNews } from "../../utils/defaults";
 import { RawPlaceDataProps, Status } from "../PlaceProps";
 
 export const BusinessChainContext = createContext<BusinessChainContextData | null>(null)

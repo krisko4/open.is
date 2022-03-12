@@ -1,20 +1,17 @@
-import { FC, useState } from "react"
+import { FC, useMemo, useState } from "react"
+import { useGetVisitsForSelectedLocationQuery } from "redux-toolkit/api/placesApi"
+import { useIdSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { VisitProps } from "../../../../../contexts/PlaceProps"
 import { StatisticChart } from "../../Dashboard/StatisticChart"
+import { CircularProgress } from '@mui/material'
+import { useParams } from "react-router-dom"
 
-interface Props{
-    visits: VisitProps[]
-}
 
-const generateVisitsData = (visits : VisitProps[]) => {
-    let count = 0;
-    return visits.map(visit => {
-        count += visit.visitCount
-        return [visit.date, count]
-    })
-}
 
-export const ActivityChart: FC<Props> = ({visits}) => {
+export const ActivityChart: FC = () => {
+
+    const {locationId} = useParams()
+    const { data: visits, isFetching } = useGetVisitsForSelectedLocationQuery(locationId as string)
     const [options, setOptions] = useState({
         chart: {
             id: 'area-datetime',
@@ -63,15 +60,35 @@ export const ActivityChart: FC<Props> = ({visits}) => {
                 stops: [0, 100]
             }
         }
-        
+
     })
 
-    const series = [{
-        name: 'visits',
-        data: generateVisitsData(visits)
-    }]
+    const visitData = useMemo(() => {
+        let count = 0;
+        if (visits) {
+            console.log(visits)
+            return visits.map(visit => {
+                count += visit.visitCount
+                return [visit.date, count]
+            })
+        }
+    }, [visits])
+
+    const series = useMemo(() => {
+        if (visits) {
+            return [{
+                name: 'visits',
+                data: visitData
+            }]
+        }
+    }, [visits])
+
 
     return (
-        <StatisticChart type="area" height={500} options={options} setOptions={setOptions} series={series} />
+        <>
+            {isFetching ? <CircularProgress /> :
+                <StatisticChart type="area" height={500} options={options} setOptions={setOptions} series={series} />
+            }
+        </>
     )
 }

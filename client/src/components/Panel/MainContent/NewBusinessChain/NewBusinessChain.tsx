@@ -43,11 +43,6 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
     const dispatch = useAppDispatch()
 
 
-
-    useEffect(() => {
-        dispatch(setCurrentPlace(clearPlace))
-    }, [])
-
     return (
         <>
             {
@@ -90,7 +85,7 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                         <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable />
                                                     </Grid>
                                                     <Grid item lg={5}>
-                                                        <Step5Container logoFile={logoFile} isEditionMode={isEditionMode} />
+                                                        <Step5Container  logoFile={logoFile} isEditionMode={isEditionMode} />
                                                     </Grid>
                                                 </Grid>
                                                 }

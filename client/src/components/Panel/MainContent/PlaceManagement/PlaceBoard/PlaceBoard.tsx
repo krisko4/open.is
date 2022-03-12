@@ -14,6 +14,7 @@ import { Opinions } from "./Opinions/Opinions";
 import { PlaceDashboard } from "./PlaceDashboard/PlaceDashboard.";
 import { PlaceSettings } from "./Settings/PlaceSettings";
 import {useNavigate, useParams} from 'react-router-dom'
+import { OpeningHoursWrapper } from "./OpeningHours/OpeningHoursWrapper";
 
 
 export enum Destinations {
@@ -48,13 +49,6 @@ export const PlaceBoard: FC = () => {
         }
     }, [isError])
 
-    useEffect(() => {
-        if (place) {
-            console.log(place)
-            const currentPlace = convertToCurrentPlace(place)[0]
-            dispatch(setCurrentPlace(currentPlace))
-        }
-    }, [place])
 
 
     const tabs = useMemo(() => {
@@ -78,7 +72,7 @@ export const PlaceBoard: FC = () => {
             {
                 name: 'Opening hours',
                 url: Destinations.OPENING_HOURS,
-                content: <OpeningHours />
+                content: <OpeningHoursWrapper />
             },
             {
                 name: 'Events',
@@ -108,7 +102,6 @@ export const PlaceBoard: FC = () => {
         ]
         if (!place?.isBusinessChain) tabs.push(settingsTab)
         return tabs
-
     }, [place?.isBusinessChain])
 
 

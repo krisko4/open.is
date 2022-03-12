@@ -1,13 +1,15 @@
+import { CurrentPlaceProps } from "contexts/PlaceProps"
 import { FC, useMemo } from "react"
 import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { Step5 } from "./Step5/Step5"
 
 interface Props {
     isEditionMode?: boolean,
-    logoFile: File | null
+    logoFile: File | null,
+    initialPlaceData? : CurrentPlaceProps
 }
 
-export const Step5Container: FC<Props> = ({ isEditionMode, logoFile }) => {
+export const Step5Container: FC<Props> = ({ initialPlaceData, isEditionMode, logoFile }) => {
 
     const currentPlace = useCurrentPlaceSelector()
 
@@ -46,6 +48,6 @@ export const Step5Container: FC<Props> = ({ isEditionMode, logoFile }) => {
         return formData
     }, [logoFile, currentPlace.images ])
 
-    return <Step5 isEditionMode={isEditionMode} formData={formData} />
+    return <Step5 initialPlaceData={initialPlaceData} isEditionMode={isEditionMode} formData={formData} />
 
 }

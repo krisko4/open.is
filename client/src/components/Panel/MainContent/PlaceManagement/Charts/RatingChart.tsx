@@ -1,6 +1,7 @@
+import { AverageNoteProps } from "contexts/PlaceProps"
 import { FC, useState } from "react"
-import { useAverageNoteSelector } from "redux-toolkit/slices/currentPlaceSlice"
-import { useCurrentPlaceContext } from "../../../../../contexts/PanelContexts/CurrentPlaceContext"
+import { useParams } from "react-router-dom"
+import { useGetAverageNoteForSelectedLocationQuery } from "redux-toolkit/api/placesApi"
 import { StatisticChart } from "../../Dashboard/StatisticChart"
 
 const defaultOptions = {
@@ -10,8 +11,10 @@ const defaultOptions = {
     fours: 0,
     fives: 0
 }
-
-export const RatingChart: FC = () => {
+interface Props{
+    averageNote : AverageNoteProps
+}
+export const RatingChart: FC<Props> = ({averageNote}) => {
 
 
     const [ratingOptions, setRatingOptions] = useState({
@@ -55,7 +58,6 @@ export const RatingChart: FC = () => {
         }]
     })
 
-    const averageNote = useAverageNoteSelector()
     const { ones, twos, threes, fours, fives } = averageNote || defaultOptions
     const ratingSeries = [ones, twos, threes, fours, fives]
 

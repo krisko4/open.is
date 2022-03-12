@@ -1,12 +1,10 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from "@mui/lab";
 import { Alert, AppBar, Dialog, Grid, IconButton, Toolbar, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useChangeOpeningHoursForSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { useBusinessChainIdSelector, setOpeningHoursForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
-import { setOpeningHours, useCurrentPlaceSelector, useIdSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { changeOpeningHours } from "../../../../../../requests/OpeningHoursRequests";
+import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 import DialogTransition from "../../../../../reusable/DialogTransition";
 import { OpeningHoursCard } from "./OpeningHoursCard";
@@ -17,14 +15,15 @@ interface Props {
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
     openingHours: any,
     selectedLocations?: string[],
+    locationId?: string,
+    placeId?: string
 
 }
 
-export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, setDialogOpen, openingHours }) => {
+export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, locationId, placeId, selectedLocations, setDialogOpen, openingHours }) => {
 
     const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
     const dispatch = useAppDispatch()
-    const currentPlaceId = useIdSelector()
     const businessChainId = useBusinessChainIdSelector()
 
     const [changeOpeningHoursForSelectedLocations, { isLoading }] = useChangeOpeningHoursForSelectedLocationsMutation()
@@ -43,14 +42,13 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, selectedLocations, s
                     openingHours: openingHours,
                     locationIds: selectedLocations
                 }).unwrap()
-                // dispatch(setOpeningHoursForSelectedLocations({
-                //     openingHours: openingHours,
-                //     selectedLocations: selectedLocations
-                // }))
             }
             else {
-                await changeOpeningHours(currentPlaceId as string, openingHours)
-                dispatch(setOpeningHours(openingHours))
+                await changeOpeningHoursForSelectedLocations({
+                    placeId: placeId as string,
+                    openingHours: openingHours,
+                    locationIds: [locationId as string]
+                }).unwrap()
             }
             enqueueSuccessSnackbar('You have successfully updated your opening hours')
             setDialogOpen(false)

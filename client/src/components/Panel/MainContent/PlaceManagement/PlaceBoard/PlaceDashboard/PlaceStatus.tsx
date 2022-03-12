@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab"
-import { Card, CardContent, Typography, Grid } from "@mui/material"
-import { useState, FC } from "react"
+import DoorFrontIcon from '@mui/icons-material/DoorFront';
+import { Card, CardContent, Typography, Grid, CircularProgress, Fade, IconButton, Tooltip } from "@mui/material"
+import { useEffect, useState, FC } from "react"
 import { Status } from "../../../../../../contexts/PlaceProps"
 import { setPlaceStatus } from "../../../../../../requests/PlaceRequests"
 import { setPlaces } from "../../../../../../store/actions/setPlaces"
@@ -10,73 +11,99 @@ import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import NoMeetingRoomIcon from '@mui/icons-material/NoMeetingRoom';
 import { useAppDispatch } from "redux-toolkit/hooks"
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
-import {setStatus, useCurrentPlaceSelector, useStatusSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { setStatus, useCurrentPlaceSelector, useIdSelector, useStatusSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { useGetStatusForSelectedLocationQuery, useSetStatusForSelectedLocationMutation } from "redux-toolkit/api/placesApi"
+import { useParams } from "react-router-dom";
 
 export const PlaceStatus: FC = () => {
 
-    const [loading, setLoading] = useState(false)
     const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const dispatch = useAppDispatch()
-    const places = usePlacesSelector()
-    const currentPlace = useCurrentPlaceSelector()
+    const { locationId } = useParams()
+    const [setStatusForSelectedLocation, { isLoading }] = useSetStatusForSelectedLocationMutation()
+    const { data: status, isFetching } = useGetStatusForSelectedLocationQuery(locationId as string)
+    const [doorColor, setDoorColor] = useState<any>(status === Status.OPEN ? 'success' : 'error')
+
+    useEffect(() => {
+        if (status) {
+            setDoorColor(status === Status.OPEN ? 'success' : 'error')
+        }
+
+    }, [status])
 
 
-    const changeStatus = async (status: Status) => {
-        setLoading(true)
+    const changeStatus = async (newStatus: Status) => {
         try {
-            await setPlaceStatus(currentPlace._id as string, status)
-            if (currentPlace) {
-                let oldPlace = places.find(place => place.locations.find(location => location._id = currentPlace._id))
-                if (oldPlace) {
-                    const location = oldPlace.locations.find(loc => loc._id === currentPlace._id)
-                    if (location) {
-                        dispatch(setStatus(status))
-                        if (status === Status.OPEN) {
-                            enqueueSuccessSnackbar('Your place is now open')
-                            return
-                        }
-                        enqueueSuccessSnackbar('Your place is now closed')
-                    }
-                }
+            await setStatusForSelectedLocation({
+                locationId: locationId as string,
+                status: newStatus
+            }).unwrap()
+            if (newStatus === Status.OPEN) {
+                enqueueSuccessSnackbar('Your place is now open')
+                return
             }
+            enqueueSuccessSnackbar('Your place is now closed')
         } catch (err) {
             enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
         }
     }
     return (
-
-        <Card style={{ background: '#2196f3' }}>
+        <Card sx={{ flexGrow: 1 }} elevation={3}>
             <CardContent>
-                <Typography variant="subtitle2" style={{ color: 'white' }}>
-                    Press the button below to <span>{currentPlace.status === Status.OPEN ? 'close' : 'open'}</span> your business
+                <Typography variant="h5">
+                    Opening status
                 </Typography>
-                <Grid container style={{ marginTop: 20 }} justifyContent="space-between" alignItems="center">
-                    {currentPlace.status === Status.OPEN ? <>
-                        <LoadingButton
-                            color="primary"
-                            disabled={loading}
-                            loading={loading}
-                            variant="outlined"
-                            style={{ color: 'white', borderColor: 'white' }}
-                            onClick={() => changeStatus(Status.CLOSED)}
-                        >Close</LoadingButton>
-                        <NoMeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
-                    </>
-                        : <>
-                            <LoadingButton
-                                color="primary"
-                                disabled={loading}
-                                loading={loading}
-                                variant="outlined"
-                                style={{ color: 'white', borderColor: 'white' }}
-                                onClick={() => changeStatus(Status.OPEN)}>Open</LoadingButton>
-                            <MeetingRoomIcon style={{ color: 'white', width: 60, height: 60 }} />
-                        </>
-                    }
-                </Grid>
+                <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
+                    This is the current opening state of your place
+                </Typography>
+                <Fade in={true} timeout={500}>
+                    <Grid container alignItems="center" direction="column">
+                        {status === Status.OPEN ?
+                            <>
+                                <Tooltip title="Close" arrow placement="top" >
+                                    <IconButton
+                                        onClick={() => changeStatus(Status.CLOSED)}
+                                        onMouseEnter={() => setDoorColor('error')}
+                                        onMouseLeave={() => setDoorColor('success')}
+                                    >
+                                        {doorColor === 'error' ?
+                                            <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
+                                            :
+                                            <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
+
+                                        }
+                                    </IconButton>
+                                </Tooltip>
+                                <Typography variant="h1">
+                                    {isLoading || isFetching ? <CircularProgress /> :
+                                        status?.toUpperCase()
+                                    }
+                                </Typography>
+                            </> :
+                            <>
+                                <Tooltip title="Open" arrow placement="top" >
+                                    <IconButton
+                                        onClick={() => changeStatus(Status.OPEN)}
+                                        onMouseEnter={() => setDoorColor('success')}
+                                        onMouseLeave={() => setDoorColor('error')}
+                                    >
+                                        {doorColor === 'error' ?
+                                            <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
+                                            :
+                                            <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
+
+                                        }
+                                    </IconButton>
+                                </Tooltip>
+                                <Typography variant="h1">
+                                    {isLoading || isFetching ? <CircularProgress /> :
+                                        status?.toUpperCase()
+                                    }
+                                </Typography>
+                            </>
+                        }
+                    </Grid>
+                </Fade>
             </CardContent>
-        </Card>
+        </Card >
     )
 }

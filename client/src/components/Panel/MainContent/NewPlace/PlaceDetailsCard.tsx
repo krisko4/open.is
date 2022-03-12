@@ -4,6 +4,7 @@ import {
     Tooltip
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { CachedPlaceData } from "components/reusable/CachedPlaceData/CachedPlaceData";
 import { PlaceData } from "components/reusable/PlaceData/PlaceData";
 import React, { FC } from "react";
 
@@ -38,7 +39,11 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable, logoFile, setLogoFile 
                             </Grid>
                         </Toolbar>
                     </Grid>
-                    <PlaceData isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
+                    {isEditable ?
+                        <PlaceData isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
+                        :
+                        <CachedPlaceData />
+                    }
                 </Card>
             </div>
         </Slide >

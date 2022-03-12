@@ -1,11 +1,19 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { LocationProps, NewsProps, RawPlaceDataProps } from 'contexts/PlaceProps'
+import { AverageNoteProps, CurrentPlaceProps, LocationProps, NewsProps, OpinionProps, RawPlaceDataProps, VisitProps } from 'contexts/PlaceProps'
 import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice'
 import { ContactData } from 'requests/PlaceRequests'
+import { convertToCurrentPlace } from 'utils/place_data_utils'
 
 interface SelectedLocationsProps {
     locationIds: string[],
     placeId: string
+}
+
+type Status = 'open' | 'closed'
+
+interface StatusProps {
+    locationId: string,
+    status: Status
 }
 
 
@@ -36,17 +44,23 @@ interface GetSelectedLocationsProps {
     limit: number
 }
 
-interface AddNewsProps{
+interface AddNewsProps {
     content: string,
     locationId: string,
     title: string
+}
+
+interface OpeningHoursResponse {
+    openingHours: any,
+    alwaysOpen: boolean,
+    isActive: boolean
 }
 
 
 export const placesApi = createApi({
     reducerPath: 'placesApi',
     baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BASE_URL}` }),
-    tagTypes: ['Places', 'SelectedBusinessChain', 'SelectedPlace', 'SelectedLocations', 'News'],
+    tagTypes: ['Places', 'OpeningHours', 'Visits', 'Status', 'SelectedBusinessChain', 'Opinions', 'SelectedPlace', 'SelectedLocations', 'News', 'AverageNote'],
     endpoints: (builder) => ({
         getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
             query: (uid) => `places?uid=${uid}`,
@@ -77,9 +91,10 @@ export const placesApi = createApi({
             }),
             invalidatesTags: ['News'],
         }),
-        getPlaceByIdAndSelectedLocation: builder.query<RawPlaceDataProps, PlaceAndLocationProps>({
+        getPlaceByIdAndSelectedLocation: builder.query<CurrentPlaceProps, PlaceAndLocationProps>({
             query: ({ placeId, locationId }) => `places/${placeId}/locations/${locationId}`,
-            providesTags: [{ type: 'SelectedPlace' }]
+            providesTags: [{ type: 'SelectedPlace' }],
+            transformResponse: (response: RawPlaceDataProps) => convertToCurrentPlace(response)[0]
         }),
         getSelectedLocations: builder.query<SelectedLocationProps[], GetSelectedLocationsProps>({
             query: ({ start, limit }) => ({
@@ -117,8 +132,7 @@ export const placesApi = createApi({
             }),
             invalidatesTags: [
                 { type: 'SelectedBusinessChain', id: 'BUSINESS_CHAIN' },
-                { type: 'Places', id: 'LIST' },
-                { type: 'SelectedPlace' }
+                { type: 'OpeningHours' }
             ]
         }),
         addLocations: builder.mutation<void, AddLocationsProps>({
@@ -134,6 +148,53 @@ export const placesApi = createApi({
                 { type: 'Places', id: 'LIST' }
             ],
         }),
+        getOpinionsForSelectedLocation: builder.query<OpinionProps[], string>({
+            query: (locationId) => ({
+                url: 'opinions',
+                params: {
+                    locationId: locationId
+                }
+            }),
+            providesTags: ['Opinions']
+
+        }),
+        getVisitsForSelectedLocation: builder.query<VisitProps[], string>({
+            query: (locationId) => ({
+                url: 'visits',
+                params: {
+                    locationId: locationId
+                }
+            }),
+            providesTags: ['Visits']
+
+        }),
+        getOpeningHoursForSelectedLocation: builder.query<OpeningHoursResponse, string>({
+            query: (locationId) => `places/${locationId}/opening-hours`,
+            providesTags: ['OpeningHours']
+        }),
+        getAverageNoteForSelectedLocation: builder.query<AverageNoteProps, string>({
+            query: (locationId) => ({
+                url: `places/${locationId}/average-note`,
+            }),
+            providesTags: ['AverageNote']
+        }),
+        getStatusForSelectedLocation: builder.query<string, string>({
+            query: (locationId) => ({
+                url: `places/${locationId}/status`,
+            }),
+            providesTags: ['Status']
+        }),
+        setStatusForSelectedLocation: builder.mutation<void, StatusProps>({
+            query: ({ locationId, status }) => ({
+                url: `places/${locationId}/status`,
+                method: 'PATCH',
+                body: {
+                    status: status
+                }
+            }),
+            invalidatesTags: ['Status']
+        }),
+
         setSelectedLocationsAlwaysOpen: builder.mutation<void, SelectedLocationsProps>({
             query: ({ placeId, locationIds }) => ({
                 url: `places/${placeId}/locations/always-open`,
@@ -144,8 +205,7 @@ export const placesApi = createApi({
             }),
             invalidatesTags: [
                 { type: 'SelectedBusinessChain', id: 'BUSINESS_CHAIN' },
-                { type: 'Places', id: 'LIST' },
-                { type: 'SelectedPlace' }
+                { type: 'OpeningHours' }
             ],
         }),
         addPlace: builder.mutation<RawPlaceDataProps, FormData>({
@@ -187,6 +247,13 @@ export const useGetPlacesByUserId = () => {
 }
 
 export const {
+
+    useGetOpeningHoursForSelectedLocationQuery,
+    useGetAverageNoteForSelectedLocationQuery,
+    useGetStatusForSelectedLocationQuery,
+    useSetStatusForSelectedLocationMutation,
+    useGetOpinionsForSelectedLocationQuery,
+    useGetVisitsForSelectedLocationQuery,
     useAddNewsMutation,
     useGetNewsByLocationIdQuery,
     useGetSelectedLocationsQuery,

@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab"
 import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Tooltip, Typography } from "@mui/material"
-import { RawPlaceDataProps } from "contexts/PlaceProps"
+import { CurrentPlaceProps, RawPlaceDataProps } from "contexts/PlaceProps"
+import _ from "lodash"
 import React, { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAddPlaceMutation } from "redux-toolkit/api/placesApi"
@@ -18,10 +19,11 @@ import { NewPlaceStepper } from "../NewPlaceStepper"
 
 interface Props {
     formData: FormData,
-    isEditionMode?: boolean
+    isEditionMode?: boolean,
+    initialPlaceData? : CurrentPlaceProps
 }
 
-export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
+export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) => {
     const [isOpen, setOpen] = useState(false)
     const { activeStep, steps } = useStepContext()
     const [registerNewPlace, { data, isLoading }] = useAddPlaceMutation()
@@ -30,7 +32,6 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
     const currentPlace = useCurrentPlaceSelector()
-
 
     useEffect(() => {
         if (steps.some(step => !step.isValid)) {
@@ -61,11 +62,8 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
     }
 
     const handleClick = async () => {
-        // setLoading(true)
         if (isEditionMode) {
-            console.log(currentPlace)
             await editPlaceData()
-            // setLoading(false)
             return
         }
         try {
@@ -76,20 +74,6 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
         } catch (err) {
             enqueueErrorSnackbar()
         }
-
-        // registerNewPlace(formData).then(res => {
-        //     const newPlace : RawPlaceDataProps = res.data.place
-        //     dispatch(addPlace(newPlace))
-        //     enqueueSuccessSnackbar('You have successfully registered new place')
-        //     navigate(`/panel/dashboard`)
-        // }).catch(err => {
-        //     console.log(err)
-        //     enqueueErrorSnackbar()
-        // }).finally(() => {
-        //     setLoading(false)
-        //     setOpen(false)
-        // })
-
     }
 
     return (
@@ -141,9 +125,9 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
                                         <Button
                                             fullWidth
                                             variant="contained"
-                                            // disabled={
-                                            //     !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
-                                            // }
+                                            disabled={
+                                                !currentPlace.logo || (isEditionMode && _.isEqual(currentPlace, initialPlaceData))
+                                            }
                                             size="large"
                                             onClick={() => setOpen(true)}
                                         >
@@ -160,7 +144,7 @@ export const Step5: FC<Props> = ({ isEditionMode, formData }) => {
                                     variant="contained"
                                     disabled={
                                         !currentPlace.logo ||
-                                        // (isEditionMode && _.isEqual(currentPlace, initialPlaceData)) ||
+                                        (isEditionMode && _.isEqual(currentPlace, initialPlaceData)) ||
                                         steps.some(step => !step.isValid)
                                     }
 

@@ -1,6 +1,7 @@
 import { PhotoCamera } from "@mui/icons-material"
 import { CardMedia, Slide, Grid, IconButton } from "@mui/material"
 import { ImageUpload } from "components/reusable/ImageUpload"
+import { useStepContext } from "contexts/StepContext"
 import { FC, useState, useRef, useEffect } from "react"
 import { useAppDispatch } from "redux-toolkit/hooks"
 import { setCurrentPlace, setLogo, setLogoFile, useLogoSelector } from "redux-toolkit/slices/currentPlaceSlice"
@@ -19,22 +20,24 @@ export const PlaceLogo: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
     const [isHover, setHover] = useState(true)
     const isFirstRender = useRef(true)
 
-    useEffect(() => {
-        setCurrentLogo(logo)
-    }, [logo])
+    // useEffect(() => {
+    //     setCurrentLogo(logo)
+    // }, [logo])
 
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false
             return
         }
-        dispatch(setLogo(currentLogo))
-    }, [logoFile])
+        if (currentLogo) {
+            dispatch(setLogo(currentLogo))
+        }
+    }, [currentLogo])
 
     return (
         <CardMedia
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={() => isEditable && setHover(true)}
+            onMouseLeave={() => isEditable && setHover(false)}
             style={{
                 height: 200,
                 overflow: 'hidden',

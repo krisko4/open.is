@@ -7,10 +7,6 @@ const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 
 export const OpeningHoursCard: FC<any> = ({openingHours }) => {
 
-    useEffect(() => {
-        console.log(openingHours)
-    },[])
-
     return (
         <Card style={{ flexGrow: 1 }} elevation={10}>
             <CardContent>

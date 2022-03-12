@@ -5,33 +5,33 @@ import { InputAdornment, TextField } from "@mui/material";
 import React, { FC, useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setEmail } from 'redux-toolkit/slices/currentPlaceSlice';
-import { useEmailSelector } from 'store/selectors/EmailSelector';
+import { setEmail, useEmailSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 
 
 
-export const Email: FC = () => {
+export const EmailField: FC = () => {
 
-    const {control, register, formState: {errors}, setValue} = useFormContext()
-    const dispatch = useAppDispatch()
+    const isFirstRender = useRef(true)
+    const isFirstFormFieldRender = useRef(true)
+    const { control, register, formState: { errors }, setValue } = useFormContext()
     const email = useEmailSelector()
-    
+    const dispatch = useAppDispatch()
 
-    const currentEmail = useWatch({
+
+    const mail = useWatch({
         control,
         name: 'email'
     })
 
-    const isFirstRender = useRef(true)
 
     useEffect(() => {
         if (isFirstRender.current) {
-            setValue('email', email)
             isFirstRender.current = false
+            setValue('email', email)
             return
         }
-        dispatch(setEmail(currentEmail))
-    }, [currentEmail])
+        dispatch(setEmail(mail))
+    }, [mail])
 
     return (
         <TextField

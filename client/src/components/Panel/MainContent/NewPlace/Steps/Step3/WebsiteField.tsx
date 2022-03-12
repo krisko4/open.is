@@ -29,7 +29,7 @@ export const WebsiteField: FC = () => {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false
-            setValue('facebook', website)
+            setValue('website', website)
             return
         }
         dispatch(setWebsite(web))
