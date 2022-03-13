@@ -11,14 +11,19 @@ import { AccountSettings } from "./MyAccount/AccountSettings";
 import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
 import businessChainSteps from "./NewBusinessChain/steps";
 import { NewPlace } from "./NewPlace/NewPlace";
+import { NewBusinessChainWrapper } from "./NewPlace/NewBusinessChainWrapper";
 import newPlaceSteps from "./NewPlace/Steps/steps";
 import { NoPlaces } from "./NoPlaces/NoPlaces";
 import { PlaceBoard } from "./PlaceManagement/PlaceBoard/PlaceBoard";
+import { NewPlaceWrapper } from "./NewPlace/NewPlaceWrapper";
+
+const PlaceBoardWrapper: FC = () => <PlaceBoard />
 
 export const MainContent: FC = () => {
 
 
   const { data: places } = useGetPlacesByUserId()
+
 
 
   return (
@@ -36,7 +41,7 @@ export const MainContent: FC = () => {
           <Route
             path={`new-place`}
             element={
-              <StepContextProvider steps={newPlaceSteps}>
+              <StepContextProvider key="new-place" steps={newPlaceSteps}>
                 <NewPlace />
               </StepContextProvider>
             }
@@ -44,15 +49,13 @@ export const MainContent: FC = () => {
           <Route
             path={`new-business-chain`}
             element={
-              <StepContextProvider steps={businessChainSteps}>
+              <StepContextProvider key="new-business-chain" steps={businessChainSteps}>
                 <NewBusinessChain />
               </StepContextProvider>
             }
           />
           <Route path={`management/:placeId/:locationId/*`}
-            element={
-              <PlaceBoard />
-            } />
+            element={<PlaceBoard />} />
           {
             places && places.length === 0 ||
             <Route

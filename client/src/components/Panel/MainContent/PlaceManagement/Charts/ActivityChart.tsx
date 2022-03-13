@@ -66,7 +66,6 @@ export const ActivityChart: FC = () => {
     const visitData = useMemo(() => {
         let count = 0;
         if (visits) {
-            console.log(visits)
             return visits.map(visit => {
                 count += visit.visitCount
                 return [visit.date, count]

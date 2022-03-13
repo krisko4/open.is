@@ -45,6 +45,10 @@ export const PlaceBoard: FC = () => {
     }, [isError])
 
 
+    useEffect(() => {
+        console.log('elo')
+    }, [])
+
 
     const tabs = useMemo(() => {
         const settingsTab = {
@@ -107,7 +111,7 @@ export const PlaceBoard: FC = () => {
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                     <CircularProgress disableShrink size={100} />
                 </Grid> :
-                <PanelTabNavigator tabs={tabs} />
+                <PanelTabNavigator key={Math.random()} tabs={tabs} />
             }
         </>
     )

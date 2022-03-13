@@ -1,5 +1,4 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
-import { ContextProps } from "./ContextProps";
 
 
 
@@ -23,6 +22,7 @@ export const StepContextProvider: FC<Props> = ({ children, steps }) => {
             {children}
         </StepContext.Provider>
     )
+
 }
 
 
@@ -32,10 +32,6 @@ const useProviderSettings = (steps : Step[]) => {
     const [currentStep, setCurrentStep] = useState(0)
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [areStepsValid, setStepsValid] = useState(false)
-
-    useEffect(() => {
-        console.log(activeStep)
-    }, [])
 
     return {
         activeStep,
