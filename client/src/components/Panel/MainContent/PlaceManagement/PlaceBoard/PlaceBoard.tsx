@@ -1,20 +1,15 @@
-import { Fade, CircularProgress, Grid } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { CircularProgress, Grid } from "@mui/material";
+import { FC, useEffect, useMemo } from "react";
+import { useParams } from 'react-router-dom';
 import { useGetPlaceByIdAndSelectedLocationQuery } from "redux-toolkit/api/placesApi";
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { setCurrentPlace, useCurrentPlaceSelector, useIsBusinessChainSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { getPlaceById, getPlaceByIdAndSelectedLocation } from "requests/PlaceRequests";
 import { useCustomSnackbar } from "utils/snackbars";
-import { RawPlaceDataProps } from "../../../../../contexts/PlaceProps";
-import { convertToCurrentPlace } from "../../../../../utils/place_data_utils";
 import { NotReady } from "../../../../reusable/NotReady";
 import { PanelTabNavigator } from "../../../../reusable/PanelTabNavigator";
-import { OpeningHours } from "./OpeningHours/OpeningHours";
+import { OpeningHoursWrapper } from "./OpeningHours/OpeningHoursWrapper";
 import { Opinions } from "./Opinions/Opinions";
 import { PlaceDashboard } from "./PlaceDashboard/PlaceDashboard.";
 import { PlaceSettings } from "./Settings/PlaceSettings";
-import {useNavigate, useParams} from 'react-router-dom'
-import { OpeningHoursWrapper } from "./OpeningHours/OpeningHoursWrapper";
 
 
 export enum Destinations {

@@ -1,6 +1,5 @@
 import { Grid, Card, Divider } from "@mui/material"
 import { ImageCarousel } from "components/reusable/PlaceData/ImageCarousel/ImageCarousel"
-import { useStepContext } from "contexts/StepContext"
 import { FC } from "react"
 import { ContactDetails } from "./ContactDetails"
 import { PlaceDescription } from "./PlaceDescription"
@@ -20,12 +19,11 @@ interface Props {
 }
 
 export const PlaceData: FC<Props> = ({isEditable, logoFile, setLogoFile}) => {
-    const {activeStep} = useStepContext()
     
     return (
         <>
             <Grid container>
-                <ImageCarousel isEditable={activeStep === 4} />
+                <ImageCarousel isEditable={isEditable} />
             </Grid>
             <Grid container >
                 <Grid container item>
@@ -41,7 +39,7 @@ export const PlaceData: FC<Props> = ({isEditable, logoFile, setLogoFile}) => {
             </Grid>
             <Grid container item sx={{ mt: '20px' }}>
                 <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
-                    <PlaceLogo isEditable={activeStep === 4} logoFile={logoFile} setLogoFile={setLogoFile} />
+                    <PlaceLogo isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
                     <PlaceRating />
                 </Grid>
                 <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>

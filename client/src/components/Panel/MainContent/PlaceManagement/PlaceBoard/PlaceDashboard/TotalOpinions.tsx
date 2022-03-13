@@ -23,7 +23,7 @@ export const TotalOpinions: FC<any> = () => {
 
     return (
         <Fade in={true} timeout={2500}>
-            <Card>
+            <Card sx={{height: '170px'}}>
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                     <Grid container style={{ marginTop: 5 }}>

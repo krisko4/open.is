@@ -31,14 +31,14 @@ export const TotalVisits: FC = () => {
 
     return (
         <Fade in={true} timeout={2000}>
-            <Card>
+            <Card sx={{ height: '170px' }}>
                 <CardContent>
-                    <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
-                    <Grid container style={{ marginTop: 5 }}>
-                        <Grid item lg={6} container justifyContent="center" direction="column">
-                            <Fade in={true}>
-                                <div>
-                                    {isFetching ? <CircularProgress /> : <>
+                    <Grid container direction="column">
+                        <Typography style={{ fontWeight: 'bold' }} variant="overline">Total visits</Typography>
+                        <Grid container style={{ marginTop: 5, flexGrow: 1 }}>
+                            <Grid item lg={6} container justifyContent="center" direction="column">
+                                <Fade in={true}>
+                                    <div>
                                         <Grid container alignItems="center">
                                             {
                                                 visitsDiff === 0 || totalVisits === 0 ?
@@ -53,16 +53,16 @@ export const TotalVisits: FC = () => {
                                             }
                                         </Grid>
                                         <Typography variant="h3">
-                                            {totalVisits}
+                                     {isFetching ?  <CircularProgress /> : totalVisits}
                                         </Typography>
-                                    </>}
-                                </div>
-
-                            </Fade>
-                        </Grid>
-                        {/* <Grid item lg={6} container justifyContent="center">
+                                    </div>
+                                </Fade>
+                            </Grid>
+                            {/* <Grid item lg={6} container justifyContent="center">
                             <TotalVisitsChart visits={currentPlace.visits} />
                         </Grid> */}
+                        </Grid>
+
                     </Grid>
                 </CardContent>
             </Card>

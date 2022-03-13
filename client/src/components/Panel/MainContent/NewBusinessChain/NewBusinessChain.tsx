@@ -42,6 +42,10 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
     const [logoFile, setLogoFile] = useState<File | null>(null)
     const dispatch = useAppDispatch()
 
+    useEffect(() => {
+        console.log('hi')
+    }, [])
+
 
     return (
         <>
@@ -82,10 +86,10 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                 }
                                                 {activeStep === 3 && <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
                                                     <Grid item lg={5}>
-                                                        <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable />
+                                                        <PlaceDetailsCard isEditable={true} logoFile={logoFile} setLogoFile={setLogoFile} />
                                                     </Grid>
                                                     <Grid item lg={5}>
-                                                        <Step5Container  logoFile={logoFile} isEditionMode={isEditionMode} />
+                                                        <Step5Container logoFile={logoFile} isEditionMode={isEditionMode} />
                                                     </Grid>
                                                 </Grid>
                                                 }

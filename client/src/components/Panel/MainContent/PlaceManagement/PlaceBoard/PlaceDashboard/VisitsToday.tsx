@@ -29,7 +29,7 @@ export const VisitsToday: FC<any> = ({ shadowCard, totalVisits }) => {
 
     return (
         <Fade in={true} timeout={2200}>
-            <Card>
+            <Card sx={{height: '170px'}}>
                 <CardContent>
                     <>
                         <Typography style={{ fontWeight: 'bold' }} variant="overline">Visits today</Typography>

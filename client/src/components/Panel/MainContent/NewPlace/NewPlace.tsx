@@ -98,7 +98,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                                         minScale={0.5}
                                     >
                                         <TransformComponent>
-                                            <PlaceDetailsCard isEditable={true} />
+                                            <PlaceDetailsCard  />
                                         </TransformComponent>
                                     </TransformWrapper>
                                 </Grid>

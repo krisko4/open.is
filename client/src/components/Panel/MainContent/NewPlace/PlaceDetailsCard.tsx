@@ -13,11 +13,12 @@ import React, { FC } from "react";
 interface Props {
     isEditable?: boolean,
     logoFile?: File | null,
-    setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>
+    setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>,
+    isCacheable?: boolean
 }
 
 
-export const PlaceDetailsCard: FC<Props> = ({ isEditable, logoFile, setLogoFile }) => {
+export const PlaceDetailsCard: FC<Props> = ({ isCacheable, isEditable, logoFile, setLogoFile }) => {
 
 
     return (
@@ -39,10 +40,10 @@ export const PlaceDetailsCard: FC<Props> = ({ isEditable, logoFile, setLogoFile 
                             </Grid>
                         </Toolbar>
                     </Grid>
-                    {isEditable ?
-                        <PlaceData isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
-                        :
+                    {isCacheable ?
                         <CachedPlaceData />
+                        :
+                        <PlaceData isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
                     }
                 </Card>
             </div>
