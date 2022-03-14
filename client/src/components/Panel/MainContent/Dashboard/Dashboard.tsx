@@ -9,6 +9,7 @@ import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useNavigate } from "react-router-dom";
+import { useGetPlacesByUserId } from "redux-toolkit/api/placesApi";
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { RawPlaceDataProps, VisitProps } from "../../../../contexts/PlaceProps";
@@ -25,44 +26,45 @@ const generateVisitsData = (visits: VisitProps[]) => {
 export const Dashboard: FC = () => {
 
 
-    const dispatch = useAppDispatch()
-    const places = usePlacesSelector()
+    const { data: places } = useGetPlacesByUserId()
     const [totalVisits, setTotalVisits] = useState(0)
     const [totalOpinions, setTotalOpinions] = useState(0)
     const [mostPopularPlace, setMostPopularPlace] = useState<RawPlaceDataProps | null>(null)
     const [totalVisitsDiff, setTotalVisitsDiff] = useState(0)
     const [totalOpinionsDiff, setTotalOpinionsDiff] = useState(0)
     const [activityChartSeries, setActivityChartSeries] = useState<any>()
-    const navigate = useNavigate()
 
     useEffect(() => {
-        // @ts-ignore
-
-        const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
-        setMostPopularPlace(mostPopularPlace)
-        setActivityChartSeries(places.map(place => {
-            const visits = place.locations[0].visits as VisitProps[]
-            return {
-                name: place.name,
-                data: generateVisitsData(visits)
+        if (places) {
+            //@ts-ignore
+            const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
+            setMostPopularPlace(mostPopularPlace)
+            setActivityChartSeries(places.map(place => {
+                const visits = place.locations[0].visits as VisitProps[]
+                return {
+                    name: place.name,
+                    data: generateVisitsData(visits)
+                }
+            }))
+            // @ts-ignore
+            const opinionCount = places.reduce((a, b) => a + b.locations[0].opinions.length, 0)
+            setTotalOpinions(opinionCount)
+            // @ts-ignore
+            const opinionsToday = places.reduce((a, b) => a + b.locations[0].opinions.filter(opinion => isToday(new Date(opinion.date))).length, 0)
+            opinionCount === opinionsToday ? setTotalOpinionsDiff(opinionCount * 100) : setTotalOpinionsDiff(Math.round(((opinionCount / (opinionCount - opinionsToday)) * 100 - 100) * 10) / 10)
+            // @ts-ignore
+            const visitCount = places.reduce((a, b) => a + b.locations[0].visits.reduce((c, d) => c + d.visitCount, 0), 0)
+            setTotalVisits(visitCount)
+            // @ts-ignore
+            const totalVisitsToday = places.reduce((a, b) => a + b.locations[0].visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0), 0)
+            if (totalVisitsToday === visitCount) {
+                setTotalVisitsDiff(visitCount * 100)
+                return
             }
-        }))
-        // @ts-ignore
-        const opinionCount = places.reduce((a, b) => a + b.locations[0].opinions.length, 0)
-        setTotalOpinions(opinionCount)
-        // @ts-ignore
-        const opinionsToday = places.reduce((a, b) => a + b.locations[0].opinions.filter(opinion => isToday(new Date(opinion.date))).length, 0)
-        opinionCount === opinionsToday ? setTotalOpinionsDiff(opinionCount * 100) : setTotalOpinionsDiff(Math.round(((opinionCount / (opinionCount - opinionsToday)) * 100 - 100) * 10) / 10)
-        // @ts-ignore
-        const visitCount = places.reduce((a, b) => a + b.locations[0].visits.reduce((c, d) => c + d.visitCount, 0), 0)
-        setTotalVisits(visitCount)
-        // @ts-ignore
-        const totalVisitsToday = places.reduce((a, b) => a + b.locations[0].visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0), 0)
-        if (totalVisitsToday === visitCount) {
-            setTotalVisitsDiff(visitCount * 100)
-            return
+            setTotalVisitsDiff(Math.round(((visitCount / (visitCount - totalVisitsToday)) * 100 - 100) * 10) / 10)
+
         }
-        setTotalVisitsDiff(Math.round(((visitCount / (visitCount - totalVisitsToday)) * 100 - 100) * 10) / 10)
+
     }, [places])
 
     return (
@@ -75,13 +77,6 @@ export const Dashboard: FC = () => {
                                 <Grid item lg={10}>
                                     Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
                                 </Grid>
-                                {/* <Grid item container justifyContent="flex-end" lg={2} >
-                                    <Grid item style={{ marginRight: 5 }}>
-                                        <Button onClick={() => navigate(`new-place`)} startIcon={<AddIcon />} variant="contained" color="primary">
-                                            New place
-                                        </Button>
-                                    </Grid>
-                                </Grid> */}
                             </Grid>
                         </Typography>
                         <Typography variant="body1" >welcome to your personal dashboard</Typography>

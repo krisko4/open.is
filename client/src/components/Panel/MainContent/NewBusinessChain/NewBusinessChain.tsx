@@ -43,9 +43,11 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log('hi')
+        dispatch(setCurrentPlace(clearPlace))
+        return () => {
+            dispatch(setCurrentPlace(clearPlace))
+        }
     }, [])
-
 
     return (
         <>
@@ -106,7 +108,11 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                             minScale={0.5}
                                                         >
                                                             <TransformComponent>
-                                                                <PlaceDetailsCard />
+                                                                <Slide in={true} direction="left">
+                                                                    <Grid container >
+                                                                        <PlaceDetailsCard />
+                                                                    </Grid>
+                                                                </Slide>
                                                             </TransformComponent>
                                                         </TransformWrapper>
                                                     </Grid>
@@ -119,7 +125,7 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                                         <Typography variant="h2">
                                                                             Step {activeStep + 1}
                                                                         </Typography>
-                                                                        <Grid container style={{ marginTop: 10 }} lg={10}>
+                                                                        <Grid container item style={{ marginTop: 10 }} lg={10}>
                                                                             <Typography variant="body1">
                                                                                 {activeStep === 0 ?
                                                                                     'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :

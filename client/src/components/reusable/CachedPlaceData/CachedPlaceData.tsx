@@ -23,7 +23,7 @@ export const CachedPlaceData: FC = () => {
             {place &&
                 <>
                     <Grid container>
-                        <CachedImageCarousel images={place.images} />
+                        <CachedImageCarousel images={place.images} address={place.address} />
                     </Grid>
                     <Grid container >
                         <Grid container item>
@@ -86,7 +86,7 @@ export const CachedPlaceData: FC = () => {
                     <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
                         <CachedContactDetails phone={place.phone} email={place.email} website={place.website} />
                     </Grid>
-                    <PlaceTabs />
+                    <PlaceTabs isUserOwner={place.isUserOwner} isCacheable={true} />
                 </>
             }
         </>

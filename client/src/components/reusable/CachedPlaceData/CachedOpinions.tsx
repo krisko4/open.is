@@ -20,9 +20,11 @@ import { OpinionCard } from '../Opinions/OpinionCard';
 
 
 
+interface Props{
+    isUserOwner?: boolean
+}
 
-
-export const CachedOpinions: FC = () => {
+export const CachedOpinions: FC<Props> = ({isUserOwner}) => {
 
 
     const { userData } = useLoginContext()
@@ -32,7 +34,7 @@ export const CachedOpinions: FC = () => {
     const [opinionText, setOpinionText] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useAppDispatch()
-    const { opinions, isUserOwner, placeId } = useOpinionDataSelector()
+    const { opinions, placeId } = useOpinionDataSelector()
     const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
 
     const handleEmoji = (emoji: IEmojiData) => {

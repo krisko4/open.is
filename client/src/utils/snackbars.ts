@@ -7,7 +7,7 @@ export const useCustomSnackbar = () => {
         variant: 'success'
     })
 
-    const enqueueErrorSnackbar = () => enqueueSnackbar('Oops, something went wrong', {
+    const enqueueErrorSnackbar = (message? : string) => enqueueSnackbar(message || 'Oops, something went wrong', {
         variant: 'error'
     })
 

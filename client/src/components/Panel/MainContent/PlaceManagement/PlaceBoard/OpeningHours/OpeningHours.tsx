@@ -2,12 +2,9 @@ import { LoadingButton } from "@mui/lab"
 import { Alert, AlertTitle, Card, CardContent, Checkbox, FormControlLabel, FormGroup, Grid, Paper, Slide, Tab, Tabs, Toolbar, Typography } from "@mui/material"
 import _ from "lodash"
 import React, { FC, useEffect, useState } from "react"
-import { useGetOpeningHoursForSelectedLocationQuery, useSetSelectedLocationsAlwaysOpenMutation } from "redux-toolkit/api/placesApi"
+import { useSetSelectedLocationsAlwaysOpenMutation } from "redux-toolkit/api/placesApi"
 import { useAppDispatch } from "redux-toolkit/hooks"
-import { setLocationsAlwaysOpen, useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
-import { setAlwaysOpen, useIsAlwaysOpenSelector, useOpeningHoursDataSelector } from "redux-toolkit/slices/currentPlaceSlice"
-import { RawPlaceDataProps } from "../../../../../../contexts/PlaceProps"
-import { setPlaceAlwaysOpen } from "../../../../../../requests/OpeningHoursRequests"
+import { useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import { OpeningHoursDialog } from "./OpeningHoursDialog"
 import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
@@ -101,7 +98,6 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
 
     useEffect(() => {
         setChecked(alwaysOpen)
-        console.log(openingHours)
         if (openingHours) {
             const hours = _.cloneDeep(openingHours)
             for (const day of Object.keys(hours)) {
@@ -153,16 +149,20 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
     return (
         <Grid container sx={{ height: '100%', overflow: 'hidden' }} direction="column">
             {selectedLocations ?
-                <Alert variant="filled" severity="info">
-                    You have selected {selectedLocations.length} {selectedLocations.length === 1 ? 'location' : 'locations'}. The changes will be applied to each selected location.
-                </Alert>
+                <Slide in={true}>
+                    <Alert variant="filled" severity="info">
+                        You have selected {selectedLocations.length} {selectedLocations.length === 1 ? 'location' : 'locations'}. The changes will be applied to each selected location.
+                    </Alert>
+                </Slide>
                 :
                 <>
                     {
                         isActive ||
-                        <Alert variant="filled" severity="warning">
-                            Your place is currently not visible in the browser. Please set opening hours to activate your business.
-                        </Alert>
+                        <Slide in={true}>
+                            <Alert variant="filled" severity="warning">
+                                Your place is currently not visible in the browser. Please set opening hours to activate your business.
+                            </Alert>
+                        </Slide>
                     }
                 </>
             }
@@ -173,7 +173,11 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
                             <Card sx={{ height: '100%' }}>
                                 <Grid container direction="column" sx={{ height: '100%' }}>
                                     <Paper>
-                                        <Tabs value={value} onChange={handleChange} variant="fullWidth" sx={{ width: '100%' }}>
+                                        <Tabs
+                                            value={value}
+                                            onChange={handleChange}
+                                            variant="fullWidth"
+                                        >
                                             {days.map((day) =>
                                                 <Tab value={day.toLowerCase()} label={day} key={day} />
                                             )}

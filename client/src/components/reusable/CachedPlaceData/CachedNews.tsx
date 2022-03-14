@@ -14,15 +14,16 @@ import { NewsItem } from '../News/NewsItem';
 
 
 
+interface Props{
+    isUserOwner?: boolean
+}
 
 
-
-export const CachedNews: FC = () => {
+export const CachedNews: FC<Props> = ({isUserOwner}) => {
 
     const {locationId} = useParams()
     const [newsDialogOpen, setNewsDialogOpen] = useState(false)
     const { userData } = useLoginContext()
-    const isUserOwner = useIsUserOwnerSelector()
     const { data: news, isFetching } = useGetNewsByLocationIdQuery(locationId as string)
 
 

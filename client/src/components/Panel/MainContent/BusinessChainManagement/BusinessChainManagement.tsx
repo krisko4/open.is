@@ -1,36 +1,15 @@
 import { CircularProgress, Grid } from '@mui/material';
-import { clearPlace } from 'contexts/PanelContexts/CurrentPlaceContext';
-import { RawPlaceDataProps } from 'contexts/PlaceProps';
 import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetPlaceByIdQuery } from 'redux-toolkit/api/placesApi';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setBusinessChain } from 'redux-toolkit/slices/businessChainSlice';
-import { getPlaceById } from 'requests/PlaceRequests';
 import { NotReady } from '../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
 import { BusinessChainSettings } from './Settings/BusinessChainSettings';
-import { setCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice'
-import { useGetPlaceByIdQuery } from 'redux-toolkit/api/placesApi';
-import { useParams } from 'react-router-dom';
 
-const tabs = [
-    {
-        name: 'Dashboard',
-        content: <NotReady />,
-        url: 'dashboard'
-    },
-    {
-        name: 'Locations',
-        content: <Locations />,
-        url: 'locations'
-    },
-    {
-        name: 'Settings',
-        content: <BusinessChainSettings />,
-        url: 'settings'
-    },
-]
 
 // interface Props {
 //     placeId?: string
@@ -38,17 +17,35 @@ const tabs = [
 
 export const BusinessChainManagement: FC = () => {
     const dispatch = useAppDispatch()
-
-
-    const {placeId} = useParams()
-
-    const { data, isLoading, isFetching } = useGetPlaceByIdQuery(placeId as string)
+    const { placeId } = useParams()
+    const { data: place, isLoading, isFetching } = useGetPlaceByIdQuery(placeId as string)
 
     useEffect(() => {
-        if (data) {
-            dispatch(setBusinessChain(data))
+        if (place) {
+            dispatch(setBusinessChain(place))
         }
-    }, [data])
+    }, [place])
+
+    const tabs = useMemo(() => {
+        return  [
+            {
+                name: 'Dashboard',
+                content: <NotReady key={placeId} />,
+                url: 'dashboard'
+            },
+            {
+                name: 'Locations',
+                content: <Locations key={placeId} />,
+                url: 'locations'
+            },
+            {
+                name: 'Settings',
+                content: <BusinessChainSettings key={placeId} />,
+                url: 'settings'
+            },
+        ]
+
+    }, [placeId])
 
 
     return (

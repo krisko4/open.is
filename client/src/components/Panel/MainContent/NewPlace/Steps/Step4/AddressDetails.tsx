@@ -82,7 +82,11 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, setAddressSubmitted }
         <Fade timeout={1000} in={true}>
             <Grid container justifyContent="center">
                 <Grid container justifyContent="center">
-                    {selectedAddress.postcode && <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>}
+                    {selectedAddress.postcode &&
+                        <Fade timeout={500} in={true}>
+                            <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>
+                        </Fade>
+                    }
                 </Grid>
                 <Grid item lg={12}>
                     <AddressSearcher errorMessage={errorMessage} setErrorMessage={setErrorMessage} />

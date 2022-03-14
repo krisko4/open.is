@@ -60,7 +60,7 @@ export const PlaceData: FC<Props> = ({isEditable, logoFile, setLogoFile}) => {
             <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
                 <ContactDetails />
             </Grid>
-            <PlaceTabs isEditable={isEditable} />
+            <PlaceTabs />
         </>
     )
 }

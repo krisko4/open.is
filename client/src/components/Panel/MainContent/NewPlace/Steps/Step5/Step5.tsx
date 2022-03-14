@@ -1,17 +1,12 @@
 import { LoadingButton } from "@mui/lab"
 import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Tooltip, Typography } from "@mui/material"
-import { CurrentPlaceProps, RawPlaceDataProps } from "contexts/PlaceProps"
+import { CurrentPlaceProps } from "contexts/PlaceProps"
 import _ from "lodash"
 import React, { FC, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useAddPlaceMutation } from "redux-toolkit/api/placesApi"
-import { useAppDispatch } from "redux-toolkit/hooks"
+import { useNavigate, useParams } from "react-router-dom"
+import { useAddPlaceMutation, useEditPlaceDataMutation } from "redux-toolkit/api/placesApi"
 import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
-import { addPlace, usePlacesSelector } from "redux-toolkit/slices/placesSlice"
 import { useStepContext } from "../../../../../../contexts/StepContext"
-import { registerNewPlace, updatePlaceData } from "../../../../../../requests/PlaceRequests"
-import { setPlaces } from "../../../../../../store/actions/setPlaces"
-import { convertToCurrentPlace } from "../../../../../../utils/place_data_utils"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import DialogTransition from "../../../../../reusable/DialogTransition"
 import { Destinations } from "../../../PlaceManagement/PlaceBoard/PlaceBoard"
@@ -27,11 +22,11 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
     const [isOpen, setOpen] = useState(false)
     const { activeStep, steps } = useStepContext()
     const [registerNewPlace, { data, isLoading }] = useAddPlaceMutation()
-    const dispatch = useAppDispatch()
+    const [editPlaceData, {isLoading: isEditLoading}] = useEditPlaceDataMutation()
     const navigate = useNavigate()
-    const places = usePlacesSelector()
     const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
     const currentPlace = useCurrentPlaceSelector()
+    const {placeId, locationId} = useParams()
 
     useEffect(() => {
         if (steps.some(step => !step.isValid)) {
@@ -40,30 +35,21 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
     }, [])
 
 
-    const editPlaceData = async () => {
+    const editPlace = async () => {
         try {
             formData.append('_id', currentPlace._id as string)
-            const res = await updatePlaceData(formData)
-            const placeBeforeUpdate = places.find(place => place.locations.find(location => location._id === currentPlace._id))
-            const rawPlaceDataAfterUpdate = res.data.place
-            if (placeBeforeUpdate) places[places.indexOf(placeBeforeUpdate)] = rawPlaceDataAfterUpdate
-            dispatch(setPlaces([...places]))
-            //@ts-ignore
-            dispatch(setCurrentPlace(convertToCurrentPlace(rawPlaceDataAfterUpdate)[0]))
+            await editPlaceData(formData).unwrap()
             enqueueSuccessSnackbar('You have successfully modified your place')
             setOpen(false)
-            navigate(Destinations.HOME)
+            navigate(`/panel/management/${placeId}/${locationId}/home`)
         } catch (err) {
             console.log(err)
             enqueueErrorSnackbar()
-        } finally {
-            // setLoading(false)
-        }
-    }
+        }     }
 
     const handleClick = async () => {
         if (isEditionMode) {
-            await editPlaceData()
+            await editPlace()
             return
         }
         try {
@@ -115,7 +101,7 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
                                 <Button onClick={() => setOpen(false)} disabled={isLoading} color="primary">
                                     Cancel
                                 </Button>
-                                <LoadingButton color="primary" loading={isLoading} disabled={isLoading} onClick={handleClick}>Yes, I am sure</LoadingButton>
+                                <LoadingButton color="primary" loading={isLoading || isEditLoading} disabled={isLoading || isEditLoading} onClick={handleClick}>Yes, I am sure</LoadingButton>
                             </DialogActions>
                         </Dialog>
                         {

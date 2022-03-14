@@ -54,6 +54,9 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
             return
         }
         dispatch(setCurrentPlace(clearPlace))
+        return () => {
+            dispatch(setCurrentPlace(clearPlace))
+        }
     }, [])
 
     return (
@@ -77,11 +80,13 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                             }
                             {activeStep === 4 &&
                                 <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
+                                    <Slide in={true} direction="right" timeout={500}>
+                                        <Grid item lg={5}>
+                                            <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable={true} />
+                                        </Grid>
+                                    </Slide>
                                     <Grid item lg={5}>
-                                        <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable={true} />
-                                    </Grid>
-                                    <Grid item lg={5}>
-                                        <Step5Container initialPlaceData={initialPlaceData} logoFile={logoFile}  isEditionMode={isEditionMode} />
+                                        <Step5Container initialPlaceData={initialPlaceData} logoFile={logoFile} isEditionMode={isEditionMode} />
                                     </Grid>
                                 </Grid>
                             }
@@ -98,7 +103,11 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                                         minScale={0.5}
                                     >
                                         <TransformComponent>
-                                            <PlaceDetailsCard  />
+                                            <Slide in={true} direction="left">
+                                                <Grid container >
+                                                    <PlaceDetailsCard />
+                                                </Grid>
+                                            </Slide>
                                         </TransformComponent>
                                     </TransformWrapper>
                                 </Grid>

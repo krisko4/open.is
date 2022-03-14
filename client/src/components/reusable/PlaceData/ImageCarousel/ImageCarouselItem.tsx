@@ -16,11 +16,10 @@ interface Props {
     item: Image,
     index: number,
     isEditable?: boolean,
+    address: string
 }
-export const ImageCarouselItem: FC<Props> = ({ item, isEditable, index }) => {
+export const ImageCarouselItem: FC<Props> = ({ item, address, isEditable, index }) => {
 
-    const address = useAddressSelector()
-    console.log('itemek')
     const dispatch = useAppDispatch()
     const [isHover, setHover] = useState(true)
     const [img, setImg] = useState<string | File | ArrayBuffer | null>(item.img)

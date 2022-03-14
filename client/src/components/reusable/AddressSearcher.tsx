@@ -21,7 +21,6 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
 
     const { setPlaceCoords } = useMapContext()
     const { availableAddresses, setAvailableAddresses, setSelectedPlaces, setSelectedAddress } = useAddressDetailsContext()
-    console.log('search')
     const [inputValue, setInputValue] = useState('')
     const isFirstFind = useRef(true)
     const [loading, setLoading] = useState(false)
@@ -130,7 +129,7 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
                 const label = option.name
                 const matches = match(label, inputValue);
                 const parts = parse(label, matches);
-                return <li {...props}>
+                return <li key={option.raw.osm_id} {...props}>
                     <h4 style={{ marginLeft: 10, marginRight: 10 }}>
                         {
                             parts.map((part, index) => (

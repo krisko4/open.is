@@ -27,7 +27,7 @@ const Intro: FC<Props> = ({ setStartClicked }) => {
                         <Card>
                             <CardContent>
                                 <Typography variant="h2">What is a business chain?</Typography>
-                                <Grid style={{ marginTop: 10 }} container lg={10}>
+                                <Grid style={{ marginTop: 10 }} item container lg={10}>
                                     <Typography variant="body1" sx={{ mb: 1 }}>
                                         If you're an owner of a business with multiple locations, business chain is a great option for you.
                                         Follow some simple steps to add your locations quickly and conveniently.

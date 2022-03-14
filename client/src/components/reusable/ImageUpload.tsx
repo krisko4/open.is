@@ -1,4 +1,5 @@
 import React, { FC, useRef, useState } from "react";
+import { useCustomSnackbar } from "utils/snackbars";
 
 interface Props {
     img: string | File | ArrayBuffer | null,
@@ -11,10 +12,16 @@ export const ImageUpload: FC<Props> = ({ img, name, children, setImg, setImageFi
 
     const uploadRef = useRef<HTMLInputElement>(null)
     const [inputKey, setInputKey] = useState<any>()
+    const {enqueueErrorSnackbar} = useCustomSnackbar()
 
     const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const image = event.target.files[0]
+            console.log(image.size)
+            if(image.size > 2000000){
+                enqueueErrorSnackbar('The size of selected file exceeds maximum size limit, which is 2 MB')
+                return
+            }
             if (setImageFile) {
                 setImageFile(image)
             }
@@ -25,9 +32,7 @@ export const ImageUpload: FC<Props> = ({ img, name, children, setImg, setImageFi
                     setImg(e.target.result)
                 }
             }
-
         }
-
     }
 
 

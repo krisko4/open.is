@@ -32,26 +32,26 @@ export const PlaceDashboard: FC = () => {
         <Scrollbars>
             <Grid container direction="column">
                 <Grid container sx={{ pt: '30px', pb: '30px', pl: '30px', pr: '30px' }}>
-                        <Grid item lg={12} sx={{ mb: 2 }}>
-                            {status === Status.CLOSED &&
-                                <Slide in={true} direction="right" timeout={500}>
-                                    <Alert variant="filled" severity="error">Your place is now closed.</Alert>
-                                </Slide>
-                            }
-                            <Slide timeout={500} direction="left" in={!isFetching}>
-                                <div>
-                                    {
-                                        !isFetching &&
-                                        (openingHoursData?.isActive ?
-                                            <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
-                                            :
-                                            <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
-                                        )}
-
-                                </div>
+                    <Grid item lg={12} sx={{ mb: 2 }}>
+                        {status === Status.CLOSED &&
+                            <Slide in={true} direction="right" timeout={500}>
+                                <Alert variant="filled" severity="error">Your place is now closed.</Alert>
                             </Slide>
-                        </Grid>
-                    <Grid container justifyContent="space-around" spacing={1} sx={{mb: 2}}>
+                        }
+                        <Slide timeout={500} direction="left" in={!isFetching}>
+                            <div>
+                                {
+                                    !isFetching &&
+                                    (openingHoursData?.isActive ?
+                                        <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
+                                        :
+                                        <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
+                                    )}
+
+                            </div>
+                        </Slide>
+                    </Grid>
+                    <Grid container justifyContent="space-around" spacing={1} sx={{ mb: 2 }}>
                         <Grid item lg={4}>
                             <TotalVisits />
                         </Grid>
@@ -67,9 +67,11 @@ export const PlaceDashboard: FC = () => {
                             <Grid item container>
                                 <RatingCard />
                             </Grid>
-                            <Grid item container>
-                                <PlaceStatus />
-                            </Grid>
+                            <Slide in={true} timeout={500} direction="right">
+                                <Grid item container>
+                                    <PlaceStatus />
+                                </Grid>
+                            </Slide>
                             <Grid item container>
                                 <Card elevation={3} sx={{ flexGrow: 1 }}>
                                     <CardContent>
@@ -85,9 +87,11 @@ export const PlaceDashboard: FC = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item lg={7}>
-                        <PlaceDetailsCard isCacheable={true} />
-                    </Grid>
+                    <Slide in={true} direction="left" timeout={500}>
+                        <Grid item lg={7}>
+                            <PlaceDetailsCard isCacheable={true} />
+                        </Grid>
+                    </Slide>
                 </Grid>
             </Grid>
         </Scrollbars>

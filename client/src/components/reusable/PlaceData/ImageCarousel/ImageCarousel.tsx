@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles"
 import { FC, useState } from "react"
 import Carousel from "react-material-ui-carousel"
-import { setCurrentPlace, useImagesSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { setCurrentPlace, useAddressSelector, useImagesSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { ImageCarouselItem } from "./ImageCarouselItem"
 
 const useStyles = makeStyles({
@@ -40,6 +40,7 @@ export const ImageCarousel: FC<Props> = ({ isEditable }) => {
     const classes = useStyles()
     const [currentIndex, setCurrentIndex] = useState(1)
     const images = useImagesSelector()
+    const address = useAddressSelector()
 
     return (
         <Carousel
@@ -58,6 +59,7 @@ export const ImageCarousel: FC<Props> = ({ isEditable }) => {
                     key={index}
                 >
                     <ImageCarouselItem
+                        address={address}
                         isEditable={isEditable}
                         index={index}
                         item={item}

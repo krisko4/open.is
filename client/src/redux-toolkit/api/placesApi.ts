@@ -79,6 +79,14 @@ export const placesApi = createApi({
             }),
             providesTags: ['News']
         }),
+        editPlaceData: builder.mutation<void, FormData>({
+            query: (formData) => ({
+                url: 'places',
+                method: 'PUT',
+                body: formData
+            }),
+            invalidatesTags: ['SelectedPlace']
+        }),
         addNews: builder.mutation<void, AddNewsProps>({
             query: ({ locationId, content, title }) => ({
                 url: `news`,
@@ -247,7 +255,7 @@ export const useGetPlacesByUserId = () => {
 }
 
 export const {
-
+    useEditPlaceDataMutation,
     useGetOpeningHoursForSelectedLocationQuery,
     useGetAverageNoteForSelectedLocationQuery,
     useGetStatusForSelectedLocationQuery,

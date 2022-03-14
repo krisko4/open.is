@@ -15,28 +15,29 @@ const MyTab = (props: any) => {
 }
 
 interface Props {
-    isEditable?: boolean
+    isCacheable?: boolean,
+    isUserOwner? : boolean
 }
 
-export const PlaceTabs: FC<Props> = ({ isEditable }) => {
+export const PlaceTabs: FC<Props> = ({ isCacheable, isUserOwner }) => {
 
     const [value, setValue] = useState(0)
 
     const tabs = useMemo(() => {
-        if (isEditable) {
+        if (isCacheable) {
             return [
-                <News />,
-                <OpeningHours />,
-                <Opinions />
+                <CachedNews isUserOwner={isUserOwner} />,
+                <CachedOpeningHours  />,
+                <CachedOpinions isUserOwner={isUserOwner} />
             ]
         }
         return [
-            <CachedNews />,
-            <CachedOpeningHours />,
-            <CachedOpinions />
+            <News />,
+            <OpeningHours />,
+            <Opinions />
         ]
 
-    }, [isEditable])
+    }, [isCacheable])
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);

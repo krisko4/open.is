@@ -57,7 +57,7 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
 
 
     return (
-        <Grid container item sx={{ flexGrow: 1 }} direction="column">
+        <Grid container sx={{ flexGrow: 1 }} direction="column">
             {openingHours[day].open &&
                 <Grid container justifyContent="center" sx={{ mt: 2 }}>
                     <Grid item container justifyContent="flex-end" lg={10}>
@@ -75,8 +75,7 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                 </Grid>
             }
             <Grid container sx={{ flexGrow: 1, mt: 1, mb: 2 }} justifyContent="space-evenly" direction="column">
-                <Grid container justifyContent="space-evenly" item >
-
+                <Grid container justifyContent="space-evenly" >
                     {
                         openingHours[day].open ? <>
                             <LocalizationProvider locale={frLocale} dateAdapter={AdapterDateFns}>

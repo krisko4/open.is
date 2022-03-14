@@ -45,23 +45,21 @@ export const PlaceBoard: FC = () => {
     }, [isError])
 
 
-    useEffect(() => {
-        console.log('elo')
-    }, [])
 
 
     const tabs = useMemo(() => {
+        const key = place?._id as string
         const settingsTab = {
             name: 'Settings',
             url: Destinations.SETTINGS,
-            content: <PlaceSettings />
+            content: <PlaceSettings key={key} />
         }
 
         const tabs = [
             {
                 name: 'Home',
                 url: Destinations.HOME,
-                content: <PlaceDashboard />
+                content: <PlaceDashboard key={key} />
             },
             {
                 name: 'Statistics',
@@ -71,7 +69,7 @@ export const PlaceBoard: FC = () => {
             {
                 name: 'Opening hours',
                 url: Destinations.OPENING_HOURS,
-                content: <OpeningHoursWrapper />
+                content: <OpeningHoursWrapper key={key} />
             },
             {
                 name: 'Events',
@@ -81,7 +79,7 @@ export const PlaceBoard: FC = () => {
             {
                 name: 'Opinions',
                 url: Destinations.OPINIONS,
-                content: <Opinions />
+                content: <Opinions key={key} />
             },
             {
                 name: 'News',
@@ -101,7 +99,7 @@ export const PlaceBoard: FC = () => {
         ]
         if (!place?.isBusinessChain) tabs.push(settingsTab)
         return tabs
-    }, [place?.isBusinessChain])
+    }, [place])
 
 
 
@@ -111,7 +109,7 @@ export const PlaceBoard: FC = () => {
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                     <CircularProgress disableShrink size={100} />
                 </Grid> :
-                <PanelTabNavigator key={Math.random()} tabs={tabs} />
+                <PanelTabNavigator tabs={tabs} />
             }
         </>
     )

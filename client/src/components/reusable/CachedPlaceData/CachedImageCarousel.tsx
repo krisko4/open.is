@@ -33,10 +33,11 @@ const useStyles = makeStyles({
     }
 })
 interface Props{
-    images: Image[]
+    images: Image[],
+    address : string
 }
 
-export const CachedImageCarousel: FC<Props> = ({images}) => {
+export const CachedImageCarousel: FC<Props> = ({images, address}) => {
 
     const classes = useStyles()
     const [currentIndex, setCurrentIndex] = useState(1)
@@ -58,6 +59,7 @@ export const CachedImageCarousel: FC<Props> = ({images}) => {
                     key={index}
                 >
                     <ImageCarouselItem
+                        address={address}
                         index={index}
                         item={item}
                     />
