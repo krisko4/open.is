@@ -366,10 +366,13 @@ const placeController = {
     getRecentlyAddedPlaces: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
+        const { start, limit } = req.query
         try {
-            let places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
-            places = await placeController.getVisitsNewsOpinions(places, uid)
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
+            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { createdAt: -1 })
+            return res.status(200).json(places[0])
+            // let places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
+            // places = await placeController.getVisitsNewsOpinions(places, uid)
+            // return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
@@ -397,10 +400,13 @@ const placeController = {
     getTopRatedPlaces: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
+        const { start, limit } = req.query
         try {
-            let places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
-            places = await placeController.getVisitsNewsOpinions(places, uid)
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
+            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { 'locations.averageNote.average': -1 })
+            return res.status(200).json(places[0])
+            // let places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
+            // places = await placeController.getVisitsNewsOpinions(places, uid)
+            // return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
@@ -411,13 +417,9 @@ const placeController = {
         const { cookies } = req
         const { uid } = cookies
         const { start, limit } = req.query
-        console.log(start, limit)
         try {
-            // let places = await placeService.getTop20PlacesSortedBy({ 'locations.visitCount': -1 })
             let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { 'locations.visitCount': -1 })
             return res.status(200).json(places[0])
-            // places = await placeController.getVisitsNewsOpinions(places, uid)
-            // return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }

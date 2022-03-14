@@ -253,7 +253,6 @@ const placeService = {
             .group(this.groupedPlaceObject)
         const place = foundPlaces[0]
         if (!place) throw ApiError.internal('Invalid placeId')
-        if (place.userId.toString() !== uid.toString()) throw ApiError.internal('Illegal operation')
         return place
     },
 
