@@ -44,6 +44,7 @@ const currentPlaceSlice = createSlice({
     name: 'currentPlace',
     initialState,
     reducers: {
+        resetCurrentPlace : () => initialState,
         setName: (state, action: PayloadAction<string>) => {
             state.name = action.payload
         },
@@ -124,6 +125,7 @@ const currentPlaceSlice = createSlice({
 })
 
 export const {
+    resetCurrentPlace,
     setLogoFile,
     setName,
     setCurrentPlace,

@@ -44,7 +44,7 @@ const schema = yup.object({
 })
 
 export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateChanged }) => {
-   
+
     const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext()
     const isFirstRender = useRef(true)
     const isFirstFieldForAllRender = useRef(true)
@@ -108,10 +108,11 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         render={
                             ({ field }) =>
                                 <ReactPhoneInput
+                                    //@ts-ignore
                                     defaultCountry={'pl'}
                                     {...field}
-                                    //@ts-ignore
                                     component={TextField}
+                                    //@ts-ignore
                                     label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
                                 />
                         }

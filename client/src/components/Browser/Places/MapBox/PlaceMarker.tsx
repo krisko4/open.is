@@ -1,5 +1,5 @@
-import { Fade, Avatar, Grid, Rating, styled, Typography } from "@mui/material";
-import axios from "axios";
+import { Fade, Avatar, Grid, styled, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -7,15 +7,18 @@ import React, { FC, useEffect, useRef } from "react";
 import { Marker, Popup } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { setCurrentPlace } from "redux-toolkit/slices/currentPlaceSlice";
+import { setPopup, usePopupSelector } from "redux-toolkit/slices/mapSlice";
 import { SelectedLocationProps } from "redux-toolkit/slices/selectedLocationsSlice";
-import { useAddressDetailsContext } from "../../../../contexts/AddressDetailsContext";
-import { useMapContext } from "../../../../contexts/MapContext/MapContext";
-import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 
 
+const useStyles = makeStyles({
+    icon: {
+        borderRadius: 15,
+        objectFit: 'contain',
+    }
+})
 
-const StyledPopup = styled(Popup)(({ theme }) => ({
+const StyledPopup = styled(Popup)(() => ({
     '& .leaflet-popup-content': {
         width: 160
     },
@@ -27,7 +30,6 @@ const StyledPopup = styled(Popup)(({ theme }) => ({
 interface Props {
     location: SelectedLocationProps,
     index: number,
-    classes: any
 }
 
 let DefaultIcon = L.icon({
@@ -37,9 +39,13 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-export const PlaceMarker: FC<Props> = ({ location, index, classes }) => {
+export const PlaceMarker: FC<Props> = ({ location, index }) => {
 
     const placeMarker = useRef<any>(null)
+    const classes = useStyles()
+    const navigate = useNavigate()
+    const popup = usePopupSelector()
+    const dispatch = useAppDispatch()
 
     // const { popupOpen, popupIndex, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable } = useMapContext()
     // const { selectedPlaces, selectedAddress, setSelectedAddress, setSelectedPlaces } = useAddressDetailsContext()
@@ -47,7 +53,6 @@ export const PlaceMarker: FC<Props> = ({ location, index, classes }) => {
     // const navigate = useNavigate()
     // const img = place.logo
 
-    // console.log(img)
     const myIcon = L.icon({
         // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
         iconUrl: location.logo as string,
@@ -58,59 +63,50 @@ export const PlaceMarker: FC<Props> = ({ location, index, classes }) => {
         className: classes.icon
 
     });
-    // const dispatch = useAppDispatch()
 
 
-    // useEffect(() => {
-    //     if (firstRender.current) {
-    //         firstRender.current = false
-    //         return
-    //     }
-    //     if (placeMarker.current && popupIndex === index) {
-    //         popupOpen ? placeMarker.current.openPopup() : placeMarker.current.closePopup()
-    //     }
-    // }, [popupOpen])
+    useEffect(() => {
+        if (placeMarker.current && popup.index === index) {
+            popup.isOpen ? placeMarker.current.openPopup() : placeMarker.current.closePopup()
+        }
+    }, [popup.isOpen])
 
     return (
         <Marker
-
             icon={location.logo ? myIcon : DefaultIcon}
             ref={placeMarker}
-            // eventHandlers={{
-            //     click: () => {
-            //         const place = selectedPlaces.find(
-            //             (place, index: number) =>
-            //                 place.lat === placeMarker.current._latlng.lat &&
-            //                 place.lng === placeMarker.current._latlng.lng
-            //         ) as CurrentPlaceProps
-            //         dispatch(setCurrentPlace(place))
-            //         setPopupIndex(index)
-            //         setPopupOpen(true)
-            //         if (!isMarkerDraggable) {
-            //             setPlaceCardClicked(true)
-            //             navigate(`${place._id}`)
-            //         }
-            //     },
-            //     dragend: async () => {
-            //         place.lat = placeMarker.current._latlng.lat
-            //         place.lng = placeMarker.current._latlng.lng
-            //         const lat: number = place.lat
-            //         const lng: number = place.lng
-            //         const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
-            //         const places = [place]
-            //         setSelectedPlaces(places)
-            //         const address = res.data
-            //         const { osm_type, osm_id } = address
-            //         setSelectedAddress({
-            //             label: address.display_name,
-            //             language: navigator.language,
-            //             lat: lat,
-            //             lng: lng,
-            //             postcode: address.address.postcode,
-            //             addressId: `${osm_type[0].toString().toUpperCase()}${osm_id}`
-            //         })
-            //     }
-            // }}
+            eventHandlers={{
+                click: () => {
+                    dispatch(setPopup({
+                        isOpen: !popup.isOpen,
+                        index: index
+                    }))
+                    navigate(`/search/${location._id}/${location.locationId}`)
+                    // if (!isMarkerDraggable) {
+                    //     setPlaceCardClicked(true)
+                    //     navigate(`${place._id}`)
+                    // }
+                },
+                dragend: async () => {
+                    // place.lat = placeMarker.current._latlng.lat
+                    // place.lng = placeMarker.current._latlng.lng
+                    // const lat: number = place.lat
+                    // const lng: number = place.lng
+                    // const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
+                    // const places = [place]
+                    // setSelectedPlaces(places)
+                    // const address = res.data
+                    // const { osm_type, osm_id } = address
+                    // setSelectedAddress({
+                    //     label: address.display_name,
+                    //     language: navigator.language,
+                    //     lat: lat,
+                    //     lng: lng,
+                    //     postcode: address.address.postcode,
+                    //     addressId: `${osm_type[0].toString().toUpperCase()}${osm_id}`
+                    // })
+                }
+            }}
             position={[location.lat, location.lng]}
         // draggable={isMarkerDraggable}
         >
@@ -139,6 +135,7 @@ export const PlaceMarker: FC<Props> = ({ location, index, classes }) => {
                 </Grid>
             </StyledPopup>
         </Marker>
+
     );
 
 }

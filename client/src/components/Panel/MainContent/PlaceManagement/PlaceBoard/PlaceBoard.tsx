@@ -28,7 +28,6 @@ export enum Destinations {
 
 export const PlaceBoard: FC = () => {
 
-    const dispatch = useAppDispatch()
     const { enqueueErrorSnackbar } = useCustomSnackbar()
     const {placeId, locationId} = useParams()
 

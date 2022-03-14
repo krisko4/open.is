@@ -1,6 +1,6 @@
 import { Grid, Paper, Slide } from "@mui/material"
 import React, { FC } from "react"
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { NavigationTabs } from "./NavigationTabs"
 
 
@@ -24,6 +24,7 @@ export const PanelTabNavigator: FC<Props> = ({ tabs }) => {
             </Slide>
             <Grid container sx={{ flexGrow: 1 }}>
                 <Routes>
+                    <Route index element={<Navigate to={tabs[0].url} /> } />
                     {tabs.map((tab) => (
                         <Route key={tab.url} path={tab.url} element={tab.content} />)
                     )}

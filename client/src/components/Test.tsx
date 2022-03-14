@@ -25,7 +25,7 @@ export const Test: FC = () => {
         console.log(start.current)
         setLoading(true)
         if (start.current <= total.current) {
-            const res = await getLimitedPlaces(start.current, limit.current)
+            const res = await getLimitedPlaces('/places/active/popular', start.current, limit.current)
             console.log(res.data)
             const updatedPlaces = places.concat(res.data.data)
             start.current = updatedPlaces.length - 1

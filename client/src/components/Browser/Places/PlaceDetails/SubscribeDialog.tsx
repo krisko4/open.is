@@ -15,7 +15,7 @@ import { LoadingButton } from "../../../reusable/LoadingButton";
 interface Props {
     isDialogOpen: boolean,
     setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    currentPlace: CurrentPlaceProps
+    currentPlace?: CurrentPlaceProps
 }
 
 const useStyles = makeStyles({
@@ -48,7 +48,7 @@ export const SubscribeDialog: FC<Props> = ({ isDialogOpen, setDialogOpen }) => {
     const addSubscription = async () => {
         setLoading(true)
         try {
-            await subscribeToPlace(currentPlace._id as string)
+            await subscribeToPlace(currentPlace?._id as string)
             enqueueSuccessSnackbar('You have subscribed to a new place')
             dispatch(setSubscription(true))
             setDialogOpen(false)

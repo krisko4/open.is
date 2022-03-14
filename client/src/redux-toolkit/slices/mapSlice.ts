@@ -10,26 +10,60 @@ export interface MapProps {
 
 }
 
-const initialState: MapProps = {
+interface PopupProps {
+    index: number,
+    isOpen: boolean
+}
+
+interface StateProps {
+    mapCoords: MapProps,
+    popup: PopupProps
+}
+
+const defaultCoords = {
     zoom: 5,
     lat: 53.13333,
     lng: 23.16433
+}
+
+
+const initialState: StateProps = {
+    mapCoords: defaultCoords,
+    popup: {
+        index: -1,
+        isOpen: false
+    }
 }
 
 const mapDataSlice = createSlice({
     name: 'mapData',
     initialState,
     reducers: {
-        setMapData: (state, action: PayloadAction<MapProps>) => {
-            return action.payload
+        setMapCoords: (state, action: PayloadAction<MapProps>) => {
+            state.mapCoords = action.payload
         },
-        reset: () => initialState,
+        setPopup: (state, action: PayloadAction<PopupProps>) => {
+            state.popup = action.payload
+        },
+        setPopupIndex: (state, action: PayloadAction<number>) => {
+            state.popup.index = action.payload
+        },
+        closePopup: (state) => {
+            state.popup.isOpen = false
+            state.mapCoords = defaultCoords
+        },
+
+        resetMap: () => initialState,
 
     }
 })
-export const useMapDataSelector = () => useAppSelector(state => state.mapData)
+export const useMapDataSelector = () => useAppSelector(state => state.mapData.mapCoords)
+export const usePopupSelector = () => useAppSelector(state => state.mapData.popup)
 export const {
-    setMapData,
-    reset
+    setMapCoords,
+    setPopupIndex,
+    setPopup,
+    closePopup,
+    resetMap
 } = mapDataSlice.actions
 export const mapDataReducer = mapDataSlice.reducer

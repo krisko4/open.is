@@ -1,17 +1,13 @@
-import AddIcon from "@mui/icons-material/Add";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { Avatar, Button, Fade, Rating, Typography } from "@mui/material";
+import { Avatar, Fade, Rating, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import { isToday } from "date-fns";
 import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import { useNavigate } from "react-router-dom";
 import { useGetPlacesByUserId } from "redux-toolkit/api/placesApi";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
 import { RawPlaceDataProps, VisitProps } from "../../../../contexts/PlaceProps";
 import { ActivityChart } from './Charts/ActivityChart';
 

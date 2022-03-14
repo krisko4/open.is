@@ -1,4 +1,3 @@
-import makeStyles from '@mui/styles/makeStyles';
 import 'leaflet/dist/leaflet.css';
 import { FC, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
@@ -9,26 +8,11 @@ import { useColorMode } from '../../../../contexts/ColorModeContext';
 import { useMapContext } from '../../../../contexts/MapContext/MapContext';
 import { PlaceMarker } from "./PlaceMarker";
 import { SetViewOnClick } from "./SetViewOnClick";
+import { Fade } from '@mui/material'
 
 
 
-const useStyles = makeStyles({
-    popup: {
-        '& .leaflet-popup-content': {
-            width: 160
-        },
-        '& .leaflet-popup-content-wrapper': {
-            background: 'green'
-        },
-        '& .leaflet-popup-tip': {
-            background: 'green'
-        }
-    },
-    icon: {
-        borderRadius: 15,
-        objectFit: 'contain'
-    }
-})
+
 
 
 
@@ -40,7 +24,6 @@ export const MapBox: FC = () => {
     const selectedLocations = useSelectedLocationsSelector()
     // const { selectedPlaces } = useAddressDetailsContext()
     // console.log(selectedPlaces)
-    const classes = useStyles()
     const layerRef = useRef<any>(null)
     const { mode } = useColorMode()
 
@@ -75,7 +58,6 @@ export const MapBox: FC = () => {
                     key={location.locationId}
                     index={index}
                     location={location}
-                    classes={classes}
                 />
             )}
             <SetViewOnClick />

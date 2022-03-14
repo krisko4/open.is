@@ -93,7 +93,6 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, is
     }, [addressSubmitted])
 
 
-
     return (
         <Slide in={true} direction="left" timeout={500}>
             <Grid container style={{ height: '100%', paddingTop: 1 }}>

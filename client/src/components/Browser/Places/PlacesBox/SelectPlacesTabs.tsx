@@ -12,7 +12,7 @@ export const SelectPlacesTabs: FC = () => {
         },
         {
             name: 'Recently added',
-            url: 'new',
+            url: 'recent',
             icon: <Timelapse />
         },
         {

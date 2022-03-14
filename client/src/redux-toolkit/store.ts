@@ -4,6 +4,7 @@ import { businessChainReducer } from "./slices/businessChainSlice";
 import { currentPlaceReducer } from "./slices/currentPlaceSlice";
 import { mapDataReducer } from "./slices/mapSlice";
 import { placesReducer } from "./slices/placesSlice";
+import { selectedAddressReducer } from "./slices/selectedAddressSlice";
 import { selectedLocationsReducer } from "./slices/selectedLocationsSlice";
 
 export const store = configureStore({
@@ -13,7 +14,8 @@ export const store = configureStore({
         places: placesReducer,
         [placesApi.reducerPath]: placesApi.reducer,
         selectedLocations: selectedLocationsReducer,
-        mapData: mapDataReducer
+        mapData: mapDataReducer,
+        selectedAddress : selectedAddressReducer
 
     },
     middleware: (getDefaultMiddleware) =>

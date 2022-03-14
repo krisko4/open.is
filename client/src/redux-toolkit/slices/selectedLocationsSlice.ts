@@ -3,14 +3,14 @@ import { useAppSelector } from "redux-toolkit/hooks";
 
 
 export interface SelectedLocationProps {
-    _id: string,
+    _id?: string,
     name: string,
     type: string,
-    subtitle: string,
+    subtitle?: string,
     logo: string,
-    status: string,
-    address: string,
-    locationId: string,
+    status?: string,
+    address?: string,
+    locationId?: string,
     lat: number,
     lng: number
 }
@@ -27,13 +27,13 @@ const selectedLocationsSlice = createSlice({
         addLocations: (state, action: PayloadAction<SelectedLocationProps[]>) => {
             state.push(...action.payload)
         },
-        reset: () => initialState
+        resetSelectedLocations: () => initialState
     }
 })
 export const useSelectedLocationsSelector = () => useAppSelector(state => state.selectedLocations)
 export const {
     setSelectedLocations,
-    reset,
+    resetSelectedLocations,
     addLocations
 } = selectedLocationsSlice.actions
 export const selectedLocationsReducer = selectedLocationsSlice.reducer

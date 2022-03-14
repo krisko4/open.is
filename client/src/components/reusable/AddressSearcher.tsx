@@ -3,9 +3,8 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { setAddressData, useAddressDataSelector, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
-import { useMapContext } from "../../contexts/MapContext/MapContext";
+import { setMapCoords } from "redux-toolkit/slices/mapSlice";
+import { setSelectedAddress } from "redux-toolkit/slices/selectedAddressSlice";
 import { findByAddress } from "../../requests/PlaceRequests";
 
 interface Props {
@@ -15,18 +14,13 @@ interface Props {
 
 
 
-
-
 export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) => {
 
-    const { setPlaceCoords } = useMapContext()
-    const { availableAddresses, setAvailableAddresses, setSelectedPlaces, setSelectedAddress } = useAddressDetailsContext()
     const [inputValue, setInputValue] = useState('')
     const isFirstFind = useRef(true)
     const [loading, setLoading] = useState(false)
-    const addressData = useAddressDataSelector()
     const dispatch = useAppDispatch()
-    const currentPlace = useCurrentPlaceSelector()
+    const [availableAddresses, setAvailableAddresses] = useState<any>([])
 
 
     const selectPlace = async (place: any) => {
@@ -36,48 +30,21 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
                 setErrorMessage('This is not a valid address. Your address should include street number and postcode.')
             }
             const { osm_type, osm_id } = place.raw
-            setSelectedAddress({
+            dispatch(setSelectedAddress({
                 label: place.label,
                 lng: place.x,
                 lat: place.y,
                 language: navigator.language,
                 postcode: place.raw.address.postcode,
                 addressId: `${osm_type[0].toString().toUpperCase()}${osm_id}`
-            })
-            setPlaceCoords({
+            }))
+            dispatch(setMapCoords({
                 lat: place.y,
                 lng: place.x,
-                mapZoom: 20
-            })
-            const newAddressData = {
-                ...addressData,
-                lat: place.y,
-                lng: place.x
-            }
-            dispatch(setAddressData(newAddressData))
-            // setSelectedPlaces([])
-            setSelectedPlaces([{ ...currentPlace, lat: place.y, lng: place.x }])
+                zoom: 20
+            }))
         }
     }
-
-
-    useEffect(() => {
-        if (addressData.address !== '') {
-            setSelectedAddress({
-                label: addressData.address,
-                lng: addressData.lng,
-                lat: addressData.lat,
-                language: navigator.language,
-                addressId: addressData.addressId
-            })
-            setPlaceCoords({
-                lat: addressData.lat,
-                lng: addressData.lng,
-                mapZoom: 20
-            })
-            setSelectedPlaces([{ ...currentPlace, lat: addressData.lat, lng: addressData.lng }])
-        }
-    }, [])
 
     useEffect(() => {
         if (isFirstFind.current) {

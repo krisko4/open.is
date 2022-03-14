@@ -39,15 +39,16 @@ export const PhoneNumber: FC = () => {
             control={control}
             render={
                 ({ field }) =>
-                    <ReactPhoneInput
+                    <PhoneInput
+                    //@ts-ignore
                         style={
                             {
                                 flexGrow: 1,
                             }
                         }
                         {...field}
-                        //@ts-ignore
                         component={TextField}
+                        //@ts-ignore
                         label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
                     />
             }

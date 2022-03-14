@@ -105,11 +105,11 @@ const PlacesBox: FC = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<PlaceList />} >
-                <Route index element={<Navigate to="popular" />} />
-                <Route path="popular" element={<PopularPlaces />} />
+            <Route path="/*" element={<PlaceList />} >
+                {/* <Route index element={<Navigate to="popular" />} /> */}
+                {/* <Route path="favorite" element={<PopularPlaces key="favorite" fetchUrl="/places/active/popular" />} /> */}
             </Route>
-            <Route path=":locationId" element={<PlaceDetails />} />
+            <Route path=":placeId/:locationId" element={<PlaceDetails />} />
         </Routes>
         // <Grid container direction="column" style={{ height: '100%' }} >
         //     <SelectPlacesTabs />

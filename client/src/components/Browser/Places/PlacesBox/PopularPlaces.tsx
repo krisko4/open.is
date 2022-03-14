@@ -3,31 +3,35 @@ import { FC, useState, useRef, useEffect } from "react"
 import Scrollbars, { positionValues } from "react-custom-scrollbars"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "redux-toolkit/hooks"
-import { reset, useSelectedLocationsSelector, setSelectedLocations, addLocations } from "redux-toolkit/slices/selectedLocationsSlice"
+import { setPopup } from "redux-toolkit/slices/mapSlice"
+import {  useSelectedLocationsSelector, setSelectedLocations, addLocations, SelectedLocationProps } from "redux-toolkit/slices/selectedLocationsSlice"
 import { getLimitedPlaces } from "requests/PlaceRequests"
 import { useCustomSnackbar } from "utils/snackbars"
 import { PlaceCard } from "../PlaceCard"
 import { SelectPlacesTabs } from "./SelectPlacesTabs"
 
 
-export interface PlaceCardData {
-    _id: string,
-    name: string,
-    type: string,
-    subtitle: string,
-    logo: string,
-    status: string,
-    address: string,
-    locationId: string,
-    lat: number,
-    lng: number
+// export interface PlaceCardData {
+//     _id: string,
+//     name: string,
+//     type: string,
+//     subtitle: string,
+//     logo: string,
+//     status: string,
+//     address: string,
+//     locationId: string,
+//     lat: number,
+//     lng: number
+// }
+
+interface Props{
+    fetchUrl: string
 }
 
-export const PopularPlaces: FC = () => {
+export const PopularPlaces: FC<Props> = ({fetchUrl}) => {
 
     const places = useSelectedLocationsSelector()
     const dispatch = useAppDispatch()
-    // const [places, setPlaces] = useState<PlaceCardData[]>([])
 
     const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState(false)
@@ -41,10 +45,9 @@ export const PopularPlaces: FC = () => {
 
     const fetchPlaces = async () => {
         setLoading(true)
-        console.log(start.current)
         if (start.current < total.current) {
             try {
-                const res = await getLimitedPlaces(start.current, limit.current)
+                const res = await getLimitedPlaces(fetchUrl, start.current, limit.current)
                 const newPlaces = res.data.data
                 if (start.current === 0) {
                     dispatch(setSelectedLocations(newPlaces))
@@ -67,7 +70,6 @@ export const PopularPlaces: FC = () => {
         setLoading(false)
     }
 
-
     const handleScroll = (values: positionValues) => {
         if (values.top === 1 && hasMore) {
             fetchPlaces()
@@ -79,12 +81,15 @@ export const PopularPlaces: FC = () => {
             await fetchPlaces()
             setFirstLoading(false)
         })()
-
     }, [total])
 
 
-    const openPlaceDetails = (locationId: string) => {
-        navigate(`/search/${locationId}`)
+    const openPlaceDetails = (place : SelectedLocationProps, index: number) => {
+        dispatch(setPopup({
+            isOpen: true,
+            index: index
+        }))
+        navigate(`/search/${place._id}/${place.locationId}`)
     }
 
     return (
@@ -103,7 +108,7 @@ export const PopularPlaces: FC = () => {
                                     disableGutters
                                     disablePadding
                                     sx={{ mt: 1, mb: 1, ml: 1, mr: 1, width: 'inherit' }}
-                                    onClick={() => openPlaceDetails(place.locationId)}
+                                    onClick={() => openPlaceDetails(place, index)}
                                     key={place._id}
                                     button
                                 >

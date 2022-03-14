@@ -4,14 +4,9 @@ import AddressDetailsContextProvider from "../../../../../contexts/AddressDetail
 import MapContextProvider from "../../../../../contexts/MapContext/MapContext"
 import { AddressDetails } from "../../NewPlace/Steps/Step4/AddressDetails"
 
-enum Steps {
-    BUSINESS_INFORMATION,
-    BUSINESS_DETAILS
-}
 
 interface Props {
     setAddressSubmitted?: React.Dispatch<React.SetStateAction<boolean>>,
-
 }
 
 export const LocationSelection: FC<Props> = ({setAddressSubmitted }) => {

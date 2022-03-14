@@ -9,7 +9,6 @@ import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
 import { useStepContext } from "../../../../../../contexts/StepContext"
 import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import DialogTransition from "../../../../../reusable/DialogTransition"
-import { Destinations } from "../../../PlaceManagement/PlaceBoard/PlaceBoard"
 import { NewPlaceStepper } from "../NewPlaceStepper"
 
 interface Props {

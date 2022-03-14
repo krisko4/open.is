@@ -3,7 +3,10 @@ import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useAppDispatch } from "redux-toolkit/hooks";
-import { setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { resetCurrentPlace, setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
+import { resetMap } from "redux-toolkit/slices/mapSlice";
+import { resetSelectedAddress } from "redux-toolkit/slices/selectedAddressSlice";
+import { resetSelectedLocations } from "redux-toolkit/slices/selectedLocationsSlice";
 import { clearPlace, CurrentPlaceContextProvider } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
 import { LocationContextProvider } from "../../../../contexts/PanelContexts/LocationContext";
 import { useStepContext } from "../../../../contexts/StepContext";
@@ -24,8 +27,6 @@ function getStepContent(step: number) {
             return <Step1 />
         case 1:
             return <Step2 />
-        // case 2:
-        //     return <LocationSelection setAddressSubmitted={setAddressSubmitted} />
         default:
             return 'Unknown step';
     }
@@ -43,9 +44,15 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(setCurrentPlace(clearPlace))
+        dispatch(resetCurrentPlace())
+        dispatch(resetMap())
+        dispatch(resetSelectedAddress())
+        dispatch(resetSelectedLocations())
         return () => {
-            dispatch(setCurrentPlace(clearPlace))
+            dispatch(resetCurrentPlace())
+            dispatch(resetMap())
+            dispatch(resetSelectedAddress())
+            dispatch(resetSelectedLocations())
         }
     }, [])
 

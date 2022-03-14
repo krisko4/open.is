@@ -4,9 +4,9 @@ import { Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } 
 import { makeStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
+import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
 import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
-import { PlaceCardData } from './PlacesBox/PopularPlaces';
 
 
 
@@ -34,7 +34,7 @@ enum tabType {
 interface PlaceProps {
     tabIndex?: number,
     currentPlace?: CurrentPlaceProps,
-    cardData: PlaceCardData
+    cardData: SelectedLocationProps
 }
 
 const StyledRating = styled(Rating)({

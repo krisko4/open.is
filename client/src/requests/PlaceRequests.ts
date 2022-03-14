@@ -19,8 +19,8 @@ const provider = new OpenStreetMapProvider({
 });
 
 
-export const getLimitedPlaces = async (start: number, limit: number) => {
-    return myAxios.get('/places/active/popular', {
+export const getLimitedPlaces = async (fetchUrl: string, start: number, limit: number) => {
+    return myAxios.get(fetchUrl, {
         params: {
             start : start,
             limit: limit

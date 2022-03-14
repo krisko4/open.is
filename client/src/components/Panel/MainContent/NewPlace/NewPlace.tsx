@@ -2,7 +2,11 @@ import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from "@mui/
 import React, { FC, useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { clearPlace, CurrentPlaceContextProvider, useCurrentPlaceContext } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { resetCurrentPlace, setCurrentPlace } from "redux-toolkit/slices/currentPlaceSlice";
+import { resetMap } from "redux-toolkit/slices/mapSlice";
+import { resetSelectedAddress } from "redux-toolkit/slices/selectedAddressSlice";
+import { resetSelectedLocations } from "redux-toolkit/slices/selectedLocationsSlice";
 import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
 import { useStepContext } from "../../../../contexts/StepContext";
 import { useCustomSnackbar } from "../../../../utils/snackbars";
@@ -13,8 +17,6 @@ import { Step2 } from "./Steps/Step2/Step2";
 import { Step3 } from "./Steps/Step3/Step3";
 import { Step4 } from "./Steps/Step4/Step4";
 import { Step5Container } from "./Steps/Step5Container";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { setCurrentPlace } from "redux-toolkit/slices/currentPlaceSlice";
 
 
 
@@ -53,9 +55,15 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
             dispatch(setCurrentPlace(initialPlaceData))
             return
         }
-        dispatch(setCurrentPlace(clearPlace))
+        dispatch(resetCurrentPlace())
+        dispatch(resetMap())
+        dispatch(resetSelectedAddress())
+        dispatch(resetSelectedLocations())
         return () => {
-            dispatch(setCurrentPlace(clearPlace))
+            dispatch(resetCurrentPlace())
+            dispatch(resetSelectedAddress())
+            dispatch(resetMap())
+            dispatch(resetSelectedLocations())
         }
     }, [])
 

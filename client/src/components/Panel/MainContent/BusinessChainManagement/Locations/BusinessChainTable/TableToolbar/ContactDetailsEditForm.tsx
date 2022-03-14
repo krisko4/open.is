@@ -156,12 +156,15 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                     render={
                         ({ field }) =>
                             <ReactPhoneInput
+                                //@ts-ignore
                                 disabled={!phoneEnabled}
+                                //@ts-ignore
                                 focused={phoneEnabled}
+                                //@ts-ignore
                                 defaultCountry={'pl'}
                                 {...field}
-                                //@ts-ignore
                                 component={TextField}
+                                //@ts-ignore
                                 label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
                             />
                     }
