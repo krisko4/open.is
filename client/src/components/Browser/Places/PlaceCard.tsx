@@ -4,7 +4,9 @@ import { Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } 
 import { makeStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from "react";
-import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useLocation } from 'react-router-dom';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { removeLocation, SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
 import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
 
@@ -32,8 +34,6 @@ enum tabType {
     FAVORITE = 3
 }
 interface PlaceProps {
-    tabIndex?: number,
-    currentPlace?: CurrentPlaceProps,
     cardData: SelectedLocationProps
 }
 
@@ -52,47 +52,47 @@ const StyledRating = styled(Rating)({
 
 
 
-export const PlaceCard: FC<PlaceProps> = ({ tabIndex, cardData, currentPlace }) => {
+export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
     // const classes = useStyles()
     const [value, setValue] = useState<number | null>(0)
-    const { setSelectedPlaces } = useAddressDetailsContext()
+    const dispatch = useAppDispatch()
+    const location = useLocation()
     const [elevation, setElevation] = useState(3)
 
 
-    // useEffect(() => {
-    //     const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === currentPlace._id)
-    //     isFavorite ? setValue(1) : setValue(null)
-    // }, [])
+    useEffect(() => {
+        const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === cardData.locationId)
+        isFavorite ? setValue(1) : setValue(null)
+    }, [])
 
 
 
     const setFavoritePlace = (newValue: number | null) => {
-        // let favIds = Cookies.get('favIds')
-        // console.log(favIds)
-        // setValue(newValue)
-        // if (!favIds) {
-        //     newValue === 1 && Cookies.set('favIds', `${currentPlace._id}`)
-        //     console.log(Cookies.get())
-        //     return
-        // }
-        // const favIdsArray = favIds.split(',')
-        // const index = favIdsArray.findIndex(id => id === currentPlace._id)
-        // // index not found && no value || index found && value
-        // if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
-        // if (index !== -1) {
-        //     favIdsArray.splice(index, 1)
-        //     tabIndex === tabType.FAVORITE && setSelectedPlaces((places) => places.filter((place => currentPlace._id !== place._id)))
-        //     if (favIdsArray.length === 0) {
-        //         Cookies.remove('favIds')
-        //         return
-        //     }
-        // } else {
-        //     currentPlace._id && favIdsArray.push(currentPlace._id)
-        // }
-        // favIds = favIdsArray.join(',')
-        // Cookies.set('favIds', favIds)
-        // console.log(Cookies.get())
-
+        let favIds = Cookies.get('favIds')
+        const { locationId } = cardData
+        if (locationId) {
+            setValue(newValue)
+            if (!favIds) {
+                newValue === 1 && Cookies.set('favIds', `${locationId}`)
+                return
+            }
+            const favIdsArray = favIds.split(',')
+            const index = favIdsArray.findIndex(id => id === locationId)
+            // index not found && no value || index found && value
+            if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
+            if (index !== -1) {
+                favIdsArray.splice(index, 1)
+                location.pathname === '/search/favorite' && dispatch(removeLocation(locationId as string))
+                if (favIdsArray.length === 0) {
+                    Cookies.remove('favIds')
+                    return
+                }
+            } else {
+                favIdsArray.push(locationId)
+            }
+            favIds = favIdsArray.join(',')
+            Cookies.set('favIds', favIds)
+        }
     }
 
 
@@ -140,7 +140,7 @@ export const PlaceCard: FC<PlaceProps> = ({ tabIndex, cardData, currentPlace }) 
                                         }}
                                         style={{ marginLeft: 5 }}
                                         icon={<Favorite fontSize="inherit" />}
-                                        emptyIcon={<FavoriteBorder  fontSize="inherit" />}
+                                        emptyIcon={<FavoriteBorder fontSize="inherit" />}
                                         max={1}
                                     />
                                 </Tooltip>

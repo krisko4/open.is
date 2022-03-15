@@ -1,20 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoadingButton } from '@mui/lab';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LanguageIcon from '@mui/icons-material/Language';
 import MailIcon from '@mui/icons-material/Mail';
-import { Button, Typography, Grid, InputAdornment, TextField, SxProps, Theme } from "@mui/material";
-import { useState, FC, useEffect } from "react";
+import { LoadingButton } from '@mui/lab';
+import { Button, Grid, InputAdornment, SxProps, TextField, Theme, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
 import ReactPhoneInput from 'react-phone-input-material-ui';
-import * as yup from "yup";
-import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
-import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
-import { changeContactDetailsForSelectedLocations, ContactData } from '../../../../../../../requests/PlaceRequests';
-import { useBusinessChainIdSelector, setContactDetailsForSelectedLocations } from 'redux-toolkit/slices/businessChainSlice';
-import { useAppDispatch } from 'redux-toolkit/hooks';
 import { useChangeContactDetailsForSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
+import * as yup from "yup";
+import { ContactData } from '../../../../../../../requests/PlaceRequests';
+import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
 
 
 const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/

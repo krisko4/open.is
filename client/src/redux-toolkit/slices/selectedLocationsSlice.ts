@@ -27,11 +27,15 @@ const selectedLocationsSlice = createSlice({
         addLocations: (state, action: PayloadAction<SelectedLocationProps[]>) => {
             state.push(...action.payload)
         },
+        removeLocation: (state, action: PayloadAction<string>) => {
+            return state.filter(loc => loc.locationId !== action.payload)
+        }, 
         resetSelectedLocations: () => initialState
     }
 })
 export const useSelectedLocationsSelector = () => useAppSelector(state => state.selectedLocations)
 export const {
+    removeLocation,
     setSelectedLocations,
     resetSelectedLocations,
     addLocations

@@ -1,7 +1,6 @@
 import { OpenStreetMapProvider } from "leaflet-geosearch";
+import { SearcherOptionsProps } from "redux-toolkit/slices/searcherOptionsSlice";
 import myAxios from "../axios/axios";
-import { SearchParams } from "../components/Browser/Searcher";
-import { ContactDetails, LocationProps, Status } from "../contexts/PlaceProps";
 
 export interface ContactData {
     website?: string,
@@ -19,11 +18,20 @@ const provider = new OpenStreetMapProvider({
 });
 
 
-export const getLimitedPlaces = async (fetchUrl: string, start: number, limit: number) => {
+export const getPaginatedPlaces = async (fetchUrl: string, start: number, limit: number, searcherOptions: SearcherOptionsProps[]) => {
+    console.log(searcherOptions)
+    const searchParams : any = {}
+    searcherOptions.forEach(option => {
+        const key = option.foundBy
+        const value = option.name
+        searchParams[key] = value
+    })
+    console.log(searchParams)
     return myAxios.get(fetchUrl, {
         params: {
-            start : start,
-            limit: limit
+            start: start,
+            limit: limit,
+            ...searchParams
         }
     })
 }
@@ -50,7 +58,7 @@ export const findByAddress = async (inputValue: string) => {
 }
 
 
-export const getPlacesBySearchParams = async (searchParams: SearchParams[]) => {
+export const getPlacesBySearchParams = async (searchParams: SearcherOptionsProps[]) => {
     const names: string[] = []
     const addresses: string[] = []
     searchParams.forEach((param) => param.foundBy === 'name' ? names.push(param.name) : addresses.push(param.name))
@@ -58,7 +66,9 @@ export const getPlacesBySearchParams = async (searchParams: SearchParams[]) => {
     if (addresses.length > 0) params['address'] = addresses.join('|')
     if (names.length > 0) params['name'] = names.join('|')
     console.log(params)
-    return getPlacesWithParams('/places/active', params)
+    params['start'] = 0
+    params['limit'] = 10
+    return getPlacesWithParams('/places/active/paginated', params)
 }
 
 export const getPlacesByAddress = (address: string) => {
@@ -68,27 +78,11 @@ export const getPlacesByAddress = (address: string) => {
         }
     })
 }
-export const deleteLocations = (businessId: string, locationIds: string[]) =>
-    myAxios.delete(`/places/${businessId}/locations`, {
-        params: {
-            locationIds: locationIds
-        }
-    })
 
-export const changeContactDetailsForSelectedLocations = (businessId: string, locationIds: string[], contactDetails: ContactData) =>
-    myAxios.patch(`/places/${businessId}/locations/contact-details`, {
-        locationIds: locationIds,
-        contactDetails: contactDetails
-    })
 
-export const addLocations = (businessId: string, locations: LocationProps[]) =>
-    myAxios.patch(`/places/${businessId}/locations`, {
-        locations: locations
-    })
+export const getPlaceById = (placeId: string) => myAxios.get(`/places/${placeId}`)
 
-export const getPlaceById = (placeId : string) => myAxios.get(`/places/${placeId}`)
-
-export const getPlaceByIdAndSelectedLocation = (placeId : string, locationId: string) => myAxios.get(`/places/${placeId}/locations/${locationId}`)
+export const getPlaceByIdAndSelectedLocation = (placeId: string, locationId: string) => myAxios.get(`/places/${placeId}/locations/${locationId}`)
 
 export const getPlaceByLatLng = (lat: number, lng: number) => {
     return myAxios.get('/places', {
@@ -113,26 +107,6 @@ export const getPlaces = async (url: string) => {
     }
 
 }
-
-export const registerNewPlace = (data: FormData) => myAxios.post('/places', data, {
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-})
-
-export const updatePlaceData = (data: FormData) => myAxios.put('/places', data, {
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-})
-
-export const setPlaceStatus = (placeId: string, status: Status) =>
-    myAxios.patch(`/places/${placeId}/status`, {
-        status: status
-    })
-
-export const deletePlace = (placeId: string) =>
-    myAxios.delete(`/places/${placeId}`)
 
 
 export const getPlacesByName = (name: string) => getPlacesWithParams('/places/active/name', { name: name })

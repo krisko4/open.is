@@ -4,25 +4,12 @@ import Scrollbars, { positionValues } from "react-custom-scrollbars"
 import { useNavigate } from "react-router-dom"
 import { useAppDispatch } from "redux-toolkit/hooks"
 import { setPopup } from "redux-toolkit/slices/mapSlice"
+import { useSearcherOptionsSelector } from "redux-toolkit/slices/searcherOptionsSlice"
 import {  useSelectedLocationsSelector, setSelectedLocations, addLocations, SelectedLocationProps } from "redux-toolkit/slices/selectedLocationsSlice"
-import { getLimitedPlaces } from "requests/PlaceRequests"
+import { getPaginatedPlaces } from "requests/PlaceRequests"
 import { useCustomSnackbar } from "utils/snackbars"
 import { PlaceCard } from "../PlaceCard"
 import { SelectPlacesTabs } from "./SelectPlacesTabs"
-
-
-// export interface PlaceCardData {
-//     _id: string,
-//     name: string,
-//     type: string,
-//     subtitle: string,
-//     logo: string,
-//     status: string,
-//     address: string,
-//     locationId: string,
-//     lat: number,
-//     lng: number
-// }
 
 interface Props{
     fetchUrl: string
@@ -42,12 +29,13 @@ export const PopularPlaces: FC<Props> = ({fetchUrl}) => {
     const isFirstFetch = useRef(true)
     const navigate = useNavigate()
     const { enqueueErrorSnackbar } = useCustomSnackbar()
+    const searcherOptions = useSearcherOptionsSelector()
 
     const fetchPlaces = async () => {
         setLoading(true)
         if (start.current < total.current) {
             try {
-                const res = await getLimitedPlaces(fetchUrl, start.current, limit.current)
+                const res = await getPaginatedPlaces(fetchUrl, start.current, limit.current, searcherOptions)
                 const newPlaces = res.data.data
                 if (start.current === 0) {
                     dispatch(setSelectedLocations(newPlaces))

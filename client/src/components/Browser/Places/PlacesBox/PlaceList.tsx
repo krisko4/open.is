@@ -15,6 +15,7 @@ export const PlaceList: FC = () => {
                     <Route path="popular" element={<PopularPlaces key="popular" fetchUrl="/places/active/popular" />} />
                     <Route path="recent" element={<PopularPlaces key="recent" fetchUrl="/places/active/new" />} />
                     <Route path="top" element={<PopularPlaces key="top" fetchUrl="/places/active/top" />} />
+                    <Route path="favorite" element={<PopularPlaces key="favorite" fetchUrl="/places/active/favorite" />} />
                 </Routes>
             </Grid>
         </Grid>

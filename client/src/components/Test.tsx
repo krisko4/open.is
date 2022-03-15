@@ -1,7 +1,7 @@
 import { ListItemText, List, ListItem, Grid, Typography } from "@mui/material"
 import { CurrentPlaceProps, RawPlaceDataProps } from "contexts/PlaceProps"
 import { FC, useEffect, useRef, useState } from "react"
-import { getLimitedPlaces, getPlaces } from "requests/PlaceRequests"
+import { getPaginatedPlaces, getPlaces } from "requests/PlaceRequests"
 import { convertToCurrentPlace } from "utils/place_data_utils"
 import InfiniteScroll from "react-infinite-scroll-component";
 import Scrollbars, { positionValues } from "react-custom-scrollbars"
@@ -25,7 +25,7 @@ export const Test: FC = () => {
         console.log(start.current)
         setLoading(true)
         if (start.current <= total.current) {
-            const res = await getLimitedPlaces('/places/active/popular', start.current, limit.current)
+            const res = await getPaginatedPlaces('/places/active/popular', start.current, limit.current, [])
             console.log(res.data)
             const updatedPlaces = places.concat(res.data.data)
             start.current = updatedPlaces.length - 1

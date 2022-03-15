@@ -1,19 +1,11 @@
-import { LoadingButton } from "@mui/lab"
 import DoorFrontIcon from '@mui/icons-material/DoorFront';
-import { Card, CardContent, Typography, Grid, CircularProgress, Fade, IconButton, Tooltip } from "@mui/material"
-import { useEffect, useState, FC } from "react"
-import { Status } from "../../../../../../contexts/PlaceProps"
-import { setPlaceStatus } from "../../../../../../requests/PlaceRequests"
-import { setPlaces } from "../../../../../../store/actions/setPlaces"
-import { convertToRawPlaceData } from "../../../../../../utils/place_data_utils"
-import { useCustomSnackbar } from "../../../../../../utils/snackbars"
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import NoMeetingRoomIcon from '@mui/icons-material/NoMeetingRoom';
-import { useAppDispatch } from "redux-toolkit/hooks"
-import { usePlacesSelector } from "redux-toolkit/slices/placesSlice"
-import { setStatus, useCurrentPlaceSelector, useIdSelector, useStatusSelector } from "redux-toolkit/slices/currentPlaceSlice"
-import { useGetStatusForSelectedLocationQuery, useSetStatusForSelectedLocationMutation } from "redux-toolkit/api/placesApi"
+import { Card, CardContent, CircularProgress, Fade, Grid, IconButton, Tooltip, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useGetStatusForSelectedLocationQuery, useSetStatusForSelectedLocationMutation } from "redux-toolkit/api/placesApi";
+import { Status } from "../../../../../../contexts/PlaceProps";
+import { useCustomSnackbar } from "../../../../../../utils/snackbars";
 
 export const PlaceStatus: FC = () => {
 

@@ -1,92 +1,40 @@
-import { styled, Typography } from "@mui/material";
+import HomeIcon from '@mui/icons-material/Home';
+import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
+import { Typography } from "@mui/material";
+import Autocomplete from '@mui/material/Autocomplete';
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
 import TextField from "@mui/material/TextField";
-import HomeIcon from '@mui/icons-material/Home';
-import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
-import Autocomplete from '@mui/material/Autocomplete';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { useAddressDetailsContext } from "../../contexts/AddressDetailsContext";
+import { useAppDispatch } from "redux-toolkit/hooks";
+import { SearcherOptionsProps, resetSearcherOptions, setSearcherOptions, useSearcherOptionsSelector } from "redux-toolkit/slices/searcherOptionsSlice";
+import { SelectedLocationProps, setSelectedLocations } from "redux-toolkit/slices/selectedLocationsSlice";
 import { getPlacesByName, getPlacesBySearchParams } from "../../requests/PlaceRequests";
-import { convertToCurrentPlace } from "../../utils/place_data_utils";
-import { CurrentPlaceProps, RawPlaceDataProps } from "../../contexts/PlaceProps";
-import { useMapContext } from "../../contexts/MapContext/MapContext";
 
 
 const provider = new OpenStreetMapProvider({});
 
 
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        root: {
-            "& .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
-                color: 'lightgrey'
-            },
-            "& .MuiInputLabel-outlined": {
-                color: "#ff5252"
-            }
-
-        },
-        tag: {
-            backgroundColor: '#ff5252',
-            "& .MuiChip-label": {
-                color: 'white'
-            },
-        },
-        clearIndicator: {
-            color: '#ff5252'
-        },
-        loading: {
-            color: 'grey'
-        },
-        noOptions: {
-            color: '#2C2C2C'
-        },
-        popupIndicator: {
-            visibility: 'hidden'
-        },
-        paper: {
-            backgroundColor: '#2C2C2C',
-            elevation: 10
-        },
-        inputRoot: {
-            color: "white",
-            "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "grey",
-                borderRadius: 1,
-
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#ff5252"
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#ff5252"
-            },
-
-        }
-    }),
-);
-
-
-export interface SearchParams {
-    name: string,
-    foundBy: string
-}
-
-
 const Searcher: FC = () => {
 
 
-    const { availableAddresses, setAvailableAddresses, selectedPlaces, setSelectedPlaces} = useAddressDetailsContext()
+    const [options, setOptions] = useState<SearcherOptionsProps[]>([])
+    const dispatch = useAppDispatch()
     const [inputValue, setInputValue] = useState('')
     const [loading, setLoading] = useState(false)
     const isFirstFind = useRef(true)
+    const searcherOptions = useSearcherOptionsSelector()
+
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetSearcherOptions())
+        }
+    }, [])
 
     useEffect(() => {
         if (isFirstFind.current) {
@@ -95,17 +43,23 @@ const Searcher: FC = () => {
         }
         if (inputValue === '') {
             setLoading(false)
-            setAvailableAddresses([])
+            setOptions([])
             return
         }
         setLoading(true)
         const delaySearch = setTimeout(async () => {
-            const names = await getPlacesByName(inputValue)
+            const names: SearcherOptionsProps[] = await getPlacesByName(inputValue)
             if (names.length === 0) {
-                const result = await provider.search({ query: inputValue })
-                result.length > 0 ? setAvailableAddresses([{ name: inputValue, foundBy: 'address' }]) : setAvailableAddresses([])
+                const isAlreadyFoundByAddress = searcherOptions.some(option => option.foundBy === 'address')
+                if (isAlreadyFoundByAddress) {
+                    setOptions([])
+                } else {
+                    const result = await provider.search({ query: inputValue })
+                    setOptions(result.length === 0 ? [] : [{ name: inputValue, foundBy: 'address' }])
+                }
             } else {
-                setAvailableAddresses(names)
+                const isAlreadyFoundByName = searcherOptions.some(option => option.foundBy === 'name')
+                setOptions(isAlreadyFoundByName ? [] : names)
             }
             setLoading(false)
         }, 500)
@@ -115,12 +69,12 @@ const Searcher: FC = () => {
     )
 
 
-    const selectPlace = async (searchParams: SearchParams[]) => {
-        const places: RawPlaceDataProps[] = await getPlacesBySearchParams(searchParams)
-        let currentPlaces = places.map(place => convertToCurrentPlace(place))
-        let selectedPlaces: CurrentPlaceProps[] = []
-        currentPlaces.forEach(currentPlacesArray => currentPlacesArray.forEach(currentPlace => selectedPlaces.push(currentPlace)))
-        setSelectedPlaces(selectedPlaces)
+    const selectPlace = async (searchOptions: SearcherOptionsProps[]) => {
+        console.log(searchOptions)
+        dispatch(setSearcherOptions(searchOptions))
+        const res = await getPlacesBySearchParams(searchOptions)
+        const locations: SelectedLocationProps[] = res.data
+        dispatch(setSelectedLocations(locations))
     }
 
     return (
@@ -128,9 +82,9 @@ const Searcher: FC = () => {
             loading={loading}
             multiple
             freeSolo={true}
-            options={availableAddresses}
-            getOptionLabel={(option: any) => option.name}
-            onChange={(event, value: any) => selectPlace(value)}
+            options={options}
+            getOptionLabel={(option) => option.name}
+            onChange={(event, value) => selectPlace(value as SearcherOptionsProps[])}
             noOptionsText="No options"
             renderInput={(params) =>
                 <TextField
@@ -149,7 +103,7 @@ const Searcher: FC = () => {
                         ),
                     }}
                 />}
-            renderOption={(props, option: any) => {
+            renderOption={(props, option) => {
                 const label = option.name
                 const matches = match(label, inputValue);
                 const parts = parse(label, matches);
