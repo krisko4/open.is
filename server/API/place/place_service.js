@@ -61,6 +61,42 @@ const placeService = {
         }
     },
 
+    getPaginatedPlaceData(start, limit) {
+        return {
+            metadata: [
+                { $count: 'total' },
+                {
+                    $addFields: {
+                        start: start,
+                        limit: limit
+                    }
+                }
+            ],
+            data: [
+                { $skip: start },
+                { $limit: limit },
+                {
+                    $project: {
+                        _id: 1,
+                        name: 1,
+                        subtitle: 1,
+                        type: 1,
+                        logo: {
+                            $concat: [`${process.env.CLOUDI_URL}/`, '$logo']
+                        },
+                        status: '$locations.status',
+                        locationId: '$locations._id',
+                        lat: '$locations.lat',
+                        lng: '$locations.lng',
+                        address: "$locations.address",
+                    }
+                }
+            ]
+
+        }
+
+    },
+
     aggregateFavoriteLocations: (favIds) => {
         return [{
             $project: {
@@ -152,7 +188,7 @@ const placeService = {
     getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: userId }).exec(),
 
-    getFavoritePlaces(favIds) {
+    getFavoritePlaces(start, limit, favIds, matchParams) {
         favIds = favIds.map(el => mongoose.Types.ObjectId(el))
         return Place.aggregate()
             .unwind('locations')
@@ -160,12 +196,19 @@ const placeService = {
                 'locations._id': {
                     $in: favIds
                 },
-                'locations.isActive': true
+                'locations.isActive': true,
+                ...matchParams
             })
-            .group(this.groupedPlaceObject)
+            .facet(this.getPaginatedPlaceData(parseInt(start), parseInt(limit)))
     },
 
-    getActivePlaces() {
+    getActivePlaces(start, limit) {
+        if (start && limit) {
+            return Place.aggregate()
+                .unwind('locations')
+                .match({ 'locations.isActive': true })
+                .facet(this.getPaginatedPlaceData(parseInt(start), parseInt(limit)))
+        }
         return Place.aggregate()
             .unwind('locations')
             .match({ 'locations.isActive': true })
@@ -179,42 +222,15 @@ const placeService = {
             .sort(sortParam)
             .group(this.groupedPlaceObject)
     },
-    getTop20PlacesPaginatedSortedBy(start, limit, sortParam) {
+    getPlacesPaginatedSortedBy(start, limit, sortParam, matchParams) {
         return Place.aggregate()
             .unwind('locations')
-            .match({ 'locations.isActive': true })
-            .sort(sortParam)
-            .facet({
-                metadata: [
-                    { $count: 'total' },
-                    {
-                        $addFields: {
-                            start: start,
-                            limit: limit
-                        }
-                    }
-                ],
-                data: [
-                    { $skip: start },
-                    { $limit: limit },
-                    {
-                        $project: {
-                            _id: 1,
-                            name: 1,
-                            subtitle: 1,
-                            type: 1,
-                            logo: {
-                                $concat: [`${process.env.CLOUDI_URL}/`, '$logo']
-                            },
-                            status: '$locations.status',
-                            locationId: '$locations._id',
-                            lat: '$locations.lat',
-                            lng: '$locations.lng',
-                            address: "$locations.address",
-                        }
-                    }
-                ]
+            .match({
+                'locations.isActive': true,
+                ...matchParams
             })
+            .sort(sortParam)
+            .facet(this.getPaginatedPlaceData(parseInt(start), parseInt(limit)))
     },
 
     getStatus(locationId) {
@@ -224,20 +240,20 @@ const placeService = {
         return Place.findOne({ 'locations._id': locationId }, {
             openingHours: '$locations.openingHours',
             alwaysOpen: '$locations.alwaysOpen',
-            isActive : '$locations.isActive',
+            isActive: '$locations.isActive',
         }).lean().exec()
     },
     getAverageNote(locationId) {
         return Place.findOne({ 'locations._id': locationId }, { averageNote: '$locations.averageNote' }).lean().exec()
     },
-    getActivePlacesBy(param) {
+    getActivePlacesBy(param, start, limit) {
         return Place.aggregate()
             .unwind('locations')
             .match({
                 'locations.isActive': true,
                 ...param
             })
-            .group(this.groupedPlaceObject)
+            .facet(this.getPaginatedPlaceData(parseInt(start), parseInt(limit)))
     },
 
     async getPlaceByIdAndSelectedLocation(placeId, locationId, uid) {

@@ -46,7 +46,6 @@ const placeController = {
     async getPlacesWithUnwindedLocations(req, res, next) {
         try {
             const { start, limit } = req.query
-            console.log(start, limit)
             const places = await placeService.getPlacesWithUnwindedLocations(parseInt(start), parseInt(limit))
             return res.status(200).json(places[0])
         } catch (err) {
@@ -111,44 +110,74 @@ const placeController = {
         }
     },
 
-    getActivePlaces: async (req, res, next) => {
-        const queryLength = Object.keys(req.query).length
-        const { cookies } = req
-        const { uid } = cookies
-        switch (queryLength) {
-            case 2:
-                const { name, address } = req.query
-                if (!name || !address) return next(ApiError.badRequest('Invalid request parameters. Required parameters: name, address'))
-                const nameRegExp = new RegExp(name, 'i')
-                const addressRegExp = new RegExp(address, 'i')
-                try {
-                    const places = await placeService.getActivePlacesByAddressesAndNames(addressRegExp, nameRegExp)
-                    return res.status(200).json(places)
-                } catch (err) {
-                    return next(err)
-                }
+    async getActivePlacesByAddressAndName(req, res, next) {
+        const { name, address } = req.query
+        if (!name || !address) return next(ApiError.badRequest('Invalid request parameters. Required parameters: name, address'))
+        const nameRegExp = new RegExp(name, 'i')
+        const addressRegExp = new RegExp(address, 'i')
+        try {
+            const places = await placeService.getActivePlacesByAddressesAndNames(addressRegExp, nameRegExp)
+            return res.status(200).json(places)
+        } catch (err) {
+            return next(err)
+        }
+    },
 
+    async getActivePlacesBySingleProperty(req, res, next) {
+        const { uid } = req.cookies
+        const { start, limit } = req.query
+        let param = Object.keys(req.query)[0]
+        const paramValue = req.query[param].trim()
+        if (param == 'address') param = 'locations.address'
+        let searchObj = {}
+        searchObj[param] = new RegExp(paramValue, 'i')
+        try {
+            let places
+            param === 'uid' ?
+                places = await placeService.getActivePlacesByUserId(req.query['uid'])
+                :
+                places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            // return res.status(200).json(places.map(place => placeDto(place, uid)))
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getAllActivePlaces(req, res, next) {
+        const { start, limit } = req.query
+        try {
+            const places = await placeService.getActivePlaces(start, limit)
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getActivePlacesPaginated(req, res, next) {
+        const queryLength = Object.keys(req.query).length
+        switch (queryLength) {
+            case 3:
+                return this.getActivePlacesBySingleProperty(req, res, next)
+            case 2:
+                return this.getAllActivePlaces(req, res, next)
+            default:
+                return next(ApiError.badRequest('Invalid request'))
+        }
+
+    },
+
+    async getActivePlaces(req, res, next) {
+        const queryLength = Object.keys(req.query).length
+        switch (queryLength) {
+            //when looking for places with two params 
+            case 2:
+                return this.getActivePlacesByAddressAndName(req, res, next)
+            //when looking for places with single param
             case 1:
-                let param = Object.keys(req.query)[0]
-                const paramValue = req.query[param].trim()
-                if (param == 'address') param = 'locations.address'
-                let searchObj = {}
-                searchObj[param] = new RegExp(paramValue, 'i')
-                console.log(searchObj)
-                try {
-                    let places
-                    param === 'uid' ? places = await placeService.getActivePlacesByUserId(req.query['uid']) : places = await placeService.getActivePlacesBy(searchObj)
-                    return res.status(200).json(places.map(place => placeDto(place, uid)))
-                } catch (err) {
-                    return next(err)
-                }
+                return this.getActivePlacesBySingleProperty(req, res, next)
             case 0:
-                try {
-                    const places = await placeService.getActivePlaces()
-                    return res.status(200).json(places.map(place => placeDto(place, uid)))
-                } catch (err) {
-                    return next(err)
-                }
+                return this.getAllActivePlaces(req, res, next)
             default:
                 return next(ApiError.badRequest('Invalid request'))
         }
@@ -283,26 +312,6 @@ const placeController = {
         }
     },
 
-    // deletePlace: async (req, res, next) => {
-    //     const { placeId } = req.params
-    //     try {
-    //         const session = await mongoose.startSession()
-    //         await session.withTransaction(async () => {
-    //             await Promise.all([
-    //                 placeService.deletePlace(placeId),
-    //                 opinionService.deleteOpinionsByPlaceId(placeId),
-    //                 visitService.deleteVisitsByPlaceId(placeId),
-    //                 newsService.deleteNewsByPlaceId(placeId)
-    //             ])
-    //         })
-    //         await session.endSession()
-    //         return res.sendStatus(200)
-    //     } catch (err) {
-    //         return next(err)
-    //     }
-
-    // },
-
     addPlace: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
@@ -311,7 +320,6 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
             const { logo, images } = req.files
-            console.log(req.files)
             if (!reqBody.editionMode) {
                 if (!logo) throw ApiError.badRequest('Request is missing necessary upload files')
                 if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
@@ -362,74 +370,72 @@ const placeController = {
         }
     },
 
+    getMatchParams(req) {
+        const { type, name, address } = req.query
+        const matchParams = {}
+        if (name) matchParams['name'] = new RegExp(name, 'i')
+        if (address) matchParams['locations.address'] = new RegExp(address, 'i')
+        if (type) matchParams['type'] = new RegExp(type, 'i')
+        return matchParams
+    },
 
-    getRecentlyAddedPlaces: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
+
+    async getPlacesBySortParam(req, res, next, sortParam) {
         const { start, limit } = req.query
+        const matchParams = this.getMatchParams(req)
         try {
-            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { createdAt: -1 })
+            let places = await placeService.getPlacesPaginatedSortedBy(
+                parseInt(start),
+                parseInt(limit),
+                sortParam,
+                matchParams
+            )
             return res.status(200).json(places[0])
-            // let places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
-            // places = await placeController.getVisitsNewsOpinions(places, uid)
-            // return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
 
     },
 
-    getFavoritePlaces: async (req, res, next) => {
-        const { cookies } = req
-        let { uid, favIds } = cookies
+    async getRecentlyAddedPlaces(req, res, next) {
+        const sortParam = { createdAt: -1 }
+        this.getPlacesBySortParam(req, res, next, sortParam)
+    },
+
+    async getFavoritePlaces(req, res, next) {
+        const matchParams = this.getMatchParams(req)
+        const { start, limit } = req.query
+        let { favIds } = req.cookies
         if (!favIds) return res.status(200).json([])
         favIds = favIds.split(',')
         try {
-            let places = await placeService.getFavoritePlaces(favIds)
-
-            places = await placeController.getVisitsNewsOpinions(places, uid)
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
-        } catch (err) {
-            next(err)
-        }
-
-
-    },
-
-
-    getTopRatedPlaces: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
-        const { start, limit } = req.query
-        try {
-            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { 'locations.averageNote.average': -1 })
+            const places = await placeService.getFavoritePlaces(
+                parseInt(start),
+                parseInt(limit),
+                favIds,
+                matchParams
+            )
             return res.status(200).json(places[0])
-            // let places = await placeService.getTop20PlacesSortedBy({ 'locations.averageNote.average': -1 })
-            // places = await placeController.getVisitsNewsOpinions(places, uid)
-            // return res.status(200).json(places.map(place => placeDto(place, uid)))
         } catch (err) {
             next(err)
         }
     },
 
+    async getTopRatedPlaces(req, res, next) {
+        const sortParam = { 'locations.averageNote.average': -1 }
+        this.getPlacesBySortParam(req, res, next, sortParam)
+    },
 
-    getPopularPlaces: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
-        const { start, limit } = req.query
-        try {
-            let places = await placeService.getTop20PlacesPaginatedSortedBy(parseInt(start), parseInt(limit), { 'locations.visitCount': -1 })
-            return res.status(200).json(places[0])
-        } catch (err) {
-            next(err)
-        }
+
+    async getPopularPlaces(req, res, next) {
+        const sortParam = { 'locations.visitCount': -1 }
+        this.getPlacesBySortParam(req, res, next, sortParam)
     },
 
     getOpeningHours: async (req, res, next) => {
         try {
             const { locationId } = req.params
             const data = await placeService.getOpeningHours(locationId)
-            console.log(data)
             if (data.openingHours.length > 0) {
                 delete data.openingHours[0]['_id']
             }
@@ -460,7 +466,6 @@ const placeController = {
         try {
             const { id } = req.params
             const { status } = req.body
-            console.log(status)
             await placeService.setStatus(id, status)
             return res.status(200).json()
         } catch (err) {
@@ -471,7 +476,6 @@ const placeController = {
     setOpeningHours: async (req, res, next) => {
         const { id } = req.params
         const { openingHours } = req.body
-        console.log(openingHours)
         try {
 
             const place = await placeService.setOpeningHours(id, openingHours)

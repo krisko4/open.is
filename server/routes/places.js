@@ -15,7 +15,6 @@ const upload = multer({
         fileSize: 2000000
     },
     fileFilter: function (req, file, callback) {
-        console.log(file)
         const mimetype = file.mimetype
         if (!mimetype.startsWith('image/')) {
             return callback(new Error('Only images are allowed'))
@@ -36,9 +35,24 @@ router.get('/active',
         placeController.getActivePlaces(req, res, next)
     })
 
-router.get('/active/popular', (req, res, next) => {
-    placeController.getPopularPlaces(req, res, next)
-})
+router.get('/active/paginated',
+    query('start').notEmpty().isNumeric(),
+    query('limit').notEmpty().isNumeric(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getActivePlacesPaginated(req, res, next)
+    })
+
+router.get('/active/popular',
+    query('start').notEmpty().isNumeric(),
+    query('limit').notEmpty().isNumeric(),
+    query('name').isString().optional(),
+    query('type').isString().optional(),
+    query('address').isString().optional(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getPopularPlaces(req, res, next)
+    })
 
 
 router.get('/active/top', (req, res, next) => {
@@ -69,7 +83,6 @@ router.get('/:id',
     });
 
 const parseLocations = (req, res, next) => {
-    console.log(req.body.locations)
     req.body.locations = JSON.parse(req.body.locations)
     next()
 }
@@ -97,7 +110,6 @@ router.post('/',
     body('locations.*.lng').isFloat().notEmpty(),
     validateRequest,
     (req, res, next) => {
-        console.log(req.files)
         placeController.addPlace(req, res, next)
     }
 )
@@ -142,7 +154,7 @@ router.patch('/:id/locations/always-open',
 
 )
 
-router.get('/:locationId/status', 
+router.get('/:locationId/status',
     param('id').isMongoId().notEmpty(),
     (req, res, next) => {
         placeController.getStatus(req, res, next)
@@ -260,7 +272,7 @@ router.patch('/:id/note',
         placeController.updateNote(req, res, next)
     })
 
-    router
+router
 
 router.patch('/:id/opening-hours',
     param('id').isMongoId().notEmpty(),
