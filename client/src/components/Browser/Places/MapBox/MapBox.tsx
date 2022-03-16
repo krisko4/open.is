@@ -19,11 +19,8 @@ import { Fade } from '@mui/material'
 
 export const MapBox: FC = () => {
 
-    // const { placeCoords } = useMapContext()
     const mapData = useMapDataSelector()
     const selectedLocations = useSelectedLocationsSelector()
-    // const { selectedPlaces } = useAddressDetailsContext()
-    // console.log(selectedPlaces)
     const layerRef = useRef<any>(null)
     const { mode } = useColorMode()
 

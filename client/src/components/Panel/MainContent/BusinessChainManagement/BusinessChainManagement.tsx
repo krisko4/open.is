@@ -53,7 +53,7 @@ export const BusinessChainManagement: FC = () => {
             {
                 isLoading || isFetching ?
                     <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center" >
-                        <CircularProgress size={100} />
+                        <CircularProgress />
                     </Grid > :
                     <PanelTabNavigator tabs={tabs} />
             }

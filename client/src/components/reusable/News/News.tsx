@@ -1,5 +1,5 @@
 import Timeline from "@mui/lab/Timeline";
-import {Slide, Grid } from "@mui/material";
+import { Slide, Grid } from "@mui/material";
 import React, { FC } from "react";
 import Scrollbars from 'react-custom-scrollbars';
 import { NewsItem } from './NewsItem';
@@ -36,19 +36,14 @@ export const News: FC = () => {
 
     return (
         <Slide timeout={1000} in={true}>
-            <Grid container style={{ height: '100%' }} justifyContent="center">
-                <Grid container sx={{ flexGrow: 1 }}>
-                    <Scrollbars>
-                        <Timeline position="alternate">
-                            {news.map((item, index) => <NewsItem item={item} key={index} />
-                            )}
-                        </Timeline>
-                    </Scrollbars>
-                </Grid>
-
+            <Grid container item style={{ height: '100%' }} justifyContent="center">
+                <Timeline position="alternate">
+                    {news.map((item, index) => <NewsItem item={item} key={index} />
+                    )}
+                </Timeline>
             </Grid>
-
         </Slide>
+
     );
 
 

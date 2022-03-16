@@ -24,7 +24,7 @@ export const PopularPlaces: FC<Props> = ({fetchUrl}) => {
     const [loading, setLoading] = useState(false)
     const [firstLoading, setFirstLoading] = useState(true)
     const start = useRef(0)
-    const limit = useRef(10)
+    const limit = useRef(50)
     const total = useRef(1)
     const isFirstFetch = useRef(true)
     const navigate = useNavigate()

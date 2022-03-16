@@ -86,38 +86,12 @@ const CustomChip = (props: ChipProps) => {
 }
 
 
-// const useStyles = makeStyles((theme: Theme) => createStyles({
-//     secondHeader: {
-//         marginTop: 10,
-//         marginBottom: 10,
-//     },
-//     [theme.breakpoints.down('xl')]: {
-//         secondHeader: {
-//             justifyContent: 'center',
-//         },
-//         chip: {
-//             marginTop: 10
-//         }
-
-//     }
-// }))
-
-
 
 export const SecondHeader: FC = () => {
 
     const [selectedTypes, setSelectedTypes] = useState<string[]>([])
 
-    useEffect(() => {
-        console.log(selectedTypes)
-    }, [selectedTypes])
-
     return (
-        // <AppBar
-        //     style={{
-        //         // background: '#2C2C2C',
-        //         position: 'static'
-        //     }}>
         <Paper>
             <Toolbar disableGutters>
                 <Grid container >

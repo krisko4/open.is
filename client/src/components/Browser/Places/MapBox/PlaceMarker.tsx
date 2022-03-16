@@ -47,12 +47,6 @@ export const PlaceMarker: FC<Props> = ({ location, index }) => {
     const popup = usePopupSelector()
     const dispatch = useAppDispatch()
 
-    // const { popupOpen, popupIndex, setPlaceCardClicked, setPopupOpen, setPopupIndex, isMarkerDraggable } = useMapContext()
-    // const { selectedPlaces, selectedAddress, setSelectedAddress, setSelectedPlaces } = useAddressDetailsContext()
-    // const firstRender = useRef(true)
-    // const navigate = useNavigate()
-    // const img = place.logo
-
     const myIcon = L.icon({
         // iconUrl: `https://image.flaticon.com/icons/png/512/149/149059.png`,
         iconUrl: location.logo as string,
@@ -87,6 +81,13 @@ export const PlaceMarker: FC<Props> = ({ location, index }) => {
                     //     navigate(`${place._id}`)
                     // }
                 },
+                // mouseover: () => {
+                //     // dispatch(setPopup({
+                //     //     isOpen: true,
+                //     //     index: index
+                //     // }))
+                //     placeMarker.current.openPopup()
+                // },
                 dragend: async () => {
                     // place.lat = placeMarker.current._latlng.lat
                     // place.lng = placeMarker.current._latlng.lng

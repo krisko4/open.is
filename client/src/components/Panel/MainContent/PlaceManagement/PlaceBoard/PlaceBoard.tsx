@@ -106,7 +106,7 @@ export const PlaceBoard: FC = () => {
         <>
             {isFetching ?
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                    <CircularProgress disableShrink size={100} />
+                    <CircularProgress disableShrink />
                 </Grid> :
                 <PanelTabNavigator tabs={tabs} />
             }

@@ -70,7 +70,7 @@ export const Panel: FC = () => {
             container direction="column">
             {isFetching ?
                 <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                    <CircularProgress disableShrink size={100} />
+                    <CircularProgress disableShrink />
                 </Grid> :
                 <Grid container direction="row" sx={{ flex: '1 1 auto' }}>
                     <LeftNavigation />

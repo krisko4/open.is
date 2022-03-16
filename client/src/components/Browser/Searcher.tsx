@@ -1,4 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home';
+import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 import { Typography } from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
@@ -13,7 +14,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { SearcherOptionsProps, resetSearcherOptions, setSearcherOptions, useSearcherOptionsSelector } from "redux-toolkit/slices/searcherOptionsSlice";
 import { SelectedLocationProps, setSelectedLocations } from "redux-toolkit/slices/selectedLocationsSlice";
-import { getPlacesByName, getPlacesBySearchParams } from "../../requests/PlaceRequests";
+import { getFoundPlaceNamesOrTypes, getPlacesBySearchParams } from "../../requests/PlaceRequests";
 
 
 const provider = new OpenStreetMapProvider({});
@@ -48,20 +49,26 @@ const Searcher: FC = () => {
         }
         setLoading(true)
         const delaySearch = setTimeout(async () => {
-            const names: SearcherOptionsProps[] = await getPlacesByName(inputValue)
-            if (names.length === 0) {
-                const isAlreadyFoundByAddress = searcherOptions.some(option => option.foundBy === 'address')
-                if (isAlreadyFoundByAddress) {
-                    setOptions([])
-                } else {
-                    const result = await provider.search({ query: inputValue })
-                    setOptions(result.length === 0 ? [] : [{ name: inputValue, foundBy: 'address' }])
-                }
-            } else {
-                const isAlreadyFoundByName = searcherOptions.some(option => option.foundBy === 'name')
-                setOptions(isAlreadyFoundByName ? [] : names)
+            const namesOrTypes: SearcherOptionsProps[] = await getFoundPlaceNamesOrTypes(inputValue)
+            if (namesOrTypes.length > 0) {
+                const isAlreadyFound = searcherOptions.some(option => option.foundBy === 'name' || option.foundBy === 'type')
+                setOptions(isAlreadyFound ? [] : namesOrTypes)
+                setLoading(false)
+                return
             }
-            setLoading(false)
+            const isAlreadyFound = searcherOptions.some(option => option.foundBy === 'address')
+            if (isAlreadyFound) {
+                setOptions([])
+                setLoading(false)
+                return
+            }
+            const result = await provider.search({ query: inputValue })
+            if (result.length > 0) {
+                setOptions([{ name: inputValue, foundBy: 'address' }])
+                setLoading(false)
+                return
+            }
+
         }, 500)
         return () => clearTimeout(delaySearch)
 
@@ -70,7 +77,6 @@ const Searcher: FC = () => {
 
 
     const selectPlace = async (searchOptions: SearcherOptionsProps[]) => {
-        console.log(searchOptions)
         dispatch(setSearcherOptions(searchOptions))
         const res = await getPlacesBySearchParams(searchOptions)
         const locations: SelectedLocationProps[] = res.data
@@ -114,7 +120,10 @@ const Searcher: FC = () => {
                                 {option.foundBy === "name" ?
                                     <HomeIcon color="primary" />
                                     :
-                                    <PlaceTwoToneIcon color="primary" />
+                                    option.foundBy === 'type' ?
+                                        <FlipCameraAndroidIcon color="primary" />
+                                        :
+                                        <PlaceTwoToneIcon color="primary" />
                                 }
                             </Grid>
                             <Grid item lg={11} container justifyContent="space-between" alignItems="center">
@@ -128,7 +137,7 @@ const Searcher: FC = () => {
                                     }
                                     <div>
                                         <Typography variant="overline" >
-                                            {option.foundBy === "name" ? 'Found by name' : 'Found by address'}
+                                           Found by {option.foundBy} 
                                         </Typography>
                                     </div>
                                 </Grid>

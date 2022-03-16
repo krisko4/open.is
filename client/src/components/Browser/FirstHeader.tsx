@@ -29,7 +29,7 @@ const FirstHeader: FC = () => {
                         </IconButton>
                     </Tooltip>
                     {!userData.isLoggedIn ?
-                        <Button color="error" onClick={() => setLoginOpen(true)} variant="contained">
+                        <Button color="primary" onClick={() => setLoginOpen(true)} variant="contained">
                             Sign in
                         </Button>
                         :
@@ -39,7 +39,7 @@ const FirstHeader: FC = () => {
                                     <AdminPanelSettingsIcon />
                                 </IconButton>
                             </Tooltip>
-                            <SignOutButton color="error" variant="contained">Sign out</SignOutButton>
+                            <SignOutButton color="primary" variant="contained">Sign out</SignOutButton>
                         </>
                     }
                 </Grid>

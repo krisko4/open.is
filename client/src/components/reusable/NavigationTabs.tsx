@@ -9,7 +9,7 @@ interface Props {
         content?: any,
         icon?: any
     }[],
-    variant?: any 
+    variant?: any
 }
 
 function useRouteMatch(patterns: readonly string[]) {
@@ -32,6 +32,7 @@ export const NavigationTabs: FC<Props> = ({ tabs, variant }) => {
 
     return (
         <Tabs
+            component={Paper}
             variant={variant}
             value={currentTab}
             indicatorColor="secondary"

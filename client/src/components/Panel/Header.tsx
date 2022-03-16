@@ -9,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { usePlacesSelector } from "redux-toolkit/slices/placesSlice";
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
 import { useNavigate } from 'react-router-dom'
 
@@ -58,6 +59,14 @@ const Header: FC = () => {
                                 color="inherit"
                                 size="large">
                                 <CloudCircle />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Browser">
+                            <IconButton
+                                onClick={() => navigate(`/search`)}
+                                color="inherit"
+                                size="large">
+                                <TravelExploreIcon />
                             </IconButton>
                         </Tooltip>
                     </Grid>

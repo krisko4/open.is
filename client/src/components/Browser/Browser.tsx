@@ -35,9 +35,7 @@ const Browser: FC = () => {
                 <FirstHeader />
                 <Auth />
             </AuthContextProvider>
-            <AddressDetailsContextProvider isEditionMode={false}>
                 <SecondHeader />
-                {/* <MapContextProvider isMarkerDraggable={false}> */}
                 <Grid container style={{ flexGrow: 1, overflow: 'hidden' }}>
                     <Slide in={true} direction="right">
                         <Grid item lg={5}>
@@ -50,8 +48,6 @@ const Browser: FC = () => {
                         </Grid>
                     </Slide>
                 </Grid>
-                {/* </MapContextProvider> */}
-            </AddressDetailsContextProvider>
         </Grid >
 
     )

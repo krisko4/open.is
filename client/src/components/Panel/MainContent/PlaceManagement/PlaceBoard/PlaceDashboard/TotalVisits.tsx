@@ -11,23 +11,18 @@ import { useParams } from "react-router-dom";
 export const TotalVisits: FC = () => {
 
     const { locationId } = useParams()
-    const { data: visits, isFetching } = useGetVisitsForSelectedLocationQuery(locationId as string)
-
-    const totalVisits = useMemo(() => {
-        if (visits) {
-            return visits.reduce((a, b) => a + b.visitCount, 0)
-        }
-    }, [visits])
+    const { data: visits, isFetching } = useGetVisitsForSelectedLocationQuery(locationId as string, { refetchOnMountOrArgChange: true })
 
     const visitsDiff = useMemo(() => {
-        if (totalVisits && visits) {
-            const visitsToday = visits.filter(visit => isToday(new Date(visit.date))).reduce((a, b) => a + b.visitCount, 0)
-            if (visitsToday === totalVisits) {
+        if (visits) {
+            const totalVisits = visits.total
+            const visitsToday = visits.today
+            if (totalVisits === visitsToday) {
                 return visitsToday * 100
             }
             return Math.round(((totalVisits / (totalVisits - visitsToday)) * 100 - 100) * 10) / 10
         }
-    }, [totalVisits])
+    }, [visits])
 
     return (
         <Fade in={true} timeout={2000}>
@@ -39,22 +34,26 @@ export const TotalVisits: FC = () => {
                             <Grid item lg={6} container justifyContent="center" direction="column">
                                 <Fade in={true}>
                                     <div>
-                                        <Grid container alignItems="center">
-                                            {
-                                                visitsDiff === 0 || totalVisits === 0 ?
-                                                    <>
-                                                        <TrendingFlatIcon style={{ color: '#ffbf00' }} />
-                                                        <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
-                                                    </> :
-                                                    <>
-                                                        <TrendingUpIcon style={{ color: '#03C03C' }} />
-                                                        <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsDiff}%</span>
-                                                    </>
-                                            }
-                                        </Grid>
-                                        <Typography variant="h3">
-                                     {isFetching ?  <CircularProgress /> : totalVisits}
-                                        </Typography>
+                                        {isFetching ? <CircularProgress /> : visits &&
+                                            <>
+                                                <Grid container alignItems="center">
+                                                    {
+                                                        visitsDiff === 0 ?
+                                                            <>
+                                                                <TrendingFlatIcon style={{ color: '#ffbf00' }} />
+                                                                <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
+                                                            </> :
+                                                            <>
+                                                                <TrendingUpIcon style={{ color: '#03C03C' }} />
+                                                                <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsDiff}%</span>
+                                                            </>
+                                                    }
+                                                </Grid>
+                                                <Typography variant="h3">
+                                                    {visits.total}
+                                                </Typography>
+                                            </>
+                                        }
                                     </div>
                                 </Fade>
                             </Grid>

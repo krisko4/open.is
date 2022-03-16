@@ -1,8 +1,11 @@
 // @flow 
-import { Grid, Rating, Typography } from '@mui/material';
+import { CircularProgress, Grid, Rating, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
+import { CachedOpinions } from 'components/reusable/CachedPlaceData/CachedOpinions';
 import * as React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
+import { useParams } from 'react-router-dom';
+import { useGetAverageNoteForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
 import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useCurrentPlaceContext } from '../../../../../../contexts/PanelContexts/CurrentPlaceContext';
 import { Opinions } from '../../../../../reusable/Opinions/Opinions';
@@ -19,18 +22,25 @@ const StyledRating = styled(Rating)({
 })
 
 export const Overview = (props: Props) => {
-    const currentPlace = useCurrentPlaceSelector()
+    const { locationId } = useParams()
+    const { data: averageNote, isFetching } = useGetAverageNoteForSelectedLocationQuery(locationId as string)
     return (
         <Scrollbars>
             <Grid container sx={{ height: '100%' }} alignItems="center" direction="column" justifyContent="center">
-                <StyledRating readOnly value={currentPlace.averageNote?.average || 0} />
-                <Typography variant="h3">
-                    Average note: {currentPlace.averageNote?.average || 0}
-                </Typography>
-                <Grid container sx={{ flexGrow: 1 }}>
-                    <Opinions
-                    />
-                </Grid>
+                {isFetching ? <CircularProgress /> :
+                    <>
+                        <Grid item>
+                            <StyledRating readOnly value={averageNote?.average || 0} />
+                        </Grid>
+                        <Typography variant="h3">
+                            Average note: {averageNote?.average || 0}
+                        </Typography>
+                        <Grid container sx={{ flexGrow: 1 }}>
+                            <CachedOpinions
+                            />
+                        </Grid>
+                    </>
+                }
             </Grid>
 
         </Scrollbars>

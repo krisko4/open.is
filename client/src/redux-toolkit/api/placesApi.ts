@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { AverageNoteProps, CurrentPlaceProps, LocationProps, NewsProps, OpinionProps, RawPlaceDataProps, VisitProps } from 'contexts/PlaceProps'
+import { AverageNoteProps, CurrentPlaceProps, LocationProps, NewsProps, Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'contexts/PlaceProps'
 import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice'
 import { ContactData } from 'requests/PlaceRequests'
 import { convertToCurrentPlace } from 'utils/place_data_utils'
@@ -16,7 +16,17 @@ interface StatusProps {
     status: Status
 }
 
+interface OpinionData {
+    opinions: OpinionProps[],
+    today: number,
+}
 
+interface VisitData {
+    visits: VisitProps[],
+    total: number,
+    today: number,
+    yesterday: number
+}
 interface ChangeContactDetailsProps {
     contactDetails: ContactData,
     placeId: string,
@@ -56,11 +66,41 @@ interface OpeningHoursResponse {
     isActive: boolean
 }
 
+interface AddOpinionProps {
+    authorId: string,
+    locationId: string,
+    content: string,
+    note: number
+}
+
+
+interface VisitLocationProps{
+    name: string,
+    visits: VisitCount[]
+}
+
+
+interface OpinionLocationProps{
+    name: string,
+    opinions: Opinion[]
+}
+interface AllOpinionsProps{
+    total: number,
+    today: number,
+    locations: OpinionLocationProps[]
+}
+
+interface AllVisitsProps{
+    total: number,
+    today: number,
+    locations: VisitLocationProps[]
+}
+
 
 export const placesApi = createApi({
     reducerPath: 'placesApi',
     baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BASE_URL}` }),
-    tagTypes: ['Places', 'OpeningHours', 'Visits', 'Status', 'SelectedBusinessChain', 'Opinions', 'SelectedPlace', 'SelectedLocations', 'News', 'AverageNote'],
+    tagTypes: ['Places', 'Subscription', 'AllOpinions', 'AllVisits', 'OpeningHours', 'Visits', 'Status', 'SelectedBusinessChain', 'Opinions', 'SelectedPlace', 'SelectedLocations', 'News', 'AverageNote'],
     endpoints: (builder) => ({
         getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
             query: (uid) => `places?uid=${uid}`,
@@ -98,6 +138,14 @@ export const placesApi = createApi({
                 }
             }),
             invalidatesTags: ['News'],
+        }),
+        addOpinion: builder.mutation<void, AddOpinionProps>({
+            query: (opinion) => ({
+                url: `opinions`,
+                method: 'POST',
+                body: opinion
+            }),
+            invalidatesTags: ['Opinions', 'AverageNote'],
         }),
         getPlaceByIdAndSelectedLocation: builder.query<CurrentPlaceProps, PlaceAndLocationProps>({
             query: ({ placeId, locationId }) => `places/${placeId}/locations/${locationId}`,
@@ -156,7 +204,7 @@ export const placesApi = createApi({
                 { type: 'Places', id: 'LIST' }
             ],
         }),
-        getOpinionsForSelectedLocation: builder.query<OpinionProps[], string>({
+        getOpinionsForSelectedLocation: builder.query<OpinionData, string>({
             query: (locationId) => ({
                 url: 'opinions',
                 params: {
@@ -166,7 +214,16 @@ export const placesApi = createApi({
             providesTags: ['Opinions']
 
         }),
-        getVisitsForSelectedLocation: builder.query<VisitProps[], string>({
+        getAllOpinionsByUserId: builder.query<AllOpinionsProps, void>({
+            query: () => ({
+                url: 'opinions',
+                params: {
+                    uid: localStorage.getItem('uid') 
+                }
+            }),
+            providesTags: ['AllOpinions']
+        }),
+        getVisitsForSelectedLocation: builder.query<VisitData, string>({
             query: (locationId) => ({
                 url: 'visits',
                 params: {
@@ -175,6 +232,15 @@ export const placesApi = createApi({
             }),
             providesTags: ['Visits']
 
+        }),
+        getAllVisitsByUserId: builder.query<AllVisitsProps, void>({
+            query: () => ({
+                url: 'visits',
+                params: {
+                    uid: localStorage.getItem('uid') 
+                },
+            }),
+            providesTags: ['AllVisits']
         }),
         getOpeningHoursForSelectedLocation: builder.query<OpeningHoursResponse, string>({
             query: (locationId) => `places/${locationId}/opening-hours`,
@@ -224,6 +290,27 @@ export const placesApi = createApi({
             }),
             invalidatesTags: [{ type: 'Places', id: 'LIST' }],
         }),
+        subscribeLocation: builder.mutation<void, string>({
+            query: (locationId) => ({
+                url: `/users/${localStorage.getItem('uid')}/subscriptions`,
+                method: 'PATCH',
+                body: {
+                    locationId: locationId
+                }
+            }),
+            invalidatesTags: ['Subscription'],
+        }),
+        unsubscribeLocation: builder.mutation<void, string>({
+            query: (locationId) => ({
+                url: `/users/${localStorage.getItem('uid')}/subscriptions/${locationId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Subscription'],
+        }),
+        isUserSubscriber: builder.query<boolean, string>({
+            query: (locationId) => `users/${localStorage.getItem('uid')}/subscriptions/${locationId}`,
+            providesTags: ['Subscription']
+        }),
         deletePlace: builder.mutation<void, string>({
             query: (id) => ({
                 url: `places/${id}`,
@@ -255,6 +342,9 @@ export const useGetPlacesByUserId = () => {
 }
 
 export const {
+    useAddOpinionMutation,
+    useIsUserSubscriberQuery,
+    useSubscribeLocationMutation,
     useEditPlaceDataMutation,
     useGetOpeningHoursForSelectedLocationQuery,
     useGetAverageNoteForSelectedLocationQuery,
@@ -274,6 +364,9 @@ export const {
     useAddPlaceMutation,
     useAddLocationsMutation,
     useChangeContactDetailsForSelectedLocationsMutation,
-    useGetPlaceByIdAndSelectedLocationQuery
+    useGetPlaceByIdAndSelectedLocationQuery,
+    useUnsubscribeLocationMutation,
+    useGetAllVisitsByUserIdQuery,
+    useGetAllOpinionsByUserIdQuery,
 } = placesApi
 

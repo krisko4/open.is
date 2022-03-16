@@ -9,17 +9,17 @@ import { useGetOpinionsForSelectedLocationQuery } from "redux-toolkit/api/places
 export const TotalOpinions: FC<any> = () => {
 
     const { locationId } = useParams()
-    const { data: opinions, isFetching } = useGetOpinionsForSelectedLocationQuery(locationId as string)
+    const { data: opinionData, isFetching } = useGetOpinionsForSelectedLocationQuery(locationId as string)
 
     const opinionsDiff = useMemo(() => {
-        if (opinions) {
-            const opinionsToday = opinions.filter(opinion => isToday(new Date(opinion.date))).length
-            if (opinionsToday === opinions.length) {
-                return opinions.length * 100
+        if (opinionData) {
+            if (opinionData.today === opinionData.opinions.length) {
+                return opinionData.opinions.length * 100
             }
-            return opinions.length > 0 && Math.round(((opinions.length / (opinions.length - opinionsToday)) * 100 - 100) * 10) / 10
+            return opinionData.opinions.length > 0 && Math.round(((opinionData.opinions.length / (opinionData.opinions.length - opinionData.today)) * 100 - 100) * 10) / 10
         }
-    }, [opinions])
+        return 0
+    }, [opinionData])
 
     return (
         <Fade in={true} timeout={2500}>
@@ -33,7 +33,7 @@ export const TotalOpinions: FC<any> = () => {
                                     <div>
                                         {isFetching ? <CircularProgress /> : <>
                                             <Grid container item alignItems="center">
-                                                {opinionsDiff === 0 || (opinions && opinions.length === 0) ? <>
+                                                {opinionsDiff === 0 || (opinionData && opinionData.opinions.length === 0) ? <>
                                                     <TrendingFlatIcon style={{ color: '#ffbf00' }} />
                                                     <span style={{ marginLeft: 5, color: '#ffbf00' }}>0%</span>
                                                 </> : <>
@@ -42,7 +42,7 @@ export const TotalOpinions: FC<any> = () => {
                                                 </>
                                                 }
                                             </Grid>
-                                            <Typography variant="h3">{opinions?.length}</Typography>
+                                            <Typography variant="h3">{(opinionData  && opinionData.opinions.length) || 0}</Typography>
                                         </>}
                                     </div>
                                 </Fade>

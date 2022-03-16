@@ -3,7 +3,7 @@ import { LoadingButton } from "@mui/lab"
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Toolbar, IconButton, Grid, Button, Tooltip } from "@mui/material"
 import { FC, useEffect, useState } from "react"
-import {  setSubscription } from "redux-toolkit/slices/currentPlaceSlice"
+import { setSubscription } from "redux-toolkit/slices/currentPlaceSlice"
 import { removeSubscription } from "requests/SubscriptionRequests"
 import { useAppDispatch } from "redux-toolkit/hooks";
 import { useCustomSnackbar } from "utils/snackbars";
@@ -11,7 +11,8 @@ import { SubscribeDialog } from "./SubscribeDialog";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLoginContext } from "contexts/LoginContext";
 import { CurrentPlaceProps } from "contexts/PlaceProps";
-import {  setMapCoords, closePopup } from "redux-toolkit/slices/mapSlice";
+import { setMapCoords, closePopup } from "redux-toolkit/slices/mapSlice";
+import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from "redux-toolkit/api/placesApi";
 
 interface Props {
     place: CurrentPlaceProps
@@ -21,8 +22,9 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
 
     const [isDialogOpen, setDialogOpen] = useState(false)
     const { userData } = useLoginContext()
-    const [loading, setLoading] = useState(false)
     const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
+    const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(place._id as string)
+    const [unsubscribeLocation, { isLoading }] = useUnsubscribeLocationMutation()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const { placeId, locationId } = useParams()
@@ -41,22 +43,18 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
     }
 
     const unsubscribe = async () => {
-        setLoading(true)
         try {
-            await removeSubscription(placeId as string)
+            await unsubscribeLocation(place._id as string).unwrap()
             enqueueInfoSnackbar('You have cancelled your subscription')
-            dispatch(setSubscription(false))
         } catch (err) {
             enqueueErrorSnackbar()
-        } finally {
-            setLoading(false)
         }
     }
 
 
     return (
         <Toolbar style={{ flexGrow: 1 }} disableGutters>
-            <IconButton onClick={() => closePlaceDetails()} color="error" size="large">
+            <IconButton onClick={() => closePlaceDetails()} color="primary" size="large">
                 <KeyboardReturn />
             </IconButton>
             <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
@@ -72,11 +70,11 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
                         Manage
                     </Button>
                 }
-                {place.isUserSubscriber ?
+                {isUserSubscriber ?
                     <Tooltip title={'Unsubscribe'} arrow >
                         <span>
                             <LoadingButton
-                                loading={loading}
+                                loading={isFetching || isLoading}
                                 color="primary"
                                 onClick={() => unsubscribe()}
                             >
@@ -90,7 +88,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
                             <Button
                                 disabled={!userData.isLoggedIn || place.isUserOwner}
                                 variant="contained"
-                                color="error"
+                                color="primary"
                                 onClick={() => setDialogOpen(true)}
                             >
                                 Subscribe

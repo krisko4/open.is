@@ -49,5 +49,5 @@ export const ActivityChart: FC<any> = ({series}) => {
         }
     });
 
-    return <StatisticChart type="area" series={series} setOptions={setActivityChartOptions} options={activityChartOptions} height={500} />
+    return <StatisticChart type="area" series={series} setOptions={setActivityChartOptions} options={activityChartOptions} />
 }

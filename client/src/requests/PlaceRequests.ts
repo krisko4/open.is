@@ -20,7 +20,7 @@ const provider = new OpenStreetMapProvider({
 
 export const getPaginatedPlaces = async (fetchUrl: string, start: number, limit: number, searcherOptions: SearcherOptionsProps[]) => {
     console.log(searcherOptions)
-    const searchParams : any = {}
+    const searchParams: any = {}
     searcherOptions.forEach(option => {
         const key = option.foundBy
         const value = option.name
@@ -61,11 +61,15 @@ export const findByAddress = async (inputValue: string) => {
 export const getPlacesBySearchParams = async (searchParams: SearcherOptionsProps[]) => {
     const names: string[] = []
     const addresses: string[] = []
-    searchParams.forEach((param) => param.foundBy === 'name' ? names.push(param.name) : addresses.push(param.name))
+    const types: string[] = []
+    searchParams.forEach((param) =>
+        param.foundBy === 'name' ? names.push(param.name) :
+            param.foundBy === 'type' ? types.push(param.name) :
+                addresses.push(param.name))
     const params: any = {}
     if (addresses.length > 0) params['address'] = addresses.join('|')
     if (names.length > 0) params['name'] = names.join('|')
-    console.log(params)
+    if (types.length > 0) params['type'] = types.join('|')
     params['start'] = 0
     params['limit'] = 10
     return getPlacesWithParams('/places/active/paginated', params)
@@ -109,7 +113,7 @@ export const getPlaces = async (url: string) => {
 }
 
 
-export const getPlacesByName = (name: string) => getPlacesWithParams('/places/active/name', { name: name })
+export const getFoundPlaceNamesOrTypes = (inputValue: string) => getPlacesWithParams('/places/active/name-or-type', { inputValue: inputValue })
 
 export const getPlacesByUserId = (uid: string) => getPlacesWithParams('/places', { uid: uid })
 

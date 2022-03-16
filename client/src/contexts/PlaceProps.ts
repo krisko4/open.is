@@ -34,13 +34,17 @@ export interface CurrentPlaceProps extends LocationProps {
     userId?: string,
     isUserOwner?: boolean,
     isUserSubscriber?: boolean,
-    logoFile? : File | null
+    logoFile?: File | null
 }
 
-export interface VisitProps {
+
+export interface VisitCount {
     date: string,
-    placeId: string,
     visitCount: number
+}
+
+export interface VisitProps extends VisitCount {
+    placeId: string,
 }
 
 export interface NewsProps {
@@ -65,7 +69,7 @@ export interface AddressDataProps {
     lng: number,
 }
 
-export interface LocationProps extends ContactDetails, AddressDataProps{
+export interface LocationProps extends ContactDetails, AddressDataProps {
     _id?: string,
     isValid?: boolean,
     news?: NewsProps[],
@@ -79,12 +83,13 @@ export interface LocationProps extends ContactDetails, AddressDataProps{
     visitCount?: number,
     isUserSubscriber?: boolean
 }
-
-export interface OpinionProps {
+export interface Opinion {
     author: string,
     date: string,
     content: string,
     note: number,
+}
+export interface OpinionProps extends Opinion{
     averageNote: number,
     authorImg: string
 }
