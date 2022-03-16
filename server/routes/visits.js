@@ -3,7 +3,7 @@ const router = express.Router()
 const visitController = require('../API/visit/visit_controller')
 
 router.get('/', (req, res, next) => {
-    visitController.getVisitsByLocationId(req, res, next)
+    visitController.getVisits(req, res, next)
 })
 
 router.post('/', (req, res, next) => {

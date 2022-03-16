@@ -1,7 +1,7 @@
 const Visit = require('./model/visit')
 const mongoose = require('mongoose')
 const placeService = require('../place/place_service')
-const { startOfMinute, endOfMinute, format } = require('date-fns')
+const { startOfMinute, endOfMinute, format, startOfDay, endOfDay } = require('date-fns')
 const visitService = {
 
     addVisit: async (locationId) => {
@@ -17,13 +17,74 @@ const visitService = {
         }).save()
     },
 
+    getVisitsByLocationIds: async (locationIds) => {
+        const start = startOfDay(new Date())
+        const end = endOfDay(new Date())
+        return Visit.aggregate()
+            .match({
+                locationId: { $in: locationIds }
+            })
+            .facet({
+                today: [
+                    {
+                        $match: {
+                            date: { $gte: start, $lt: end }
+                        }
+                    },
+                    { $group: { _id: null, today: { $sum: '$visitCount' } } },
+                    {$project : {_id: 0}}
+                ],
+                total: [
+                    { $group: { _id: null, total: { $sum: '$visitCount' } } },
+                    {$project : {_id: 0}}
+                ],
+                data: [
+                    { $sort: { date: 1 } },
+                    {
+                        $lookup: {
+                            from: 'places',
+                            localField: 'locationId',
+                            foreignField: 'locations._id',
+                            as: 'name'
+                        }
+                    },
+                    {
+                        $set: {
+                            name: { $arrayElemAt: ["$name.name", 0] }
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$locationId',
+                            name: { '$first': '$name' },
+                            visits: { $push: { date: '$date', visitCount: '$visitCount' } }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0
+                        }
+                    }
+                ]
+            })
+    },
+
 
     getVisitsByLocationId: async (locationId, userId) => {
-        if (userId) {
-            // const place = await placeService.getPlaceByIdAndUserId(placeId, userId)
-            // if (!place) throw new Error('No place found for provided parameters')
-            return Visit.find({ locationId: locationId }).sort({ date: 1 }).exec()
-        }
+        return Visit.aggregate()
+            .match({
+                locationId: new mongoose.Types.ObjectId(locationId)
+            })
+            .facet({
+                metadata: [
+                    { $group: { _id: null, total: { $sum: '$visitCount' } } },
+                    { $project: { _id: 0 } }
+                ],
+                data: [
+                    { $sort: { date: 1 } },
+                    { $project: { _id: 0, __v: 0 } }
+                ]
+            })
     },
 
     deleteVisits: () => Visit.deleteMany().exec(),

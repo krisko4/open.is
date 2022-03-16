@@ -24,6 +24,19 @@ const userController = {
 
     },
 
+    async checkIfUserIsSubscriber(req, res, next) {
+        const { uid } = req.cookies
+        const { id, locationId } = req.params
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        try{
+            const isUserSubscriber = await userService.checkIfUserIsSubscriber(uid, locationId)
+            return res.status(200).json(isUserSubscriber)
+        }catch(err){
+            return next(err)
+        }
+
+    },
+
     removeProfilePicture: async (req, res, next) => {
         const { uid } = req.cookies
         const { id } = req.params
@@ -41,6 +54,7 @@ const userController = {
         const { locationId, id } = req.params
         const { uid } = req.cookies
         if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        console.log(locationId, uid, id)
         try {
             const place = await placeService.findByLocationId(locationId)
             if (!place) throw ApiError.badRequest('Invalid placeId')

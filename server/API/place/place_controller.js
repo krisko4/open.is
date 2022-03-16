@@ -124,7 +124,6 @@ const placeController = {
     },
 
     async getActivePlacesBySingleProperty(req, res, next) {
-        const { uid } = req.cookies
         const { start, limit } = req.query
         let param = Object.keys(req.query)[0]
         const paramValue = req.query[param].trim()
@@ -137,7 +136,6 @@ const placeController = {
                 places = await placeService.getActivePlacesByUserId(req.query['uid'])
                 :
                 places = await placeService.getActivePlacesBy(searchObj, start, limit)
-            // return res.status(200).json(places.map(place => placeDto(place, uid)))
             return res.status(200).json(places[0])
         } catch (err) {
             return next(err)
@@ -154,17 +152,29 @@ const placeController = {
         }
     },
 
+    async getActivePlacesByParams(req, res, next, paramCount) {
+        const { start, limit } = req.query
+        const searchObj = {}
+        console.log(paramCount)
+        for (let i = 0; i < paramCount; i++) {
+            let param = Object.keys(req.query)[i]
+            if (param === 'start' || param === 'limit') continue
+            const paramValue = req.query[param].trim()
+            if (param == 'address') param = 'locations.address'
+            searchObj[param] = new RegExp(paramValue, 'i')
+        }
+        try {
+            places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
     async getActivePlacesPaginated(req, res, next) {
         const queryLength = Object.keys(req.query).length
-        switch (queryLength) {
-            case 3:
-                return this.getActivePlacesBySingleProperty(req, res, next)
-            case 2:
-                return this.getAllActivePlaces(req, res, next)
-            default:
-                return next(ApiError.badRequest('Invalid request'))
-        }
-
+        if (queryLength > 5) throw ApiError.badRequest('Invalid query param count')
+        return this.getActivePlacesByParams(req, res, next, queryLength)
     },
 
     async getActivePlaces(req, res, next) {
@@ -183,18 +193,31 @@ const placeController = {
         }
     },
 
-    findPlaceNames: async (req, res, next) => {
-        const { name } = req.query
-        if (!name) return next(ApiError.badRequest('Name is required'))
+    findPlaceNamesOrTypes: async (req, res, next) => {
+        const { inputValue } = req.query
+        if (!inputValue) throw ApiError.badRequest('Input value is required')
+        const searchParam = new RegExp(inputValue, 'i')
         try {
-            const nameRegex = new RegExp(name, 'i')
-            const places = await placeService.getPlaceNames(nameRegex)
-            return res.status(200).json(places.map(place => {
-                return {
-                    name: place.name,
-                    foundBy: 'name'
+            let places = []
+            const foundNames = await placeService.getPlaceNames(searchParam)
+            if (foundNames.length > 0) {
+                for (const name of foundNames) {
+                    places.push({
+                        name: name,
+                        foundBy: 'name'
+                    })
                 }
-            }))
+            }
+            const foundTypes = await placeService.getPlaceTypes(searchParam)
+            if (foundTypes.length > 0) {
+                for (const type of foundTypes) {
+                    places.push({
+                        name: type,
+                        foundBy: 'type'
+                    })
+                }
+            }
+            return res.status(200).json(places)
         } catch (err) {
             return next(err)
         }
@@ -216,12 +239,13 @@ const placeController = {
     },
     getSubscribedPlaces: async (req, res, next) => {
         const { uid } = req.cookies
+        const { start, limit } = req.query
         try {
-            let places = await userService.getSubscribedPlaces(uid)
-            places = await Promise.all(places.map(async (place) => {
-                return placeController.getVisitsNewsOpinionsForPlace(place, uid)
-            }))
-            return res.status(200).json(places.map(place => placeDto(place, uid)))
+            let locationIds = await userService.getSubscribedLocationIds(uid)
+            const searchObj = { 'locations._id': {$in: locationIds} }
+            console.log(searchObj)
+            const places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            return res.status(200).json(places[0])
         } catch (err) {
             return next(err)
         }

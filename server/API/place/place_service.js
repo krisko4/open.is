@@ -185,8 +185,19 @@ const placeService = {
     },
 
     getPlaces: () => Place.find().exec(),
-    getPlaceNames: (name) => Place.find({ name: name }, 'name').exec(),
+    getPlaceNames: (name) => Place.distinct('name', { name: name }).exec(),
+    getPlaceTypes: (type) => Place.distinct('type', { type: type }).exec(),
     getPlaceByIdAndUserId: (id, userId) => Place.findById(id, { userId: userId }).exec(),
+    async getLocationIdsByUserId(userId)  {
+        const results = await Place.find({ userId: userId }, 'locations._id').lean().exec()
+        const locationIds = []
+        for (const result of results) {
+            for (const location of result.locations) {
+                locationIds.push(location._id)
+            }
+        }
+        return locationIds
+    },
 
     getFavoritePlaces(start, limit, favIds, matchParams) {
         favIds = favIds.map(el => mongoose.Types.ObjectId(el))

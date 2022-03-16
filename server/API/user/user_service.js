@@ -89,20 +89,42 @@ const userService = {
         return User.findByIdAndUpdate(uid, { 'subscriptions': subs }, { new: true, upsert: true }).exec()
     },
 
-    getSubscribedPlaces: async (uid) => {
-        const user = await User.findById(uid).lean().populate('subscriptions.place').exec()
-        if (!user) throw ApiError.internal(`User with uid: ${uid} not found`);
-        const subscribedPlaces = user.subscriptions && user.subscriptions.map(subscription => {
-            const locations = subscription.place.locations.filter(location => {
-                if (subscription.subscribedLocations.some(id => id.toString() === location._id.toString())) {
-                    location.isUserSubscriber = true
-                    return location
-                }
-            })
-            subscription.place.locations = locations
-            return { ...subscription.place }
-        }) || []
-        return subscribedPlaces
+
+    checkIfUserIsSubscriber: async (uid, locationId) => {
+        const user = await User.findOne({_id: uid, 'subscriptions.subscribedLocations' : locationId}).exec() 
+        return user ? true : false
+    },
+
+    async getSubscribedLocationIds(uid) {
+        const results = await User.find({}, {'subscriptions.subscribedLocations' : 1, _id: 0}).lean().exec()
+        const locationIds = []
+        for(const result of results){
+            for(const sub of result.subscriptions){
+                locationIds.push(...sub.subscribedLocations)
+            }
+        }
+        return locationIds
+
+    },
+
+    async getSubscribedPlaces(uid) {
+        const subscribedLocationIds = await this.getSubscribedLocationIds(uid)
+        
+        return subscribedLocationIds
+        //     places = await placeService.getActivePlacesBy(searchObj, start, limit)
+        // const user = await User.findById(uid).lean().populate('subscriptions.place').exec()
+        // if (!user) throw ApiError.internal(`User with uid: ${uid} not found`);
+        // const subscribedPlaces = user.subscriptions && user.subscriptions.map(subscription => {
+        //     const locations = subscription.place.locations.filter(location => {
+        //         if (subscription.subscribedLocations.some(id => id.toString() === location._id.toString())) {
+        //             location.isUserSubscriber = true
+        //             return location
+        //         }
+        //     })
+        //     subscription.place.locations = locations
+        //     return { ...subscription.place }
+        // }) || []
+        // return subscribedPlaces
     },
 
     getSubscribedLocations: async (id) => {

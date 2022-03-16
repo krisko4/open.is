@@ -70,6 +70,15 @@ router.delete(`/:id/subscriptions/:locationId`,
         userController.removeSubscription(req, res, next)
     })
 
+router.get(`/:id/subscriptions/:locationId`,
+    param('id').notEmpty().isMongoId(),
+    param('locationId').notEmpty().isMongoId(),
+    cookie('uid').notEmpty().isMongoId(),
+    validateRequest,
+    (req, res, next) => {
+        userController.checkIfUserIsSubscriber(req, res, next)
+    })
+
 router.patch('/:id/subscriptions',
     param('id').notEmpty().isMongoId(),
     body('locationId').notEmpty().isMongoId(),

@@ -22,13 +22,17 @@ const upload = multer({
         callback(null, true)
     },
 })
-router.get('/active/name', (req, res, next) => {
-    placeController.findPlaceNames(req, res, next)
+router.get('/active/name-or-type', (req, res, next) => {
+    placeController.findPlaceNamesOrTypes(req, res, next)
 })
 
-router.get('/active/favorite', (req, res, next) => {
-    placeController.getFavoritePlaces(req, res, next)
-})
+router.get('/active/favorite',
+    query('start').notEmpty().isFloat({ min: 0 }),
+    query('limit').notEmpty().isFloat({ min: 10, max: 50 }),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getFavoritePlaces(req, res, next)
+    })
 
 router.get('/active',
     (req, res, next) => {
@@ -36,16 +40,19 @@ router.get('/active',
     })
 
 router.get('/active/paginated',
-    query('start').notEmpty().isNumeric(),
-    query('limit').notEmpty().isNumeric(),
+    query('start').notEmpty().isFloat({ min: 0 }),
+    query('limit').notEmpty().isFloat({ min: 10, max: 50 }),
+    query('name').isString().optional(),
+    query('type').isString().optional(),
+    query('address').isString().optional(),
     validateRequest,
     (req, res, next) => {
         placeController.getActivePlacesPaginated(req, res, next)
     })
 
 router.get('/active/popular',
-    query('start').notEmpty().isNumeric(),
-    query('limit').notEmpty().isNumeric(),
+    query('start').notEmpty().isFloat({ min: 0 }),
+    query('limit').notEmpty().isFloat({ min: 10, max: 50 }),
     query('name').isString().optional(),
     query('type').isString().optional(),
     query('address').isString().optional(),
@@ -55,13 +62,27 @@ router.get('/active/popular',
     })
 
 
-router.get('/active/top', (req, res, next) => {
-    placeController.getTopRatedPlaces(req, res, next)
-})
+router.get('/active/top',
+    query('start').notEmpty().isFloat({ min: 0 }),
+    query('limit').notEmpty().isFloat({ min: 10, max: 50 }),
+    query('name').isString().optional(),
+    query('type').isString().optional(),
+    query('address').isString().optional(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getTopRatedPlaces(req, res, next)
+    })
 
-router.get('/active/new', (req, res, next) => {
-    placeController.getRecentlyAddedPlaces(req, res, next)
-})
+router.get('/active/new',
+    query('start').notEmpty().isFloat({ min: 0 }),
+    query('limit').notEmpty().isFloat({ min: 10, max: 50 }),
+    query('name').isString().optional(),
+    query('type').isString().optional(),
+    query('address').isString().optional(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getRecentlyAddedPlaces(req, res, next)
+    })
 
 router.get('/', (req, res, next) => {
     placeController.getPlaces(req, res, next)
@@ -116,6 +137,8 @@ router.post('/',
 
 router.get('/active/subscribed',
     cookie('uid').notEmpty().isMongoId(),
+    query('start').notEmpty().isFloat({ min: 0 }),
+    query('limit').notEmpty().isFloat({ min: 10, max: 50 }),
     validateRequest,
     (req, res, next) => {
         placeController.getSubscribedPlaces(req, res, next)
