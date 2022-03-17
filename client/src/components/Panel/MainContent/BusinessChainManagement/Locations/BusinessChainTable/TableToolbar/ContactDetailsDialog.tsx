@@ -1,20 +1,20 @@
-import { Card, CardContent, Divider, Grid, List, ListItem, ListItemText, Typography } from "@mui/material"
-import { FC } from "react"
-import Scrollbars from "react-custom-scrollbars"
-import { useLocationsSelector } from "redux-toolkit/slices/businessChainSlice"
-import { FullHeightDialog } from "../../../../../../reusable/FullHeightDialog"
-import { ContactDetailsEditForm } from "./ContactDetailsEditForm"
+import { Card, CardContent, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { FC } from 'react';
+import Scrollbars from 'react-custom-scrollbars';
+import { useLocationsSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
+import { ContactDetailsEditForm } from './ContactDetailsEditForm';
 
 interface Props {
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    selectedLocations: string[],
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  selectedLocations: string[],
 }
 export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocations }) => {
 
-    const locations = useLocationsSelector()
+  const locations = useLocationsSelector();
 
-    return (
+  return (
         <FullHeightDialog
             title="Contact details management"
             dialogOpen={dialogOpen}
@@ -35,7 +35,7 @@ export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, sel
                                     <Typography variant="h3">
                                         Contact details management
                                     </Typography>
-                                    <Typography variant="body1" sx={{mt: 1, mb: 1}}>
+                                    <Typography variant="body1" sx={{ mt: 1, mb: 1 }}>
                                         You have selected <b>{selectedLocations.length}</b> {selectedLocations.length === 1 ? 'location' : 'locations'}.
                                         The changes will be applied to each selected location.
                                     </Typography>
@@ -44,14 +44,14 @@ export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, sel
                                                 <List>
                                                     {
                                                         selectedLocations.map((locId) => {
-                                                            return <div key={locId}>
+                                                          return <div key={locId}>
                                                                 <Divider />
                                                                 <ListItem key={locId}>
                                                                     <ListItemText
                                                                         secondary={locations.find(loc => loc._id === locId)?.address}
                                                                     />
                                                                 </ListItem>
-                                                            </div>
+                                                            </div>;
                                                         })
                                                     }
                                                 </List>
@@ -67,5 +67,5 @@ export const ContactDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, sel
             </Grid>
 
         </FullHeightDialog >
-    )
-}
+  );
+};

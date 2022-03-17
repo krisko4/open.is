@@ -1,13 +1,11 @@
-import Grid from "@mui/material/Grid";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import React, { FC } from "react";
-import { Fade, Grow } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import React, { FC } from 'react';
+import { Fade, Grow } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
 
 interface Props {
-    isVisible1: boolean
+  isVisible1: boolean
 }
 
 // const useStyles = makeStyles({
@@ -19,7 +17,7 @@ interface Props {
 
 const Section1: FC<Props> = ({ isVisible1 }) => {
 
-    return (
+  return (
         <div style={{ height: 1200, background: 'black' }}>
             <Grid container  style={{ marginTop: 80, marginBottom: 80 }} alignItems="center" justifyContent="center">
                 <Grid item lg={6} md={9} sm={9} xs={10} style={{ textAlign: 'center' }}>
@@ -45,7 +43,7 @@ const Section1: FC<Props> = ({ isVisible1 }) => {
                 </Grow>
             </Grid>
         </div>
-    );
-}
+  );
+};
 
-export default Section1
+export default Section1;

@@ -1,51 +1,49 @@
-import { Grid, CircularProgress } from "@mui/material";
-import _ from "lodash";
-import { FC, useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { useGetPlaceByIdAndSelectedLocationQuery } from "redux-toolkit/api/placesApi";
-import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { CurrentPlaceProps } from "../../../../../../contexts/PlaceProps";
-import { StepContextProvider } from "../../../../../../contexts/StepContext";
-import { NewPlace } from "../../../NewPlace/NewPlace";
-import newPlaceSteps from "../../../NewPlace/Steps/steps";
+import { Grid, CircularProgress } from '@mui/material';
+import _ from 'lodash';
+import { FC, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { StepContextProvider } from '../../../../../../contexts/StepContext';
+import { NewPlace } from '../../../NewPlace/NewPlace';
+import newPlaceSteps from '../../../NewPlace/Steps/steps';
 
 
 
 export const PlaceSettings: FC = () => {
 
-    const { placeId, locationId } = useParams()
-    const { data: place, isFetching, isError } = useGetPlaceByIdAndSelectedLocationQuery({
-        placeId: placeId as string,
-        locationId: locationId as string
-    })
+  const { placeId, locationId } = useParams();
+  const { data: place, isFetching } = useGetPlaceByIdAndSelectedLocationQuery({
+    placeId: placeId as string,
+    locationId: locationId as string,
+  });
 
 
 
-    const initialPlaceData = useMemo(() => {
-        if (place) {
-            const initialPlace = _.cloneDeep(place)
-            while (initialPlace.images.length < 4) {
-                initialPlace.images.push({
-                    file: null,
-                    img: ''
-                })
-            }
-            return {
-                ...place,
-                facebook: place.facebook.substring(21),
-                instagram: place.instagram.substring(22)
-            }
+  const initialPlaceData = useMemo(() => {
+    if (place) {
+      const initialPlace = _.cloneDeep(place);
+      while (initialPlace.images.length < 4) {
+        initialPlace.images.push({
+          file: null,
+          img: '',
+        });
+      }
+      return {
+        ...place,
+        facebook: place.facebook.substring(21),
+        instagram: place.instagram.substring(22),
+      };
 
-        }
-    }, [place])
+    }
+  }, [place]);
 
-    return (
+  return (
         <>
             {isFetching ?
                 <Grid container sx={{ height: '100%' }} >
                     <CircularProgress />
                 </Grid>
-                :
+              :
                 <StepContextProvider steps={newPlaceSteps}>
                     <NewPlace
                         isEditionMode={true}
@@ -54,6 +52,6 @@ export const PlaceSettings: FC = () => {
                 </StepContextProvider>
             }
         </>
-    )
+  );
 
-}
+};

@@ -1,67 +1,68 @@
-import { LoadingButton } from "@mui/lab"
-import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Tooltip, Typography } from "@mui/material"
-import { CurrentPlaceProps } from "contexts/PlaceProps"
-import _ from "lodash"
-import React, { FC, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import { useAddPlaceMutation, useEditPlaceDataMutation } from "redux-toolkit/api/placesApi"
-import { useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice"
-import { useStepContext } from "../../../../../../contexts/StepContext"
-import { useCustomSnackbar } from "../../../../../../utils/snackbars"
-import DialogTransition from "../../../../../reusable/DialogTransition"
-import { NewPlaceStepper } from "../NewPlaceStepper"
+import { LoadingButton } from '@mui/lab';
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Slide, Tooltip, Typography } from '@mui/material';
+import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
+import _ from 'lodash';
+import React, { FC, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAddPlaceMutation, useEditPlaceDataMutation } from 'redux-toolkit/api/placesApi';
+import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useStepContext } from '../../../../../../contexts/StepContext';
+import { useCustomSnackbar } from '../../../../../../utils/snackbars';
+import DialogTransition from '../../../../../reusable/DialogTransition';
+import { NewPlaceStepper } from '../NewPlaceStepper';
 
 interface Props {
-    formData: FormData,
-    isEditionMode?: boolean,
-    initialPlaceData? : CurrentPlaceProps
+  formData: FormData,
+  isEditionMode?: boolean,
+  initialPlaceData? : CurrentPlaceProps
 }
 
 export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) => {
-    const [isOpen, setOpen] = useState(false)
-    const { activeStep, steps } = useStepContext()
-    const [registerNewPlace, { data, isLoading }] = useAddPlaceMutation()
-    const [editPlaceData, {isLoading: isEditLoading}] = useEditPlaceDataMutation()
-    const navigate = useNavigate()
-    const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const currentPlace = useCurrentPlaceSelector()
-    const {placeId, locationId} = useParams()
+  const [isOpen, setOpen] = useState(false);
+  const { activeStep, steps } = useStepContext();
+  const [registerNewPlace, { isLoading }] = useAddPlaceMutation();
+  const [editPlaceData, { isLoading: isEditLoading }] = useEditPlaceDataMutation();
+  const navigate = useNavigate();
+  const { enqueueErrorSnackbar, enqueueWarningSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
+  const currentPlace = useCurrentPlaceSelector();
+  const { placeId, locationId } = useParams();
 
-    useEffect(() => {
-        if (steps.some(step => !step.isValid)) {
-            enqueueWarningSnackbar('You have left some invalid data in previous steps. Please make sure all the fields are correctly filled.')
-        }
-    }, [])
-
-
-    const editPlace = async () => {
-        try {
-            formData.append('_id', currentPlace._id as string)
-            await editPlaceData(formData).unwrap()
-            enqueueSuccessSnackbar('You have successfully modified your place')
-            setOpen(false)
-            navigate(`/panel/management/${placeId}/${locationId}/home`)
-        } catch (err) {
-            console.log(err)
-            enqueueErrorSnackbar()
-        }     }
-
-    const handleClick = async () => {
-        if (isEditionMode) {
-            await editPlace()
-            return
-        }
-        try {
-            await registerNewPlace(formData)
-            enqueueSuccessSnackbar('You have successfully added new place')
-            navigate(`/panel/dashboard`)
-
-        } catch (err) {
-            enqueueErrorSnackbar()
-        }
+  useEffect(() => {
+    if (steps.some(step => !step.isValid)) {
+      enqueueWarningSnackbar('You have left some invalid data in previous steps. Please make sure all the fields are correctly filled.');
     }
+  }, []);
 
-    return (
+
+  const editPlace = async () => {
+    try {
+      formData.append('_id', currentPlace._id as string);
+      await editPlaceData(formData).unwrap();
+      enqueueSuccessSnackbar('You have successfully modified your place');
+      setOpen(false);
+      navigate(`/panel/management/${placeId}/${locationId}/home`);
+    } catch (err) {
+      console.log(err);
+      enqueueErrorSnackbar();
+    }     
+  };
+
+  const handleClick = async () => {
+    if (isEditionMode) {
+      await editPlace();
+      return;
+    }
+    try {
+      await registerNewPlace(formData);
+      enqueueSuccessSnackbar('You have successfully added new place');
+      navigate('/panel/dashboard');
+
+    } catch (err) {
+      enqueueErrorSnackbar();
+    }
+  };
+
+  return (
         <Slide in={true} direction="left" timeout={1000}>
             <Card>
                 <CardContent>
@@ -91,8 +92,8 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
                             <DialogContent>
                                 <DialogContentText>
                                     {isEditionMode ?
-                                        'Are your sure you would like to save your changes?' :
-                                        'Are you sure you would like to finish registration and save your place?'
+                                      'Are your sure you would like to save your changes?' :
+                                      'Are you sure you would like to finish registration and save your place?'
                                     }
                                 </DialogContentText>
                             </DialogContent>
@@ -123,7 +124,7 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
 
                                     </Grid>
                                 </Tooltip>
-                                :
+                              :
                                 <Button
                                     fullWidth
                                     variant="contained"
@@ -148,5 +149,5 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
 
 
 
-    )
-}
+  );
+};

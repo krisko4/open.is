@@ -3,37 +3,35 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Tooltip, Toolbar, alpha, Typography, IconButton } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { useBusinessChainContext } from '../../../../../../../contexts/PanelContexts/BusinessChainContext';
+import { Tooltip, Toolbar, alpha, Typography, IconButton } from '@mui/material';
+import { FC, useState } from 'react';
 import { DeleteConfirmationDialog } from '../../DeleteConfirmationDialog';
 import { AddLocationsDialog } from './AddLocationsDialog';
 import { ContactDetailsDialog } from './ContactDetailsDialog';
 import { SetOpeningHoursDialog } from './SetOpeningHoursDialog';
-import { CurrentPlaceContextProvider } from '../../../../../../../contexts/PanelContexts/CurrentPlaceContext';
 
 interface Props {
-    selectedLocations: string[],
-    setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>
+  selectedLocations: string[],
+  setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>
 }
 export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocations }) => {
 
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [addDialogOpen, setAddDialogOpen] = useState(false)
-    const [contactDetailsDialogOpen, setContactDetailsDialogOpen] = useState(false)
-    const [openingHoursDialogOpen, setOpeningHoursDialogOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [contactDetailsDialogOpen, setContactDetailsDialogOpen] = useState(false);
+  const [openingHoursDialogOpen, setOpeningHoursDialogOpen] = useState(false);
 
 
-    return (
+  return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                width: '100%',
-                pr: { xs: 1, sm: 1 },
-                ...(selectedLocations.length > 0 && {
-                    bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                }),
+              pl: { sm: 2 },
+              width: '100%',
+              pr: { xs: 1, sm: 1 },
+              ...(selectedLocations.length > 0 && {
+                bgcolor: (theme) =>
+                  alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+              }),
             }}
         >
             {selectedLocations.length > 0 ? (
@@ -105,5 +103,5 @@ export const TableToolbar: FC<Props> = ({ selectedLocations, setSelectedLocation
                 setDialogOpen={setOpeningHoursDialogOpen} />
 
         </Toolbar>
-    );
+  );
 };

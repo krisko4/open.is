@@ -1,26 +1,22 @@
-import { FC } from "react"
-import { useBusinessChainSelector } from "redux-toolkit/slices/businessChainSlice"
-import { CurrentPlaceContextProvider } from "../../../../../../../contexts/PanelContexts/CurrentPlaceContext"
-import { FullHeightDialog } from "../../../../../../reusable/FullHeightDialog"
-import { OpeningHours } from "../../../../PlaceManagement/PlaceBoard/OpeningHours/OpeningHours"
+import { FC } from 'react';
+import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
+import { OpeningHours } from '../../../../PlaceManagement/PlaceBoard/OpeningHours/OpeningHours';
 
 interface Props {
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    selectedLocations: string[]
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  selectedLocations: string[]
 }
 
 export const SetOpeningHoursDialog: FC<Props> = ({ dialogOpen, setDialogOpen, selectedLocations }) => {
-    return (
+  return (
         <FullHeightDialog
             title="Opening hours management"
             dialogOpen={dialogOpen}
             setDialogOpen={setDialogOpen}
         >
-            <CurrentPlaceContextProvider>
-                <OpeningHours selectedLocations={selectedLocations} />
-            </CurrentPlaceContextProvider>
+            <OpeningHours selectedLocations={selectedLocations} />
         </FullHeightDialog>
 
-    )
-}
+  );
+};

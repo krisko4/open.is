@@ -1,111 +1,106 @@
-import { Chip, Paper, Theme } from "@mui/material";
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
-import AppBar from "@mui/material/AppBar";
-import Grid from "@mui/material/Grid";
-import Toolbar from "@mui/material/Toolbar";
-import React, { FC, HTMLAttributes, useEffect, useState } from "react";
-import Searcher from "./Searcher";
-import { Fastfood, ShoppingCart, LocalBar, AccountBalance, LocalPharmacy, LocalGasStation, LocalMall } from '@mui/icons-material'
+import { Chip, Paper } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Toolbar from '@mui/material/Toolbar';
+import React, { FC, useState } from 'react';
+import Searcher from './Searcher';
+import { Fastfood, ShoppingCart, LocalBar, AccountBalance, LocalPharmacy, LocalGasStation, LocalMall } from '@mui/icons-material';
 
 
 const businessTypes = [
-    {
-        label: 'Food',
-        icon: <Fastfood />
-    },
-    {
-        label: 'Barber',
-        icon: <Fastfood />
-    },
-    {
-        label: 'Grocery',
-        icon: <ShoppingCart />
-    },
-    {
-        label: 'Club',
-        icon: <LocalBar />
-    },
-    {
-        label: 'Bank',
-        icon: <AccountBalance />
-    },
-    {
-        label: 'Pharmacy',
-        icon: <LocalPharmacy />
-    },
-    {
-        label: 'Petrol',
-        icon: <LocalGasStation />
-    },
-    {
-        label: 'Mall',
-        icon: <LocalMall />
-    },
-]
+  {
+    label: 'Food',
+    icon: <Fastfood />,
+  },
+  {
+    label: 'Barber',
+    icon: <Fastfood />,
+  },
+  {
+    label: 'Grocery',
+    icon: <ShoppingCart />,
+  },
+  {
+    label: 'Club',
+    icon: <LocalBar />,
+  },
+  {
+    label: 'Bank',
+    icon: <AccountBalance />,
+  },
+  {
+    label: 'Pharmacy',
+    icon: <LocalPharmacy />,
+  },
+  {
+    label: 'Petrol',
+    icon: <LocalGasStation />,
+  },
+  {
+    label: 'Mall',
+    icon: <LocalMall />,
+  },
+];
 
 interface ChipProps {
-    setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>,
-    type: {
-        label: string;
-        icon: JSX.Element;
-    },
-    [x: string]: any
+//   setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>,
+  type: {
+    label: string;
+    icon: JSX.Element;
+  },
+  [x: string]: any
 }
 
 const CustomChip = (props: ChipProps) => {
 
-    const { type, setSelectedTypes, ...rest } = props
-    const [selected, setSelected] = useState(false)
+  const { type, ...rest } = props;
+  const [selected, setSelected] = useState(false);
 
-    useEffect(() => {
+  //   useEffect(() => {
+  //     if (!selected) {
+  //       setSelectedTypes(selectedTypes => selectedTypes.filter((selectedType) => selectedType !== type.label));
+  //       return;
+  //     }
+  //     setSelectedTypes(selectedTypes => {
+  //       const newSelectedTypes = [...selectedTypes];
+  //       newSelectedTypes.push(type.label);
+  //       return newSelectedTypes;
+  //     });
 
-        if (!selected) {
-            setSelectedTypes(selectedTypes => selectedTypes.filter((selectedType) => selectedType !== type.label))
-            return
-        }
-        setSelectedTypes(selectedTypes => {
-            const newSelectedTypes = [...selectedTypes]
-            newSelectedTypes.push(type.label)
-            return newSelectedTypes
-        })
+  //   }, [selected]);
 
-    }, [selected])
-
-    return (
+  return (
         <Chip
             {...rest}
-            onClick={() => setSelected(selected => !selected)}
+            onClick={() => setSelected(isSelected => !isSelected)}
             style={{ marginRight: 2 }}
-            color={selected ? "error" : "default"}
+            color={selected ? 'error' : 'default'}
             clickable
             label={type.label}
             icon={type.icon}
         />
-    )
-}
+  );
+};
 
 
 
 export const SecondHeader: FC = () => {
 
-    const [selectedTypes, setSelectedTypes] = useState<string[]>([])
 
-    return (
+  return (
         <Paper>
             <Toolbar disableGutters>
                 <Grid container >
-                    <Grid item xs={10} sm={9} md={8} lg={5} sx={{p: 1}}>
+                    <Grid item xs={10} sm={9} md={8} lg={5} sx={{ p: 1 }}>
                         <Searcher />
                     </Grid>
                     <Grid justifyContent="center" container lg={7} item alignItems="center">
                         {businessTypes.map((type, index) =>
-                            <CustomChip setSelectedTypes={setSelectedTypes} type={type} key={index} />
+                            <CustomChip  type={type} key={index} />,
                         )}
                     </Grid>
                 </Grid>
             </Toolbar>
         </Paper>
         // </AppBar>
-    );
-}
+  );
+};

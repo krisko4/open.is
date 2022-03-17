@@ -1,29 +1,28 @@
-import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from "@mui/material";
-import { isToday } from "date-fns";
-import { FC, useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { useGetOpinionsForSelectedLocationQuery } from "redux-toolkit/api/placesApi";
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from '@mui/material';
+import { FC, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
 
 export const TotalOpinions: FC<any> = () => {
 
-    const { locationId } = useParams()
-    const { data: opinionData, isFetching } = useGetOpinionsForSelectedLocationQuery(locationId as string)
+  const { locationId } = useParams();
+  const { data: opinionData, isFetching } = useGetOpinionsForSelectedLocationQuery(locationId as string);
 
-    const opinionsDiff = useMemo(() => {
-        if (opinionData) {
-            if (opinionData.today === opinionData.opinions.length) {
-                return opinionData.opinions.length * 100
-            }
-            return opinionData.opinions.length > 0 && Math.round(((opinionData.opinions.length / (opinionData.opinions.length - opinionData.today)) * 100 - 100) * 10) / 10
-        }
-        return 0
-    }, [opinionData])
+  const opinionsDiff = useMemo(() => {
+    if (opinionData) {
+      if (opinionData.today === opinionData.opinions.length) {
+        return opinionData.opinions.length * 100;
+      }
+      return opinionData.opinions.length > 0 && Math.round(((opinionData.opinions.length / (opinionData.opinions.length - opinionData.today)) * 100 - 100) * 10) / 10;
+    }
+    return 0;
+  }, [opinionData]);
 
-    return (
+  return (
         <Fade in={true} timeout={2500}>
-            <Card sx={{height: '170px'}}>
+            <Card sx={{ height: '170px' }}>
                 <CardContent>
                     <Typography style={{ fontWeight: 'bold' }} variant="overline">Total opinions</Typography>
                     <Grid container style={{ marginTop: 5 }}>
@@ -53,5 +52,5 @@ export const TotalOpinions: FC<any> = () => {
                 </CardContent>
             </Card>
         </Fade>
-    );
-}
+  );
+};

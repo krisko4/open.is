@@ -1,31 +1,31 @@
-import { ExpandMore } from "@mui/icons-material"
-import DeleteIcon from '@mui/icons-material/Delete'
-import { Accordion, AccordionDetails, AccordionSummary, Grid, Grow, IconButton, Typography } from "@mui/material"
-import { FC } from "react"
-import { useLocationContext } from "../../../../../contexts/PanelContexts/LocationContext"
-import { LocationProps } from "../../../../../contexts/PlaceProps"
-import { LocationDetailsForm } from './LocationDetailsForm/LocationDetailsForm'
+import { ExpandMore } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, Grow, IconButton, Typography } from '@mui/material';
+import { FC } from 'react';
+import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext';
+import { LocationProps } from '../../../../../redux-toolkit/slices/PlaceProps';
+import { LocationDetailsForm } from './LocationDetailsForm/LocationDetailsForm';
 
 interface Props {
-    location: LocationProps,
-    setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
+  location: LocationProps,
+  setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
 export const Location: FC<Props> = ({ location, setValidationStateChanged }) => {
 
-    let { setSelectedLocations, selectedLocations } = useLocationContext()
+  let { setSelectedLocations, selectedLocations } = useLocationContext();
 
-    const deleteLocation = (e: any) => {
-        e.preventDefault()
-        const newSelectedLocations = selectedLocations.filter(loc => location !== loc)
-        // setLocations([...newSelectedLocations])
-        setValidationStateChanged((state) => !state)
-        setSelectedLocations([...newSelectedLocations])
-    }
+  const deleteLocation = (e: any) => {
+    e.preventDefault();
+    const newSelectedLocations = selectedLocations.filter(loc => location !== loc);
+    // setLocations([...newSelectedLocations])
+    setValidationStateChanged((state) => !state);
+    setSelectedLocations([...newSelectedLocations]);
+  };
 
 
-    return (
+  return (
         <Grow timeout={1000} in={true}>
             <Accordion style={{ flexGrow: 1 }}>
                 <AccordionSummary
@@ -45,5 +45,5 @@ export const Location: FC<Props> = ({ location, setValidationStateChanged }) => 
                 </AccordionDetails>
             </Accordion >
         </Grow>
-    );
-}
+  );
+};

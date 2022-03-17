@@ -1,8 +1,8 @@
-import {Fade,  Grid, Typography } from "@mui/material"
-import { FC } from "react"
+import { Fade,  Grid, Typography } from '@mui/material';
+import { FC } from 'react';
 
 export const NotReady: FC = () => {
-    return (
+  return (
         <Fade in={true} timeout={500}>
             <Grid container justifyContent="center" alignItems="center">
                 <Typography variant="h4">
@@ -11,5 +11,5 @@ export const NotReady: FC = () => {
             </Grid>
 
         </Fade>
-    )
-}
+  );
+};

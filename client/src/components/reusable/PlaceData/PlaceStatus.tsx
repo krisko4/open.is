@@ -1,20 +1,20 @@
-import { Alert, Tooltip } from "@mui/material"
-import { useStatusSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { Alert, Tooltip } from '@mui/material';
+import { useStatusSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 
 export const PlaceStatus = () => {
-    const status = useStatusSelector()
+  const status = useStatusSelector();
 
-    return (
+  return (
         <Tooltip title={'This is a current status of your place'}>
             {status === 'open' ?
                 <Alert severity="success" variant="filled" >
                     This place is now OPEN
                 </Alert>
-                : <Alert severity="error" variant="filled" >
+              : <Alert severity="error" variant="filled" >
                     This place is now CLOSED
                 </Alert>
             }
         </Tooltip>
-    )
+  );
 
-}
+};

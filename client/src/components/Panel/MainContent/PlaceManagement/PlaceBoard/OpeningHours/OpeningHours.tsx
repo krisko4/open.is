@@ -1,152 +1,147 @@
-import { LoadingButton } from "@mui/lab"
-import { Alert, AlertTitle, Card, CardContent, Checkbox, FormControlLabel, FormGroup, Grid, Paper, Slide, Tab, Tabs, Toolbar, Typography } from "@mui/material"
-import _ from "lodash"
-import React, { FC, useEffect, useState } from "react"
-import { useSetSelectedLocationsAlwaysOpenMutation } from "redux-toolkit/api/placesApi"
-import { useAppDispatch } from "redux-toolkit/hooks"
-import { useBusinessChainIdSelector } from "redux-toolkit/slices/businessChainSlice"
-import { useCustomSnackbar } from "../../../../../../utils/snackbars"
-import { OpeningHoursDialog } from "./OpeningHoursDialog"
-import { SingleDayOpeningHours } from "./SingleDayOpeningHours"
+import { LoadingButton } from '@mui/lab';
+import { Alert, AlertTitle, Card, CardContent, Checkbox, FormControlLabel, FormGroup, Grid, Paper, Slide, Tab, Tabs, Toolbar, Typography } from '@mui/material';
+import _ from 'lodash';
+import React, { FC, useEffect, useState } from 'react';
+import { useSetSelectedLocationsAlwaysOpenMutation } from 'redux-toolkit/api/placesApi';
+import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useCustomSnackbar } from '../../../../../../utils/snackbars';
+import { OpeningHoursDialog } from './OpeningHoursDialog';
+import { SingleDayOpeningHours } from './SingleDayOpeningHours';
 
 
-const defaultStartHour = new Date(0, 0, 0, 8)
-const defaultEndHour = new Date(0, 0, 0, 18)
+const defaultStartHour = new Date(0, 0, 0, 8);
+const defaultEndHour = new Date(0, 0, 0, 18);
 
 const days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday'
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
 
-]
+];
 interface Props {
-    selectedLocations?: string[],
-    openingHours?: any,
-    alwaysOpen?: boolean
-    isActive?: boolean,
-    locationId?: string,
-    placeId?: string
+  selectedLocations?: string[],
+  openingHours?: any,
+  alwaysOpen?: boolean
+  isActive?: boolean,
+  locationId?: string,
+  placeId?: string
 }
 
 export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alwaysOpen, placeId, isActive, locationId }) => {
 
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    // const { openingHours, alwaysOpen, placeId, isActive } = useOpeningHoursDataSelector()
-    // const alwaysOpen = useIsAlwaysOpenSelector()
+  const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
+  // const { openingHours, alwaysOpen, placeId, isActive } = useOpeningHoursDataSelector()
+  // const alwaysOpen = useIsAlwaysOpenSelector()
 
-    const [value, setValue] = useState('monday');
-    const [areHoursValid, setHoursValid] = useState(false)
-    const [checked, setChecked] = useState(alwaysOpen)
-    const [dialogOpen, setDialogOpen] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const businessChainId = useBusinessChainIdSelector()
-    const [setSelectedLocationsAlwaysOpen, { isLoading }] = useSetSelectedLocationsAlwaysOpenMutation()
-    const dispatch = useAppDispatch()
+  const [value, setValue] = useState('monday');
+  const [areHoursValid, setHoursValid] = useState(false);
+  const [checked, setChecked] = useState(alwaysOpen);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const businessChainId = useBusinessChainIdSelector();
+  const [setSelectedLocationsAlwaysOpen, { isLoading }] = useSetSelectedLocationsAlwaysOpenMutation();
 
 
+  const [hours, setHours] = useState<any>(
+    {
+      monday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+      tuesday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+      wednesday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+      thursday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+      friday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+      saturday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+      sunday: {
+        start: defaultStartHour,
+        end: defaultEndHour,
+        valid: true,
+        open: false,
+      },
+    },
+  );
 
-    const [hours, setHours] = useState<any>(
-        {
-            monday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-            tuesday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-            wednesday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-            thursday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-            friday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-            saturday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-            sunday: {
-                start: defaultStartHour,
-                end: defaultEndHour,
-                valid: true,
-                open: false
-            },
-        }
-    )
-
-    useEffect(() => {
-        setChecked(alwaysOpen)
-        if (openingHours) {
-            const hours = _.cloneDeep(openingHours)
-            for (const day of Object.keys(hours)) {
-                hours[day].valid = true
-            }
-            setHours({ ...hours })
-        }
-    }, [openingHours])
-
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setValue(newValue)
+  useEffect(() => {
+    setChecked(alwaysOpen);
+    if (openingHours) {
+      const newHours = _.cloneDeep(openingHours);
+      for (const day of Object.keys(newHours)) {
+        newHours[day].valid = true;
+      }
+      setHours({ ...newHours });
     }
+  }, [openingHours]);
 
-    useEffect(() => {
-        if (Object.keys(hours).some(day => !hours[day].valid)) {
-            setHoursValid(false)
-            return
-        }
-        setHoursValid(true)
-    }, [hours])
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
 
-    const saveChanges = async () => {
-        // if not always open, open openingHoursDialog
-        if (!checked) {
-            setDialogOpen(true)
-            return
-        }
-        // if always open is checked
-        try {
-            if (selectedLocations) {
-                await setSelectedLocationsAlwaysOpen({ placeId: businessChainId as string, locationIds: selectedLocations })
-                // dispatch(setLocationsAlwaysOpen(selectedLocations))
-            }
-            else {
-                await setSelectedLocationsAlwaysOpen({ placeId: placeId as string, locationIds: [locationId as string] })
-                // await setPlaceAlwaysOpen(locationId as string)
-                // if (!isActive) {
-                //     dispatch(setAlwaysOpen())
-                // }
-            }
-            enqueueSuccessSnackbar('You have successfully updated your opening hours')
-        } catch (err) {
-            enqueueErrorSnackbar()
-        }
+  useEffect(() => {
+    if (Object.keys(hours).some(day => !hours[day].valid)) {
+      setHoursValid(false);
+      return;
     }
+    setHoursValid(true);
+  }, [hours]);
+
+  const saveChanges = async () => {
+    // if not always open, open openingHoursDialog
+    if (!checked) {
+      setDialogOpen(true);
+      return;
+    }
+    // if always open is checked
+    try {
+      if (selectedLocations) {
+        await setSelectedLocationsAlwaysOpen({ placeId: businessChainId as string, locationIds: selectedLocations });
+        // dispatch(setLocationsAlwaysOpen(selectedLocations))
+      } else {
+        await setSelectedLocationsAlwaysOpen({ placeId: placeId as string, locationIds: [locationId as string] });
+        // await setPlaceAlwaysOpen(locationId as string)
+        // if (!isActive) {
+        //     dispatch(setAlwaysOpen())
+        // }
+      }
+      enqueueSuccessSnackbar('You have successfully updated your opening hours');
+    } catch (err) {
+      enqueueErrorSnackbar();
+    }
+  };
 
 
 
-    return (
+  return (
         <Grid container sx={{ height: '100%', overflow: 'hidden' }} direction="column">
             {selectedLocations ?
                 <Slide in={true}>
@@ -154,7 +149,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
                         You have selected {selectedLocations.length} {selectedLocations.length === 1 ? 'location' : 'locations'}. The changes will be applied to each selected location.
                     </Alert>
                 </Slide>
-                :
+              :
                 <>
                     {
                         isActive ||
@@ -179,7 +174,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
                                             variant="fullWidth"
                                         >
                                             {days.map((day) =>
-                                                <Tab value={day.toLowerCase()} label={day} key={day} />
+                                                <Tab value={day.toLowerCase()} label={day} key={day} />,
                                             )}
                                         </Tabs>
 
@@ -267,5 +262,5 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
                 dialogOpen={dialogOpen}
                 setDialogOpen={setDialogOpen} />
         </Grid>
-    )
-}
+  );
+};

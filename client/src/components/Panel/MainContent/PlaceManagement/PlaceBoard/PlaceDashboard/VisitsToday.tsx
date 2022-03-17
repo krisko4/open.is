@@ -1,29 +1,26 @@
-import { Card, CardContent, Typography, Grid, CardMedia, Fade, CircularProgress } from "@mui/material"
-import { FC, useEffect, useState } from "react"
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { isToday, isYesterday } from "date-fns";
-import { useCurrentPlaceContext } from "../../../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { useIdSelector, useVisitsSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { useGetVisitsForSelectedLocationQuery } from "redux-toolkit/api/placesApi";
-import { useParams } from "react-router-dom";
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
 
 export const VisitsToday: FC = () => {
 
-    const [visitsToday, setVisitsToday] = useState(0)
-    const [visitsYesterday, setVisitsYesterday] = useState(0)
-    const { locationId } = useParams()
-    const { data: visits, isFetching } = useGetVisitsForSelectedLocationQuery(locationId as string)
+  const [visitsToday, setVisitsToday] = useState(0);
+  const [visitsYesterday, setVisitsYesterday] = useState(0);
+  const { locationId } = useParams();
+  const { data: visits, isFetching } = useGetVisitsForSelectedLocationQuery(locationId as string);
 
-    useEffect(() => {
-        if (visits) {
-            setVisitsYesterday(visits.yesterday)
-            setVisitsToday(visits.today)
-        }
-    }, [visits])
+  useEffect(() => {
+    if (visits) {
+      setVisitsYesterday(visits.yesterday);
+      setVisitsToday(visits.today);
+    }
+  }, [visits]);
 
-    return (
+  return (
         <Fade in={true} timeout={2200}>
             <Card sx={{ height: '170px' }}>
                 <CardContent>
@@ -41,7 +38,7 @@ export const VisitsToday: FC = () => {
                                                             <TrendingFlatIcon style={{ color: '#ffbf00' }} />
                                                             <span style={{ marginLeft: 5, color: '#ffbf00' }}>0</span>
                                                         </> :
-                                                            visitsToday - visitsYesterday > 0 ? <>
+                                                          visitsToday - visitsYesterday > 0 ? <>
                                                                 <TrendingUpIcon style={{ color: '#03C03C' }} />
                                                                 <span style={{ marginLeft: 5, color: '#03C03C' }}>+ {visitsToday - visitsYesterday}</span>
                                                             </> : <>
@@ -66,5 +63,5 @@ export const VisitsToday: FC = () => {
                 </CardContent>
             </Card>
         </Fade>
-    );
-}
+  );
+};

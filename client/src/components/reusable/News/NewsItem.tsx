@@ -1,17 +1,17 @@
-import { TimelineItem, TimelineSeparator, TimelineDot, TimelineConnector, TimelineContent } from "@mui/lab"
-import { Button, Card, CardContent, Typography, CardActions } from "@mui/material"
-import { NewsProps } from "contexts/PlaceProps"
-import { FC, useState } from "react"
-import { NewsDetailsDialog } from "./NewsDetailsDialog"
+import { TimelineItem, TimelineSeparator, TimelineDot, TimelineConnector, TimelineContent } from '@mui/lab';
+import { Button, Card, CardContent, Typography, CardActions } from '@mui/material';
+import { NewsProps } from 'redux-toolkit/slices/PlaceProps';
+import { FC, useState } from 'react';
+import { NewsDetailsDialog } from './NewsDetailsDialog';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 
 interface Props {
-    item: NewsProps
+  item: NewsProps
 }
 export const NewsItem: FC<Props> = ({ item }) => {
 
-    const [dialogOpen, setDialogOpen] = useState(false)
-    return (
+  const [dialogOpen, setDialogOpen] = useState(false);
+  return (
         <TimelineItem>
             <TimelineSeparator>
                 <TimelineDot>
@@ -43,5 +43,5 @@ export const NewsItem: FC<Props> = ({ item }) => {
                 <NewsDetailsDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} news={item} />
             </TimelineContent>
         </TimelineItem >
-    )
-}
+  );
+};

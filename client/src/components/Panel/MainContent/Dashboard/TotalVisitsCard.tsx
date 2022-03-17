@@ -1,21 +1,21 @@
-import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import {Fade, Slide, CircularProgress, Card, CardContent, Typography, Grid } from "@mui/material";
-import { FC, useState, useEffect } from "react";
-import { useGetAllVisitsByUserIdQuery } from "redux-toolkit/api/placesApi";
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import {  Slide, CircularProgress, Card, CardContent, Typography, Grid } from '@mui/material';
+import { FC, useState, useEffect } from 'react';
+import { useGetAllVisitsByUserIdQuery } from 'redux-toolkit/api/placesApi';
 export const TotalVisitsCard: FC = () => {
-    const [totalVisitsDiff, setTotalVisitsDiff] = useState(0)
-    const { data: totalVisitsData, isFetching } = useGetAllVisitsByUserIdQuery()
+  const [totalVisitsDiff, setTotalVisitsDiff] = useState(0);
+  const { data: totalVisitsData, isFetching } = useGetAllVisitsByUserIdQuery();
 
-    useEffect(() => {
-        if (totalVisitsData) {
-            const { total, today, locations } = totalVisitsData
-            setTotalVisitsDiff(
-                today === total ? total * 100 : Math.round(((total / (total - today)) * 100 - 100) * 10) / 10
-            )
-        }
-    }, [totalVisitsData])
-    return (
+  useEffect(() => {
+    if (totalVisitsData) {
+      const { total, today } = totalVisitsData;
+      setTotalVisitsDiff(
+        today === total ? total * 100 : Math.round(((total / (total - today)) * 100 - 100) * 10) / 10,
+      );
+    }
+  }, [totalVisitsData]);
+  return (
         <Slide in={true} direction="right" timeout={500}>
             <Card elevation={3} sx={{ height: '170px' }} >
                 <CardContent>
@@ -39,5 +39,5 @@ export const TotalVisitsCard: FC = () => {
             </Card>
 
         </Slide>
-    )
-}
+  );
+};

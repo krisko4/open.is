@@ -1,48 +1,47 @@
 
-import { makeStyles } from "@mui/styles"
-import { FC, useState } from "react"
-import Carousel from "react-material-ui-carousel"
-import { setCurrentPlace, useImagesSelector } from "redux-toolkit/slices/currentPlaceSlice"
-import { ImageCarouselItem } from "../PlaceData/ImageCarousel/ImageCarouselItem"
-import {Image} from 'contexts/PlaceProps'
+import { makeStyles } from '@mui/styles';
+import { FC, useState } from 'react';
+import Carousel from 'react-material-ui-carousel';
+import { ImageCarouselItem } from '../PlaceData/ImageCarousel/ImageCarouselItem';
+import { Image } from 'redux-toolkit/slices/PlaceProps';
 
 const useStyles = makeStyles({
-    carousel: {
-        flexGrow: 1
+  carousel: {
+    flexGrow: 1,
+  },
+  media: {
+    height: 400,
+    flexGrow: 1,
+    '&&:hover': {
+      filter: 'brightness(85%)',
     },
-    media: {
-        height: 400,
-        flexGrow: 1,
-        '&&:hover': {
-            filter: 'brightness(85%)'
-        },
-        transition: '.5s',
+    transition: '.5s',
 
+  },
+  bottomText: {
+    position: 'absolute',
+    bottom: 0,
+    height: 70,
+    background: 'black',
+    opacity: '0.7',
+    transition: '.3s',
+    '&&:hover': {
+      opacity: '0.8',
     },
-    bottomText: {
-        position: 'absolute',
-        bottom: 0,
-        height: 70,
-        background: 'black',
-        opacity: '0.7',
-        transition: '.3s',
-        '&&:hover': {
-            opacity: '0.8'
-        }
 
-    }
-})
+  },
+});
 interface Props{
-    images: Image[],
-    address : string
+  images: Image[],
+  address : string
 }
 
-export const CachedImageCarousel: FC<Props> = ({images, address}) => {
+export const CachedImageCarousel: FC<Props> = ({ images, address }) => {
 
-    const classes = useStyles()
-    const [currentIndex, setCurrentIndex] = useState(1)
+  const classes = useStyles();
+  const [currentIndex, setCurrentIndex] = useState(1);
 
-    return (
+  return (
         <Carousel
             stopAutoPlayOnHover
             autoPlay={false}
@@ -66,5 +65,5 @@ export const CachedImageCarousel: FC<Props> = ({images, address}) => {
                 </div>)
             }
         </Carousel >
-    )
-}
+  );
+};

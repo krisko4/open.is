@@ -1,10 +1,10 @@
-import { Card, CardContent, Grid, Avatar, Typography } from "@mui/material"
+import { Card, CardContent, Grid, Avatar, Typography } from '@mui/material';
 import { Rating } from '@mui/material';
-import { FC, useState } from "react"
+import { FC, useState } from 'react';
 
-export const OpinionCard: FC<any> = ({opinion}) => {
-    const [elevation, setElevation] = useState(3)
-    return (
+export const OpinionCard: FC<any> = ({ opinion }) => {
+  const [elevation, setElevation] = useState(3);
+  return (
         <Card onMouseEnter={() => setElevation(10)} onMouseLeave={() => setElevation(3)} elevation={elevation} style={{ borderRadius: 10 }}  >
             <CardContent>
                 <Grid container justifyContent="space-around">
@@ -21,5 +21,5 @@ export const OpinionCard: FC<any> = ({opinion}) => {
                 </Grid>
             </CardContent>
         </Card>
-    );
-}
+  );
+};

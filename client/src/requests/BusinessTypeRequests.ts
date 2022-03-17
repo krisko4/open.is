@@ -1,4 +1,4 @@
-import myAxios from "../axios/axios"
+import myAxios from '../axios/axios';
 
 export const getBusinessTypes = () =>
-    myAxios.get('/business_types')
+  myAxios.get('/business_types');

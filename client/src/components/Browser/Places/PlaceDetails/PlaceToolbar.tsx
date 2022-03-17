@@ -1,58 +1,56 @@
-import { KeyboardReturn } from "@mui/icons-material"
-import { LoadingButton } from "@mui/lab"
+import { KeyboardReturn } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Toolbar, IconButton, Grid, Button, Tooltip } from "@mui/material"
-import { FC, useEffect, useState } from "react"
-import { setSubscription } from "redux-toolkit/slices/currentPlaceSlice"
-import { removeSubscription } from "requests/SubscriptionRequests"
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { useCustomSnackbar } from "utils/snackbars";
-import { SubscribeDialog } from "./SubscribeDialog";
-import { useNavigate, useParams } from "react-router-dom";
-import { useLoginContext } from "contexts/LoginContext";
-import { CurrentPlaceProps } from "contexts/PlaceProps";
-import { setMapCoords, closePopup } from "redux-toolkit/slices/mapSlice";
-import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from "redux-toolkit/api/placesApi";
+import { Toolbar, IconButton, Grid, Button, Tooltip } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useCustomSnackbar } from 'utils/snackbars';
+import { SubscribeDialog } from './SubscribeDialog';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useLoginContext } from 'contexts/LoginContext';
+import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
+import { setMapCoords, closePopup } from 'redux-toolkit/slices/mapSlice';
+import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'redux-toolkit/api/placesApi';
 
 interface Props {
-    place: CurrentPlaceProps
+  place: CurrentPlaceProps
 }
 
 export const PlaceToolbar: FC<Props> = ({ place }) => {
 
-    const [isDialogOpen, setDialogOpen] = useState(false)
-    const { userData } = useLoginContext()
-    const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(place._id as string)
-    const [unsubscribeLocation, { isLoading }] = useUnsubscribeLocationMutation()
-    const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-    const { placeId, locationId } = useParams()
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const { userData } = useLoginContext();
+  const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
+  const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(place._id as string);
+  const [unsubscribeLocation, { isLoading }] = useUnsubscribeLocationMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { placeId, locationId } = useParams();
 
-    useEffect(() => {
-        dispatch(setMapCoords({
-            lat: place.lat,
-            lng: place.lng,
-            zoom: 15
-        }))
-    }, [place])
+  useEffect(() => {
+    dispatch(setMapCoords({
+      lat: place.lat,
+      lng: place.lng,
+      zoom: 15,
+    }));
+  }, [place]);
 
-    const closePlaceDetails = () => {
-        dispatch(closePopup())
-        navigate(`/search`)
+  const closePlaceDetails = () => {
+    dispatch(closePopup());
+    navigate('/search');
+  };
+
+  const unsubscribe = async () => {
+    try {
+      await unsubscribeLocation(place._id as string).unwrap();
+      enqueueInfoSnackbar('You have cancelled your subscription');
+    } catch (err) {
+      enqueueErrorSnackbar();
     }
-
-    const unsubscribe = async () => {
-        try {
-            await unsubscribeLocation(place._id as string).unwrap()
-            enqueueInfoSnackbar('You have cancelled your subscription')
-        } catch (err) {
-            enqueueErrorSnackbar()
-        }
-    }
+  };
 
 
-    return (
+  return (
         <Toolbar style={{ flexGrow: 1 }} disableGutters>
             <IconButton onClick={() => closePlaceDetails()} color="primary" size="large">
                 <KeyboardReturn />
@@ -82,7 +80,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
                             </LoadingButton>
                         </span>
                     </Tooltip>
-                    :
+                  :
                     <Tooltip title={!userData.isLoggedIn ? 'Sign in to subscribe' : place.isUserOwner ? 'You cannot subscribe to your own place' : 'Subscribe'}>
                         <span>
                             <Button
@@ -99,5 +97,5 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
             </Grid>
             <SubscribeDialog currentPlace={place} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
         </Toolbar>
-    )
-}
+  );
+};

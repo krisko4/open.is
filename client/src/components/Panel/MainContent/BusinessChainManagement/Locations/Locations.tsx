@@ -1,4 +1,4 @@
-import { Slide, Alert, Card, CardContent, CardMedia, Fade, Grid, Paper, Toolbar, Typography } from '@mui/material';
+import { Slide, Alert, Card, CardContent, CardMedia, Fade, Grid, Toolbar, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from '@mui/icons-material/Delete';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
@@ -14,12 +14,12 @@ import { useLogoSelector, useNameSelector, useSubtitleSelector } from 'redux-too
 export const Locations: FC = () => {
 
 
-    const logo = useLogoSelector()
-    const name = useNameSelector()
-    const subtitle = useSubtitleSelector()
+  const logo = useLogoSelector();
+  const name = useNameSelector();
+  const subtitle = useSubtitleSelector();
 
 
-    return (
+  return (
         <Scrollbars autoHide>
             <Fade in={true} timeout={1000}>
                 <Grid container sx={{ height: '100%' }}>
@@ -71,11 +71,11 @@ export const Locations: FC = () => {
                             </Grid>
                         </Grid>
                     </Toolbar>
-                    <Grid container justifyContent="center" sx={{pb: 1}}>
+                    <Grid container justifyContent="center" sx={{ pb: 1 }}>
                         <BusinessChainTable />
                     </Grid>
                 </Grid>
             </Fade>
         </Scrollbars>
-    );
+  );
 };

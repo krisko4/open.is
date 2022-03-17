@@ -1,30 +1,30 @@
-import { CssBaseline } from "@mui/material";
-import { Test } from "components/Test";
-import React, { FC } from "react";
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { CssBaseline } from '@mui/material';
+import { Test } from 'components/Test';
+import React, { FC } from 'react';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Confirmation } from './components/Auth/Confirmation';
 import { EmailChangeConfirmation } from './components/Auth/EmailChangeConfirmation';
-import Browser from "./components/Browser/Browser";
-import { About } from "./components/HomePage/About/About";
+import Browser from './components/Browser/Browser';
+import { About } from './components/HomePage/About/About';
 import { Contact } from './components/HomePage/Contact/Contact';
 import HomePage from './components/HomePage/MainPage/HomePage';
 import { Panel } from './components/Panel/Panel';
-import { ColorModeContextProvider } from "./contexts/ColorModeContext";
-import { BrowserTheme } from "./themes/BrowserTheme";
-import { PanelTheme } from "./themes/PanelTheme";
+import { ColorModeContextProvider } from './contexts/ColorModeContext';
+import { BrowserTheme } from './themes/BrowserTheme';
+import { PanelTheme } from './themes/PanelTheme';
 
 export function NoMatch() {
-    return (
+  return (
         <div>
             <h2>Nothing to see here!</h2>
             <p>
                 <Link to="/">Go to the home page</Link>
             </p>
         </div>
-    );
+  );
 }
 export const Router: FC = () => {
-    return (
+  return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -53,5 +53,5 @@ export const Router: FC = () => {
                 <Route path="/test" element={<Test/>} />
             </Routes>
         </BrowserRouter>
-    )
-}
+  );
+};

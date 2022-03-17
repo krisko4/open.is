@@ -1,50 +1,47 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Grid } from "@mui/material";
-import React, { FC, useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { useStepContext } from "../../../../../../contexts/StepContext";
-import { BusinessType } from "./BusinessType";
-import { BusinessTypeContainer } from "./BusinessTypeContainer";
-import { Description } from "./Description";
-import { DescriptionContainer } from "./DescriptionContainer";
-import { Subtitle } from "./Subtitle";
-import { SubtitleContainer } from "./SubtitleContainer";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Grid } from '@mui/material';
+import React, { FC, useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { useStepContext } from '../../../../../../contexts/StepContext';
+import { BusinessType } from './BusinessType';
+import { Description } from './Description';
+import { Subtitle } from './Subtitle';
 
 const schema = yup.object({
-    subtitle: yup.string().required('This field is required').max(100),
-    description: yup.string().required('This field is required').max(600),
-    type: yup.string().required()
-})
+  subtitle: yup.string().required('This field is required').max(100),
+  description: yup.string().required('This field is required').max(600),
+  type: yup.string().required(),
+});
 
 interface Inputs {
-    subtitle: string,
-    type: string | null,
-    description: string
+  subtitle: string,
+  type: string | null,
+  description: string
 }
 
 export const PlaceDetailsForm: FC = () => {
 
-    const { setActiveStep, activeStep, steps } = useStepContext()
+  const { setActiveStep, activeStep, steps } = useStepContext();
 
-    const methods = useForm<Inputs>({
-        resolver: yupResolver(schema),
-        mode: 'onChange',
-        defaultValues: {
-            subtitle: '',
-            type: null,
-            description: ''
-        }
-    });
+  const methods = useForm<Inputs>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+    defaultValues: {
+      subtitle: '',
+      type: null,
+      description: '',
+    },
+  });
 
-    useEffect(() => {
-        steps[activeStep].isValid = methods.formState.isValid
-    }, [methods.formState.isValid])
-
-
+  useEffect(() => {
+    steps[activeStep].isValid = methods.formState.isValid;
+  }, [methods.formState.isValid]);
 
 
-    return (
+
+
+  return (
         <FormProvider {...methods}>
             <form style={{ flexGrow: 1 }}>
                 <Grid item container>
@@ -70,5 +67,5 @@ export const PlaceDetailsForm: FC = () => {
                 </Grid>
             </form>
         </FormProvider>
-    );
-}
+  );
+};

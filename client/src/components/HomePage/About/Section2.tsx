@@ -1,11 +1,19 @@
-import { Fade, Slide, Grid, Typography } from "@mui/material";
-import React, { FC, useEffect } from "react";
+import { Fade, Slide, Grid, Typography, styled } from '@mui/material';
+import React, { FC } from 'react';
 
-export const Section2: FC<any> = ({ classes}) => {
+const StyledContainer = styled(Grid)({
+
+  height: '100vh',
+  width: '100vw',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.6)), url(${process.env.REACT_APP_BASE_URL}/images/office.jpg)`,
+});
+export const Section2: FC = () => {
 
     
-    return (
-        <Grid container alignItems="center" className={classes.background}>
+  return (
+        <StyledContainer container alignItems="center" >
             <Grid container>
                 <Grid item container justifyContent="center" lg={5} style={{ textAlign: 'center', marginLeft: 150, marginBottom: 150 }}>
                     <Fade in={true} timeout={3000}>
@@ -21,6 +29,6 @@ export const Section2: FC<any> = ({ classes}) => {
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
-    );
-}
+        </StyledContainer>
+  );
+};

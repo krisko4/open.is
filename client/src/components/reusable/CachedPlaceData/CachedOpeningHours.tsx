@@ -4,52 +4,28 @@ import { Fade, Button, Grid, Typography, CircularProgress } from '@mui/material'
 import React, { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetOpeningHoursForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
-import { useOpeningHoursDataSelector, useIdSelector, useIsAlwaysOpenSelector, useIsUserOwnerSelector, useOpeningHoursSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useColorMode } from '../../../contexts/ColorModeContext';
 import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
 import { Destinations } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard';
 
 
-const defaultHours = {
-    monday: {
-        isOpen: false
-    },
-    tuesday: {
-        isOpen: false
-    },
-    wednesday: {
-        isOpen: false
-    },
-    thursday: {
-        isOpen: false
-    },
-    friday: {
-        isOpen: false
-    },
-    saturday: {
-        isOpen: false
-    },
-    sunday: {
-        isOpen: false
-    },
-}
 
 export const CachedOpeningHours: FC = () => {
-    const { mode } = useColorMode()
-    const { locationId, placeId } = useParams()
-    const { data, isFetching } = useGetOpeningHoursForSelectedLocationQuery(locationId as string)
-    const navigate = useNavigate()
-    const navigateToOpeningHours = () => {
-        navigate(`/panel/management/${placeId}/${locationId}/${Destinations.OPENING_HOURS}`)
-    }
-    return (
+  const { mode } = useColorMode();
+  const { locationId, placeId } = useParams();
+  const { data, isFetching } = useGetOpeningHoursForSelectedLocationQuery(locationId as string);
+  const navigate = useNavigate();
+  const navigateToOpeningHours = () => {
+    navigate(`/panel/management/${placeId}/${locationId}/${Destinations.OPENING_HOURS}`);
+  };
+  return (
         <Fade in={true} timeout={500}>
             <Grid container direction="column" style={{ height: '100%' }} alignItems="center">
                 {isFetching ?
                     <Grid container sx={{ flexGrow: 1 }} justifyContent="center" alignItems="center">
                         <CircularProgress />
                     </Grid> :
-                    data && <>
+                  data && <>
                         {
                             data.openingHours || data.alwaysOpen ?
                                 <Grid container style={{ flexGrow: 1 }} justifyContent="center" alignItems="center" >
@@ -61,7 +37,7 @@ export const CachedOpeningHours: FC = () => {
                                         </Grid>
                                     }
                                 </Grid>
-                                :
+                              :
                                 <>
                                     <Grid justifyContent="center" style={{ height: '100%' }} direction="column" alignItems="center" container>
                                         <Typography variant="h6">Opening hours have not been specified yet.</Typography>
@@ -103,6 +79,6 @@ export const CachedOpeningHours: FC = () => {
                     </>}
             </Grid >
         </Fade >
-    );
+  );
 };
 

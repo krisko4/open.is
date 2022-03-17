@@ -3,28 +3,23 @@ import { CircularProgress, Grid, Rating, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { CachedOpinions } from 'components/reusable/CachedPlaceData/CachedOpinions';
 import * as React from 'react';
+import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useParams } from 'react-router-dom';
 import { useGetAverageNoteForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
-import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { useCurrentPlaceContext } from '../../../../../../contexts/PanelContexts/CurrentPlaceContext';
-import { Opinions } from '../../../../../reusable/Opinions/Opinions';
-type Props = {
-
-};
 
 const StyledRating = styled(Rating)({
-    marginTop: 20,
-    '& .MuiSvgIcon-root': {
-        height: '100px',
-        width: '100px'
-    }
-})
+  marginTop: 20,
+  '& .MuiSvgIcon-root': {
+    height: '100px',
+    width: '100px',
+  },
+});
 
-export const Overview = (props: Props) => {
-    const { locationId } = useParams()
-    const { data: averageNote, isFetching } = useGetAverageNoteForSelectedLocationQuery(locationId as string)
-    return (
+export const Overview : FC = () => {
+  const { locationId } = useParams();
+  const { data: averageNote, isFetching } = useGetAverageNoteForSelectedLocationQuery(locationId as string);
+  return (
         <Scrollbars>
             <Grid container sx={{ height: '100%' }} alignItems="center" direction="column" justifyContent="center">
                 {isFetching ? <CircularProgress /> :
@@ -44,5 +39,5 @@ export const Overview = (props: Props) => {
             </Grid>
 
         </Scrollbars>
-    );
+  );
 };

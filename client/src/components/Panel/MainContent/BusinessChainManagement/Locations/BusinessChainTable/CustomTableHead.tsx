@@ -1,73 +1,73 @@
-import { TableHead, TableRow, TableCell, Checkbox, TableSortLabel, Box } from "@mui/material";
-import { visuallyHidden } from "@mui/utils";
-import { FC } from "react";
+import { TableHead, TableRow, TableCell, Checkbox, TableSortLabel, Box } from '@mui/material';
+import { visuallyHidden } from '@mui/utils';
+import { FC } from 'react';
 
 type Order = 'asc' | 'desc';
 
 interface Props {
-    selectedLocations: string[],
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    order: Order;
-    orderBy: string;
-    rowCount: number;
+  selectedLocations: string[],
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
 }
 interface Data {
-    address: string,
-    visits: number,
-    opinions: number,
-    rating: number,
-    state: string
+  address: string,
+  visits: number,
+  opinions: number,
+  rating: number,
+  state: string
 }
 
 
 interface HeadCell {
-    disablePadding: boolean;
-    id: keyof Data;
-    label: string;
-    numeric: boolean;
+  disablePadding: boolean;
+  id: keyof Data;
+  label: string;
+  numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
-    {
-        id: 'address',
-        numeric: false,
-        disablePadding: true,
-        label: 'Address',
-    },
-    {
-        id: 'visits',
-        numeric: true,
-        disablePadding: false,
-        label: 'Visits',
-    },
-    {
-        id: 'opinions',
-        numeric: true,
-        disablePadding: false,
-        label: 'Opinions',
-    },
-    {
-        id: 'rating',
-        numeric: true,
-        disablePadding: false,
-        label: 'Rating',
-    },
-    {
-        id: 'state',
-        numeric: true,
-        disablePadding: false,
-        label: 'State',
-    },
+  {
+    id: 'address',
+    numeric: false,
+    disablePadding: true,
+    label: 'Address',
+  },
+  {
+    id: 'visits',
+    numeric: true,
+    disablePadding: false,
+    label: 'Visits',
+  },
+  {
+    id: 'opinions',
+    numeric: true,
+    disablePadding: false,
+    label: 'Opinions',
+  },
+  {
+    id: 'rating',
+    numeric: true,
+    disablePadding: false,
+    label: 'Rating',
+  },
+  {
+    id: 'state',
+    numeric: true,
+    disablePadding: false,
+    label: 'State',
+  },
 ];
 
 export const CustomTableHead: FC<Props> = ({ onSelectAllClick, order, orderBy, selectedLocations, rowCount, onRequestSort }) => {
-    const createSortHandler =
+  const createSortHandler =
         (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-            onRequestSort(event, property);
+          onRequestSort(event, property);
         };
 
-    return (
+  return (
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
@@ -101,5 +101,5 @@ export const CustomTableHead: FC<Props> = ({ onSelectAllClick, order, orderBy, s
                 ))}
             </TableRow>
         </TableHead>
-    );
-}
+  );
+};

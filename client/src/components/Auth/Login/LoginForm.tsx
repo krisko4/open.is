@@ -1,95 +1,89 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Typography } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import { Field, Form, Formik } from "formik";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import * as Yup from "yup";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { useLoginContext } from "../../../contexts/LoginContext";
-import { login } from "../../../requests/AuthRequests";
-import { setEmail } from "../../../store/actions/setEmail";
-import { useCustomSnackbar } from "../../../utils/snackbars";
-import { LoadingButton } from "../../reusable/LoadingButton";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { useAuthContext } from '../../../contexts/AuthContext';
+import { useLoginContext } from '../../../contexts/LoginContext';
+import { login } from '../../../requests/AuthRequests';
+import { useCustomSnackbar } from '../../../utils/snackbars';
+import { LoadingButton } from '../../reusable/LoadingButton';
 
 
 
 const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('This is not a valid e-mail').required('This field is required'),
-    password: Yup.string()
-        .required('This field is required')
-        .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-            "Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character"
-        ),
-})
+  email: Yup.string().email('This is not a valid e-mail').required('This field is required'),
+  password: Yup.string()
+    .required('This field is required')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character',
+    ),
+});
 
 export interface LoginInputs {
-    email: string,
-    password: string | null,
+  email: string,
+  password: string | null,
 }
 export const LoginForm = () => {
 
 
-    const { register, getValues, formState: { isValid, errors } } = useForm<LoginInputs>(
-        {
-            resolver: yupResolver(LoginSchema),
-            mode: 'onChange',
-            defaultValues: {
-                email: '',
-                password: ''
-            }
-        }
-    )
-    const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext()
-    const [loading, setLoading] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    const dispatch = useDispatch()
-    const { userData, setUserData } = useLoginContext()
+  const { register, getValues, formState: { isValid, errors } } = useForm<LoginInputs>(
+    {
+      resolver: yupResolver(LoginSchema),
+      mode: 'onChange',
+      defaultValues: {
+        email: '',
+        password: '',
+      },
+    },
+  );
+  const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { enqueueSuccessSnackbar } = useCustomSnackbar();
+  const {  setUserData } = useLoginContext();
 
-    const signIn = async () => {
-        const loginData = getValues()
-        setErrorMessage('')
-        setLoading(true)
-        dispatch(setEmail(userData.email))
-        try {
-            const response = await login({ ...loginData })
-            console.log(response.data)
-            localStorage.setItem('uid', response.data.uid)
-            localStorage.setItem('fullName', response.data.fullName)
-            localStorage.setItem('email', loginData.email)
-            response.data.img && localStorage.setItem('img', response.data.img)
-            setLoginOpen(false)
-            setUserData({
-                fullName: response.data.fullName,
-                email: loginData.email,
-                img: response.data.img,
-                isLoggedIn: true
-            })
-            enqueueSuccessSnackbar('You have signed in.')
-        } catch (err: any) {
-            console.log(err)
-            console.log(err.response.data)
-            if (err.response.data === `User is inactive`) {
-                setLoginOpen(false)
-                setConfirmationOpen(true)
-                return
-            }
-            setErrorMessage('Invalid credentials')
+  const signIn = async () => {
+    const loginData = getValues();
+    setErrorMessage('');
+    setLoading(true);
+    try {
+      const response = await login({ ...loginData });
+      console.log(response.data);
+      localStorage.setItem('uid', response.data.uid);
+      localStorage.setItem('fullName', response.data.fullName);
+      localStorage.setItem('email', loginData.email);
+      if (response.data.img) {
+        localStorage.setItem('img', response.data.img);
+      }
+      setLoginOpen(false);
+      setUserData({
+        fullName: response.data.fullName,
+        email: loginData.email,
+        img: response.data.img,
+        isLoggedIn: true,
+      });
+      enqueueSuccessSnackbar('You have signed in.');
+    } catch (err: any) {
+      console.log(err);
+      console.log(err.response.data);
+      if (err.response.data === 'User is inactive') {
+        setLoginOpen(false);
+        setConfirmationOpen(true);
+        return;
+      }
+      setErrorMessage('Invalid credentials');
 
-        } finally {
-            setLoading(false)
-        }
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
+  return (
         <form style={{ flexGrow: 1 }}>
             <Grid container justifyContent="center" alignItems="center">
                 <Grid container item lg={8} justifyContent="center" alignItems="center" direction="column" style={{ marginBottom: 10 }}>
@@ -117,7 +111,7 @@ export const LoginForm = () => {
                         helperText={errors.password?.message}
                         label="Password"
                     />
-                    <Link sx={{mb: 1}} variant="caption">I forgot my password</Link>
+                    <Link sx={{ mb: 1 }} variant="caption">I forgot my password</Link>
                     <LoadingButton
                         loading={loading}
                         fullWidth={true}
@@ -138,13 +132,13 @@ export const LoginForm = () => {
                     {/*<Grid item lg={10}>*/}
                     {/*    <FacebookLoginButton/>*/}
                     {/*</Grid>*/}
-                        <Typography sx={{mt: 1}} variant="caption">Don't have an account? <Link onClick={() => {
-                            setRegistrationOpen(true);
-                            setLoginOpen(false)
-                        }}>Click here to sign up</Link></Typography>
+                    <Typography sx={{ mt: 1 }} variant="caption">Don&quot;t have an account? <Link onClick={() => {
+                      setRegistrationOpen(true);
+                      setLoginOpen(false);
+                    }}>Click here to sign up</Link></Typography>
                 </Grid>
 
             </Grid>
         </form >
-    );
-}
+  );
+};

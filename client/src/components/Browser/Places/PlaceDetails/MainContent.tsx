@@ -1,41 +1,40 @@
-import { CardMedia, Fade, IconButton, Typography } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
 import LanguageIcon from '@mui/icons-material/Language';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Alert } from '@mui/material';
+import { Alert, CardMedia, Fade, IconButton, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Rating from '@mui/material/Rating';
 import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { CurrentPlaceProps } from "contexts/PlaceProps";
+import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
 interface Props {
-    place: CurrentPlaceProps,
+  place: CurrentPlaceProps,
 }
 
 const MainContent: FC<Props> = ({ place }) => {
 
 
-    const icons = [
-        {
-            icon: <PhoneIcon color="primary" />,
-            text: place.phone || 'Phone number'
-        },
-        {
-            icon: <MailOutlineIcon color="primary" />,
-            text: place.email || 'E-mail address'
-        },
-        {
-            icon: <LanguageIcon color="primary" />,
-            text: place.website || 'Website'
-        },
-    ]
+  const icons = [
+    {
+      icon: <PhoneIcon color="primary" />,
+      text: place.phone || 'Phone number',
+    },
+    {
+      icon: <MailOutlineIcon color="primary" />,
+      text: place.email || 'E-mail address',
+    },
+    {
+      icon: <LanguageIcon color="primary" />,
+      text: place.website || 'Website',
+    },
+  ];
 
 
 
-    return (
+  return (
         <Fade timeout={1000} in={true}>
             <Grid container >
                 <Grid container item>
@@ -45,7 +44,7 @@ const MainContent: FC<Props> = ({ place }) => {
                                     {place.status === 'open' ? <Alert severity="success" variant="filled" >
                                         This place is now {place.status?.toUpperCase()}
                                     </Alert>
-                                        : <Alert severity="error" variant="filled" >
+                                      : <Alert severity="error" variant="filled" >
                                             This place is now {place.status?.toUpperCase()}
                                         </Alert>
 
@@ -65,10 +64,10 @@ const MainContent: FC<Props> = ({ place }) => {
                         />
                     </Grid>
                         <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
-                        <Typography variant="h2" sx={{fontWeight: 'bold' }}>
+                        <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
                             {place.name}
                         </Typography>
-                        <Typography variant="h6" sx={{color: 'text.secondary'}}>
+                        <Typography variant="h6" sx={{ color: 'text.secondary' }}>
                             {place.subtitle}
                         </Typography>
                         <Typography variant="body1" color="primary">{place.type}</Typography>
@@ -78,7 +77,7 @@ const MainContent: FC<Props> = ({ place }) => {
                         </div>
                     </Grid>
                 </Grid>
-                <Grid item container justifyContent="center" sx={{mt: '10px', mb: '10px' }}>
+                <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
                     <Grid item lg={10}>
                         <Card elevation={10} style={{ flexGrow: 1 }}>
                             <CardContent>
@@ -88,12 +87,12 @@ const MainContent: FC<Props> = ({ place }) => {
 
                     </Grid>
                     <Grid item lg={10} style={{ marginTop: 20 }}>
-                        <Divider style={{ width: '100%'}}></Divider>
+                        <Divider style={{ width: '100%' }}></Divider>
                     </Grid>
                 </Grid>
                 <Grid item container lg={12} justifyContent="space-around" style={{ marginTop: 20, marginBottom: 10 }}>
                     {icons.map((item, index) => {
-                        return (
+                      return (
                             <Grid item lg={3} key={index}>
                                 <Card elevation={10}>
                                     <CardContent>
@@ -108,12 +107,12 @@ const MainContent: FC<Props> = ({ place }) => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                        );
+                      );
                     })}
                 </Grid>
             </Grid>
         </Fade >
-    );
-}
+  );
+};
 
 export default MainContent;

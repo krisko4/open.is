@@ -1,16 +1,16 @@
-import {Button, Dialog, DialogTitle, Grid, Typography, DialogContent, DialogContentText, DialogActions } from "@mui/material"
-import { NewsProps } from "contexts/PlaceProps"
-import { FC } from "react"
-import DialogTransition from "../DialogTransition"
+import { Button, Dialog, DialogTitle, Grid, Typography, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { NewsProps } from 'redux-toolkit/slices/PlaceProps';
+import { FC } from 'react';
+import DialogTransition from '../DialogTransition';
 
 interface Props{
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    news: NewsProps
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  news: NewsProps
 }
 
-export const NewsDetailsDialog: FC<Props> = ({dialogOpen ,setDialogOpen, news}) => {
-    return (
+export const NewsDetailsDialog: FC<Props> = ({ dialogOpen, setDialogOpen, news }) => {
+  return (
 
         <Dialog
             open={dialogOpen}
@@ -38,5 +38,5 @@ export const NewsDetailsDialog: FC<Props> = ({dialogOpen ,setDialogOpen, news}) 
                 <Button onClick={() => setDialogOpen(false)} color="primary">Okay</Button>
             </DialogActions>
         </Dialog>
-    )
-}
+  );
+};

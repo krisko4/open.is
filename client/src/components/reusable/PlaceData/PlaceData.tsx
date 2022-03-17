@@ -1,26 +1,25 @@
-import { Grid, Card, Divider } from "@mui/material"
-import { ImageCarousel } from "components/reusable/PlaceData/ImageCarousel/ImageCarousel"
-import { FC } from "react"
-import { ContactDetails } from "./ContactDetails"
-import { PlaceDescription } from "./PlaceDescription"
-import { PlaceLogo } from "./PlaceLogo"
-import { PlaceName } from "./PlaceName"
-import { PlaceRating } from "./PlaceRating"
-import { PlaceStatus } from "./PlaceStatus"
-import { PlaceSubtitle } from "./PlaceSubtitle"
-import { PlaceTabs } from "./PlaceTabs"
-import { PlaceType } from "./PlaceType"
-import { SocialIcons } from "./SocialIcons"
+import { Grid, Card, Divider } from '@mui/material';
+import { ImageCarousel } from 'components/reusable/PlaceData/ImageCarousel/ImageCarousel';
+import { FC } from 'react';
+import { ContactDetails } from './ContactDetails';
+import { PlaceDescription } from './PlaceDescription';
+import { PlaceLogo } from './PlaceLogo';
+import { PlaceName } from './PlaceName';
+import { PlaceRating } from './PlaceRating';
+import { PlaceStatus } from './PlaceStatus';
+import { PlaceSubtitle } from './PlaceSubtitle';
+import { PlaceTabs } from './PlaceTabs';
+import { PlaceType } from './PlaceType';
+import { SocialIcons } from './SocialIcons';
 
 interface Props {
-    isEditable?: boolean,
-    logoFile?: File | null,
-    setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>
+  isEditable?: boolean,
+  setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>
 }
 
-export const PlaceData: FC<Props> = ({isEditable, logoFile, setLogoFile}) => {
+export const PlaceData: FC<Props> = ({ isEditable, setLogoFile }) => {
     
-    return (
+  return (
         <>
             <Grid container>
                 <ImageCarousel isEditable={isEditable} />
@@ -39,7 +38,7 @@ export const PlaceData: FC<Props> = ({isEditable, logoFile, setLogoFile}) => {
             </Grid>
             <Grid container item sx={{ mt: '20px' }}>
                 <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
-                    <PlaceLogo isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
+                    <PlaceLogo isEditable={isEditable} setLogoFile={setLogoFile} />
                     <PlaceRating />
                 </Grid>
                 <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
@@ -62,5 +61,5 @@ export const PlaceData: FC<Props> = ({isEditable, logoFile, setLogoFile}) => {
             </Grid>
             <PlaceTabs />
         </>
-    )
-}
+  );
+};

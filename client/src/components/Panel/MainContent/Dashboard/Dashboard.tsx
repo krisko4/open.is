@@ -1,59 +1,56 @@
-import { Slide, Avatar, CircularProgress, Fade, Rating, Typography } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Grid from "@mui/material/Grid";
-import { isToday } from "date-fns";
-import React, { FC, useEffect, useState } from "react";
-import Scrollbars from "react-custom-scrollbars";
-import { useGetAllVisitsByUserIdQuery, useGetPlacesByUserId } from "redux-toolkit/api/placesApi";
-import { RawPlaceDataProps, VisitCount } from "../../../../contexts/PlaceProps";
+import { Slide, CircularProgress, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import React, { FC, useEffect, useState } from 'react';
+import { useGetAllVisitsByUserIdQuery } from 'redux-toolkit/api/placesApi';
+import { VisitCount } from '../../../../redux-toolkit/slices/PlaceProps';
 import { ActivityChart } from './Charts/ActivityChart';
-import { TotalOpinionsCard } from "./TotalOpinionsCard";
-import { TotalVisitsCard } from "./TotalVisitsCard";
+import { TotalOpinionsCard } from './TotalOpinionsCard';
+import { TotalVisitsCard } from './TotalVisitsCard';
 
 const generateVisitsData = (visits: VisitCount[]) => {
-    let count = 0;
-    return visits.map(visit => {
-        count += visit.visitCount
-        return [visit.date, count]
-    })
-}
+  let count = 0;
+  return visits.map(visit => {
+    count += visit.visitCount;
+    return [visit.date, count];
+  });
+};
 
 export const Dashboard: FC = () => {
 
 
-    const [mostPopularPlace, setMostPopularPlace] = useState<RawPlaceDataProps | null>(null)
-    const [activityChartSeries, setActivityChartSeries] = useState<any>()
-    const { data: totalVisitsData, isFetching, refetch } = useGetAllVisitsByUserIdQuery()
+  //   const [mostPopularPlace, setMostPopularPlace] = useState<RawPlaceDataProps | null>(null);
+  const [activityChartSeries, setActivityChartSeries] = useState<any>();
+  const { data: totalVisitsData, isFetching, refetch } = useGetAllVisitsByUserIdQuery();
 
-    useEffect(() => {
-        if (totalVisitsData) {
-            const { total, today, locations } = totalVisitsData
-            setActivityChartSeries(locations.map(loc => {
-                return {
-                    name: loc.name,
-                    data: generateVisitsData(loc.visits)
-                }
-            }))
-            // //@ts-ignore
-            // const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
-            // setMostPopularPlace(mostPopularPlace)
-        }
+  useEffect(() => {
+    if (totalVisitsData) {
+      const {  locations } = totalVisitsData;
+      setActivityChartSeries(locations.map(loc => {
+        return {
+          name: loc.name,
+          data: generateVisitsData(loc.visits),
+        };
+      }));
+      // //@ts-ignore
+      // const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
+      // setMostPopularPlace(mostPopularPlace)
+    }
 
-    }, [totalVisitsData])
+  }, [totalVisitsData]);
 
-    useEffect(() => {
-        refetch()
-    }, [])
+  useEffect(() => {
+    refetch();
+  }, []);
 
-    return (
-        <Scrollbars>
+  return (
             <Grid container sx={{ flexGrow: 1, height: '100%' }}>
                 {isFetching ?
                     <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                         <CircularProgress />
                     </Grid> :
-                    totalVisitsData &&
+                  totalVisitsData &&
                     <Grid container justifyContent="center" sx={{ pb: '50px', pt: '50px' }}>
                         <Grid item lg={11}>
                             <Typography variant="h3" >
@@ -181,6 +178,5 @@ export const Dashboard: FC = () => {
                 }
             </Grid>
 
-        </Scrollbars>
-    );
-}
+  );
+};

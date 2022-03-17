@@ -1,23 +1,23 @@
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
-import { IconButton, Tooltip } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Toolbar from "@mui/material/Toolbar";
-import { FC } from "react";
+import { IconButton, Tooltip } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Toolbar from '@mui/material/Toolbar';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from "../../contexts/AuthContext";
-import { useLoginContext } from "../../contexts/LoginContext";
-import { ColorModeSwitch } from "../reusable/ColorModeSwitch";
-import { SignOutButton } from "../reusable/SignOutButton";
+import { useAuthContext } from '../../contexts/AuthContext';
+import { useLoginContext } from '../../contexts/LoginContext';
+import { ColorModeSwitch } from '../reusable/ColorModeSwitch';
+import { SignOutButton } from '../reusable/SignOutButton';
 const FirstHeader: FC = () => {
 
-    const { setLoginOpen } = useAuthContext()
-    const { userData } = useLoginContext()
-    const navigate = useNavigate()
+  const { setLoginOpen } = useAuthContext();
+  const { userData } = useLoginContext();
+  const navigate = useNavigate();
 
-    return (
+  return (
         <AppBar position="static"
         >
             <Toolbar>
@@ -32,7 +32,7 @@ const FirstHeader: FC = () => {
                         <Button color="primary" onClick={() => setLoginOpen(true)} variant="contained">
                             Sign in
                         </Button>
-                        :
+                      :
                         <>
                             <Tooltip title="Panel">
                                 <IconButton sx={{ mr: 1 }} onClick={() => navigate('/panel')} color="inherit" size="large">
@@ -45,7 +45,7 @@ const FirstHeader: FC = () => {
                 </Grid>
             </Toolbar>
         </AppBar>
-    );
-}
+  );
+};
 
-export default FirstHeader
+export default FirstHeader;

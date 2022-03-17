@@ -1,15 +1,14 @@
-import { Grow, Zoom, Fade } from "@mui/material";
-import CardMedia from "@mui/material/CardMedia";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React, { FC } from "react";
+import { Grow, Fade } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import React, { FC } from 'react';
 
 interface Props {
-    isVisible3: boolean
+  isVisible3: boolean
 }
 
 const Section3: FC<Props> = ({ isVisible3 }) => {
-    return (
+  return (
         <Grid container justifyContent="space-evenly">
 
             <Grid item container lg={5} md={8} xs={10} alignItems="center" >
@@ -20,7 +19,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
                     <div style={{ textAlign: 'center' }}>
                         <Typography variant="h5" style={{ color: 'white' }}>Locate your desired place by address or name</Typography>
                         <Typography variant="subtitle1" style={{ color: 'lightgrey', marginTop: 10 }}>
-                            Access the information about most recent news from places you'd like to visit.
+                            Access the information about most recent news from places you would like to visit.
                             Find out about upcoming events, bargains or parties. Order food from your favourite
                             restaurant via UberEats or book a visit to a hairdresser.
                         </Typography>
@@ -53,7 +52,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
                 timeout={3000}
             >
                 <Grid item lg={5}>
-                    <img src={`https://cdn.dribbble.com/users/568/screenshots/2937224/browserpreview_tmp.gif`} style={{ width: '100%' }} />
+                    <img src={'https://cdn.dribbble.com/users/568/screenshots/2937224/browserpreview_tmp.gif'} style={{ width: '100%' }} />
                 </Grid>
             </Fade>
             {/* <Grow
@@ -87,7 +86,7 @@ const Section3: FC<Props> = ({ isVisible3 }) => {
 
 
         </Grid>
-    );
-}
+  );
+};
 
-export default Section3
+export default Section3;

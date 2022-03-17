@@ -1,16 +1,14 @@
-import { Divider, Grid, Paper, Rating } from "@mui/material"
-import { FC } from "react"
-import Scrollbars from "react-custom-scrollbars"
-import { useBusinessChainContext } from "../../../../../contexts/PanelContexts/BusinessChainContext"
+import { Grid, Paper } from '@mui/material';
+import { FC } from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 
 export const BusinessChainSettings: FC = () => {
-    const { businessChain } = useBusinessChainContext()
-    // const { imageFile, setImageFile, currentPlace, setCurrentPlace } = useCurrentPlaceContext()
+  // const { imageFile, setImageFile, currentPlace, setCurrentPlace } = useCurrentPlaceContext()
 
 
 
 
-    return (
+  return (
         <Grid container alignItems="center" justifyContent="center">
             <Grid item lg={6}>
             </Grid>
@@ -59,5 +57,5 @@ export const BusinessChainSettings: FC = () => {
             </Grid>
 
         </Grid >
-    )
-}
+  );
+};

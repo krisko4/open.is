@@ -16,39 +16,39 @@ import { BusinessChainSettings } from './Settings/BusinessChainSettings';
 // }
 
 export const BusinessChainManagement: FC = () => {
-    const dispatch = useAppDispatch()
-    const { placeId } = useParams()
-    const { data: place, isLoading, isFetching } = useGetPlaceByIdQuery(placeId as string)
+  const dispatch = useAppDispatch();
+  const { placeId } = useParams();
+  const { data: place, isLoading, isFetching } = useGetPlaceByIdQuery(placeId as string);
 
-    useEffect(() => {
-        if (place) {
-            dispatch(setBusinessChain(place))
-        }
-    }, [place])
+  useEffect(() => {
+    if (place) {
+      dispatch(setBusinessChain(place));
+    }
+  }, [place]);
 
-    const tabs = useMemo(() => {
-        return  [
-            {
-                name: 'Dashboard',
-                content: <NotReady key={placeId} />,
-                url: 'dashboard'
-            },
-            {
-                name: 'Locations',
-                content: <Locations key={placeId} />,
-                url: 'locations'
-            },
-            {
-                name: 'Settings',
-                content: <BusinessChainSettings key={placeId} />,
-                url: 'settings'
-            },
-        ]
+  const tabs = useMemo(() => {
+    return  [
+      {
+        name: 'Dashboard',
+        content: <NotReady key={placeId} />,
+        url: 'dashboard',
+      },
+      {
+        name: 'Locations',
+        content: <Locations key={placeId} />,
+        url: 'locations',
+      },
+      {
+        name: 'Settings',
+        content: <BusinessChainSettings key={placeId} />,
+        url: 'settings',
+      },
+    ];
 
-    }, [placeId])
+  }, [placeId]);
 
 
-    return (
+  return (
         <>
             {
                 isLoading || isFetching ?
@@ -58,5 +58,5 @@ export const BusinessChainManagement: FC = () => {
                     <PanelTabNavigator tabs={tabs} />
             }
         </>
-    );
+  );
 };

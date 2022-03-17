@@ -4,127 +4,120 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LanguageIcon from '@mui/icons-material/Language';
 import MailIcon from '@mui/icons-material/Mail';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid, InputAdornment, SxProps, TextField, Theme, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
+import { Button, Grid, InputAdornment, SxProps, TextField, Theme, Typography } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import ReactPhoneInput from 'react-phone-input-material-ui';
 import { useChangeContactDetailsForSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
-import { useAppDispatch } from 'redux-toolkit/hooks';
 import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
-import * as yup from "yup";
+import * as yup from 'yup';
 import { ContactData } from '../../../../../../../requests/PlaceRequests';
 import { useCustomSnackbar } from '../../../../../../../utils/snackbars';
 
 
-const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
-const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
-const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/
-const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/
+// const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/;
+const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/;
+const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/;
+const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/;
 
 
 type Inputs = {
-    website: string,
-    phone: string,
-    email: string,
-    facebook: string,
-    instagram: string
+  website: string,
+  phone: string,
+  email: string,
+  facebook: string,
+  instagram: string
 };
 
 
 const schema = yup.object({
-    phone: yup.string().min(8).max(15).nullable().transform((value) => !!value ? value : null),
-    email: yup.string().email('This is not a valid e-mail address'),
-    website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
-    facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
-    instagram: yup.string().matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
+  phone: yup.string().min(8).max(15).nullable().transform((value) => !!value ? value : null),
+  email: yup.string().email('This is not a valid e-mail address'),
+  website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
+  facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
+  instagram: yup.string().matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
 
-})
+});
 
 interface Props {
-    selectedLocations: string[],
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  selectedLocations: string[],
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
 
 }
 
 interface FSProps {
-    enabled: boolean,
-    name: string,
-    setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
-    sx?: SxProps<Theme>;
+  enabled: boolean,
+  name: string,
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  sx?: SxProps<Theme>;
 }
 const FieldStateButton: FC<FSProps> = ({ name, children, enabled, setEnabled, ...rest }) => {
-    const { clearErrors, trigger } = useFormContext()
+  const { clearErrors, trigger } = useFormContext();
 
-    useEffect(() => {
-        if (!enabled) {
-            clearErrors(name)
-            return
-        }
-        trigger(name)
-    }, [enabled])
+  useEffect(() => {
+    if (!enabled) {
+      clearErrors(name);
+      return;
+    }
+    trigger(name);
+  }, [enabled]);
 
-    return (
-        <Button {...rest} onClick={() => setEnabled(enabled => !enabled)} color={enabled ? 'success' : 'primary'} variant="outlined">
+  return (
+        <Button {...rest} onClick={() => setEnabled(isEnabled => !isEnabled)} color={enabled ? 'success' : 'primary'} variant="outlined">
             {children}
         </Button>
-    )
-}
+  );
+};
 
 export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocations }) => {
 
-    const [loading, setLoading] = useState(false)
-    const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
+  const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
 
-    const [phoneEnabled, setPhoneEnabled] = useState(false)
-    const [emailEnabled, setEmailEnabled] = useState(false)
-    const [websiteEnabled, setWebsiteEnabled] = useState(false)
-    const [facebookEnabled, setFacebookEnabled] = useState(false)
-    const [instagramEnabled, setInstagramEnabled] = useState(false)
-    const dispatch = useAppDispatch()
-    const businessChainId = useBusinessChainIdSelector()
-    const [changeContactDetailsForSelectedLocations, { isLoading }] = useChangeContactDetailsForSelectedLocationsMutation()
+  const [phoneEnabled, setPhoneEnabled] = useState(false);
+  const [emailEnabled, setEmailEnabled] = useState(false);
+  const [websiteEnabled, setWebsiteEnabled] = useState(false);
+  const [facebookEnabled, setFacebookEnabled] = useState(false);
+  const [instagramEnabled, setInstagramEnabled] = useState(false);
+  const businessChainId = useBusinessChainIdSelector();
+  const [changeContactDetailsForSelectedLocations, { isLoading }] = useChangeContactDetailsForSelectedLocationsMutation();
+  const methods = useForm<Inputs>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+    defaultValues: {
+      phone: '',
+      email: '',
+      website: '',
+      facebook: '',
+      instagram: '',
+    },
+  });
+  const { control, register, getValues, formState: { errors } } = methods;
 
 
 
-    const handleClick = async () => {
-        try {
-            const values: ContactData = {}
-            phoneEnabled && Object.assign(values, { phone: getValues('phone') })
-            emailEnabled && Object.assign(values, { email: getValues('email') })
-            websiteEnabled && Object.assign(values, { website: getValues('website') })
-            facebookEnabled && Object.assign(values, { facebook: 'https://facebook.com/' + getValues('facebook') })
-            instagramEnabled && Object.assign(values, { instagram: 'https://instagram.com/' + getValues('instagram') })
-            await changeContactDetailsForSelectedLocations({
-                placeId: businessChainId as string,
-                contactDetails: values,
-                locationIds: selectedLocations
-            })
-            // dispatch(setContactDetailsForSelectedLocations({
-            //     selectedLocations: selectedLocations,
-            //     contactDetails: values
-            // }))
-            enqueueSuccessSnackbar('You have successfully changed contact details')
-            setDialogOpen(false)
-        } catch (err) {
-            enqueueErrorSnackbar()
-        }
+  const handleClick = async () => {
+    try {
+      const values: ContactData = {};
+      if (phoneEnabled)  Object.assign(values, { phone: getValues('phone') });
+      if (emailEnabled)  Object.assign(values, { email: getValues('email') });
+      if (websiteEnabled) Object.assign(values, { website: getValues('website') });
+      if (facebookEnabled)  Object.assign(values, { facebook: 'https://facebook.com/' + getValues('facebook') });
+      if (instagramEnabled)  Object.assign(values, { instagram: 'https://instagram.com/' + getValues('instagram') });
+      await changeContactDetailsForSelectedLocations({
+        placeId: businessChainId as string,
+        contactDetails: values,
+        locationIds: selectedLocations,
+      }).unwrap();
+      enqueueSuccessSnackbar('You have successfully changed contact details');
+      setDialogOpen(false);
+    } catch (err) {
+      enqueueErrorSnackbar();
     }
+  };
 
-    const methods = useForm<Inputs>({
-        resolver: yupResolver(schema),
-        mode: 'onChange',
-        defaultValues: {
-            phone: '',
-            email: '',
-            website: '',
-            facebook: '',
-            instagram: ''
-        }
-    });
 
-    const { control, register, setValue, getValues, formState: { errors, isValid } } = methods
 
-    return (
+  return (
         <FormProvider {...methods}>
             <Typography sx={{ textAlign: 'center' }} variant="h4">
                 Select the fields that you would like to modify.
@@ -179,7 +172,7 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                     placeholder="E-mail address"
                     color="secondary"
                     InputProps={{
-                        startAdornment: <InputAdornment position="start"><MailIcon color="primary" /></InputAdornment>
+                      startAdornment: <InputAdornment position="start"><MailIcon color="primary" /></InputAdornment>,
                     }}
                     fullWidth
                 />
@@ -195,7 +188,7 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                     {...register('website')}
                     fullWidth
                     InputProps={{
-                        startAdornment: <InputAdornment position="start"><LanguageIcon color="primary" /></InputAdornment>
+                      startAdornment: <InputAdornment position="start"><LanguageIcon color="primary" /></InputAdornment>,
                     }}
                 />
                 <TextField
@@ -210,20 +203,20 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                     color="warning"
                     sx={{ mt: 1 }}
                     inputProps={{
-                        maxLength: 50
+                      maxLength: 50,
                     }}
                     InputProps={{
-                        startAdornment: (
+                      startAdornment: (
                             <InputAdornment position="start">
                                 <p>https://facebook.com/</p>
                             </InputAdornment>
-                        ),
-                        endAdornment: (
+                      ),
+                      endAdornment: (
                             <InputAdornment position="end">
                                 <FacebookIcon color="primary" />
                             </InputAdornment>
 
-                        )
+                      ),
                     }}
                 />
                 <TextField
@@ -237,19 +230,19 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                     fullWidth
                     placeholder="my-profile"
                     inputProps={{
-                        maxLength: 50
+                      maxLength: 50,
                     }}
                     InputProps={{
-                        startAdornment: (
+                      startAdornment: (
                             <InputAdornment position="start">
                                 <p>https://instagram.com/</p>
                             </InputAdornment>
-                        ),
-                        endAdornment: (
+                      ),
+                      endAdornment: (
                             <InputAdornment position="end">
                                 <InstagramIcon color="primary" />
                             </InputAdornment>
-                        )
+                      ),
                     }}
                 />
                 <LoadingButton
@@ -269,5 +262,5 @@ export const ContactDetailsEditForm: FC<Props> = ({ setDialogOpen, selectedLocat
                 </LoadingButton>
             </form >
         </FormProvider>
-    );
-}
+  );
+};

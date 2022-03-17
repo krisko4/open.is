@@ -1,51 +1,51 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, Grid, TextField, InputAdornment, IconButton, DialogActions } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, Grid, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
 import Picker, { IEmojiData } from 'emoji-picker-react';
-import { NewsProps } from "contexts/PlaceProps";
-import { FC, useRef, useState } from "react";
-import { setNews, useIdSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { addNews } from "requests/NewsRequests";
-import { useCustomSnackbar } from "utils/snackbars";
-import DialogTransition from "../DialogTransition";
-import { LoadingButton } from "../LoadingButton";
+import { FC, useRef, useState } from 'react';
+import { useIdSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useCustomSnackbar } from 'utils/snackbars';
+import DialogTransition from '../DialogTransition';
+import { LoadingButton } from '../LoadingButton';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { useAddNewsMutation } from "redux-toolkit/api/placesApi";
+import { useAddNewsMutation } from 'redux-toolkit/api/placesApi';
 
 interface Props {
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
-    const [newsTitle, setNewsTitle] = useState('')
-    const [newsContent, setNewsContent] = useState('')
-    const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false)
-    const emojiSource = useRef<'title' | 'content'>('title')
-    const dispatch = useAppDispatch()
-    const placeId = useIdSelector()
-    const [addNews, { isLoading }] = useAddNewsMutation()
+  const [newsTitle, setNewsTitle] = useState('');
+  const [newsContent, setNewsContent] = useState('');
+  const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const emojiSource = useRef<'title' | 'content'>('title');
+  const placeId = useIdSelector();
+  const [addNews, { isLoading }] = useAddNewsMutation();
 
 
-    const handleEmoji = (emoji: IEmojiData) => {
-        setEmojiPickerOpen(false)
-        emojiSource.current === 'title' ? setNewsTitle(title => title + emoji.emoji) : setNewsContent(content => content + emoji.emoji)
+  const handleEmoji = (emoji: IEmojiData) => {
+    setEmojiPickerOpen(false);
+    if (emojiSource.current === 'title'){
+      setNewsTitle(title => title + emoji.emoji); 
+      return;
     }
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
+    setNewsContent(content => content + emoji.emoji);
+  };
+  const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
 
-    const submitNews = async () => {
-        try {
-            await addNews({
-                title : newsTitle, 
-                content :newsContent,
-                locationId: placeId as string
-            }).unwrap()
-            // dispatch(setNews(res.data as NewsProps))
-            enqueueSuccessSnackbar('News added successfully')
-            setDialogOpen(false)
-        } catch (err) {
-            enqueueErrorSnackbar()
-        } 
-    }
-    return (
+  const submitNews = async () => {
+    try {
+      await addNews({
+        title : newsTitle, 
+        content :newsContent,
+        locationId: placeId as string,
+      }).unwrap();
+      // dispatch(setNews(res.data as NewsProps))
+      enqueueSuccessSnackbar('News added successfully');
+      setDialogOpen(false);
+    } catch (err) {
+      enqueueErrorSnackbar();
+    } 
+  };
+  return (
 
         <Dialog
             open={dialogOpen}
@@ -67,14 +67,14 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
                         onChange={(e) => setNewsTitle(e.target.value)}
                         InputProps={{
 
-                            endAdornment:
+                          endAdornment:
                                 <InputAdornment position="end">
                                     <IconButton
-                                        onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'title' }}
+                                        onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'title'; }}
                                         size="large">
                                         <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
                                     </IconButton>
-                                </InputAdornment>
+                                </InputAdornment>,
                         }}
 
                     />
@@ -91,14 +91,14 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
                         maxRows={10}
                         className="opinionArea"
                         InputProps={{
-                            endAdornment:
+                          endAdornment:
                                 <InputAdornment position="end">
                                     <IconButton
-                                        onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'content' }}
+                                        onClick={() => { setEmojiPickerOpen(current => !current); emojiSource.current = 'content'; }}
                                         size="large">
                                         <EmojiEmotionsIcon style={{ color: '#ffb400' }}></EmojiEmotionsIcon>
                                     </IconButton>
-                                </InputAdornment>
+                                </InputAdornment>,
                         }}
                     >
                     </TextField>
@@ -111,5 +111,5 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
                 <LoadingButton loading={isLoading} onClick={submitNews} disabled={isLoading} variant="contained" color="primary">Submit</LoadingButton>
             </DialogActions>
         </Dialog>
-    )
-}
+  );
+};

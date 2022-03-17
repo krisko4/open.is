@@ -1,110 +1,106 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import * as React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import * as Yup from "yup";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { signUp } from "../../../requests/AuthRequests";
-import { setEmail } from "../../../store/actions/setEmail";
-import { useCustomSnackbar } from "../../../utils/snackbars";
-import { LoadingButton } from "../../reusable/LoadingButton";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import * as React from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { useAuthContext } from '../../../contexts/AuthContext';
+import { signUp } from '../../../requests/AuthRequests';
+import { useCustomSnackbar } from '../../../utils/snackbars';
+import { LoadingButton } from '../../reusable/LoadingButton';
 
 
 const isLetter = (e: React.KeyboardEvent) => {
-    // let char = String.fromCharCode(e.keyCode);
-    const char = e.key
-    if (/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\b]+$/.test(char)) return true;
-    else e.preventDefault();
-}
+  // let char = String.fromCharCode(e.keyCode);
+  const char = e.key;
+  if (/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\b]+$/.test(char)) return true;
+  else e.preventDefault();
+};
 
 const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-        .required('This field is required'),
-    lastName: Yup.string()
-        .required('This field is required'),
-    email: Yup.string()
-        .email('This is not a valid e-mail address')
-        .required('This field is required'),
-    confirmEmail: Yup.string()
-        .required('This field is required')
-        .oneOf([Yup.ref('email'), null], 'E-mail addresses must match'),
-    password: Yup.string()
-        .required('This field is required')
-        .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-            "Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character"
-        ),
-    confirmPassword: Yup.string()
-        .required('This field is required')
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+  firstName: Yup.string()
+    .required('This field is required'),
+  lastName: Yup.string()
+    .required('This field is required'),
+  email: Yup.string()
+    .email('This is not a valid e-mail address')
+    .required('This field is required'),
+  confirmEmail: Yup.string()
+    .required('This field is required')
+    .oneOf([Yup.ref('email'), null], 'E-mail addresses must match'),
+  password: Yup.string()
+    .required('This field is required')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character',
+    ),
+  confirmPassword: Yup.string()
+    .required('This field is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
 
-})
+});
 
 export interface RegistrationInputs {
-    firstName: string,
-    lastName: string,
-    email: string,
-    confirmEmail: string,
-    confirmPassword: string,
-    password: string
+  firstName: string,
+  lastName: string,
+  email: string,
+  confirmEmail: string,
+  confirmPassword: string,
+  password: string
 }
 
 export const RegistrationForm = () => {
 
-    const { setLoginOpen, setRegistrationOpen, setConfirmationOpen } = useAuthContext()
-    const [errorMessage, setErrorMessage] = useState('')
-    const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar()
-    const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
+  const { setLoginOpen, setRegistrationOpen, setConfirmationOpen } = useAuthContext();
+  const [errorMessage, setErrorMessage] = useState('');
+  const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
+  const [loading, setLoading] = useState(false);
 
-    const { register, getValues, formState: { isValid, errors } } = useForm<RegistrationInputs>(
-        {
-            resolver: yupResolver(SignupSchema),
-            mode: 'onChange',
-            defaultValues: {
-                firstName: '',
-                lastName: '',
-                email: '',
-                confirmEmail: '',
-                confirmPassword: '',
-                password: '',
-            }
-        }
-    )
+  const { register, getValues, formState: { isValid, errors } } = useForm<RegistrationInputs>(
+    {
+      resolver: yupResolver(SignupSchema),
+      mode: 'onChange',
+      defaultValues: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        confirmEmail: '',
+        confirmPassword: '',
+        password: '',
+      },
+    },
+  );
 
 
-    const registerUser = async () => {
-        const userData = getValues()
-        setLoading(true)
-        setErrorMessage('')
-        console.log(userData)
-        try {
-            await signUp(userData)
-            dispatch(setEmail(userData['email']))
-            setRegistrationOpen(false)
-            setConfirmationOpen(true)
-            enqueueSuccessSnackbar('You have successfully registered')
-        } catch (err: any) {
-            console.error(err)
-            enqueueErrorSnackbar()
-            setErrorMessage(err.response.data)
-        } finally {
-            setLoading(false)
-        }
-
+  const registerUser = async () => {
+    const userData = getValues();
+    setLoading(true);
+    setErrorMessage('');
+    console.log(userData);
+    try {
+      await signUp(userData);
+      setRegistrationOpen(false);
+      setConfirmationOpen(true);
+      enqueueSuccessSnackbar('You have successfully registered');
+    } catch (err: any) {
+      console.error(err);
+      enqueueErrorSnackbar();
+      setErrorMessage(err.response.data);
+    } finally {
+      setLoading(false);
     }
 
-    return (
+  };
+
+  return (
         <form style={{ flexGrow: 1 }}>
             <Grid container justifyContent="center" alignItems="center">
                 <Grid container item lg={8} alignItems="center" direction="column"  >
                     <Typography variant="h1" >Hello!</Typography>
-                    <Typography variant="h6" sx={{ color: 'grey'}}>Please sign up to
+                    <Typography variant="h6" sx={{ color: 'grey' }}>Please sign up to
                         continue</Typography>
                     {errorMessage && <Typography variant="caption" style={{ textAlign: 'center' }} color="error">{errorMessage}</Typography>}
                     <Grid container justifyContent="space-evenly" sx={{ mb: 1, mt: 5 }}>
@@ -171,12 +167,12 @@ export const RegistrationForm = () => {
                                         <FacebookLoginButton />
                                          <Button color="primary" onClick={() => signInWithFacebook()}>Sign in with facebook</Button>
                                     </Grid> */}
-                    <Typography sx={{mt: 1}} variant="caption">
+                    <Typography sx={{ mt: 1 }} variant="caption">
                         Already have an account?&nbsp;
                         <Link
                             onClick={() => {
-                                setLoginOpen(true);
-                                setRegistrationOpen(false)
+                              setLoginOpen(true);
+                              setRegistrationOpen(false);
                             }}
                         >
                             Click here to sign in
@@ -185,6 +181,6 @@ export const RegistrationForm = () => {
                 </Grid>
             </Grid>
         </form>
-    );
-}
+  );
+};
 

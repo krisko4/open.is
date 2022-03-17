@@ -1,13 +1,8 @@
-import { Drawer, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import CardMedia from "@mui/material/CardMedia";
-import Dialog from "@mui/material/Dialog";
-import Grid from "@mui/material/Grid";
-import Slide, { SlideProps } from "@mui/material/Slide";
+import { Drawer } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import * as React from 'react';
-import { useAuthContext } from "../../../contexts/AuthContext";
-import DialogTransition from "../../reusable/DialogTransition";
-import { RegistrationForm } from "./RegistrationForm";
+import { useAuthContext } from '../../../contexts/AuthContext';
+import { RegistrationForm } from './RegistrationForm';
 
 
 
@@ -19,9 +14,9 @@ import { RegistrationForm } from "./RegistrationForm";
 export const Registration = () => {
 
 
-    const { registrationOpen, setLoginOpen, setRegistrationOpen } = useAuthContext()
+  const { registrationOpen,  setRegistrationOpen } = useAuthContext();
 
-    return (
+  return (
         <Drawer
             anchor="right"
             open={registrationOpen}
@@ -48,6 +43,6 @@ export const Registration = () => {
                 </Grid> */}
             </Grid>
         </Drawer>
-    );
+  );
 
 };

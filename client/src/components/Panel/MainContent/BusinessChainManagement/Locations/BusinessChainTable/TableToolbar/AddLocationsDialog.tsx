@@ -1,26 +1,23 @@
-import { Grid } from "@mui/material";
-import { FC, useState } from "react";
-import { useAppDispatch } from "redux-toolkit/hooks";
+import { Grid } from '@mui/material';
+import { FC, useState } from 'react';
 import {  useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { setAddressData } from "redux-toolkit/slices/currentPlaceSlice";
 import { LocationContextProvider } from '../../../../../../../contexts/PanelContexts/LocationContext';
 import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
 import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/LocationDetails';
 import { LocationSelection } from '../../../../NewBusinessChain/LocationDetails/LocationSelection';
 
 interface Props {
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
 }
 export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
 
-    const logo  = useLogoSelector()
-    const [addressSubmitted, setAddressSubmitted] = useState(false)
-    const dispatch = useAppDispatch()
-    // dispatch(setAddressData())
+  const logo  = useLogoSelector();
+  const [addressSubmitted, setAddressSubmitted] = useState(false);
+  // dispatch(setAddressData())
 
 
-    return (
+  return (
 
         <FullHeightDialog
             title="Add new locations"
@@ -45,5 +42,5 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
 
         </FullHeightDialog>
 
-    )
-}
+  );
+};

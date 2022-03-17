@@ -1,17 +1,15 @@
-import { Slide } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import React, { FC, useEffect } from "react";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { resetMap } from "redux-toolkit/slices/mapSlice";
-import { resetSelectedLocations } from "redux-toolkit/slices/selectedLocationsSlice";
-import AddressDetailsContextProvider from "../../contexts/AddressDetailsContext";
-import { AuthContextProvider } from "../../contexts/AuthContext";
-import MapContextProvider from "../../contexts/MapContext/MapContext";
-import { Auth } from "../Auth/Auth";
-import FirstHeader from "./FirstHeader";
-import { MapBox } from "./Places/MapBox/MapBox";
-import PlacesBox from "./Places/PlacesBox";
-import { SecondHeader } from "./SecondHeader";
+import { Slide } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import React, { FC, useEffect } from 'react';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { resetMap } from 'redux-toolkit/slices/mapSlice';
+import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { AuthContextProvider } from '../../contexts/AuthContext';
+import { Auth } from '../Auth/Auth';
+import FirstHeader from './FirstHeader';
+import { MapBox } from './Places/MapBox/MapBox';
+import PlacesBox from './Places/PlacesBox';
+import { SecondHeader } from './SecondHeader';
 
 
 
@@ -19,17 +17,17 @@ import { SecondHeader } from "./SecondHeader";
 
 const Browser: FC = () => {
 
-    const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(resetMap())
-        return () => {
-            dispatch(resetMap())
-            dispatch(resetSelectedLocations())
-        }
-    }, [])
+  useEffect(() => {
+    dispatch(resetMap());
+    return () => {
+      dispatch(resetMap());
+      dispatch(resetSelectedLocations());
+    };
+  }, []);
 
-    return (
+  return (
         <Grid container direction="column" style={{ height: '100vh' }}>
             <AuthContextProvider>
                 <FirstHeader />
@@ -50,8 +48,8 @@ const Browser: FC = () => {
                 </Grid>
         </Grid >
 
-    )
+  );
 
-}
+};
 
-export default Browser
+export default Browser;

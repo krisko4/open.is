@@ -4,15 +4,15 @@ import { FC } from 'react';
 import DialogTransition from './DialogTransition';
 
 interface Props {
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    title: string
-    // selectedLocations: number[],
-    // setSelectedLocations: React.Dispatch<React.SetStateAction<number[]>>
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  title: string
+  // selectedLocations: number[],
+  // setSelectedLocations: React.Dispatch<React.SetStateAction<number[]>>
 }
 
 export const FullHeightDialog: FC<Props> = ({ dialogOpen, title, setDialogOpen, children }) => {
-    return (
+  return (
         <Dialog
             open={dialogOpen}
             fullScreen
@@ -35,5 +35,5 @@ export const FullHeightDialog: FC<Props> = ({ dialogOpen, title, setDialogOpen, 
             </AppBar>
             {children}
         </Dialog>
-    )
-}
+  );
+};

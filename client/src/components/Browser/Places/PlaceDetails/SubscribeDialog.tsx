@@ -1,40 +1,37 @@
-import { Alert, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useSubscribeLocationMutation } from "redux-toolkit/api/placesApi";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { setSubscription } from "redux-toolkit/slices/currentPlaceSlice";
-import { CurrentPlaceProps } from "../../../../contexts/PlaceProps";
-import { subscribeToPlace } from "../../../../requests/SubscriptionRequests";
-import { useCustomSnackbar } from "../../../../utils/snackbars";
-import DialogTransition from "../../../reusable/DialogTransition";
-import { LoadingButton } from "../../../reusable/LoadingButton";
+import { Alert, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSubscribeLocationMutation } from 'redux-toolkit/api/placesApi';
+import { CurrentPlaceProps } from '../../../../redux-toolkit/slices/PlaceProps';
+import { useCustomSnackbar } from '../../../../utils/snackbars';
+import DialogTransition from '../../../reusable/DialogTransition';
+import { LoadingButton } from '../../../reusable/LoadingButton';
 
 interface Props {
-    isDialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    currentPlace?: CurrentPlaceProps
+  isDialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  currentPlace?: CurrentPlaceProps
 }
 
 
 export const SubscribeDialog: FC<Props> = ({ isDialogOpen, setDialogOpen }) => {
-    const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const [subscribeLocation, {isLoading}] = useSubscribeLocationMutation()
-    const { locationId } = useParams()
+  const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
+  const [subscribeLocation, { isLoading }] = useSubscribeLocationMutation();
+  const { locationId } = useParams();
 
 
-    const addSubscription = async () => {
-        try {
-            await subscribeLocation(locationId as string).unwrap()
-            enqueueSuccessSnackbar('You have subscribed to a new place')
-            setDialogOpen(false)
-        } catch (err) {
-            enqueueErrorSnackbar()
-        }
+  const addSubscription = async () => {
+    try {
+      await subscribeLocation(locationId as string).unwrap();
+      enqueueSuccessSnackbar('You have subscribed to a new place');
+      setDialogOpen(false);
+    } catch (err) {
+      enqueueErrorSnackbar();
     }
+  };
 
 
-    return (
+  return (
         <Dialog
             TransitionComponent={DialogTransition}
             open={isDialogOpen}
@@ -82,5 +79,5 @@ export const SubscribeDialog: FC<Props> = ({ isDialogOpen, setDialogOpen }) => {
 
             </DialogActions>
         </Dialog>
-    );
-}
+  );
+};

@@ -1,13 +1,11 @@
-import { Grid } from "@mui/material"
-import { FC, useState } from "react"
-import MapContextProvider from "../../../../../contexts/MapContext/MapContext"
-import AddressDetailsContextProvider from "../../../../../contexts/AddressDetailsContext"
-import { MapBox } from "../../../../Browser/Places/MapBox/MapBox"
-import { AddressDetails } from "../../NewPlace/Steps/Step4/AddressDetails"
+import { Grid } from '@mui/material';
+import { FC } from 'react';
+import AddressDetailsContextProvider from '../../../../../contexts/AddressDetailsContext';
+import { MapBox } from '../../../../Browser/Places/MapBox/MapBox';
+import { AddressDetails } from '../../NewPlace/Steps/Step4/AddressDetails';
 export const LocationChooser: FC = () => {
 
-    return (
-        <MapContextProvider isMarkerDraggable={true}>
+  return (
             <AddressDetailsContextProvider isEditionMode={true}>
                 <Grid container lg={8} justifyContent="center">
                     <AddressDetails />
@@ -16,6 +14,5 @@ export const LocationChooser: FC = () => {
                     </Grid>
                 </Grid >
             </AddressDetailsContextProvider>
-        </MapContextProvider>
-    );
-}
+  );
+};

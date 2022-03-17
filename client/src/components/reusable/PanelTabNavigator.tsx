@@ -1,21 +1,21 @@
-import { Grid, Paper, Slide } from "@mui/material"
-import React, { FC } from "react"
-import { Navigate, Route, Routes } from "react-router-dom"
-import { NavigationTabs } from "./NavigationTabs"
+import { Grid, Paper, Slide } from '@mui/material';
+import React, { FC } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { NavigationTabs } from './NavigationTabs';
 
 
 interface Props {
-    tabs: {
-        name: string,
-        url: string,
-        content? : any
-    }[],
+  tabs: {
+    name: string,
+    url: string,
+    content? : any
+  }[],
 }
 
 
 export const PanelTabNavigator: FC<Props> = ({ tabs }) => {
 
-    return (
+  return (
         <Grid container direction="column" style={{ overflow: 'hidden', flexGrow: 1 }}>
             <Slide in={true} timeout={500}>
                 <Paper>
@@ -26,11 +26,11 @@ export const PanelTabNavigator: FC<Props> = ({ tabs }) => {
                 <Routes>
                     <Route index element={<Navigate to={tabs[0].url} /> } />
                     {tabs.map((tab) => (
-                        <Route key={tab.url} path={tab.url} element={tab.content} />)
+                        <Route key={tab.url} path={tab.url} element={tab.content} />),
                     )}
                 </Routes>
             </Grid>
         </Grid>
-    )
-}
+  );
+};
 

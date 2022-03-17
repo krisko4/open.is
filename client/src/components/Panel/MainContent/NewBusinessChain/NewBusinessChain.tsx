@@ -1,62 +1,60 @@
-import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
-import Scrollbars from "react-custom-scrollbars";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { resetCurrentPlace, setCurrentPlace, useCurrentPlaceSelector } from "redux-toolkit/slices/currentPlaceSlice";
-import { resetMap } from "redux-toolkit/slices/mapSlice";
-import { resetSelectedAddress } from "redux-toolkit/slices/selectedAddressSlice";
-import { resetSelectedLocations } from "redux-toolkit/slices/selectedLocationsSlice";
-import { clearPlace, CurrentPlaceContextProvider } from "../../../../contexts/PanelContexts/CurrentPlaceContext";
-import { LocationContextProvider } from "../../../../contexts/PanelContexts/LocationContext";
-import { useStepContext } from "../../../../contexts/StepContext";
-import { PlaceDetailsCard } from "../NewPlace/PlaceDetailsCard";
-import { NewPlaceStepper } from "../NewPlace/Steps/NewPlaceStepper";
-import { Step1 } from "../NewPlace/Steps/Step1/Step1";
-import { Step2 } from "../NewPlace/Steps/Step2/Step2";
-import Intro from "./Intro";
-import { LocationDetails } from "./LocationDetails/LocationDetails";
+import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from '@mui/material';
+import React, { FC, useEffect, useState } from 'react';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { resetCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice';
+import { resetMap } from 'redux-toolkit/slices/mapSlice';
+import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
+import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { LocationContextProvider } from '../../../../contexts/PanelContexts/LocationContext';
+import { useStepContext } from '../../../../contexts/StepContext';
+import { PlaceDetailsCard } from '../NewPlace/PlaceDetailsCard';
+import { NewPlaceStepper } from '../NewPlace/Steps/NewPlaceStepper';
+import { Step1 } from '../NewPlace/Steps/Step1/Step1';
+import { Step2 } from '../NewPlace/Steps/Step2/Step2';
+import Intro from './Intro';
+import { LocationDetails } from './LocationDetails/LocationDetails';
 import { LocationSelection } from './LocationDetails/LocationSelection';
-import { Step5Container } from "./Step5Container";
+import { Step5Container } from './Step5Container';
 
 
 
 function getStepContent(step: number) {
-    switch (step) {
-        case 0:
-            return <Step1 />
-        case 1:
-            return <Step2 />
-        default:
-            return 'Unknown step';
-    }
+  switch (step) {
+    case 0:
+      return <Step1 />;
+    case 1:
+      return <Step2 />;
+    default:
+      return 'Unknown step';
+  }
 }
 
 interface Props {
-    isEditionMode?: boolean,
+  isEditionMode?: boolean,
 }
 export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
 
-    const [startClicked, setStartClicked] = useState(false)
-    const { activeStep, setActiveStep } = useStepContext()
-    const [addressSubmitted, setAddressSubmitted] = useState(false)
-    const [logoFile, setLogoFile] = useState<File | null>(null)
-    const dispatch = useAppDispatch()
+  const [startClicked, setStartClicked] = useState(false);
+  const { activeStep, setActiveStep } = useStepContext();
+  const [addressSubmitted, setAddressSubmitted] = useState(false);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(resetCurrentPlace())
-        dispatch(resetMap())
-        dispatch(resetSelectedAddress())
-        dispatch(resetSelectedLocations())
-        return () => {
-            dispatch(resetCurrentPlace())
-            dispatch(resetMap())
-            dispatch(resetSelectedAddress())
-            dispatch(resetSelectedLocations())
-        }
-    }, [])
+  useEffect(() => {
+    dispatch(resetCurrentPlace());
+    dispatch(resetMap());
+    dispatch(resetSelectedAddress());
+    dispatch(resetSelectedLocations());
+    return () => {
+      dispatch(resetCurrentPlace());
+      dispatch(resetMap());
+      dispatch(resetSelectedAddress());
+      dispatch(resetSelectedLocations());
+    };
+  }, []);
 
-    return (
+  return (
         <>
             {
                 startClicked ?
@@ -71,8 +69,7 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                             </Paper>
                         }
                         <LocationContextProvider>
-                            <Grid container sx={{ flexGrow: 1 }} >
-                                <Scrollbars>
+                            <Grid container justifyContent="space-evenly" sx={{ overflow: 'hidden', flexGrow: 1 }} >
                                     <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
                                         {activeStep === 2 ?
                                             <Grid container sx={{ height: '100%' }}>
@@ -86,15 +83,15 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                     />
                                                 </Grid>
                                             </Grid>
-                                            :
-                                            <Grid container item lg={11} justifyContent="space-evenly">
+                                          :
+                                            <Grid container item justifyContent="space-evenly">
                                                 {activeStep !== 3 &&
-                                                    <Grid container item lg={activeStep === 3 || activeStep === 2 ? 6 : 5}>
+                                                    <Grid container item lg={activeStep === 3 || activeStep === 2 ? 5 : 4}>
                                                         {getStepContent(activeStep)}
                                                     </Grid>
                                                 }
-                                                {activeStep === 3 && <Grid container justifyContent="space-between" sx={{ pt: '20px', pb: '20px' }}>
-                                                    <Grid item lg={5}>
+                                                {activeStep === 3 && <Grid container justifyContent="space-around" sx={{ overflow: 'hidden', pt: '20px', pb: '20px' }}>
+                                                    <Grid item lg={5} sx={{ mr: 2 }}>
                                                         <PlaceDetailsCard isEditable={true} logoFile={logoFile} setLogoFile={setLogoFile} />
                                                     </Grid>
                                                     <Grid item lg={5}>
@@ -103,11 +100,11 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                 </Grid>
                                                 }
                                                 {activeStep === 1 ?
-                                                    <Grid container item style={{ height: 600, marginTop: 20, overflow: 'hidden' }} lg={7} >
+                                                    <Grid container item style={{ height: 700, marginTop: 20, overflow: 'hidden' }} lg={6} >
                                                         <TransformWrapper
                                                             limitToBounds={false}
                                                             doubleClick={{
-                                                                disabled: true
+                                                              disabled: true,
                                                             }}
                                                             initialPositionY={-415}
                                                             initialPositionX={80}
@@ -123,8 +120,8 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                             </TransformComponent>
                                                         </TransformWrapper>
                                                     </Grid>
-                                                    : activeStep !== 2 && activeStep !== 3 &&
-                                                    <Grid container item lg={5}>
+                                                  : activeStep !== 2 && activeStep !== 3 &&
+                                                    <Grid container item lg={4}>
                                                         <Slide in={true} timeout={1000}>
                                                             <div>
                                                                 <Card>
@@ -132,11 +129,11 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                                                         <Typography variant="h2">
                                                                             Step {activeStep + 1}
                                                                         </Typography>
-                                                                        <Grid container item style={{ marginTop: 10 }} lg={10}>
+                                                                        <Grid container item style={{ marginTop: 10 }} lg={11}>
                                                                             <Typography variant="body1">
                                                                                 {activeStep === 0 ?
-                                                                                    'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
-                                                                                    'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
+                                                                                  'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.' :
+                                                                                  'Please enter the location of your business inside the search bar. Make sure to provide valid address, including city and street number.'
                                                                                 }
                                                                             </Typography>
                                                                             <NewPlaceStepper
@@ -152,13 +149,12 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                             </Grid>
                                         }
                                     </Grid>
-                                </Scrollbars>
                             </Grid>
                         </LocationContextProvider>
                     </Grid>
-                    :
+                  :
                     <Intro setStartClicked={setStartClicked} />
             }
         </>
-    );
-}
+  );
+};

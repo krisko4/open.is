@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import Cookies from 'js-cookie';
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { removeLocation, SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { useAddressDetailsContext } from "../../../contexts/AddressDetailsContext";
-import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
 
 
 
@@ -27,76 +24,79 @@ import { CurrentPlaceProps } from '../../../contexts/PlaceProps';
 // )
 
 
-enum tabType {
-    POPULAR = 0,
-    RECENTLY_ADDED = 1,
-    TOP_RATED = 2,
-    FAVORITE = 3
-}
 interface PlaceProps {
-    cardData: SelectedLocationProps
+  cardData: SelectedLocationProps
 }
 
 const StyledRating = styled(Rating)({
-    '& .MuiRating-iconFilled': {
-        color: '#ff6d75',
-    },
-    '& .MuiRating-iconHover': {
-        color: '#ff3d47',
-    },
-    '& .MuiRating-iconEmpty': {
-        color: '#ff6d75',
-    },
+  '& .MuiRating-iconFilled': {
+    color: '#ff6d75',
+  },
+  '& .MuiRating-iconHover': {
+    color: '#ff3d47',
+  },
+  '& .MuiRating-iconEmpty': {
+    color: '#ff6d75',
+  },
 });
 
 
 
 
 export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
-    // const classes = useStyles()
-    const [value, setValue] = useState<number | null>(0)
-    const dispatch = useAppDispatch()
-    const location = useLocation()
-    const [elevation, setElevation] = useState(3)
+  // const classes = useStyles()
+  const [value, setValue] = useState<number | null>(0);
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const [elevation, setElevation] = useState(3);
 
 
-    useEffect(() => {
-        const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === cardData.locationId)
-        isFavorite ? setValue(1) : setValue(null)
-    }, [])
-
-
-
-    const setFavoritePlace = (newValue: number | null) => {
-        let favIds = Cookies.get('favIds')
-        const { locationId } = cardData
-        if (locationId) {
-            setValue(newValue)
-            if (!favIds) {
-                newValue === 1 && Cookies.set('favIds', `${locationId}`)
-                return
-            }
-            const favIdsArray = favIds.split(',')
-            const index = favIdsArray.findIndex(id => id === locationId)
-            // index not found && no value || index found && value
-            if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return
-            if (index !== -1) {
-                favIdsArray.splice(index, 1)
-                location.pathname === '/search/favorite' && dispatch(removeLocation(locationId as string))
-                if (favIdsArray.length === 0) {
-                    Cookies.remove('favIds')
-                    return
-                }
-            } else {
-                favIdsArray.push(locationId)
-            }
-            favIds = favIdsArray.join(',')
-            Cookies.set('favIds', favIds)
-        }
+  useEffect(() => {
+    const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === cardData.locationId);
+    if (isFavorite){
+      setValue(1);
+      return;
     }
+    setValue(null);
+  }, []);
 
 
-    return (
+
+  const setFavoritePlace = (newValue: number | null) => {
+    let favIds = Cookies.get('favIds');
+    const { locationId } = cardData;
+    if (locationId) {
+      setValue(newValue);
+      if (!favIds && newValue === 1) {
+        Cookies.set('favIds', `${locationId}`);
+        return;
+      }
+      if (favIds){
+        const favIdsArray = favIds.split(',');
+        const index = favIdsArray.findIndex(id => id === locationId);
+        // index not found && no value || index found && value
+        if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return;
+        if (index !== -1) {
+          favIdsArray.splice(index, 1);
+          if (location.pathname === '/search/favorite'){
+            dispatch(removeLocation(locationId as string));
+
+          }
+          if (favIdsArray.length === 0) {
+            Cookies.remove('favIds');
+            return;
+          }
+        } else {
+          favIdsArray.push(locationId);
+        }
+        favIds = favIdsArray.join(',');
+        Cookies.set('favIds', favIds);
+      }
+    }
+  };
+
+
+  return (
         <Card
             // className={classes.card}
             sx={{ flexGrow: 1 }}
@@ -110,9 +110,9 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
                         <Grid item>
                             <Avatar
                                 imgProps={{
-                                    style: {
-                                        objectFit: 'contain'
-                                    }
+                                  style: {
+                                    objectFit: 'contain',
+                                  },
                                 }}
                                 style={{ width: 80, height: 80 }}
                                 src={cardData.logo as string}
@@ -136,7 +136,7 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
                                         onClick={(event) => event.stopPropagation()}
                                         value={value}
                                         onChange={(event, newValue) => {
-                                            setFavoritePlace(newValue)
+                                          setFavoritePlace(newValue);
                                         }}
                                         style={{ marginLeft: 5 }}
                                         icon={<Favorite fontSize="inherit" />}
@@ -155,7 +155,7 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
                                     <Tooltip title="This place is now open">
                                         <Button variant="contained" color="success" size="small" >Open</Button>
                                     </Tooltip>
-                                    :
+                                  :
                                     <Tooltip title="This place is now closed">
                                         <Button variant="contained" color="error" size="small" >Closed</Button>
                                     </Tooltip>
@@ -167,6 +167,6 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
 
             </CardContent>
         </Card>
-    )
-}
+  );
+};
 

@@ -1,13 +1,13 @@
-import { Card, CardContent, CardMedia, Grid, IconButton, Slide, Fade, Typography } from "@mui/material"
-import React, { FC } from "react"
-import { SocialIcon } from "react-social-icons"
-import { AuthContextProvider } from "../../../contexts/AuthContext"
-import Header from "../MainPage/Header"
-import { ContactForm } from "./ContactForm"
+import { Card, CardContent, CardMedia, Grid, IconButton, Slide, Typography } from '@mui/material';
+import React, { FC } from 'react';
+import { SocialIcon } from 'react-social-icons';
+import { AuthContextProvider } from '../../../contexts/AuthContext';
+import Header from '../MainPage/Header';
+import { ContactForm } from './ContactForm';
 export const Contact: FC = () => {
 
 
-    return (
+  return (
         <AuthContextProvider>
             <Header />
             <Grid container alignItems="center" direction="column" justifyContent="center" style={{ height: 600, backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.6)), url(${process.env.REACT_APP_BASE_URL}/images/contact.jpg)` }} >
@@ -42,7 +42,7 @@ export const Contact: FC = () => {
                                 <Grid container justifyContent="center">
                                     <Grid item container lg={6} md={10} sm={10}>
                                         {/* <img src="https://cdn.dribbble.com/users/1551941/screenshots/6346538/thankyoudribble.gif" style={{width: '100%'}} /> */}
-                                        <CardMedia image={`https://cdn.dribbble.com/users/1551941/screenshots/6346538/thankyoudribble.gif`} style={{ height: 500, width: 500 }} />
+                                        <CardMedia image={'https://cdn.dribbble.com/users/1551941/screenshots/6346538/thankyoudribble.gif'} style={{ height: 500, width: 500 }} />
                                     </Grid>
                                     <Grid item container justifyContent="center" lg={6} xs={11} md={10} sm={11}>
                                         <ContactForm />
@@ -55,5 +55,5 @@ export const Contact: FC = () => {
 
             </Grid>
         </AuthContextProvider>
-    );
-}
+  );
+};

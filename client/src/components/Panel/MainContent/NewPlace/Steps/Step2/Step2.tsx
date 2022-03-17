@@ -1,12 +1,12 @@
-import { Fade, Grid, Typography } from "@mui/material";
-import React, { FC } from "react";
-import { PlaceDetailsForm } from "./PlaceDetailsForm";
+import { Fade, Grid, Typography } from '@mui/material';
+import React, { FC } from 'react';
+import { PlaceDetailsForm } from './PlaceDetailsForm';
 
 
 export const Step2: FC = () => {
     
     
-    return (
+  return (
         <Fade in={true} timeout={1500}>
             <Grid item container justifyContent="center" style={{ marginTop: 20 }}>
                 <Grid container direction="column" alignItems="center">
@@ -16,5 +16,5 @@ export const Step2: FC = () => {
                 <PlaceDetailsForm />
             </Grid >
         </Fade>
-    );
-}
+  );
+};

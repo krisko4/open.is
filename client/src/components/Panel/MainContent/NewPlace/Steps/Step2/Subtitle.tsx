@@ -1,31 +1,31 @@
-import { TextField } from "@mui/material"
-import { FC, useRef, useEffect } from "react"
-import { useFormContext, useWatch } from "react-hook-form"
-import { useAppDispatch } from "redux-toolkit/hooks"
-import { useSubtitleSelector, setSubtitle } from "redux-toolkit/slices/currentPlaceSlice"
+import { TextField } from '@mui/material';
+import { FC, useRef, useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useSubtitleSelector, setSubtitle } from 'redux-toolkit/slices/currentPlaceSlice';
 
 export const Subtitle : FC = () => {
 
-    const {control, register, formState: {errors}, setValue} = useFormContext()
-    const subtitle = useSubtitleSelector()
-    const dispatch = useAppDispatch()
+  const { control, register, formState: { errors }, setValue } = useFormContext();
+  const subtitle = useSubtitleSelector();
+  const dispatch = useAppDispatch();
 
-    const sub = useWatch({
-        control,
-        name: 'subtitle'
-    })
+  const sub = useWatch({
+    control,
+    name: 'subtitle',
+  });
 
-    const isFirstRender = useRef(true)
+  const isFirstRender = useRef(true);
     
-    useEffect(() => {
-        if (isFirstRender.current) {
-            setValue('subtitle', subtitle)
-            isFirstRender.current = false
-            return
-        }
-        dispatch(setSubtitle(sub))
-    }, [sub])
-    return (
+  useEffect(() => {
+    if (isFirstRender.current) {
+      setValue('subtitle', subtitle);
+      isFirstRender.current = false;
+      return;
+    }
+    dispatch(setSubtitle(sub));
+  }, [sub]);
+  return (
         <TextField
             {...register('subtitle')}
             variant="outlined"
@@ -39,8 +39,8 @@ export const Subtitle : FC = () => {
             label="Subtitle"
             fullWidth
             inputProps={{
-                maxLength: 100
+              maxLength: 100,
             }}
         />
-    )
-}
+  );
+};

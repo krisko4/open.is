@@ -1,11 +1,11 @@
-import { Card, CardContent, Typography } from "@mui/material"
-import React from 'react'
-import { FC } from "react"
-import { useDescriptionSelector } from "redux-toolkit/slices/currentPlaceSlice"
+import { Card, CardContent, Typography } from '@mui/material';
+import React from 'react';
+import { FC } from 'react';
+import { useDescriptionSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 
 export const PlaceDescription: FC = () => {
-    const description = useDescriptionSelector()
-    return (
+  const description = useDescriptionSelector();
+  return (
         <Card elevation={10} style={{ flexGrow: 1 }}>
             <CardContent>
                 <div style={{ display: 'inline-block', overflowWrap: 'break-word' }}>
@@ -15,6 +15,6 @@ export const PlaceDescription: FC = () => {
                 </div>
             </CardContent>
         </Card>
-    )
+  );
 
-}
+};

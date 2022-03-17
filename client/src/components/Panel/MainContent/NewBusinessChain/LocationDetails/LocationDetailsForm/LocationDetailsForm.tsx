@@ -3,90 +3,90 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LanguageIcon from '@mui/icons-material/Language';
 import MailIcon from '@mui/icons-material/Mail';
-import { Button, Grid, InputAdornment, TextField, Tooltip } from "@mui/material";
-import { FC, useEffect, useRef } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Button, Grid, InputAdornment, TextField, Tooltip } from '@mui/material';
+import { FC, useEffect, useRef } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import ReactPhoneInput from 'react-phone-input-material-ui';
-import * as yup from "yup";
-import { useLocationContext } from "../../../../../../contexts/PanelContexts/LocationContext";
-import { LocationProps } from "../../../../../../contexts/PlaceProps";
+import * as yup from 'yup';
+import { useLocationContext } from '../../../../../../contexts/PanelContexts/LocationContext';
+import { LocationProps } from '../../../../../../redux-toolkit/slices/PlaceProps';
 // import PhoneInput from "react-phone-input-2";
 
 
-const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/
-const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/
-const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/
-const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/
+// const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/;
+const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/;
+const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/;
+const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/;
 
 
 type Inputs = {
-    example: string,
-    exampleRequired: string,
-    website: string,
-    phone: string,
-    email: string,
-    facebook: string,
-    instagram: string
+  example: string,
+  exampleRequired: string,
+  website: string,
+  phone: string,
+  email: string,
+  facebook: string,
+  instagram: string
 };
 
 interface Props {
-    location: LocationProps,
-    setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
+  location: LocationProps,
+  setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const schema = yup.object({
-    phone: yup.string().required('Phone number is required').min(8).max(15),
-    email: yup.string().email('This is not a valid e-mail address'),
-    website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
-    facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
-    instagram: yup.string().matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
+  phone: yup.string().required('Phone number is required').min(8).max(15),
+  email: yup.string().email('This is not a valid e-mail address'),
+  website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
+  facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
+  instagram: yup.string().matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
 
-})
+});
 
 export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateChanged }) => {
 
-    const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext()
-    const isFirstRender = useRef(true)
-    const isFirstFieldForAllRender = useRef(true)
+  const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext();
+  const isFirstRender = useRef(true);
+  const isFirstFieldForAllRender = useRef(true);
 
 
-    const { control, register, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
-        resolver: yupResolver(schema),
-        mode: 'onChange',
-        defaultValues: {
-            phone: location.phone,
-            email: location.email,
-            website: location.website,
-            facebook: location.facebook,
-            instagram: location.instagram
-        }
-    });
+  const { control, register, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+    defaultValues: {
+      phone: location.phone,
+      email: location.email,
+      website: location.website,
+      facebook: location.facebook,
+      instagram: location.instagram,
+    },
+  });
 
-    useEffect(() => {
-        if (isFirstFieldForAllRender.current) {
-            isFirstFieldForAllRender.current = false
-            return
-        }
-        //@ts-ignore
-        fieldForAll.field && setValue(fieldForAll.field, fieldForAll.value, { shouldValidate: true })
-    }, [fieldForAll])
+  useEffect(() => {
+    if (isFirstFieldForAllRender.current) {
+      isFirstFieldForAllRender.current = false;
+      return;
+    }
+    //@ts-ignore
+    if (fieldForAll.field) setValue(fieldForAll.field, fieldForAll.value, { shouldValidate: true });
+  }, [fieldForAll]);
 
-    useEffect(() => {
-        location.isValid = isValid
-        setValidationStateChanged(state => !state)
-    }, [isValid])
+  useEffect(() => {
+    location.isValid = isValid;
+    setValidationStateChanged(state => !state);
+  }, [isValid]);
 
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
-        }
-        console.log(getValues())
-        location = Object.assign(location, getValues())
-    }, [saveButtonClicked])
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    console.log(getValues());
+    location = Object.assign(location, getValues());
+  }, [saveButtonClicked]);
 
 
-    return (
+  return (
         <form style={{ flexGrow: 1 }} >
             <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
                 <Grid item lg={5}>
@@ -96,7 +96,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                             style={{ marginTop: 15 }}
                             disabled={errors.phone?.message ? true : false}
                             variant="outlined"
-                            onClick={() => { setFieldForAll({ field: 'phone', value: getValues('phone') }) }}
+                            onClick={() => { setFieldForAll({ field: 'phone', value: getValues('phone') }); }}
                         >Phone number
                         </Button>
                     </Tooltip>
@@ -139,7 +139,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         {...register('email')}
                         placeholder="E-mail address"
                         InputProps={{
-                            startAdornment: <InputAdornment position="start"><MailIcon color="primary" /></InputAdornment>
+                          startAdornment: <InputAdornment position="start"><MailIcon color="primary" /></InputAdornment>,
                         }}
                         fullWidth
                     />
@@ -167,7 +167,7 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         {...register('website')}
                         fullWidth
                         InputProps={{
-                            startAdornment: <InputAdornment position="start"><LanguageIcon color="primary" /></InputAdornment>
+                          startAdornment: <InputAdornment position="start"><LanguageIcon color="primary" /></InputAdornment>,
                         }}
                     />
                 </Grid>
@@ -193,20 +193,20 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         placeholder="my-profile"
                         fullWidth
                         inputProps={{
-                            maxLength: 50
+                          maxLength: 50,
                         }}
                         InputProps={{
-                            startAdornment: (
+                          startAdornment: (
                                 <InputAdornment position="start">
                                     <p style={{ color: 'lightgrey' }}>https://facebook.com/</p>
                                 </InputAdornment>
-                            ),
-                            endAdornment: (
+                          ),
+                          endAdornment: (
                                 <InputAdornment position="end">
                                     <FacebookIcon color="primary" />
                                 </InputAdornment>
 
-                            )
+                          ),
                         }}
                     />
                 </Grid>
@@ -232,23 +232,23 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
                         fullWidth
                         placeholder="my-profile"
                         inputProps={{
-                            maxLength: 50
+                          maxLength: 50,
                         }}
                         InputProps={{
-                            startAdornment: (
+                          startAdornment: (
                                 <InputAdornment position="start">
                                     <p style={{ color: 'lightgrey' }}>https://instagram.com/</p>
                                 </InputAdornment>
-                            ),
-                            endAdornment: (
+                          ),
+                          endAdornment: (
                                 <InputAdornment position="end">
                                     <InstagramIcon color="primary" />
                                 </InputAdornment>
-                            )
+                          ),
                         }}
                     />
                 </Grid>
             </Grid>
         </form>
-    );
-}
+  );
+};

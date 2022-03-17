@@ -1,34 +1,34 @@
-import DoneIcon from "@mui/icons-material/Done";
-import { Fade, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
-import { useAppDispatch } from "redux-toolkit/hooks";
-import { useNameSelector, setName } from "redux-toolkit/slices/currentPlaceSlice";
-import { useStepContext } from "../../../../../../contexts/StepContext";
-import { LoadingButton } from "../../../../../reusable/LoadingButton";
+import DoneIcon from '@mui/icons-material/Done';
+import { Fade, Grid, InputAdornment, TextField, Typography } from '@mui/material';
+import React, { FC, useEffect, useState } from 'react';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useNameSelector, setName } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useStepContext } from '../../../../../../contexts/StepContext';
+import { LoadingButton } from '../../../../../reusable/LoadingButton';
 
 
 export const Step1: FC = () => {
 
-    const { activeStep, setCurrentStep, steps, setActiveStep } = useStepContext()
-    const [input, setInput] = useState('')
-    const dispatch = useAppDispatch()
-    const name = useNameSelector()
+  const { setCurrentStep,  setActiveStep } = useStepContext();
+  const [input, setInput] = useState('');
+  const dispatch = useAppDispatch();
+  const name = useNameSelector();
 
 
 
-    useEffect(() => {
-        setInput(name)
-    }, [name])
+  useEffect(() => {
+    setInput(name);
+  }, [name]);
 
 
-    const submitName = () => {
-        dispatch(setName(input))
-        setCurrentStep(activeStep => activeStep + 1)
-        setActiveStep(activeStep => activeStep + 1)
-    }
+  const submitName = () => {
+    dispatch(setName(input));
+    setCurrentStep(activeStep => activeStep + 1);
+    setActiveStep(activeStep => activeStep + 1);
+  };
 
 
-    return (
+  return (
         <Fade in={true} timeout={1500}>
             <Grid item container direction="column" justifyContent="space-between" style={{ textAlign: 'center' }}>
                 <Typography variant="h2">What is the name of your business?</Typography>
@@ -45,14 +45,14 @@ export const Step1: FC = () => {
                     helperText={`${input.length}/60`}
                     inputProps={{ maxLength: 60 }}
                     InputProps={{
-                        endAdornment:
+                      endAdornment:
                             <div>
                                 {input &&
                                     <InputAdornment position="end">
                                         <DoneIcon style={{ color: '#32de84' }} />
                                     </InputAdornment>
                                 }
-                            </div>
+                            </div>,
                     }}
                 >
                 </TextField>
@@ -69,5 +69,5 @@ export const Step1: FC = () => {
                 </LoadingButton>
             </Grid >
         </Fade>
-    );
-}
+  );
+};

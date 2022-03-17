@@ -2,53 +2,47 @@ import { LoadingButton } from '@mui/lab';
 import { Alert, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDeletePlaceMutation, useDeleteSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { deleteSelectedLocations, useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { deletePlace, deleteSelectedLocationsFromSelectedPlace, usePlacesSelector } from 'redux-toolkit/slices/placesSlice';
-import { setPlaces } from '../../../../../store/actions/setPlaces';
+import { useDeleteSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
+import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
 import DialogTransition from '../../../../reusable/DialogTransition';
 
 interface Props {
-    dialogOpen: boolean,
-    setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    selectedLocations: string[],
-    setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>
+  dialogOpen: boolean,
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  selectedLocations: string[],
+  setSelectedLocations: React.Dispatch<React.SetStateAction<string[]>>
 }
 export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelectedLocations, setDialogOpen, selectedLocations }) => {
 
-    const [value, setValue] = React.useState('')
-    const [loading, setLoading] = React.useState(false)
-    const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar()
-    const businessChain = useBusinessChainSelector()
-    const [deleteSelectedLocations, { isLoading }] = useDeleteSelectedLocationsMutation()
-    const navigate = useNavigate()
-    const dispatch = useAppDispatch()
-    const places = usePlacesSelector()
+  const [value, setValue] = React.useState('');
+  const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
+  const businessChain = useBusinessChainSelector();
+  const [deleteSelectedLocations, { isLoading }] = useDeleteSelectedLocationsMutation();
+  const navigate = useNavigate();
 
-    const handleClick = async () => {
-        try {
-            await deleteSelectedLocations({
-                locationIds: selectedLocations,
-                placeId: businessChain._id as string
-            }).unwrap()
-            if (businessChain.locations.length === selectedLocations.length) {
-                enqueueSuccessSnackbar('You have successfully deleted your business chain.')
-                navigate('/panel/dashboard')
-                return
-            }
-            enqueueSuccessSnackbar('You have successfully removed selected locations.')
-        } catch (err) {
-            console.log(err)
-            enqueueErrorSnackbar()
-        } finally {
-            setSelectedLocations([])
-            setDialogOpen(false)
-        }
+  const handleClick = async () => {
+    try {
+      await deleteSelectedLocations({
+        locationIds: selectedLocations,
+        placeId: businessChain._id as string,
+      }).unwrap();
+      if (businessChain.locations.length === selectedLocations.length) {
+        enqueueSuccessSnackbar('You have successfully deleted your business chain.');
+        navigate('/panel/dashboard');
+        return;
+      }
+      enqueueSuccessSnackbar('You have successfully removed selected locations.');
+    } catch (err) {
+      console.log(err);
+      enqueueErrorSnackbar();
+    } finally {
+      setSelectedLocations([]);
+      setDialogOpen(false);
     }
+  };
 
-    return (
+  return (
         <Dialog
             open={dialogOpen}
             onClose={() => setDialogOpen(false)}
@@ -89,5 +83,5 @@ export const DeleteConfirmationDialog: React.FC<Props> = ({ dialogOpen, setSelec
             </DialogActions>
 
         </Dialog>
-    );
+  );
 }; 

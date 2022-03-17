@@ -1,10 +1,10 @@
-import { CardActions, Slide, Button, Alert, Divider, Card, CardContent, CardMedia, Grid, Typography } from "@mui/material"
-import { FC } from "react"
-import { useNavigate } from "react-router-dom"
+import { Slide, Button, Alert, Divider, Card, CardContent, Grid, Typography } from '@mui/material';
+import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const NewPlaceChooser: FC = () => {
-    const navigate = useNavigate()
-    return (
+  const navigate = useNavigate();
+  return (
         <Grid container justifyContent="space-evenly">
             <Grid item lg={5}>
                 <Slide in={true} timeout={1000} direction="right">
@@ -16,7 +16,7 @@ export const NewPlaceChooser: FC = () => {
                                 </Typography>
                                 <Divider color="primary" sx={{ mt: 1 }}></Divider>
                                 <Typography variant="subtitle1" sx={{ mt: 1 }}>
-                                    If you're an owner of a small business with <b>single</b> location, this might be the suitable option for you.
+                                    If you are an owner of a small business with <b>single</b> location, this might be the suitable option for you.
 
                                 </Typography>
                                 <Grid container direction="column" alignItems="center" sx={{ mt: 1, mb: 1 }}>
@@ -31,7 +31,7 @@ export const NewPlaceChooser: FC = () => {
                                         Detailed analysis of user activity across the location of your business, without additional unnecessary settings
                                     </Alert>
                                 </Grid>
-                                <Button onClick={() => navigate(`new-place`)} fullWidth size="large" variant="contained" color="primary">
+                                <Button onClick={() => navigate('new-place')} fullWidth size="large" variant="contained" color="primary">
                                     Register new place
                                 </Button>
 
@@ -50,7 +50,7 @@ export const NewPlaceChooser: FC = () => {
                             </Typography>
                             <Divider color="primary" sx={{ mt: 1 }}></Divider>
                             <Typography variant="subtitle1" sx={{ mt: 1 }}>
-                                If you're an owner of a business with <b>multiple</b> locations, this might be the suitable option for you.
+                                If you are an owner of a business with <b>multiple</b> locations, this might be the suitable option for you.
                             </Typography>
                             <Grid container direction="column" alignItems="center" sx={{ mt: 1, mb: 1 }}>
                                 <img style={{ height: '400px' }} src={`${process.env.REACT_APP_BASE_URL}/images/chain2.gif`} />
@@ -64,7 +64,7 @@ export const NewPlaceChooser: FC = () => {
                                     Detailed analysis of user activity across specific locations of your business and a whole business as a unit
                                 </Alert>
                             </Grid>
-                            <Button onClick={() => navigate(`new-business-chain`)} fullWidth size="large" variant="contained" color="primary">
+                            <Button onClick={() => navigate('new-business-chain')} fullWidth size="large" variant="contained" color="primary">
                                 Register new business chain
                             </Button>
                         </CardContent>
@@ -74,5 +74,5 @@ export const NewPlaceChooser: FC = () => {
 
             </Grid>
         </Grid>
-    )
-}
+  );
+};

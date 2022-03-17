@@ -1,15 +1,14 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import CardMedia from "@mui/material/CardMedia";
-import React, { FC } from "react";
-import { Fade, Grow, Slide, Zoom } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import React, { FC } from 'react';
+import { Fade, Grow, Zoom } from '@mui/material';
 
 interface Props {
-    isVisible4: boolean
+  isVisible4: boolean
 }
 
 const Section4: FC<Props> = ({ isVisible4 }) => {
-    return (
+  return (
         <Grid
             container
             style={{ background: '#F8F8F8', height: 700,  paddingTop: 50 }}
@@ -38,7 +37,7 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
             >
                 <Grid item container lg={5}>
                     <img
-                        src={`https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif`}
+                        src={'https://cdn.dribbble.com/users/149434/screenshots/4648999/media/5c3f4d529f815548b49997f967a6d65d.gif'}
                         style={{ width: '100%', objectFit: 'contain' }}
                     
                     />
@@ -67,7 +66,7 @@ const Section4: FC<Props> = ({ isVisible4 }) => {
                 />
             </Grid> */}
         </Grid >
-    );
-}
+  );
+};
 
-export default Section4
+export default Section4;

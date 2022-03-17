@@ -1,27 +1,27 @@
-import { LoadingButton } from "@mui/lab";
+import { LoadingButton } from '@mui/lab';
 import {
-    Card, Slide, Toolbar,
-    Tooltip
-} from "@mui/material";
-import Grid from "@mui/material/Grid";
-import { CachedPlaceData } from "components/reusable/CachedPlaceData/CachedPlaceData";
-import { PlaceData } from "components/reusable/PlaceData/PlaceData";
-import React, { FC } from "react";
+  Card, Toolbar,
+  Tooltip,
+} from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { CachedPlaceData } from 'components/reusable/CachedPlaceData/CachedPlaceData';
+import { PlaceData } from 'components/reusable/PlaceData/PlaceData';
+import React, { FC } from 'react';
 
 
 
 interface Props {
-    isEditable?: boolean,
-    logoFile?: File | null,
-    setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>,
-    isCacheable?: boolean
+  isEditable?: boolean,
+  logoFile?: File | null,
+  setLogoFile?: React.Dispatch<React.SetStateAction<File | null>>,
+  isCacheable?: boolean
 }
 
 
-export const PlaceDetailsCard: FC<Props> = ({ isCacheable, isEditable, logoFile, setLogoFile }) => {
+export const PlaceDetailsCard: FC<Props> = ({ isCacheable, isEditable,  setLogoFile }) => {
 
 
-    return (
+  return (
         <Card elevation={3} sx={{ minWidth: 800 }}>
             <Grid container item >
                 <Toolbar style={{ flexGrow: 1 }} disableGutters>
@@ -40,9 +40,9 @@ export const PlaceDetailsCard: FC<Props> = ({ isCacheable, isEditable, logoFile,
             </Grid>
             {isCacheable ?
                 <CachedPlaceData />
-                :
-                <PlaceData isEditable={isEditable} logoFile={logoFile} setLogoFile={setLogoFile} />
+              :
+                <PlaceData isEditable={isEditable} setLogoFile={setLogoFile} />
             }
         </Card>
-    );
-}
+  );
+};

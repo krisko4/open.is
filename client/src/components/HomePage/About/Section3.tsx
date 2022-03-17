@@ -1,36 +1,53 @@
 
-import { Card, CardContent, CardMedia, Divider, Grid, IconButton, Slide, Paper, Typography } from "@mui/material";
-import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined"
-import { KeyboardArrowDown } from "@mui/icons-material";
-import React, { FC, useEffect } from "react";
-import {animateScroll as scroll} from 'react-scroll'
-import { Team } from "./Team";
+import { Card, CardContent, CardMedia, Divider, Grid, IconButton, Slide, styled, Typography } from '@mui/material';
+import { KeyboardArrowDown } from '@mui/icons-material';
+import React, { FC } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 
 const items = [
-    {
-        name: 'Krzysztof Wyszyński',
-        role: 'CEO',
-        image: `${process.env.REACT_APP_BASE_URL}/images/ja.jpg`
-    },
-    {
-        name: 'Christopher Cononovitz',
-        role: 'Development manager',
-        image: `https://ocdn.eu/pulscms-transforms/1/zMSktkqTURBXy9kMzBjNzkyOWJjZTgxMGNiZTNkYzViZGJmZjZmYmMxMS5qcGVnkpUDAA3NAVjMwpMFzQGkzQEs`
-    },
-    {
-        name: 'George Suchodolsky',
-        role: 'Promotion manager',
-        image: `https://yt3.ggpht.com/a/AGF-l78NQAy60mopFW0l90704VozNKFKp5_Z37IrMg=s400-c-k-c0xffffffff-no-rj-mo`
-    },
-]
+  {
+    name: 'Krzysztof Wyszyński',
+    role: 'CEO',
+    image: `${process.env.REACT_APP_BASE_URL}/images/ja.jpg`,
+  },
+  {
+    name: 'Christopher Cononovitz',
+    role: 'Development manager',
+    image: 'https://ocdn.eu/pulscms-transforms/1/zMSktkqTURBXy9kMzBjNzkyOWJjZTgxMGNiZTNkYzViZGJmZjZmYmMxMS5qcGVnkpUDAA3NAVjMwpMFzQGkzQEs',
+  },
+  {
+    name: 'George Suchodolsky',
+    role: 'Promotion manager',
+    image: 'https://yt3.ggpht.com/a/AGF-l78NQAy60mopFW0l90704VozNKFKp5_Z37IrMg=s400-c-k-c0xffffffff-no-rj-mo',
+  },
+];
+
+const StyledContainer = styled(Grid)({
+  height: '100vh',
+  width: '100vw',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.6)),url(${process.env.REACT_APP_BASE_URL}/images/team.jpg)`,
+
+});
+
+const StyledArrow = styled(KeyboardArrowDown)({
+  width: 60,
+  height: 60,
+  backgroundColor: '#494949',
+  '&:hover': {
+    backgroundColor: '#303030',
+  },
+  borderRadius: '50%',
+  color: 'white',
+});
+
+export const Section3: FC = () => {
 
 
-export const Section3: FC<any> = ({ classes}) => {
 
-
-
-    return (
-        <Grid container alignItems="center" className={classes.background}>
+  return (
+        <StyledContainer container alignItems="center" >
             <Grid container justifyContent="center">
                 <Grid item container justifyContent="center" xs={11} lg={5} style={{ textAlign: 'center', marginBottom: 100 }}>
                     <Typography variant="h2" style={{ color: 'white', fontWeight: 'bold' }}>Who are <span style={{ color: 'red' }}>we</span>?</Typography>
@@ -55,23 +72,23 @@ export const Section3: FC<any> = ({ classes}) => {
                                             <div style={{ marginTop: 10, textAlign: 'center' }}>
                                                 <b>{item.name}</b><br /><span style={{ fontStyle: 'italic' }}>{item.role}</span>
                                             </div>
-                                        </Grid>
+                                        </Grid>,
                                         )}
                                     </Grid>
                                 </CardContent>
                             </Card>
                             <Grid container justifyContent="center">
                                 <IconButton
-                                    onClick={() => scroll.scrollTo(800, {duration: 500})}
+                                    onClick={() => scroll.scrollTo(800, { duration: 500 })}
                                     style={{ marginTop: -40 }}
                                     size="large">
-                                    <KeyboardArrowDown className={classes.button} />
+                                    <StyledArrow  />
                                 </IconButton>
                             </Grid>
                         </Grid>
                     </Slide>
                 </Grid>
             </Grid>
-        </Grid>
-    );
-}
+        </StyledContainer>
+  );
+};

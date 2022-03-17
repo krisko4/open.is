@@ -3,60 +3,60 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
-import { Alert, Button, Fade, Grid, IconButton, Tooltip, Typography } from "@mui/material";
+import { Alert, Button, Fade, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { getHours, isAfter } from "date-fns";
+import { getHours } from 'date-fns';
 import frLocale from 'date-fns/locale/fr';
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
 
 interface Props {
-    day: string,
-    openingHours: any,
-    setOpeningHours: any
+  day: string,
+  openingHours: any,
+  setOpeningHours: any
 
 }
 
 export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpeningHours }) => {
 
-    const [startHour, setStartHour] = useState<any>(openingHours[day].start)
-    const [endHour, setEndHour] = useState<any>(openingHours[day].end)
-    const [areHoursValid, setHoursValid] = useState(true)
-    const [doorColor, setDoorColor] = useState<any>('error')
+  const [startHour, setStartHour] = useState<any>(openingHours[day].start);
+  const [endHour, setEndHour] = useState<any>(openingHours[day].end);
+  const [areHoursValid, setHoursValid] = useState(true);
+  const [doorColor, setDoorColor] = useState<any>('error');
 
-    const openPlace = () => {
-        const newOpeningHours = { ...openingHours }
-        newOpeningHours[day].open = true
-        setOpeningHours(newOpeningHours)
-        setDoorColor('error')
+  const openPlace = () => {
+    const newOpeningHours = { ...openingHours };
+    newOpeningHours[day].open = true;
+    setOpeningHours(newOpeningHours);
+    setDoorColor('error');
+  };
+
+  const closePlace = () => {
+    const newOpeningHours = { ...openingHours };
+    newOpeningHours[day].open = false;
+    setOpeningHours(newOpeningHours);
+    setDoorColor('error');
+  };
+
+  useEffect(() => {
+    if (openingHours[day].start !== startHour || openingHours[day].end !== endHour) {
+      const valid = getHours(new Date(endHour)) > getHours(new Date(startHour)) || getHours(new Date(endHour)) < 6;
+      setHoursValid(valid);
+      const newOpeningHours = { ...openingHours };
+      newOpeningHours[day].start = startHour;
+      newOpeningHours[day].valid = valid;
+      newOpeningHours[day].end = endHour;
+      setOpeningHours(newOpeningHours);
     }
+  }, [startHour, endHour]);
 
-    const closePlace = () => {
-        const newOpeningHours = { ...openingHours }
-        newOpeningHours[day].open = false
-        setOpeningHours(newOpeningHours)
-        setDoorColor('error')
-    }
-
-    useEffect(() => {
-        if (openingHours[day].start !== startHour || openingHours[day].end !== endHour) {
-            const valid = getHours(new Date(endHour)) > getHours(new Date(startHour)) || getHours(new Date(endHour)) < 6
-            setHoursValid(valid)
-            const newOpeningHours = { ...openingHours }
-            newOpeningHours[day].start = startHour
-            newOpeningHours[day].valid = valid
-            newOpeningHours[day].end = endHour
-            setOpeningHours(newOpeningHours)
-        }
-    }, [startHour, endHour])
-
-    useEffect(() => {
-        setStartHour(openingHours[day].start)
-        setEndHour(openingHours[day].end)
-    }, [day])
+  useEffect(() => {
+    setStartHour(openingHours[day].start);
+    setEndHour(openingHours[day].end);
+  }, [day]);
 
 
-    return (
+  return (
         <Grid container sx={{ flexGrow: 1 }} direction="column">
             {openingHours[day].open &&
                 <Grid container justifyContent="center" sx={{ mt: 2 }}>
@@ -86,7 +86,7 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                                             displayStaticWrapperAs="mobile"
                                             value={startHour}
                                             onChange={(newValue) => {
-                                                setStartHour(newValue)
+                                              setStartHour(newValue);
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -95,7 +95,7 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                                             displayStaticWrapperAs="mobile"
                                             value={endHour}
                                             onChange={(newValue) => {
-                                                setEndHour(newValue)
+                                              setEndHour(newValue);
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -103,14 +103,14 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                                 </Fade>
                             </LocalizationProvider>
                         </>
-                            :
+                          :
                             <Fade in={true} timeout={500}>
                                 <Grid container alignItems="center" direction="column">
                                     <Tooltip title="Open" arrow placement="top" >
                                         <IconButton onClick={() => openPlace()} onMouseEnter={() => setDoorColor('success')} onMouseLeave={() => setDoorColor('error')}>
                                             {doorColor === 'error' ?
                                                 <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
-                                                :
+                                              :
                                                 <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
 
                                             }
@@ -127,5 +127,5 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
             </Grid>
 
         </Grid>
-    )
-}
+  );
+};

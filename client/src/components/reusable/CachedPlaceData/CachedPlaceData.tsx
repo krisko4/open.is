@@ -1,24 +1,23 @@
-import { Card, CardContent, CardMedia, Divider, Grid, Rating, Typography } from "@mui/material"
-import { ImageCarousel } from "components/reusable/PlaceData/ImageCarousel/ImageCarousel"
-import { FC } from "react"
-import { useParams } from "react-router-dom"
-import { useGetPlaceByIdAndSelectedLocationQuery } from "redux-toolkit/api/placesApi"
-import { PlaceTabs } from "../PlaceData/PlaceTabs"
-import { CachedContactDetails } from "./CachedContactDetails"
-import { CachedImageCarousel } from "./CachedImageCarousel"
-import { CachedPlaceStatus } from "./CachedPlaceStatus"
-import { CachedSocialIcons } from "./CachedSocialIcons"
+import { Card, CardContent, CardMedia, Divider, Grid, Rating, Typography } from '@mui/material';
+import { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { PlaceTabs } from '../PlaceData/PlaceTabs';
+import { CachedContactDetails } from './CachedContactDetails';
+import { CachedImageCarousel } from './CachedImageCarousel';
+import { CachedPlaceStatus } from './CachedPlaceStatus';
+import { CachedSocialIcons } from './CachedSocialIcons';
 
 
 export const CachedPlaceData: FC = () => {
 
-    const { placeId, locationId } = useParams()
-    const { data: place } = useGetPlaceByIdAndSelectedLocationQuery({
-        placeId: placeId as string,
-        locationId: locationId as string
-    })
+  const { placeId, locationId } = useParams();
+  const { data: place } = useGetPlaceByIdAndSelectedLocationQuery({
+    placeId: placeId as string,
+    locationId: locationId as string,
+  });
 
-    return (
+  return (
         <>
             {place &&
                 <>
@@ -41,11 +40,11 @@ export const CachedPlaceData: FC = () => {
                         <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
                             <CardMedia
                                 style={{
-                                    height: 200,
-                                    overflow: 'hidden',
-                                    marginTop: 10,
-                                    borderRadius: 20,
-                                    backgroundSize: 'contain'
+                                  height: 200,
+                                  overflow: 'hidden',
+                                  marginTop: 10,
+                                  borderRadius: 20,
+                                  backgroundSize: 'contain',
                                 }}
                                 image={place && place.logo as string || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`} >
                             </CardMedia>
@@ -90,5 +89,5 @@ export const CachedPlaceData: FC = () => {
                 </>
             }
         </>
-    )
-}
+  );
+};

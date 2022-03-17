@@ -1,18 +1,17 @@
 import {
-    Slide,
-    Card,
-    CardContent, Fade, Grid, Skeleton, Typography
-} from "@mui/material";
+  Slide,
+  Card,
+  CardContent, Grid, Typography,
+} from '@mui/material';
 import Alert from '@mui/material/Alert';
-import React, { FC } from "react";
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useParams } from "react-router-dom";
-import { useGetOpeningHoursForSelectedLocationQuery, useGetStatusForSelectedLocationQuery } from "redux-toolkit/api/placesApi";
-import { Status } from "../../../../../../contexts/PlaceProps";
-import { PlaceDetailsCard } from "../../../NewPlace/PlaceDetailsCard";
+import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetOpeningHoursForSelectedLocationQuery, useGetStatusForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { Status } from '../../../../../../redux-toolkit/slices/PlaceProps';
+import { PlaceDetailsCard } from '../../../NewPlace/PlaceDetailsCard';
 import { ActivityChart } from '../../Charts/ActivityChart';
-import { PlaceStatus } from "./PlaceStatus";
-import { RatingCard } from "./RatingCard";
+import { PlaceStatus } from './PlaceStatus';
+import { RatingCard } from './RatingCard';
 import { TotalOpinions } from './TotalOpinions';
 import { TotalVisits } from './TotalVisits';
 import { VisitsToday } from './VisitsToday';
@@ -24,13 +23,12 @@ import { VisitsToday } from './VisitsToday';
 export const PlaceDashboard: FC = () => {
 
 
-    const { locationId } = useParams()
-    const { data: status } = useGetStatusForSelectedLocationQuery(locationId as string)
-    const { data: openingHoursData, isFetching } = useGetOpeningHoursForSelectedLocationQuery(locationId as string)
+  const { locationId } = useParams();
+  const { data: status } = useGetStatusForSelectedLocationQuery(locationId as string);
+  const { data: openingHoursData, isFetching } = useGetOpeningHoursForSelectedLocationQuery(locationId as string);
 
-    return <>
-        <Scrollbars>
-            <Grid container direction="column">
+  return (
+            <Grid container item direction="column">
                 <Grid container sx={{ pt: '30px', pb: '30px', pl: '30px', pr: '30px' }}>
                     <Grid item lg={12} sx={{ mb: 2 }}>
                         {status === Status.CLOSED &&
@@ -44,7 +42,7 @@ export const PlaceDashboard: FC = () => {
                                     !isFetching &&
                                     (openingHoursData?.isActive ?
                                         <Alert severity="success" variant="filled" style={{ marginTop: 10 }}>Your place is visible in the browser.</Alert>
-                                        :
+                                      :
                                         <Alert severity="warning" variant="filled" style={{ marginTop: 10 }}>Your place is not visible in the browser. Please set opening hours of your business first.</Alert>
                                     )}
 
@@ -94,6 +92,5 @@ export const PlaceDashboard: FC = () => {
                     </Slide>
                 </Grid>
             </Grid>
-        </Scrollbars>
-    </>;
-}
+  ); 
+};

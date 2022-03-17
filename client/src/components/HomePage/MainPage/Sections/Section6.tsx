@@ -1,19 +1,19 @@
 
-import { CardMedia, Collapse, Fade, Slide, Zoom } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React, { FC } from "react";
+import { Collapse, Fade } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import React, { FC } from 'react';
 
 interface Props {
-    isVisible6: boolean,
-    isVisible7: boolean
+  isVisible6: boolean,
+  isVisible7: boolean
 }
 
 
 const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
 
 
-    return (
+  return (
         <Grid justifyContent="center" container style={{ overflowX: 'clip', background: 'linear-gradient(0deg, rgba(248,248,248,1) 4%, rgba(0,0,0,1) 20%)' }}>
             <Collapse in={isVisible6} timeout={2000}>
                 <Grid container justifyContent="center" style={{ marginTop: 40 }}>
@@ -53,7 +53,7 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
 
             </Grid>
         </Grid >
-    );
-}
+  );
+};
 
-export default Section6
+export default Section6;
