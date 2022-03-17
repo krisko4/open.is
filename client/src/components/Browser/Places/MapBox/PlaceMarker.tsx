@@ -1,5 +1,6 @@
 import { Avatar, Grid, styled, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -8,6 +9,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setPopup, usePopupSelector } from 'redux-toolkit/slices/mapSlice';
+import { setSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
 
 
@@ -92,27 +94,26 @@ export const PlaceMarker: FC<Props> = ({ location, isMarkerDraggable, index }) =
               //     placeMarker.current.openPopup()
               // },
               dragend: async () => {
-                // place.lat = placeMarker.current._latlng.lat
-                // place.lng = placeMarker.current._latlng.lng
-                // const lat: number = place.lat
-                // const lng: number = place.lng
-                // const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
-                // const places = [place]
-                // setSelectedPlaces(places)
-                // const address = res.data
-                // const { osm_type, osm_id } = address
-                // setSelectedAddress({
-                //     label: address.display_name,
-                //     language: navigator.language,
-                //     lat: lat,
-                //     lng: lng,
-                //     postcode: address.address.postcode,
-                //     addressId: `${osm_type[0].toString().toUpperCase()}${osm_id}`
-                // })
+                const lat: number = placeMarker.current._latlng.lat;
+                const lng: number = placeMarker.current._latlng.lng;
+                const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`);
+                // const places = [place];
+                // dispatch(setSelectedPlaces(places));
+                const address = res.data;
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                const { osm_type, osm_id } = address;
+                dispatch(setSelectedAddress({
+                  label: address.display_name,
+                  language: navigator.language,
+                  lat: lat,
+                  lng: lng,
+                  postcode: address.address.postcode,
+                  addressId: `${osm_type[0].toString().toUpperCase()}${osm_id}`,
+                }));
               },
             }}
             position={[location.lat, location.lng]}
-        // draggable={isMarkerDraggable}
+        draggable={isMarkerDraggable}
         >
             <StyledPopup>
                 <Grid container justifyContent="center" alignItems="center">

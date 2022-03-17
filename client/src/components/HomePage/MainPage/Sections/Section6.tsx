@@ -28,11 +28,11 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
                     </Grid>
                 </Grid>
             </Collapse>
-            <Grid item style={{ marginTop: 20 }} xs={6}>
+            <Grid item style={{ marginTop: 20 }} xs={8}>
                 <Fade in={isVisible6} timeout={2000}>
                     <img
-                        src={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
-                        style={{ width: '100%', marginTop: 100, transform: 'translate(27%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
+                        src={`${process.env.REACT_APP_BASE_URL}/images/dark_panel.png`}
+                        style={{ width: '100%', marginTop: 100, transform: 'translate(20%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
                     />
                     {/* <CardMedia
                         image={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
@@ -41,7 +41,7 @@ const Section6: FC<Props> = ({ isVisible6, isVisible7 }) => {
                 </Fade>
                 <Fade in={isVisible7} timeout={2000} >
                     <img
-                        src={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
+                        src={`${process.env.REACT_APP_BASE_URL}/images/light_panel.png`}
                         style={{ width: '100%', marginTop: 100, transform: 'translate(-27%, -15%) rotate(40deg) skew(10deg,-10deg)' }}
                     />
                     {/* <CardMedia

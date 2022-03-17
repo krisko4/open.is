@@ -64,7 +64,11 @@ export const CachedOpinions: FC<Props> = ({ isUserOwner }) => {
   return (
         <Fade in={true} timeout={500}>
             <Grid container style={{ height: '100%' }} justifyContent="center">
-                {isFetching ? <CircularProgress /> : 
+                {isFetching ?
+                <Grid container style={{ height: '100%' }} alignItems="center" justifyContent="center">
+                <CircularProgress /> 
+                </Grid>
+                  : 
                     <Grid container item xs={11} direction="column" style={{ marginTop: 20, marginBottom: 20 }}>
                         {opinionData && opinionData.opinions.length > 0 ?
                             <div>

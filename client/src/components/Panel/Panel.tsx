@@ -43,7 +43,7 @@ export const Panel: FC = () => {
     //   direction="column"
     // > */}
       {isFetching ?
-        <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+        <Grid container sx={{ height: '100vh' }} justifyContent="center" alignItems="center">
           <CircularProgress disableShrink />
         </Grid> :
         /* <Grid container sx={{ flex: '1 1 auto' }}> */

@@ -77,7 +77,6 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                 </Paper>
             }
             <Grid container sx={{ flexGrow: 1 }}>
-                {/* <Scrollbars> */}
                     <Grid container sx={{ height: '100%' }} justifyContent="space-evenly" alignItems="center">
                         <Grid container item  justifyContent="space-evenly">
                             {activeStep !== 4 &&
@@ -147,7 +146,6 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                             }
                         </Grid>
                     </Grid>
-                {/* </Scrollbars> */}
             </Grid >
         </Grid >
   );

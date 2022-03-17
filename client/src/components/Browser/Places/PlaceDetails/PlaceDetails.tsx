@@ -34,9 +34,7 @@ export const PlaceDetails: FC = () => {
         } catch (err) {
           console.log(err);
         }
-
       }
-
     })();
   }, [place]);
 

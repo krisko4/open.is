@@ -11,6 +11,7 @@ import { useLoginContext } from 'contexts/LoginContext';
 import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
 import { setMapCoords, closePopup } from 'redux-toolkit/slices/mapSlice';
 import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'redux-toolkit/api/placesApi';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 interface Props {
   place: CurrentPlaceProps
@@ -21,7 +22,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const { userData } = useLoginContext();
   const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
-  const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(place._id as string);
+  const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(userData.isLoggedIn ? place._id as string : skipToken);
   const [unsubscribeLocation, { isLoading }] = useUnsubscribeLocationMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

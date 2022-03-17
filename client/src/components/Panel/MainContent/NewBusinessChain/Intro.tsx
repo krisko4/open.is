@@ -22,12 +22,12 @@ const Intro: FC<Props> = ({ setStartClicked }) => (
           </Grid>
         </Grid>
       </Grow>
-      <Grid item container lg={5} justifyContent="center" alignItems="center">
+      <Grid item container lg={4} justifyContent="center" alignItems="center">
         <Slide in timeout={1000} direction="left">
           <Card>
             <CardContent>
               <Typography variant="h2">What is a business chain?</Typography>
-              <Grid style={{ marginTop: 10 }} item container lg={10}>
+              <Grid style={{ marginTop: 10 }} item container lg={11}>
                 <Typography variant="body1" sx={{ mb: 1 }}>
                   If you are an owner of a business with multiple locations, business chain is a great option for you.
                   Follow some simple steps to add your locations quickly and conveniently.
