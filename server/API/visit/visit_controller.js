@@ -36,6 +36,7 @@ const visitController = {
         try {
             const locationIds = await placeService.getLocationIdsByUserId(uid)
             const visitData = await visitService.getVisitsByLocationIds(locationIds)
+            console.log(visitData)
             return res.status(200).json(allVisitsDto(visitData))
         } catch (err) {
             return next(err)

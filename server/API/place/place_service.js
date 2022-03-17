@@ -267,10 +267,7 @@ const placeService = {
             .facet(this.getPaginatedPlaceData(parseInt(start), parseInt(limit)))
     },
 
-    async getPlaceByIdAndSelectedLocation(placeId, locationId, uid) {
-        console.log(placeId)
-        console.log(locationId)
-        console.log(uid)
+    async getPlaceByIdAndSelectedLocation(placeId, locationId) {
         const foundPlaces = await Place.aggregate()
             .unwind('locations')
             .match({

@@ -289,11 +289,8 @@ const placeController = {
     async getPlaceByIdAndSelectedLocation(req, res, next) {
         try {
             const { uid } = req.cookies
-            const user = await userService.getUserById(uid)
-            if (!user) throw ApiError.internal('Invalid uid')
             const { placeId, locationId } = req.params
-            let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId, uid)
-            // place = await this.getVisitsNewsOpinionsForPlace(place, uid)
+            let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId )
             return res.status(200).json(placeDto(place, uid))
         } catch (err) {
             return next(err)

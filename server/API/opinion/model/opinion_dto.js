@@ -20,7 +20,11 @@ const opinionDto = (opinions) => {
 }
 
 const allOpinionsDto = (opinionData) => {
-    const today = opinionData[0].today[0].today
+    const todayArr = opinionData[0].today
+    let today
+    if (todayArr.length > 0) {
+        today = opinionData[0].today[0].today
+    }
     const total = opinionData[0].total[0].total
     const opinionsArray = opinionData[0].data
     for (const opinionObj of opinionsArray) {
@@ -35,4 +39,4 @@ const allOpinionsDto = (opinionData) => {
     }
 }
 
-module.exports = {opinionDto, allOpinionsDto}
+module.exports = { opinionDto, allOpinionsDto }
