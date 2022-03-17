@@ -29,7 +29,7 @@ export const Step1: FC = () => {
 
 
   return (
-        <Fade in={true} timeout={1500}>
+        <Fade in={true} timeout={1000}>
             <Grid item container direction="column" justifyContent="space-between" style={{ textAlign: 'center' }}>
                 <Typography variant="h2">What is the name of your business?</Typography>
                 <TextField

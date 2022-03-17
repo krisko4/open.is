@@ -1,5 +1,5 @@
 import {
-  Grid, Grow, Typography, Slide, Card, CardContent, Button,
+  Grid, Fade, Typography, Slide, Card, CardContent, Button,
 } from '@mui/material';
 import React, { FC } from 'react';
 import { NewPlaceStepper } from '../NewPlace/Steps/NewPlaceStepper';
@@ -11,7 +11,7 @@ interface Props {
 const Intro: FC<Props> = ({ setStartClicked }) => (
   <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center">
     <Grid container justifyContent="space-evenly">
-      <Grow in timeout={1200}>
+      <Fade in={true} timeout={1000}>
         <Grid item container direction="column" alignItems="center" justifyContent="space-evenly" lg={6}>
           <Typography variant="h2">New business chain</Typography>
           <img src={`${process.env.REACT_APP_BASE_URL}/images/chain2.gif`} />
@@ -21,9 +21,9 @@ const Intro: FC<Props> = ({ setStartClicked }) => (
             </Grid>
           </Grid>
         </Grid>
-      </Grow>
+      </Fade>
       <Grid item container lg={4} justifyContent="center" alignItems="center">
-        <Slide in timeout={1000} direction="left">
+        <Slide in timeout={500} direction="left">
           <Card>
             <CardContent>
               <Typography variant="h2">What is a business chain?</Typography>

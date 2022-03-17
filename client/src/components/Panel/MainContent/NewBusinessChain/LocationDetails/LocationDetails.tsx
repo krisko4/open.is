@@ -1,4 +1,4 @@
-import { Button, Fade, Grid, Paper, Slide, Typography } from '@mui/material';
+import {  Slide, Button, Fade, Grid, Paper, Typography } from '@mui/material';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useAppDispatch } from 'redux-toolkit/hooks';
@@ -91,15 +91,16 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, is
   }, [addressSubmitted]);
 
 
+
   return (
-        <Slide in={true} direction="left" timeout={500}>
-            <Grid container style={{ height: '100%', paddingTop: 1 }}>
+            <Grid container style={{ height: '100%', overflow: 'hidden' }}>
+   <Slide in={true} direction="left" timeout={500}>
                 <Paper square sx={{ flexGrow: 1, height: '100%' }}>
                     {selectedLocations.length === 0 ?
                         <Fade in={true} timeout={1000}>
                             <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
                                 <Typography variant="h3">Waiting for the first location...</Typography>
-                                <Grid item lg={8} style={{ marginTop: 10 }}>
+                                <Grid item lg={8} >
                                     <img src={mode === 'light' ? `${process.env.REACT_APP_BASE_URL}/images/location.gif` : 'https://thumbs.gfycat.com/WastefulGiganticClumber-max-1mb.gif'} style={{ width: '100%' }} />
                                 </Grid>
                             </Grid>
@@ -139,6 +140,7 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, is
                         </>
                     }
                 </Paper>
+   </Slide>
                 {isEditionMode &&
                     <LocationsConfirmDialog
                         dialogOpen={confirmDialogOpen}
@@ -147,6 +149,5 @@ export const LocationDetails: FC<Props> = ({ addressSubmitted, setActiveStep, is
                     />
                 }
             </Grid >
-        </Slide>
   );
 };

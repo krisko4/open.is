@@ -119,7 +119,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
                                 </Grid>
                               : activeStep !== 4 &&
                                 <Grid container item lg={4}>
-                                    <Slide in={true} timeout={1000}>
+                                    <Slide in={true} timeout={500}>
                                         <div>
                                             <Card>
                                                 <CardContent>

@@ -170,7 +170,7 @@ export const AccountSettings: FC = () => {
             >
                 <CircularProgress color="inherit"></CircularProgress>
             </Backdrop>
-            <Fade in={true} timeout={1500}>
+            <Fade in={true} timeout={1000}>
                 <Grid container item lg={7} direction="column" justifyContent="space-evenly" alignItems="center">
                     <Grid item sx={{ textAlign: 'center' }}>
                         <Typography variant="h2">Account credentials</Typography>
@@ -206,7 +206,7 @@ export const AccountSettings: FC = () => {
 
             </Fade>
 
-            <Slide direction="left" timeout={1500} in={true}>
+            <Slide direction="left" in={true}>
                 <Grid container
                     item
                     lg={5}
