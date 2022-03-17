@@ -103,16 +103,16 @@ export const placesApi = createApi({
   tagTypes: ['Places', 'Subscription', 'AllOpinions', 'AllVisits', 'OpeningHours', 'Visits', 'Status', 'SelectedBusinessChain', 'Opinions', 'SelectedPlace', 'SelectedLocations', 'News', 'AverageNote'],
   endpoints: (builder) => ({
     getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
-      query: (uid) => `places?uid=${uid}`,
+      query: (uid) => `/places?uid=${uid}`,
       providesTags: [{ type: 'Places', id: 'LIST' }],
     }),
     getPlaceById: builder.query<RawPlaceDataProps, string>({
-      query: (id) => `places/${id}`,
+      query: (id) => `/places/${id}`,
       providesTags: [{ type: 'SelectedBusinessChain', id: 'BUSINESS_CHAIN' }],
     }),
     getNewsByLocationId: builder.query<NewsProps[], string>({
       query: (locationId) => ({
-        url: 'news',
+        url: '/news',
         params: {
           locationId: locationId,
         },
@@ -121,7 +121,7 @@ export const placesApi = createApi({
     }),
     editPlaceData: builder.mutation<void, FormData>({
       query: (formData) => ({
-        url: 'places',
+        url: '/places',
         method: 'PUT',
         body: formData,
       }),
@@ -129,7 +129,7 @@ export const placesApi = createApi({
     }),
     addNews: builder.mutation<void, AddNewsProps>({
       query: ({ locationId, content, title }) => ({
-        url: 'news',
+        url: '/news',
         method: 'POST',
         body: {
           locationId: locationId,
@@ -141,20 +141,20 @@ export const placesApi = createApi({
     }),
     addOpinion: builder.mutation<void, AddOpinionProps>({
       query: (opinion) => ({
-        url: 'opinions',
+        url: '/opinions',
         method: 'POST',
         body: opinion,
       }),
       invalidatesTags: ['Opinions', 'AverageNote'],
     }),
     getPlaceByIdAndSelectedLocation: builder.query<CurrentPlaceProps, PlaceAndLocationProps>({
-      query: ({ placeId, locationId }) => `places/${placeId}/locations/${locationId}`,
+      query: ({ placeId, locationId }) => `/places/${placeId}/locations/${locationId}`,
       providesTags: [{ type: 'SelectedPlace' }],
       transformResponse: (response: RawPlaceDataProps) => convertToCurrentPlace(response)[0],
     }),
     getSelectedLocations: builder.query<SelectedLocationProps[], GetSelectedLocationsProps>({
       query: ({ start, limit }) => ({
-        url: 'places/active/popular',
+        url: '/places/active/popular',
         params: {
           start: start,
           limit: limit,
@@ -164,7 +164,7 @@ export const placesApi = createApi({
     }),
     changeContactDetailsForSelectedLocations: builder.mutation<void, ChangeContactDetailsProps>({
       query: ({ placeId, contactDetails, locationIds }) => ({
-        url: `places/${placeId}/locations/contact-details`,
+        url: `/places/${placeId}/locations/contact-details`,
         method: 'PATCH',
         body: {
           locationIds: locationIds,
@@ -179,7 +179,7 @@ export const placesApi = createApi({
     }),
     changeOpeningHoursForSelectedLocations: builder.mutation<void, ChangeOpeningHoursProps>({
       query: ({ placeId, openingHours, locationIds }) => ({
-        url: `places/${placeId}/locations/opening-hours`,
+        url: `/places/${placeId}/locations/opening-hours`,
         method: 'PATCH',
         body: {
           locationIds: locationIds,
@@ -193,7 +193,7 @@ export const placesApi = createApi({
     }),
     addLocations: builder.mutation<void, AddLocationsProps>({
       query: ({ placeId, locations }) => ({
-        url: `places/${placeId}/locations`,
+        url: `/places/${placeId}/locations`,
         method: 'PATCH',
         body: {
           locations: locations,
@@ -206,7 +206,7 @@ export const placesApi = createApi({
     }),
     getOpinionsForSelectedLocation: builder.query<OpinionData, string>({
       query: (locationId) => ({
-        url: 'opinions',
+        url: '/opinions',
         params: {
           locationId: locationId,
         },
@@ -216,7 +216,7 @@ export const placesApi = createApi({
     }),
     getAllOpinionsByUserId: builder.query<AllOpinionsProps, void>({
       query: () => ({
-        url: 'opinions',
+        url: '/opinions',
         params: {
           uid: localStorage.getItem('uid'), 
         },
@@ -225,7 +225,7 @@ export const placesApi = createApi({
     }),
     getVisitsForSelectedLocation: builder.query<VisitData, string>({
       query: (locationId) => ({
-        url: 'visits',
+        url: '/visits',
         params: {
           locationId: locationId,
         },
@@ -235,7 +235,7 @@ export const placesApi = createApi({
     }),
     getAllVisitsByUserId: builder.query<AllVisitsProps, void>({
       query: () => ({
-        url: 'visits',
+        url: '/visits',
         params: {
           uid: localStorage.getItem('uid'), 
         },
@@ -243,24 +243,24 @@ export const placesApi = createApi({
       providesTags: ['AllVisits'],
     }),
     getOpeningHoursForSelectedLocation: builder.query<OpeningHoursResponse, string>({
-      query: (locationId) => `places/${locationId}/opening-hours`,
+      query: (locationId) => `/places/${locationId}/opening-hours`,
       providesTags: ['OpeningHours'],
     }),
     getAverageNoteForSelectedLocation: builder.query<AverageNoteProps, string>({
       query: (locationId) => ({
-        url: `places/${locationId}/average-note`,
+        url: `/places/${locationId}/average-note`,
       }),
       providesTags: ['AverageNote'],
     }),
     getStatusForSelectedLocation: builder.query<string, string>({
       query: (locationId) => ({
-        url: `places/${locationId}/status`,
+        url: `/places/${locationId}/status`,
       }),
       providesTags: ['Status'],
     }),
     setStatusForSelectedLocation: builder.mutation<void, StatusProps>({
       query: ({ locationId, status }) => ({
-        url: `places/${locationId}/status`,
+        url: `/places/${locationId}/status`,
         method: 'PATCH',
         body: {
           status: status,
@@ -271,7 +271,7 @@ export const placesApi = createApi({
 
     setSelectedLocationsAlwaysOpen: builder.mutation<void, SelectedLocationsProps>({
       query: ({ placeId, locationIds }) => ({
-        url: `places/${placeId}/locations/always-open`,
+        url: `/places/${placeId}/locations/always-open`,
         method: 'PATCH',
         body: {
           locationIds: locationIds,
@@ -284,7 +284,7 @@ export const placesApi = createApi({
     }),
     addPlace: builder.mutation<RawPlaceDataProps, FormData>({
       query: (formData) => ({
-        url: 'places',
+        url: '/places',
         method: 'POST',
         body: formData,
       }),
@@ -308,19 +308,19 @@ export const placesApi = createApi({
       invalidatesTags: ['Subscription'],
     }),
     isUserSubscriber: builder.query<boolean, string>({
-      query: (locationId) => `users/${localStorage.getItem('uid')}/subscriptions/${locationId}`,
+      query: (locationId) => `/users/${localStorage.getItem('uid')}/subscriptions/${locationId}`,
       providesTags: ['Subscription'],
     }),
     deletePlace: builder.mutation<void, string>({
       query: (id) => ({
-        url: `places/${id}`,
+        url: `/places/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Places', id: 'LIST' }],
     }),
     deleteSelectedLocations: builder.mutation<void, SelectedLocationsProps>({
       query: ({ placeId, locationIds }) => ({
-        url: `places/${placeId}/locations`,
+        url: `/places/${placeId}/locations`,
         method: 'DELETE',
         body: {
           locationIds: locationIds,
