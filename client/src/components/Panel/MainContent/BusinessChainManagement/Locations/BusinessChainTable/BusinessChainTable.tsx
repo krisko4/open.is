@@ -134,7 +134,7 @@ export const BusinessChainTable: React.FC = () => {
   };
 
   return (
-        <Paper sx={{ margin: 1 }}>
+        <Paper sx={{ margin: 1, flexGrow: 1 }}>
             <Grid container sx={{ width: '100%', flexGrow: 1, mt: 1 }}>
                 <TableToolbar setSelectedLocations={setSelectedLocations} selectedLocations={selectedLocations} />
                 <TableContainer>

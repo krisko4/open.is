@@ -99,7 +99,10 @@ interface AllVisitsProps{
 
 export const placesApi = createApi({
   reducerPath: 'placesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BASE_URL}` }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: `${process.env.REACT_APP_BASE_URL}`,
+    credentials: 'include',
+  }),
   tagTypes: ['Places', 'Subscription', 'AllOpinions', 'AllVisits', 'OpeningHours', 'Visits', 'Status', 'SelectedBusinessChain', 'Opinions', 'SelectedPlace', 'SelectedLocations', 'News', 'AverageNote'],
   endpoints: (builder) => ({
     getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
