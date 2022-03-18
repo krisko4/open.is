@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import React, { FC, useState } from 'react';
-import { useEmailSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useEmailSelector } from 'redux-toolkit/slices/emailSlice';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { resendConfirmationEmail } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';

@@ -1,6 +1,7 @@
 
 import { ListSubheader } from '@mui/material';
 import { ListItemLink } from 'components/reusable/ListItemLink';
+import Divider from '@mui/material/Divider';
 import { FC } from 'react';
 import { useGetPlacesByUserId } from 'redux-toolkit/api/placesApi';
 
@@ -16,6 +17,7 @@ export const MyBusinessChains: FC<Props> = ({ drawerOpen }) => {
   return <>
         {places && places.filter(place => place.isBusinessChain).length > 0 &&
             <>
+            <Divider/>
             {drawerOpen && 
                 <ListSubheader disableSticky>
                     My business chains

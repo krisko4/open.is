@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { setEmail } from 'redux-toolkit/slices/emailSlice';
 import * as Yup from 'yup';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { signUp } from '../../../requests/AuthRequests';
@@ -58,6 +60,8 @@ export const RegistrationForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
 
   const { register, getValues, formState: { isValid, errors } } = useForm<RegistrationInputs>(
     {
@@ -84,6 +88,7 @@ export const RegistrationForm = () => {
       await signUp(userData);
       setRegistrationOpen(false);
       setConfirmationOpen(true);
+      dispatch(setEmail(userData.email));
       enqueueSuccessSnackbar('You have successfully registered');
     } catch (err: any) {
       console.error(err);

@@ -13,14 +13,13 @@ const emailSlice = createSlice({
   name: 'email',
   initialState,
   reducers: {
-    setEmail: (state, action : PayloadAction<Props>) => {
-      return action.payload;
+    setEmail: (state, action : PayloadAction<string>) => {
+      state.email = action.payload;
     },
-
   },
 });
 
-export const useEmailSelector = () => useAppSelector(state => state.email);
+export const useEmailSelector = () => useAppSelector(state => state.email.email);
 
 export const emailReducer = emailSlice.reducer;
 export const { setEmail } = emailSlice.actions;

@@ -157,9 +157,7 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
                                 </ListItem>,
                             )
                         }
-                        <Divider />
                         <MyPlaces drawerOpen={drawerOpen} />
-                        <Divider />
                         <MyBusinessChains drawerOpen={drawerOpen}
                         />
                     </List>
