@@ -24,7 +24,14 @@ const visitDto = (visitData) => {
 }
 
 const allVisitsDto = (visitData) => {
-    const total = visitData[0].total[0].total
+    const totalArr = visitData[0].total
+    let total
+    if(totalArr.length > 0){
+        total = totalArr[0].total
+    }
+    else{
+        total = 0
+    }
     const todayArr = visitData[0].today
     let today
     if(todayArr.length > 0){

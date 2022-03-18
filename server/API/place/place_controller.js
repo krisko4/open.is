@@ -37,7 +37,7 @@ const placeController = {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
             await placeService.setSelectedLocationsAlwaysOpen(user, id, locationIds)
-            return res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             return next(err)
         }
@@ -104,7 +104,7 @@ const placeController = {
             const { alwaysOpen } = req.body
             const { id } = req.params
             await placeService.setAlwaysOpen(alwaysOpen, id)
-            return res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             return next(err)
         }

@@ -20,12 +20,19 @@ const opinionDto = (opinions) => {
 }
 
 const allOpinionsDto = (opinionData) => {
+    const totalArr = opinionData[0].total
+    let total
+    if (totalArr.length > 0) {
+        total = totalArr[0].total
+    }
+    else{
+        total = 0
+    }
     const todayArr = opinionData[0].today
     let today
     if (todayArr.length > 0) {
-        today = opinionData[0].today[0].today
+        today = todayArr[0].today
     }
-    const total = opinionData[0].total[0].total
     const opinionsArray = opinionData[0].data
     for (const opinionObj of opinionsArray) {
         for (const opinion of opinionObj.opinions) {
