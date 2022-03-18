@@ -6,7 +6,7 @@ const ApiError = require('../../errors/ApiError')
 const jwtService = {
 
     generateAccessToken: (user) => {
-        return jwt.sign({email: user.email}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1200s'})
+        return jwt.sign({email: user.email}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '300s'})
     },
 
     generateRefreshToken: (user) => {

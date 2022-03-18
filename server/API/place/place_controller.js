@@ -301,6 +301,7 @@ const placeController = {
         const queryLength = Object.keys(req.query).length
         const { cookies } = req
         const { uid } = cookies
+        console.log(uid)
         switch (queryLength) {
             case 2:
                 const { lat, lng } = req.query

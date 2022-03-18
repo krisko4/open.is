@@ -19,7 +19,7 @@ const opinionController = {
     },
 
     async getAllOpinionsByUserId(req, res, next) {
-        const { uid } = req.cookies
+        const { uid } = req.query
         try {
             const locationIds = await placeService.getLocationIdsByUserId(uid)
             const opinionsData = await opinionService.getOpinionsByLocationIds(locationIds)

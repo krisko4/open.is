@@ -32,7 +32,7 @@ const visitController = {
     },
 
     async getAllVisitsByUserId(req, res, next) {
-        const { uid } = req.cookies
+        const { uid } = req.query
         try {
             const locationIds = await placeService.getLocationIdsByUserId(uid)
             const visitData = await visitService.getVisitsByLocationIds(locationIds)
@@ -45,6 +45,7 @@ const visitController = {
 
     getVisitsByLocationId: async (req, res, next) => {
         const { uid } = req.cookies
+        console.log(req.cookies)
         if (!uid) return next(ApiError.badRequest('uid is required'))
         const { locationId } = req.query
         try {
