@@ -88,7 +88,6 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
                         multiline
                         rows={10}
                         variant="outlined"
-                        maxRows={10}
                         className="opinionArea"
                         InputProps={{
                           endAdornment:

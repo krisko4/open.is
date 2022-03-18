@@ -25,6 +25,7 @@ interface Props {
 export const CachedOpinions: FC<Props> = ({ isUserOwner }) => {
 
 
+  console.log(isUserOwner);
   const { userData } = useLoginContext();
   const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,7 +75,7 @@ export const CachedOpinions: FC<Props> = ({ isUserOwner }) => {
                             <div>
                                 <Grid container justifyContent="space-between" >
                                     <Alert severity="info" variant="filled">{opinionData.opinions?.length} {opinionData.opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
-                                    {userData.isLoggedIn && isUserOwner &&
+                                    {userData.isLoggedIn && !isUserOwner &&
                                         <Button startIcon={<AddIcon />} style={{ marginTop: 5, marginBottom: 5 }} onClick={() => setDialogOpen(true)} color="primary" variant="contained">New opinion</Button>
                                     }
                                 </Grid>
@@ -128,7 +129,6 @@ export const CachedOpinions: FC<Props> = ({ isUserOwner }) => {
                                             onChange={(e) => setOpinionText(e.target.value)}
                                             rows={10}
                                             variant="outlined"
-                                            maxRows={10}
 
                                             InputProps={{
 

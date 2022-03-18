@@ -119,7 +119,7 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
             </DrawerHeader>
             <Divider />
             <Scrollbars autoHide>
-                <Paper>
+                <Paper sx={{ height: '100%' }}>
                     <ListItem >
                         <ListItemAvatar>
                             <Avatar

@@ -30,7 +30,7 @@ export const PlaceDashboard: FC = () => {
   return (
             <Grid container item direction="column">
                 <Grid container sx={{ pt: '30px', pb: '30px', pl: '30px', pr: '30px' }}>
-                    <Grid item lg={12} sx={{ mb: 2 }}>
+                    <Grid item  sx={{ mb: 2, flexGrow: 1 }}>
                         {status === Status.CLOSED &&
                             <Slide in={true} direction="right" timeout={500}>
                                 <Alert variant="filled" severity="error">Your place is now closed.</Alert>
@@ -50,13 +50,13 @@ export const PlaceDashboard: FC = () => {
                         </Slide>
                     </Grid>
                     <Grid container justifyContent="space-around" spacing={1} sx={{ mb: 2 }}>
-                        <Grid item lg={4}>
+                        <Grid item lg={4} md={4} sm={4}>
                             <TotalVisits />
                         </Grid>
-                        <Grid item lg={4}>
+                        <Grid item lg={4} md={4} sm={4}>
                             <VisitsToday />
                         </Grid>
-                        <Grid item lg={4}>
+                        <Grid item lg={4} md={4} sm={4}>
                             <TotalOpinions />
                         </Grid>
                     </Grid>

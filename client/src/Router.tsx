@@ -27,9 +27,9 @@ export const Router: FC = () => {
   return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
                 <Route path="/panel/*" element={
                     <ColorModeContextProvider>
                         <PanelTheme>
@@ -50,7 +50,7 @@ export const Router: FC = () => {
                 <Route path="/confirm/:token" element={<Confirmation />} />
                 <Route path="/:email/confirm/:token" element={<EmailChangeConfirmation />} />
                 <Route path="*" element={<NoMatch />} />
-                <Route path="/test" element={<Test/>} />
+                <Route path="/test" element={<Test />} />
             </Routes>
         </BrowserRouter>
   );

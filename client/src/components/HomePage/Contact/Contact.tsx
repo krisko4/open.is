@@ -4,12 +4,14 @@ import { SocialIcon } from 'react-social-icons';
 import { AuthContextProvider } from '../../../contexts/AuthContext';
 import Header from '../MainPage/Header';
 import { ContactForm } from './ContactForm';
+import { Auth } from '../../Auth/Auth';
 export const Contact: FC = () => {
 
 
   return (
         <AuthContextProvider>
             <Header />
+            <Auth />
             <Grid container alignItems="center" direction="column" justifyContent="center" style={{ height: 600, backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.6)), url(${process.env.REACT_APP_BASE_URL}/images/contact.jpg)` }} >
                 <div style={{ color: 'white', textAlign: 'center', marginTop: 200 }}>
                     <Typography variant="h2" >Contact us</Typography>

@@ -7,7 +7,7 @@ export const NewPlaceChooser: FC = () => {
   return (
         <Grid container justifyContent="space-evenly">
             <Grid item lg={5}>
-                <Slide in={true} timeout={1000} direction="right">
+                <Slide in={true} timeout={500} direction="right">
                     <Card >
                         <CardContent>
                             <Grid container direction="column" justifyContent="space-evenly">
@@ -17,7 +17,6 @@ export const NewPlaceChooser: FC = () => {
                                 <Divider color="primary" sx={{ mt: 1 }}></Divider>
                                 <Typography variant="subtitle1" sx={{ mt: 1 }}>
                                     If you are an owner of a small business with <b>single</b> location, this might be the suitable option for you.
-
                                 </Typography>
                                 <Grid container direction="column" alignItems="center" sx={{ mt: 1, mb: 1 }}>
                                     <img style={{ height: '400px' }} src={`${process.env.REACT_APP_BASE_URL}/images/new_place.gif`} />
@@ -42,7 +41,7 @@ export const NewPlaceChooser: FC = () => {
                 </Slide>
             </Grid>
             <Grid item lg={5}>
-                <Slide direction="left" timeout={1000} in={true}>
+                <Slide direction="left" timeout={500} in={true}>
                     <Card>
                         <CardContent>
                             <Typography variant="h3">

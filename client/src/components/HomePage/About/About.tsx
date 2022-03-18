@@ -1,3 +1,4 @@
+import { Auth } from 'components/Auth/Auth';
 import React, { FC, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { AuthContextProvider } from '../../../contexts/AuthContext';
@@ -14,6 +15,8 @@ export const About: FC = () => {
   return (
     <AuthContextProvider>
       <Header />
+      <Auth/>
+      <div style={{ height: '100vh' }}>
       <Carousel
         index={index}
         onChange={(now) => {
@@ -26,7 +29,6 @@ export const About: FC = () => {
       >
         <div key={0}>
         <Section1 />,
-
         </div>
         <div key={1}>
         <Section3 />,
@@ -36,6 +38,8 @@ export const About: FC = () => {
         </div>
       </Carousel>
       {index === 1 && <Team />}
+
+      </div>
     </AuthContextProvider>
   );
 };

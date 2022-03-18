@@ -106,42 +106,45 @@ const Header: FC = () => {
 
   return (
 
-        <AppBar elevation={appBarState.elevation} className={classes[appBarRef.current]}>
-            <Grid container justifyContent="center">
-                <Grid item style={{ flexGrow: 1 }} />
-                <Grid item lg={4}>
-                    <Slide in={true} timeout={1000} >
-                        <Toolbar>
-                            {location.pathname === '/' ?
-                                <Button onClick={() => navigate('/about')} variant="outlined"
-                                    className="aboutButton">About us</Button> :
-                                <Button startIcon={<HomeIcon />} onClick={() => navigate('/')} variant="outlined"
-                                    className="aboutButton">Home</Button>
+    <AppBar elevation={appBarState.elevation} className={classes[appBarRef.current]}>
+      <Grid container justifyContent="center">
+        <Grid item style={{ flexGrow: 1 }} />
+        <Grid item lg={4}>
+          <Slide in={true} timeout={1000} >
+            <Toolbar>
+              {location.pathname === '/' ?
+                <Button onClick={() => navigate('/about')} variant="outlined"
+                  className="aboutButton">About us</Button> :
+                <Button startIcon={<HomeIcon />} onClick={() => navigate('/')} variant="outlined"
+                  className="aboutButton">Home</Button>
 
-                            }
-                            {location.pathname === '/contact' ?
-                                <Button variant="text" className="contactButton" onClick={() => navigate('/about')}>About us</Button>
-                              :
-                                <Button variant="text" className="contactButton" onClick={() => navigate('/contact')}>Contact</Button>
+              }
+              {location.pathname === '/contact' ?
+                <Button variant="text" className="contactButton" onClick={() => navigate('/about')}>About us</Button>
+                :
+                <Button variant="text" className="contactButton" onClick={() => navigate('/contact')}>Contact</Button>
 
-                            }
-                            {userData.isLoggedIn ? <div>
-                                {location.pathname === '/' &&
-                                    <Button variant="contained" onClick={() => navigate('/panel')}
-                                        color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
-                                }
-                                <SignOutButton variant="contained" color={appBarState.buttonColor}>Sign out</SignOutButton>
-                            </div> :
-                                <Button variant="contained" onClick={() => setLoginOpen(true)}
-                                    color={appBarState.buttonColor}>Sign
-                                    in</Button>
+              }
+              {userData.isLoggedIn ? <div>
 
-                            }
-                        </Toolbar>
-                    </Slide>
-                </Grid>
-            </Grid>
-        </AppBar>
+                <Button variant="contained" onClick={() => navigate('/panel')}
+                  color={appBarState.buttonColor} style={{ marginRight: 10 }}>My panel</Button>
+
+                <SignOutButton variant="contained" color={appBarState.buttonColor}>Sign out</SignOutButton>
+              </div> :
+                <Button variant="contained" onClick={() => {
+                  console.log('gugu');
+                  setLoginOpen(true);
+                }}
+                  color={appBarState.buttonColor}>Sign
+                  in</Button>
+
+              }
+            </Toolbar>
+          </Slide>
+        </Grid>
+      </Grid>
+    </AppBar>
 
   );
 };

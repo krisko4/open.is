@@ -124,17 +124,13 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
     // if always open is checked
     try {
       if (selectedLocations) {
-        await setSelectedLocationsAlwaysOpen({ placeId: businessChainId as string, locationIds: selectedLocations });
-        // dispatch(setLocationsAlwaysOpen(selectedLocations))
+        await setSelectedLocationsAlwaysOpen({ placeId: businessChainId as string, locationIds: selectedLocations }).unwrap();
       } else {
-        await setSelectedLocationsAlwaysOpen({ placeId: placeId as string, locationIds: [locationId as string] });
-        // await setPlaceAlwaysOpen(locationId as string)
-        // if (!isActive) {
-        //     dispatch(setAlwaysOpen())
-        // }
+        await setSelectedLocationsAlwaysOpen({ placeId: placeId as string, locationIds: [locationId as string] }).unwrap();
       }
       enqueueSuccessSnackbar('You have successfully updated your opening hours');
     } catch (err) {
+      console.log(err);
       enqueueErrorSnackbar();
     }
   };
@@ -163,7 +159,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
             }
             <Grid sx={{ flexGrow: 1 }} container alignItems="center">
                 <Grid container justifyContent="space-evenly">
-                    <Grid item lg={6} sx={checked ? { opacity: '0.4', pointerEvents: 'none' } : {}}>
+                    <Grid item lg={6} md={10} sx={checked ? { opacity: '0.4', pointerEvents: 'none' } : {}}>
                         <Slide direction="right" in={true} timeout={1000}>
                             <Card sx={{ height: '100%' }}>
                                 <Grid container direction="column" sx={{ height: '100%' }}>
@@ -188,7 +184,7 @@ export const OpeningHours: FC<Props> = ({ selectedLocations, openingHours, alway
                             </Card>
                         </Slide>
                     </Grid>
-                    <Grid item lg={5}>
+                    <Grid item lg={5} md={8}>
                         <Slide in={true} timeout={1000} direction="left">
                             <Card sx={{ height: '100%' }}>
                                 <CardContent>
