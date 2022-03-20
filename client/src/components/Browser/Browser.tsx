@@ -36,12 +36,12 @@ const Browser: FC = () => {
                 <SecondHeader />
                 <Grid container style={{ flexGrow: 1, overflow: 'hidden' }}>
                     <Slide in={true} direction="right">
-                        <Grid item lg={5}>
+                        <Grid item lg={5} xs={12} order={{ lg: 1, xs: 2 }}>
                             <PlacesBox />
                         </Grid>
                     </Slide>
                     <Slide in={true} direction="left">
-                        <Grid item lg={7} xs={12}>
+                        <Grid item lg={7} xs={12} order={{ lg: 2, xs: 1 }}>
                             <MapBox />
                         </Grid>
                     </Slide>

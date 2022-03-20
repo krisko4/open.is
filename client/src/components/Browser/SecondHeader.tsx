@@ -90,10 +90,10 @@ export const SecondHeader: FC = () => {
         <Paper>
             <Toolbar disableGutters>
                 <Grid container >
-                    <Grid item xs={10} sm={9} md={8} lg={5} sx={{ p: 1 }}>
+                    <Grid item xs={12} order={{ lg: 1, xs: 2 }} lg={5} sx={{ p: 1 }}>
                         <Searcher />
                     </Grid>
-                    <Grid justifyContent="center" container lg={7} item alignItems="center">
+                    <Grid justifyContent="center" container lg={7} order={{ lg: 2, xs: 1 }} item alignItems="center">
                         {businessTypes.map((type, index) =>
                             <CustomChip  type={type} key={index} />,
                         )}
