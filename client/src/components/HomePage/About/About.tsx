@@ -1,3 +1,4 @@
+import { makeStyles } from '@mui/styles';
 import { Auth } from 'components/Auth/Auth';
 import React, { FC, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
@@ -8,15 +9,21 @@ import { Section2 } from './Section2';
 import { Section3 } from './Section3';
 import { Team } from './Team';
 
+const useStyles = makeStyles({
+  carousel: {
+    height: '100vh',
+  },
+});
+
 
 export const About: FC = () => {
   const [index, setIndex] = useState(0);
+  const classes = useStyles();
 
   return (
     <AuthContextProvider>
       <Header />
       <Auth/>
-      <div style={{ height: '100vh' }}>
       <Carousel
         index={index}
         onChange={(now) => {
@@ -26,6 +33,7 @@ export const About: FC = () => {
         fullHeightHover={false}
         autoPlay={false}
         indicators={false}
+        className={classes.carousel}
       >
         <div key={0}>
         <Section1 />,
@@ -38,8 +46,6 @@ export const About: FC = () => {
         </div>
       </Carousel>
       {index === 1 && <Team />}
-
-      </div>
     </AuthContextProvider>
   );
 };

@@ -34,19 +34,10 @@ export const Panel: FC = () => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-
-      {/* // <Grid
-    //   sx={{
-    //     minHeight: '100vh',
-    //   }}
-    //   container
-    //   direction="column"
-    // > */}
       {isFetching ?
         <Grid container sx={{ height: '100vh' }} justifyContent="center" alignItems="center">
           <CircularProgress disableShrink />
         </Grid> :
-        /* <Grid container sx={{ flex: '1 1 auto' }}> */
         <>
           <Header drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
           <LeftNavigation drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
@@ -57,7 +48,5 @@ export const Panel: FC = () => {
         </>
       }
     </Box>
-    // </Grid >
-    // </Grid>
   );
 };
