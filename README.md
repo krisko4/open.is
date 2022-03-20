@@ -21,7 +21,11 @@ The main goal of _open.is_ is to simplify the process of business management. De
 Feel free to test _Open.is_ yourself!
 > https://open-is-demo.herokuapp.com
 
-You can either create a new account and go through entire account and business registration process<br/>
+You can either create a new account and go through entire account and business registration process: <br/>
+
+![Przechwytywanie](https://user-images.githubusercontent.com/80395610/159161553-3d5f60d8-5627-4dd1-99c1-953f2875664a.JPG)
+
+
 ...or use the following account:
 
 *Login* : codeka1516@incoware.com
@@ -31,7 +35,13 @@ You can either create a new account and go through entire account and business r
 
 ## Overview
 
+### Main page
 ![stronka](https://user-images.githubusercontent.com/80395610/159160448-fd7c1091-a9cb-4032-be48-c4d418250980.png)
+
+### Empty panel
+![hello](https://user-images.githubusercontent.com/80395610/159161881-5176ca2e-b737-44dd-9428-8ae53c4559cc.png)
+
+
 
 ## Technology stack
  
