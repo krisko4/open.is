@@ -53,7 +53,7 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
       return;
     }
     try {
-      await registerNewPlace(formData);
+      await registerNewPlace(formData).unwrap();
       enqueueSuccessSnackbar('You have successfully added new place');
       navigate('/panel/dashboard');
 

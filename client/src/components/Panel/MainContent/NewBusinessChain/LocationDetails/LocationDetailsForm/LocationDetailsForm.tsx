@@ -1,15 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LanguageIcon from '@mui/icons-material/Language';
-import MailIcon from '@mui/icons-material/Mail';
-import { Button, Grid, InputAdornment, TextField, Tooltip } from '@mui/material';
-import { FC, useEffect, useRef } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import ReactPhoneInput from 'react-phone-input-material-ui';
+import { Grid } from '@mui/material';
+import { EmailButton } from './Buttons/EmailButton';
+import { EmailField } from './Fields/EmailField';
+import { WebsiteField } from './Fields/WebsiteField';
+import { InstagramField } from './Fields/InstagramField';
+import { FacebookField } from './Fields/FacebookField';
+import { PhoneField } from './Fields/PhoneField';
+import { WebsiteButton } from './Buttons/WebsiteButton';
+import { FacebookButton } from './Buttons/FacebookButton';
+import { InstagramButton } from './Buttons/InstagramButton';
+import { PhoneButton } from './Buttons/PhoneButton';
+import { FC, useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { useLocationContext } from '../../../../../../contexts/PanelContexts/LocationContext';
-import { LocationProps } from '../../../../../../redux-toolkit/slices/PlaceProps';
+// import { LocationProps } from '../../../../../../redux-toolkit/slices/PlaceProps';
+import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { setValid } from 'redux-toolkit/slices/formLocationsSlice';
 // import PhoneInput from "react-phone-input-2";
 
 
@@ -30,8 +37,7 @@ type Inputs = {
 };
 
 interface Props {
-  location: LocationProps,
-  setValidationStateChanged: React.Dispatch<React.SetStateAction<boolean>>
+  location: SelectedLocationProps,
 }
 
 const schema = yup.object({
@@ -43,14 +49,15 @@ const schema = yup.object({
 
 });
 
-export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateChanged }) => {
+export const LocationDetailsForm: FC<Props> = ({ location }) => {
 
-  const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext();
-  const isFirstRender = useRef(true);
-  const isFirstFieldForAllRender = useRef(true);
+  //   const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext();
+  //   const isFirstRender = useRef(true);
+  //   const isFirstFieldForAllRender = useRef(true);
 
+  const dispatch = useAppDispatch();
 
-  const { control, register, setValue, getValues, formState: { errors, isValid } } = useForm<Inputs>({
+  const methods = useForm<Inputs>({
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: {
@@ -63,192 +70,82 @@ export const LocationDetailsForm: FC<Props> = ({ location, setValidationStateCha
   });
 
   useEffect(() => {
-    if (isFirstFieldForAllRender.current) {
-      isFirstFieldForAllRender.current = false;
-      return;
-    }
-    //@ts-ignore
-    if (fieldForAll.field) setValue(fieldForAll.field, fieldForAll.value, { shouldValidate: true });
-  }, [fieldForAll]);
+    dispatch(setValid({
+      addressId: location.addressId as string,
+      isValid: methods.formState.isValid,
+    }));
+  }, [methods.formState.isValid]);
 
-  useEffect(() => {
-    location.isValid = isValid;
-    setValidationStateChanged(state => !state);
-  }, [isValid]);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    console.log(getValues());
-    location = Object.assign(location, getValues());
-  }, [saveButtonClicked]);
+
+  //   useEffect(() => {
+  //     if (isFirstFieldForAllRender.current) {
+  //       isFirstFieldForAllRender.current = false;
+  //       return;
+  //     }
+  //     //@ts-ignore
+  //     if (fieldForAll.field) setValue(fieldForAll.field, fieldForAll.value, { shouldValidate: true });
+  //   }, [fieldForAll]);
+
+  //   useEffect(() => {
+  //     location.isValid = isValid;
+  //     setValidationStateChanged(state => !state);
+  //   }, [isValid]);
+
+  //   useEffect(() => {
+  //     if (isFirstRender.current) {
+  //       isFirstRender.current = false;
+  //       return;
+  //     }
+  //     console.log(getValues());
+  //     location = Object.assign(location, getValues());
+  //   }, [saveButtonClicked]);
 
 
   return (
-        <form style={{ flexGrow: 1 }} >
-            <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
-                <Grid item lg={5}>
-                    <Tooltip title="Set value for all locations">
-                        <Button
-                            size="small"
-                            style={{ marginTop: 15 }}
-                            disabled={errors.phone?.message ? true : false}
-                            variant="outlined"
-                            onClick={() => { setFieldForAll({ field: 'phone', value: getValues('phone') }); }}
-                        >Phone number
-                        </Button>
-                    </Tooltip>
+        <FormProvider {...methods}>
+            <form style={{ flexGrow: 1 }} >
+                <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
+                    <Grid item lg={5}>
+                        <PhoneButton />
+                    </Grid>
+                    <Grid item lg={6} >
+                        <PhoneField />
+                    </Grid>
                 </Grid>
-                <Grid item lg={6} >
-                    <Controller
-                        name="phone"
-                        control={control}
-                        render={
-                            ({ field }) =>
-                                <ReactPhoneInput
-                                    //@ts-ignore
-                                    defaultCountry={'pl'}
-                                    {...field}
-                                    component={TextField}
-                                    //@ts-ignore
-                                    label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
-                                />
-                        }
-                    />
+                <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+                    <Grid item lg={5}>
+                        <EmailButton/>
+                    </Grid>
+                    <Grid item lg={6}>
+                        <EmailField/>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
-                <Grid item lg={5}>
-                    <Tooltip title="Set value for all locations">
-                        <Button
-                            disabled={errors.email?.message ? true : false}
-                            size="small"
-                            style={{ marginTop: 15 }}
-                            variant="outlined"
-                            onClick={() => setFieldForAll({ field: 'email', value: getValues('email') })}>
-                            E-mail address</Button>
-                    </Tooltip>
+                <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+                    <Grid item lg={5}>
+                        <WebsiteButton/>
+                    </Grid>
+                    <Grid item lg={6}>
+                        <WebsiteField />
+                    </Grid>
                 </Grid>
-                <Grid item lg={6}>
-                    <TextField
-                        helperText={errors.email?.message}
-                        error={errors.email?.message ? true : false}
-                        label="example@mail.com"
-                        {...register('email')}
-                        placeholder="E-mail address"
-                        InputProps={{
-                          startAdornment: <InputAdornment position="start"><MailIcon color="primary" /></InputAdornment>,
-                        }}
-                        fullWidth
-                    />
-
+                <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+                    <Grid item lg={5}>
+                        <FacebookButton />
+                    </Grid>
+                    <Grid item lg={6}>
+                        <FacebookField />
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
-                <Grid item lg={5}>
-                    <Tooltip title="Set value for all locations">
-                        <Button
-                            size="small"
-                            disabled={errors.website?.message ? true : false}
-                            style={{ marginTop: 15 }}
-                            variant="outlined"
-                            onClick={() => setFieldForAll({ field: 'website', value: getValues('website') })}
-                        >Website</Button>
-                    </Tooltip>
+                <Grid container justifyContent="center" alignItems="center">
+                    <Grid item lg={5}>
+                        <InstagramButton/>
+                    </Grid>
+                    <Grid item lg={6}>
+                        <InstagramField />
+                    </Grid>
                 </Grid>
-                <Grid item lg={6}>
-                    <TextField
-                        helperText={errors.website?.message}
-                        error={errors.website?.message ? true : false}
-                        label="https://example.com"
-                        placeholder="Personal website"
-                        {...register('website')}
-                        fullWidth
-                        InputProps={{
-                          startAdornment: <InputAdornment position="start"><LanguageIcon color="primary" /></InputAdornment>,
-                        }}
-                    />
-                </Grid>
-            </Grid>
-            <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
-                <Grid item lg={5}>
-                    <Tooltip title="Set value for all locations">
-                        <Button
-                            size="small"
-                            style={{ marginTop: 15 }}
-                            variant="outlined"
-                            disabled={errors.facebook?.message ? true : false}
-                            onClick={() => setFieldForAll({ field: 'facebook', value: getValues('facebook') })}
-                        >Facebook</Button>
-                    </Tooltip>
-                </Grid>
-                <Grid item lg={6}>
-                    <TextField
-                        label="https://facebook.com/my-profile"
-                        helperText={errors.facebook?.message}
-                        error={errors.facebook?.message ? true : false}
-                        {...register('facebook')}
-                        placeholder="my-profile"
-                        fullWidth
-                        inputProps={{
-                          maxLength: 50,
-                        }}
-                        InputProps={{
-                          startAdornment: (
-                                <InputAdornment position="start">
-                                    <p style={{ color: 'lightgrey' }}>https://facebook.com/</p>
-                                </InputAdornment>
-                          ),
-                          endAdornment: (
-                                <InputAdornment position="end">
-                                    <FacebookIcon color="primary" />
-                                </InputAdornment>
-
-                          ),
-                        }}
-                    />
-                </Grid>
-            </Grid>
-            <Grid container justifyContent="center" alignItems="center">
-                <Grid item lg={5}>
-                    <Tooltip title="Set value for all locations">
-                        <Button
-                            size="small"
-                            style={{ marginTop: 15 }}
-                            variant="outlined"
-                            disabled={errors.instagram?.message ? true : false}
-                            onClick={() => setFieldForAll({ field: 'instagram', value: getValues('instagram') })}
-                        >Instagram</Button>
-                    </Tooltip>
-                </Grid>
-                <Grid item lg={6}>
-                    <TextField
-                        label="https://instagram.com/my-profile"
-                        {...register('instagram')}
-                        helperText={errors.instagram?.message}
-                        error={errors.instagram?.message ? true : false}
-                        fullWidth
-                        placeholder="my-profile"
-                        inputProps={{
-                          maxLength: 50,
-                        }}
-                        InputProps={{
-                          startAdornment: (
-                                <InputAdornment position="start">
-                                    <p style={{ color: 'lightgrey' }}>https://instagram.com/</p>
-                                </InputAdornment>
-                          ),
-                          endAdornment: (
-                                <InputAdornment position="end">
-                                    <InstagramIcon color="primary" />
-                                </InputAdornment>
-                          ),
-                        }}
-                    />
-                </Grid>
-            </Grid>
-        </form>
+            </form>
+        </FormProvider>
   );
 };

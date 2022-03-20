@@ -14,7 +14,7 @@ export const LocationSelection: FC<Props> = ({ setAddressSubmitted }) => {
         <Grid container alignItems="center" justifyContent="center">
             <AddressDetailsContextProvider isEditionMode={true}>
                 <Grid container item justifyContent="center" lg={11}>
-                    <AddressDetails setAddressSubmitted={setAddressSubmitted} />
+                    <AddressDetails multipleLocationsAllowed={true} setAddressSubmitted={setAddressSubmitted} />
                 </Grid>
             </AddressDetailsContextProvider>
         </Grid>

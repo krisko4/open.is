@@ -80,7 +80,6 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
           favIdsArray.splice(index, 1);
           if (location.pathname === '/search/favorite'){
             dispatch(removeLocation(locationId as string));
-
           }
           if (favIdsArray.length === 0) {
             Cookies.remove('favIds');

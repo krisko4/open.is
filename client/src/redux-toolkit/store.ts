@@ -8,6 +8,7 @@ import { placesReducer } from './slices/placesSlice';
 import { searcherOptionsReducer } from './slices/searcherOptionsSlice';
 import { selectedAddressReducer } from './slices/selectedAddressSlice';
 import { selectedLocationsReducer } from './slices/selectedLocationsSlice';
+import { formLocationsReducer } from './slices/formLocationsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     mapData: mapDataReducer,
     selectedAddress : selectedAddressReducer,
     searcherOptions: searcherOptionsReducer,
+    formLocations: formLocationsReducer,
     email: emailReducer,
 
   },

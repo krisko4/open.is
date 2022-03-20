@@ -6,7 +6,6 @@ import { resetCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice';
 import { resetMap } from 'redux-toolkit/slices/mapSlice';
 import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { LocationContextProvider } from '../../../../contexts/PanelContexts/LocationContext';
 import { useStepContext } from '../../../../contexts/StepContext';
 import { PlaceDetailsCard } from '../NewPlace/PlaceDetailsCard';
 import { NewPlaceStepper } from '../NewPlace/Steps/NewPlaceStepper';
@@ -70,7 +69,6 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                 </Grid>
                             </Paper>
                         }
-                        <LocationContextProvider>
                             <Grid container sx={{ flexGrow: 1 }} >
                                 <Grid container sx={{ height: '100%' }} justifyContent="space-evenly" alignItems="center">
                                     {activeStep === 2 ?
@@ -154,7 +152,6 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                     }
                                 </Grid>
                             </Grid>
-                        </LocationContextProvider>
                     </Grid>
             }
         </>

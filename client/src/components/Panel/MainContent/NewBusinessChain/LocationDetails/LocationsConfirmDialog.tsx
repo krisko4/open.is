@@ -15,14 +15,12 @@ interface Props {
 }
 export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, setAddLocationsDialogOpen }) => {
   const { selectedLocations } = useLocationContext();
-  // const [loading, setLoading] = useState(false)
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
   const businessChainId = useBusinessChainIdSelector();
   const [addLocations, { isLoading }] = useAddLocationsMutation();
 
 
   const handleClick = async () => {
-    // setLoading(true)
     try {
       const locations: LocationProps[] = selectedLocations.map(location => {
         const newLocation = { ...location };
@@ -34,19 +32,13 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
       await addLocations({
         placeId: businessChainId as string,
         locations: locations,
-      });
-      // const res = await addLocations(businessChainId as string, locations)
-      // const updatedLocations = res.data.locations
-      // dispatch(setLocations(updatedLocations))
+      }).unwrap();
       enqueueSuccessSnackbar('You have successfully added new locations');
       if (setAddLocationsDialogOpen) setAddLocationsDialogOpen(false);
     } catch (err) {
       console.log(err);
       enqueueErrorSnackbar();
-    } finally {
-      // setLoading(false)
-
-    }
+    }  
   };
 
   return (
