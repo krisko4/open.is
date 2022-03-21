@@ -1,20 +1,16 @@
 const axios = require('axios')
 const ApiError = require('../errors/ApiError')
-const { body } = require('express-validator');
 const placeValidator = {
     validatePlaceAddress: async (req, res, next) => {
         const { locations } = req.body
         for (const location of locations) {
-            const { address, addressId, addressLanguage } = location
-
+            const { addressId, addressLanguage } = location
             const addressResponse = await axios.get(`https://nominatim.openstreetmap.org/lookup?osm_ids=${addressId}&format=json&accept-language=${addressLanguage}`)
             const addressData = addressResponse.data[0]
-            console.log(location)
-            console.log(addressData)
+            location.address = addressData.display_name
             if (
                 !addressData.display_name ||
-                !addressData.address.postcode ||
-                addressData.display_name !== address
+                !addressData.address.postcode
             )
                 return next(ApiError.badRequest('Provided address is invalid'))
         }

@@ -70,14 +70,13 @@ const placeController = {
 
     async changeContactDetailsForLocations(req, res, next) {
         try {
-            console.log('helou')
             const { id } = req.params
             const { locationIds, contactDetails } = req.body
             const { uid } = req.cookies
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('Invalid uid')
             await placeService.changeContactDetailsForLocations(user, id, locationIds, contactDetails)
-            return res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             return next(err)
         }

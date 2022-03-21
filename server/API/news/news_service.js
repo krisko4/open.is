@@ -7,6 +7,7 @@ const ApiError = require('../../errors/ApiError')
 const newsService = {
     addNews : async (news) => {
         let {userId} = news
+        console.log(news)
         const place = await placeService.findByLocationId(news.locationId)
         if(!place) throw ApiError.internal('Invalid location id.')
        
