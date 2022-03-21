@@ -129,7 +129,10 @@ export const placesApi = createApi({
         method: 'PUT',
         body: formData,
       }),
-      invalidatesTags: ['SelectedPlace'],
+      invalidatesTags: [
+        'SelectedPlace',
+        { type: 'Places', id: 'LIST' },
+      ],
     }),
     addNews: builder.mutation<void, AddNewsProps>({
       query: ({ locationId, content, title }) => ({
@@ -193,6 +196,7 @@ export const placesApi = createApi({
       invalidatesTags: [
         { type: 'SelectedBusinessChain', id: 'BUSINESS_CHAIN' },
         { type: 'OpeningHours' },
+        { type: 'Places', id: 'LIST' },
       ],
     }),
     addLocations: builder.mutation<void, AddLocationsProps>({

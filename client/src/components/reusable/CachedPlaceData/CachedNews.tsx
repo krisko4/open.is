@@ -63,7 +63,7 @@ export const CachedNews: FC<Props> = ({ isUserOwner }) => {
                             </Grid>
                         }
                         {userData.isLoggedIn &&
-                            <NewsDialog dialogOpen={newsDialogOpen} setDialogOpen={setNewsDialogOpen} />
+                            <NewsDialog locationId={locationId as string} dialogOpen={newsDialogOpen} setDialogOpen={setNewsDialogOpen} />
                         }
                     </Grid>
                 </Slide >

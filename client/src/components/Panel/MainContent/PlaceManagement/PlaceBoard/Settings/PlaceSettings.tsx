@@ -3,6 +3,8 @@ import _ from 'lodash';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useAppDispatch } from 'redux-toolkit/hooks';
+import { setSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { StepContextProvider } from '../../../../../../contexts/StepContext';
 import { NewPlace } from '../../../NewPlace/NewPlace';
 import newPlaceSteps from '../../../NewPlace/Steps/steps';
@@ -16,6 +18,7 @@ export const PlaceSettings: FC = () => {
     placeId: placeId as string,
     locationId: locationId as string,
   });
+  const dispatch = useAppDispatch();
 
 
 
@@ -28,6 +31,15 @@ export const PlaceSettings: FC = () => {
           img: '',
         });
       }
+      console.log(place);
+      dispatch(setSelectedAddress({
+        label: place.address,
+        language: navigator.language,
+        lat: place.lat,
+        lng: place.lng,
+        addressId: place.addressId, 
+
+      }));
       return {
         ...place,
         facebook: place.facebook.substring(21),

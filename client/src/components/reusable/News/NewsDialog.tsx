@@ -1,7 +1,6 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, Grid, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { FC, useRef, useState } from 'react';
-import { useIdSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import DialogTransition from '../DialogTransition';
 import { LoadingButton } from '../LoadingButton';
@@ -10,14 +9,14 @@ import { useAddNewsMutation } from 'redux-toolkit/api/placesApi';
 
 interface Props {
   dialogOpen: boolean,
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  locationId: string
 }
-export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
+export const NewsDialog: FC<Props> = ({ locationId, dialogOpen, setDialogOpen }) => {
   const [newsTitle, setNewsTitle] = useState('');
   const [newsContent, setNewsContent] = useState('');
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const emojiSource = useRef<'title' | 'content'>('title');
-  const placeId = useIdSelector();
   const [addNews, { isLoading }] = useAddNewsMutation();
 
 
@@ -36,7 +35,7 @@ export const NewsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
       await addNews({
         title : newsTitle, 
         content :newsContent,
-        locationId: placeId as string,
+        locationId: locationId as string,
       }).unwrap();
       // dispatch(setNews(res.data as NewsProps))
       enqueueSuccessSnackbar('News added successfully');
