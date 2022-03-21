@@ -6,7 +6,7 @@ import { useNameSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { useLogoSelector, useTypeSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { addFormLocation, useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
 import { useSelectedAddressSelector } from 'redux-toolkit/slices/selectedAddressSlice';
-import { replaceLocation, SelectedLocationProps, setSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { SelectedLocationProps, setSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { getPlaceByLatLng } from '../../../../../../requests/PlaceRequests';
 import { useCustomSnackbar } from '../../../../../../utils/snackbars';
 import { MapBox } from '../../../../../Browser/Places/MapBox/MapBox';
@@ -14,14 +14,13 @@ import { AddressSearcher } from '../../../../../reusable/AddressSearcher';
 
 interface Props {
   setActiveStep?: React.Dispatch<React.SetStateAction<number>>,
-  setAddressSubmitted?: React.Dispatch<React.SetStateAction<boolean>>,
   isEditionMode?: boolean,
-  multipleLocationsAllowed?: boolean
+  isBusinessChain?: boolean
 
 }
 
 
-export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, multipleLocationsAllowed }) => {
+export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusinessChain }) => {
 
   const { enqueueErrorSnackbar, enqueueInfoSnackbar } = useCustomSnackbar();
   const dispatch = useAppDispatch();
@@ -39,7 +38,11 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, multip
       setErrorMessage('This is not a valid address. Please provide a street number.');
       return;
     }
-    if (formLocations.some(place => place.address === selectedAddress.label)) {
+    if (!isBusinessChain){
+      if (setActiveStep) setActiveStep(currentStep => currentStep + 1);
+      return;
+    }
+    if (formLocations[selectedAddress.addressId]) {
       enqueueInfoSnackbar('You have already selected this location.');
       return;
     }
@@ -75,17 +78,6 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, multip
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
-    }
-    if (multipleLocationsAllowed) {
-      dispatch(replaceLocation(
-        {
-          name: name,
-          type: type as string,
-          logo: logo as string,
-          lat: selectedAddress.lat,
-          lng: selectedAddress.lng,
-        },
-      ));
     }
     dispatch(setSelectedLocations([
       {

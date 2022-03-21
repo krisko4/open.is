@@ -10,13 +10,13 @@ import { WebsiteButton } from './Buttons/WebsiteButton';
 import { FacebookButton } from './Buttons/FacebookButton';
 import { InstagramButton } from './Buttons/InstagramButton';
 import { PhoneButton } from './Buttons/PhoneButton';
-import { FC, useEffect } from 'react';
+import { FC, useRef, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 // import { LocationProps } from '../../../../../../redux-toolkit/slices/PlaceProps';
 import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setValid } from 'redux-toolkit/slices/formLocationsSlice';
+import { fillFormData, setValid, useFormSaveTriggerSelector } from 'redux-toolkit/slices/formLocationsSlice';
 // import PhoneInput from "react-phone-input-2";
 
 
@@ -52,10 +52,11 @@ const schema = yup.object({
 export const LocationDetailsForm: FC<Props> = ({ location }) => {
 
   //   const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext();
-  //   const isFirstRender = useRef(true);
+  const isFirstRender = useRef(true);
   //   const isFirstFieldForAllRender = useRef(true);
 
   const dispatch = useAppDispatch();
+  const formSaveTrigger = useFormSaveTriggerSelector();
 
   const methods = useForm<Inputs>({
     resolver: yupResolver(schema),
@@ -75,6 +76,17 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
       isValid: methods.formState.isValid,
     }));
   }, [methods.formState.isValid]);
+
+  useEffect(() => {
+    if (isFirstRender.current){
+      isFirstRender.current = false;
+      return;
+    }
+    dispatch(fillFormData({
+      addressId: location.addressId as string,
+      ...methods.getValues(),
+    }));
+  }, [formSaveTrigger]);
 
 
 

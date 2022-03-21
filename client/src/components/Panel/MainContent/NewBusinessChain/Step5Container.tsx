@@ -1,8 +1,9 @@
 import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
 import { FC, useMemo } from 'react';
 import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { useLocationContext } from '../../../../contexts/PanelContexts/LocationContext';
+// import { useLocationContext } from '../../../../contexts/PanelContexts/LocationContext';
 import { Step5 } from '../NewPlace/Steps/Step5/Step5';
+import { useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
 
 interface Props{
   isEditionMode?: boolean,
@@ -13,7 +14,8 @@ interface Props{
 export const Step5Container: FC<Props> = ({ isEditionMode, initialPlaceData, logoFile }) => {
 
   const currentPlace = useCurrentPlaceSelector();
-  const { selectedLocations } = useLocationContext();
+  // const { selectedLocations } = useLocationContext();
+  const formLocations = useFormLocationsSelector();
 
   const formData = useMemo(() => {
     const data = new FormData();
@@ -26,9 +28,8 @@ export const Step5Container: FC<Props> = ({ isEditionMode, initialPlaceData, log
       type: currentPlace.type as string,
       isBusinessChain:  'true',
     };
-    const locations = selectedLocations.map(location => {
+    const locations = Object.values(formLocations).map(location => {
       const newLocation = { ...location };
-      delete newLocation.isValid;
       newLocation.facebook = 'https://facebook.com/' + newLocation.facebook;
       newLocation.instagram = 'https://instagram.com/' + newLocation.instagram;
       return newLocation;

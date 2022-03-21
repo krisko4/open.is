@@ -135,7 +135,6 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
                             secondary="Standard user"
                         />
                     </ListItem>
-                    {/* <Divider /> */}
                     <List>
                         {drawerOpen && <ListSubheader disableSticky>Settings</ListSubheader>}
                         {
@@ -165,70 +164,5 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
                 </Paper>
             </Scrollbars>
         </Drawer>
-        // <Slide direction="right" in={true} timeout={500}>
-        //         <Drawer
-        //             sx={{
-        //               width: 300,
-        //               flexShrink: 0,
-        //               '& .MuiDrawer-paper': {
-        //                 width: 300,
-        //                 boxSizing: 'border-box',
-        //               },
-        //             }}
-        //             variant="permanent"
-        //             anchor="left"
-        //         >
-        //             {/* <Paper sx={{ height: '100%', bgcolor: 'navi.main' }} elevation={4}> */}
-        //             {/* <Scrollbars autoHide> */}
-        //                 <Grid container justifyContent="center">
-        //                     <CardMedia
-        //                         image={`${process.env.REACT_APP_BASE_URL}/images/logo.png`}
-        //                         style={{ height: 190, width: 180 }}
-        //                     />
-        //                 </Grid>
-        //                 <ListItem style={{ marginBottom: 20 }}>
-        //                     <ListItemAvatar>
-        //                         <Avatar
-        //                             imgProps={{
-        //                               style: { objectFit: 'contain' },
-        //                             }}
-        //                             alt={userData.fullName}
-        //                             src={userData.img as string}
-        //                         />
-        //                     </ListItemAvatar>
-        //                     <ListItemText
-        //                         primary={userData.fullName}
-        //                         secondary="Standard user"
-        //                     />
-        //                 </ListItem>
-        //                 <List>
-        //                     <ListSubheader disableSticky>Settings</ListSubheader>
-        //                     {
-        //                         places && generateNavigationButtons(places).map((button, index) =>
-        //                             <ListItem
-        //                                 key={index}
-        //                                 button
-        //                                 onClick={() => {
-        //                                   navigate(`${button.url}`);
-        //                                 }
-        //                                 }
-        //                             >
-        //                                 <ListItemIcon>
-        //                                     {button.icon}
-        //                                 </ListItemIcon>
-        //                                 <ListItemText
-        //                                     primary={button.name}>
-        //                                 </ListItemText>
-        //                             </ListItem>,
-        //                         )
-        //                     }
-        //                     <MyPlaces />
-        //                     <MyBusinessChains
-        //                     />
-        //                 </List>
-        //             {/* </Scrollbars> */}
-        //             {/* </Paper> */}
-        //         </Drawer>
-        // </Slide>
   );
 };

@@ -21,7 +21,6 @@ export interface FormLocationProps {
   website?: string,
   facebook?: string,
   instagram?: string,
-  isValid?: boolean
 }
 
 interface ValidatedLocationProps {
@@ -29,14 +28,30 @@ interface ValidatedLocationProps {
   addressId: string
 }
 
+interface FillFormDataProps{
+  addressId: string,
+  phone: string,
+  email: string,
+  website: string,
+  facebook: string,
+  instagram: string
+}
+
+interface FormLocation {
+  [key: string] : FormLocationProps
+}
+
 interface StateProps {
   invalidForms: string[],
-  formLocations: FormLocationProps[]
+  formLocations: FormLocation,
+  // formLocations: FormLocationProps[],
+  formSaveTrigger: boolean
 }
 
 const initialState: StateProps = {
-  formLocations: [],
+  formLocations: {},
   invalidForms: [],
+  formSaveTrigger: false,
 };
 
 const formLocationsSlice = createSlice({
@@ -44,10 +59,19 @@ const formLocationsSlice = createSlice({
   initialState,
   reducers: {
     addFormLocation: (state, action: PayloadAction<FormLocationProps>) => {
-      state.formLocations.push(action.payload);
+      state.formLocations[action.payload.addressId as string] = action.payload;
+      // Object.assign(state.formLocations, { addressId : action.payload });
     },
     removeFormLocationByAddressId: (state, action: PayloadAction<string>) => {
-      state.formLocations = state.formLocations.filter(loc => loc.addressId !== action.payload);
+      delete state.formLocations[action.payload];
+      // state.formLocations = state.formLocations.filter(loc => loc.addressId !== action.payload);
+    },
+    fillFormData: (state, action: PayloadAction<FillFormDataProps>) => {
+      const { addressId, ...rest } = action.payload;
+      Object.assign(state.formLocations[action.payload.addressId], rest);
+    },
+    saveForm: (state) => {
+      state.formSaveTrigger = !state.formSaveTrigger;
     },
     setValid: (state, action: PayloadAction<ValidatedLocationProps>) => {
       const validState = action.payload.isValid;
@@ -65,12 +89,14 @@ const formLocationsSlice = createSlice({
     resetFormLocations: () => initialState,
   },
 });
+export const useFormSaveTriggerSelector = () => useAppSelector(state => state.formLocations.formSaveTrigger);
 export const useInvalidFormsSelector = () => useAppSelector(state => state.formLocations.invalidForms);
 export const useFormLocationsSelector = () => useAppSelector(state => state.formLocations.formLocations);
-export const useValidSelector = (addressId: string) => useAppSelector(state => state.formLocations.formLocations.find(loc => loc.addressId === addressId)?.isValid);
 export const {
+  saveForm,
   setValid,
   addFormLocation,
+  fillFormData,
   removeFormLocationByAddressId,
   resetFormLocations,
 } = formLocationsSlice.actions;

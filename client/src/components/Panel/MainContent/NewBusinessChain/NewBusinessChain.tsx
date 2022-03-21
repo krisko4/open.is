@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { resetCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice';
+import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
 import { resetMap } from 'redux-toolkit/slices/mapSlice';
 import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
@@ -36,7 +37,6 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
 
   const [startClicked, setStartClicked] = useState(false);
   const { activeStep, setActiveStep } = useStepContext();
-  const [addressSubmitted, setAddressSubmitted] = useState(false);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const dispatch = useAppDispatch();
 
@@ -45,11 +45,13 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
     dispatch(resetMap());
     dispatch(resetSelectedAddress());
     dispatch(resetSelectedLocations());
+    dispatch(resetFormLocations());
     return () => {
       dispatch(resetCurrentPlace());
       dispatch(resetMap());
       dispatch(resetSelectedAddress());
       dispatch(resetSelectedLocations());
+      dispatch(resetFormLocations());
     };
   }, []);
 
@@ -74,11 +76,10 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
                                     {activeStep === 2 ?
                                         <Grid container justifyContent="space-between" sx={{ height: '100%' }}>
                                             <Grid item container justifyContent="center" alignItems="center" lg={6}>
-                                                <LocationSelection setAddressSubmitted={setAddressSubmitted} />
+                                                <LocationSelection />
                                             </Grid>
                                             <Grid item lg={6}>
                                                 <LocationDetails
-                                                    addressSubmitted={addressSubmitted}
                                                     setActiveStep={setActiveStep}
                                                 />
                                             </Grid>

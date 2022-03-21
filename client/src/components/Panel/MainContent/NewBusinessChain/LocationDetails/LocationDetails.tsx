@@ -1,17 +1,15 @@
 import { Slide, Button, Fade, Grid, Paper, Typography } from '@mui/material';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setLogo } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useColorMode } from '../../../../../contexts/ColorModeContext';
-// import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext';
 import { Location } from './Location';
 import { LocationsConfirmDialog } from './LocationsConfirmDialog';
-import { useInvalidFormsSelector, useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
+import { useInvalidFormsSelector, useFormSaveTriggerSelector, useFormLocationsSelector, saveForm } from 'redux-toolkit/slices/formLocationsSlice';
 
 
 interface Props {
-  addressSubmitted: boolean,
   setActiveStep?: React.Dispatch<React.SetStateAction<number>>,
   isEditionMode?: boolean,
   img?: File | ArrayBuffer | null | string,
@@ -27,14 +25,26 @@ interface SubmitProps{
 
 const FormSubmitButton: FC<SubmitProps> = ({ isEditionMode, setActiveStep, setConfirmDialogOpen }) => {
 
+
+  const formSaveTrigger = useFormSaveTriggerSelector();
   const invalidForms = useInvalidFormsSelector();
+  const dispatch = useAppDispatch();
+  const isFirstRender = useRef(true);
   const handleClick = () => {
     if (isEditionMode) {
       setConfirmDialogOpen(true);
       return;
     }
-    if (setActiveStep) setActiveStep(step => step + 1);
+    dispatch(saveForm());
   };
+  useEffect(() => {
+    if (isFirstRender.current){
+      isFirstRender.current = false;
+      return;
+    }
+    if (setActiveStep) setActiveStep(step => step + 1);
+
+  }, [formSaveTrigger]);
   return (
     <Button
       disabled={invalidForms.length > 0}
@@ -51,7 +61,6 @@ const FormSubmitButton: FC<SubmitProps> = ({ isEditionMode, setActiveStep, setCo
 
 export const LocationDetails: FC<Props> = ({ setActiveStep, isEditionMode, img, setAddLocationsDialogOpen }) => {
 
-  // const isFirstRenderSave = useRef(true);
   const { mode } = useColorMode();
   const formLocations = useFormLocationsSelector();
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -63,60 +72,11 @@ export const LocationDetails: FC<Props> = ({ setActiveStep, isEditionMode, img, 
     }
   }, [img]);
 
-  // useEffect(() => {
-  //   if (isFirstValidationRender.current) {
-  //     isFirstValidationRender.current = false;
-  //     return;
-  //   }
-  //   setValid(!selectedLocations.some(loc => !loc.isValid));
-  // }, [validationStateChanged]);
-
-
-  // useEffect(() => {
-  //   if (isFirstRenderSave.current) {
-  //     isFirstRenderSave.current = false;
-  //     return;
-  //   }
-  //   if (isEditionMode) {
-  //     setConfirmDialogOpen(true);
-  //     return;
-  //   }
-  //   if (setActiveStep) setActiveStep(step => step + 1);
-  // }, [saveButtonClicked]);
-
-
-
-  // useEffect(() => {
-  //   if (isFirstRenderAddress.current) {
-  //     isFirstRenderAddress.current = false;
-  //     return;
-  //   }
-  //   console.log('changed');
-  //   if (selectedLocations.some(place => place.address === addressData.address)) {
-  //     enqueueInfoSnackbar('You have already selected this location.');
-  //     return;
-  //   }
-  //   const newLocation = {
-  //     address: addressData.address,
-  //     addressId: addressData.addressId,
-  //     addressLanguage: addressData.addressLanguage,
-  //     lat: addressData.lat,
-  //     lng: addressData.lng,
-  //     phone: '',
-  //     email: '',
-  //     website: '',
-  //     instagram: '',
-  //     facebook: '',
-  //   };
-  //   selectedLocations.push(newLocation);
-  //   setSelectedLocations([...selectedLocations]);
-  // }, [addressData]);
-
   return (
     <Grid container style={{ height: '100%', overflow: 'hidden' }}>
       <Slide in={true} direction="left" timeout={500}>
         <Paper square sx={{ flexGrow: 1, height: '100%' }}>
-          {formLocations.length === 0 ?
+          {Object.keys(formLocations).length === 0 ?
             <Fade in={true} timeout={1000}>
               <Grid container style={{ height: '100%' }} justifyContent="center" alignItems="center">
                 <Typography variant="h3">Waiting for the first location...</Typography>
@@ -130,7 +90,7 @@ export const LocationDetails: FC<Props> = ({ setActiveStep, isEditionMode, img, 
                 <Scrollbars>
                   <div style={{ flexGrow: 1 }}>
                     {
-                      formLocations.map((location) =>
+                      Object.values(formLocations).map((location) =>
                         <Grid item key={location.address} style={{ width: '100%' }}>
                           <Location
                             location={location}

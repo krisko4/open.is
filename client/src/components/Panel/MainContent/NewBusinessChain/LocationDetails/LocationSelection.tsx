@@ -4,17 +4,14 @@ import AddressDetailsContextProvider from '../../../../../contexts/AddressDetail
 import { AddressDetails } from '../../NewPlace/Steps/Step4/AddressDetails';
 
 
-interface Props {
-  setAddressSubmitted?: React.Dispatch<React.SetStateAction<boolean>>,
-}
 
-export const LocationSelection: FC<Props> = ({ setAddressSubmitted }) => {
+export const LocationSelection: FC = () => {
 
   return <>
         <Grid container alignItems="center" justifyContent="center">
             <AddressDetailsContextProvider isEditionMode={true}>
                 <Grid container item justifyContent="center" lg={11}>
-                    <AddressDetails multipleLocationsAllowed={true} setAddressSubmitted={setAddressSubmitted} />
+                    <AddressDetails isBusinessChain={true}  />
                 </Grid>
             </AddressDetailsContextProvider>
         </Grid>

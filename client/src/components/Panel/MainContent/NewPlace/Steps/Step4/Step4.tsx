@@ -8,10 +8,11 @@ import { AddressDetails } from './AddressDetails';
 
 
 interface Props {
-  isEditionMode: boolean
+  isEditionMode: boolean,
+  isBusinessChain?: boolean
 }
 
-export const Step4: FC<Props> = ({ isEditionMode }) => {
+export const Step4: FC<Props> = ({ isEditionMode, isBusinessChain }) => {
 
   const { setActiveStep } = useStepContext();
   const { enqueueInfoSnackbar } = useCustomSnackbar();
@@ -23,7 +24,7 @@ export const Step4: FC<Props> = ({ isEditionMode }) => {
   return (
         <Fade in={true} timeout={1500}>
             <Grid container justifyContent="center">
-                    <AddressDetails isEditionMode={isEditionMode} setActiveStep={setActiveStep} />
+                    <AddressDetails isBusinessChain={isBusinessChain} isEditionMode={isEditionMode} setActiveStep={setActiveStep} />
             </Grid>
         </Fade>
   );

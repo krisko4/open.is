@@ -2,6 +2,7 @@ import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
 import { FC, useMemo } from 'react';
 import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { Step5 } from './Step5/Step5';
+import { useSelectedAddressSelector } from 'redux-toolkit/slices/selectedAddressSlice';
 
 interface Props {
   isEditionMode?: boolean,
@@ -12,6 +13,7 @@ interface Props {
 export const Step5Container: FC<Props> = ({ initialPlaceData, isEditionMode, logoFile }) => {
 
   const currentPlace = useCurrentPlaceSelector();
+  const selectedAddress = useSelectedAddressSelector();
 
   const formData = useMemo(() => {
     const images: any = currentPlace.images.filter(image => image.file !== null).map(image => image.file);
@@ -25,11 +27,11 @@ export const Step5Container: FC<Props> = ({ initialPlaceData, isEditionMode, log
     };
     const locations = [
       {
-        address: currentPlace.address,
-        addressId: currentPlace.addressId,
-        addressLanguage: currentPlace.addressLanguage,
-        lat: currentPlace.lat,
-        lng: currentPlace.lng,
+        address: selectedAddress.label,
+        addressId: selectedAddress.addressId,
+        addressLanguage: selectedAddress.language,
+        lat: selectedAddress.lat,
+        lng: selectedAddress.lng,
         phone: currentPlace.phone,
         email: currentPlace.email,
         website: currentPlace.website,

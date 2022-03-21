@@ -2,30 +2,41 @@
 import { ListSubheader } from '@mui/material';
 import { ListItemLink } from 'components/reusable/ListItemLink';
 import Divider from '@mui/material/Divider';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useGetPlacesByUserId } from 'redux-toolkit/api/placesApi';
 
-interface Props{
+interface Props {
   drawerOpen: boolean
 }
 
 export const MyBusinessChains: FC<Props> = ({ drawerOpen }) => {
 
 
-  const { data : places } = useGetPlacesByUserId();
+  const { data: allPlaces } = useGetPlacesByUserId();
+
+  const chains = useMemo(() => {
+    if (allPlaces) {
+      return allPlaces.filter(place => place.isBusinessChain);
+    }
+
+  }, [allPlaces]);
 
   return <>
-        {places && places.filter(place => place.isBusinessChain).length > 0 &&
+        {chains &&
             <>
-            <Divider/>
-            {drawerOpen && 
-                <ListSubheader disableSticky>
-                    My business chains
-                </ListSubheader>
-            }
-                {places.filter(place => place.isBusinessChain).map((place) =>
-                    <ListItemLink key={place._id} place={place} to={`business-chain/${place._id as string}/dashboard`} />,
-                )}
+                {chains.length > 0 &&
+                    <>
+                        <Divider />
+                        {drawerOpen &&
+                            <ListSubheader disableSticky>
+                                My business chains
+                            </ListSubheader>
+                        }
+                        {chains.map((place) =>
+                            <ListItemLink key={place._id} place={place} to={`business-chain/${place._id as string}/dashboard`} />,
+                        )}
+                    </>
+                }
             </>
         }
     </>;
