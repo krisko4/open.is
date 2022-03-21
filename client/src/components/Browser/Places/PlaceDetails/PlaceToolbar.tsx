@@ -28,6 +28,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
   const navigate = useNavigate();
   const { placeId, locationId } = useParams();
 
+
   useEffect(() => {
     dispatch(setMapCoords({
       lat: place.lat,
@@ -58,7 +59,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
             </IconButton>
             <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>
                 {
-                    place.isUserOwner &&
+                    userData.isLoggedIn && place.isUserOwner &&
                     <Button
                         variant="contained"
                         color="primary"
