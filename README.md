@@ -28,7 +28,7 @@ You can either create a new account and go through entire account and business r
 
 ...or use the following account:
 
-*Login* : codeka1516@incoware.com
+*Login* : miwodak222@tourcc.com
 
 *Password* : Test1234@
 
