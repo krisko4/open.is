@@ -23,7 +23,7 @@ Feel free to test _Open.is_ yourself!
 
 You can either create a new account and go through entire account and business registration process: <br/>
 
-![Przechwytywanie](https://user-images.githubusercontent.com/80395610/159161553-3d5f60d8-5627-4dd1-99c1-953f2875664a.JPG)
+![signup](https://user-images.githubusercontent.com/80395610/159329315-75cc70d7-5414-4620-aa72-def76a1a760c.png)
 
 
 ...or use the following account:
@@ -40,6 +40,16 @@ You can either create a new account and go through entire account and business r
 
 ### Empty panel
 ![hello](https://user-images.githubusercontent.com/80395610/159161881-5176ca2e-b737-44dd-9428-8ae53c4559cc.png)
+
+### Business chain management
+![bizmanagement](https://user-images.githubusercontent.com/80395610/159329483-c2d7347f-b57e-4751-8bdf-8fb6f4d01fef.png)
+
+### Opening hours management
+![openinghours](https://user-images.githubusercontent.com/80395610/159329526-947d17f4-ac7e-47d4-8df3-575bde876b1d.png)
+
+### Browser example
+![mapexample](https://user-images.githubusercontent.com/80395610/159329573-8eca8fdd-da71-4325-b361-f8a61d9120f8.png)
+
 
 
 
