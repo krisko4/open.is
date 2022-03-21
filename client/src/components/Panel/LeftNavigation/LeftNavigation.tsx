@@ -118,8 +118,8 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
                 </IconButton>
             </DrawerHeader>
             <Divider />
-            <Scrollbars autoHide>
                 <Paper sx={{ height: '100%' }}>
+            <Scrollbars autoHide>
                     <ListItem >
                         <ListItemAvatar>
                             <Avatar
@@ -160,9 +160,8 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
                         <MyBusinessChains drawerOpen={drawerOpen}
                         />
                     </List>
-
-                </Paper>
             </Scrollbars>
+                </Paper>
         </Drawer>
   );
 };

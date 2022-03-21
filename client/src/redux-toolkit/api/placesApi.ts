@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { AverageNoteProps, CurrentPlaceProps, LocationProps, NewsProps, Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'redux-toolkit/slices/PlaceProps';
+import { FormLocationProps } from 'redux-toolkit/slices/formLocationsSlice';
+import { AverageNoteProps, CurrentPlaceProps, NewsProps, Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'redux-toolkit/slices/PlaceProps';
 import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { ContactData } from 'requests/PlaceRequests';
 import { convertToCurrentPlace } from 'utils/place_data_utils';
@@ -46,7 +47,7 @@ interface PlaceAndLocationProps {
 
 interface AddLocationsProps {
   placeId: string,
-  locations: LocationProps[]
+  locations: FormLocationProps[]
 }
 
 interface GetSelectedLocationsProps {

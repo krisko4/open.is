@@ -3,8 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from 
 import { FC } from 'react';
 import { useAddLocationsMutation } from 'redux-toolkit/api/placesApi';
 import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext';
-import { LocationProps } from '../../../../../redux-toolkit/slices/PlaceProps';
+import { FormLocationProps, useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
 
 interface Props {
@@ -14,21 +13,23 @@ interface Props {
 
 }
 export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, setAddLocationsDialogOpen }) => {
-  const { selectedLocations } = useLocationContext();
+  // const { selectedLocations } = useLocationContext();
+  const formLocations = useFormLocationsSelector();
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
   const businessChainId = useBusinessChainIdSelector();
   const [addLocations, { isLoading }] = useAddLocationsMutation();
 
 
+
   const handleClick = async () => {
     try {
-      const locations: LocationProps[] = selectedLocations.map(location => {
+      const locations: FormLocationProps[] = Object.values(formLocations).map(location => {
         const newLocation = { ...location };
-        delete newLocation.isValid;
         newLocation.facebook = 'https://facebook.com/' + newLocation.facebook;
         newLocation.instagram = 'https://instagram.com/' + newLocation.instagram;
         return newLocation;
       });
+      console.log(locations);
       await addLocations({
         placeId: businessChainId as string,
         locations: locations,
@@ -48,7 +49,7 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
                 Confirm new locations
             </DialogTitle>
             <DialogContent>
-                You have decided to add <b>{selectedLocations.length}</b> new {selectedLocations.length === 1 ? 'location' : 'locations'} to your business chain.
+                You have decided to add <b>{Object.values(formLocations).length}</b> new {Object.values(formLocations).length === 1 ? 'location' : 'locations'} to your business chain.
                 Are you sure you would like to save your changes?
             </DialogContent>
             <DialogActions>

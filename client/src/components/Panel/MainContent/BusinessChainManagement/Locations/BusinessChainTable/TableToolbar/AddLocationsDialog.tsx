@@ -1,6 +1,11 @@
 import { Grid } from '@mui/material';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useAppDispatch } from 'redux-toolkit/hooks';
 import {  useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
+import { resetMap } from 'redux-toolkit/slices/mapSlice';
+import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
+import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { LocationContextProvider } from '../../../../../../../contexts/PanelContexts/LocationContext';
 import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
 import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/LocationDetails';
@@ -13,7 +18,20 @@ interface Props {
 export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
 
   const logo  = useLogoSelector();
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(resetSelectedAddress());
+    dispatch(resetFormLocations());
+    dispatch(resetMap());
+    dispatch(resetSelectedLocations());
+    return () => {
+      dispatch(resetSelectedAddress());
+      dispatch(resetFormLocations());
+      dispatch(resetMap());
+      dispatch(resetSelectedLocations());
+    };
+  }, [dialogOpen]);
 
   return (
 

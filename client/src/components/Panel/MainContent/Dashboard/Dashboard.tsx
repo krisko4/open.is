@@ -78,7 +78,11 @@ export const Dashboard: FC = () => {
                                                 <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
                                                     The following chart represents historical data of user activity in your places
                                                 </Typography>
-                                                {activityChartSeries && <ActivityChart series={activityChartSeries} />}
+                                                {activityChartSeries &&
+                                                <Grid item>
+                                                 <ActivityChart series={activityChartSeries} />
+                                                </Grid>
+                                                 }
                                             </CardContent>
                                         </Card>
                                     </Slide>

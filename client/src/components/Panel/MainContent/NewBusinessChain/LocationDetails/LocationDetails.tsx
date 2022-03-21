@@ -31,12 +31,13 @@ const FormSubmitButton: FC<SubmitProps> = ({ isEditionMode, setActiveStep, setCo
   const dispatch = useAppDispatch();
   const isFirstRender = useRef(true);
   const handleClick = () => {
+    dispatch(saveForm());
     if (isEditionMode) {
       setConfirmDialogOpen(true);
       return;
     }
-    dispatch(saveForm());
   };
+
   useEffect(() => {
     if (isFirstRender.current){
       isFirstRender.current = false;
