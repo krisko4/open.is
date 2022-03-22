@@ -5,7 +5,5 @@ import { useTypeSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 
 export const PlaceType: FC = () => {
   const type = useTypeSelector();
-  return (
-        <Typography variant="body1">{type || 'Business type'}</Typography>
-  );
+  return <Typography variant="body1">{type || 'Business type'}</Typography>;
 };

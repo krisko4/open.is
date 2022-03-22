@@ -1,4 +1,3 @@
-
 const businessChainSteps = [
   {
     title: 'Name your place',

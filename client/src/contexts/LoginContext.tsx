@@ -1,37 +1,33 @@
-
 import React, { createContext, FC, useContext, useEffect, useState } from 'react';
 import { auth } from '../requests/AuthRequests';
 import { ContextProps } from './ContextProps';
 
 export const LoginContext = createContext<LoginContextData | null>(null);
 
-
-interface UserData {
-  email : string,
-  fullName : string,
-  img: string | File | ArrayBuffer | null,
-  isLoggedIn: boolean
+export interface UserData {
+  email: string;
+  fullName: string;
+  img: string | File | ArrayBuffer | null;
+  isLoggedIn: boolean;
 }
 
-const clearUserData : UserData = {
+const clearUserData: UserData = {
   email: '',
   fullName: '',
   img: '',
   isLoggedIn: false,
 };
-const useProviderData = () => {
 
+const useProviderData = () => {
   const [userData, setUserData] = useState(clearUserData);
 
   return {
-    userData, setUserData,
+    userData,
+    setUserData,
   };
 };
 
-
-
 export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
-
   const state = useProviderData();
   const [isAuthFinished, setAuthFinished] = useState(false);
 
@@ -40,7 +36,7 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
       try {
         await auth();
         const data = {
-          isLoggedIn : true,
+          isLoggedIn: true,
           email: localStorage.getItem('email') || '',
           fullName: localStorage.getItem('fullName') || '',
           img: localStorage.getItem('img') || '',
@@ -52,7 +48,6 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
           localStorage.removeItem('fullName');
           localStorage.removeItem('email');
           localStorage.removeItem('img');
-                    
         }
       } finally {
         setAuthFinished(true);
@@ -61,17 +56,8 @@ export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
     authenticate();
   }, []);
 
-  return (
-        <>
-            {isAuthFinished &&
-                <LoginContext.Provider value={state}>
-                    {children}
-                </LoginContext.Provider>
-            }
-        </>
-  );
+  return <>{isAuthFinished && <LoginContext.Provider value={state}>{children}</LoginContext.Provider>}</>;
 };
-
 
 type LoginContextData = ReturnType<typeof useProviderData>;
 

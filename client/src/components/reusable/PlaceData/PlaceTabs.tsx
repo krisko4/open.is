@@ -14,58 +14,41 @@ const MyTab = (props: any) => {
 };
 
 interface Props {
-  isCacheable?: boolean,
-  isUserOwner? : boolean
+  isCacheable?: boolean;
+  isUserOwner?: boolean;
 }
 
 export const PlaceTabs: FC<Props> = ({ isCacheable, isUserOwner }) => {
-
   const [value, setValue] = useState(0);
 
   const tabs = useMemo(() => {
     if (isCacheable) {
       return [
-                <CachedNews key="cachedNews" isUserOwner={isUserOwner} />,
-                <CachedOpeningHours key="cachedHours" />,
-                <CachedOpinions key="cachedOpinions" isUserOwner={isUserOwner} />,
+        <CachedNews key="cachedNews" isUserOwner={isUserOwner} />,
+        <CachedOpeningHours key="cachedHours" />,
+        <CachedOpinions key="cachedOpinions" isUserOwner={isUserOwner} />,
       ];
     }
-    return [
-            <News key="news"/>,
-            <OpeningHours key="hours" />,
-            <Opinions key="opinions" />,
-    ];
+    return [<News key="news" />, <OpeningHours key="hours" />, <Opinions key="opinions" />];
+  }, [isCacheable, isUserOwner]);
 
-  }, [isCacheable]);
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent<Element, Event>, newValue: number) => {
     setValue(newValue);
   };
 
   return (
-        <Grid container item lg={12} style={{ marginTop: 10 }}>
-            <Divider style={{ width: '100%' }} />
-            <Paper square style={{ width: '100%', background: 'inherit' }}>
-                <Tabs
-                    value={value}
-                    variant="fullWidth"
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChange}
-                >
-                    <MyTab label="News" />
-                    <MyTab label="Opening hours" />
-                    <MyTab label="Opinions" />
-                </Tabs>
-            </Paper>
-            <Grid container style={{ height: 495 }}>
-                <Scrollbars>
-                    {tabs[value]}
-                </Scrollbars>
-            </Grid>
-        </Grid>
+    <Grid container item lg={12} style={{ marginTop: 10 }}>
+      <Divider style={{ width: '100%' }} />
+      <Paper square style={{ width: '100%', background: 'inherit' }}>
+        <Tabs value={value} variant="fullWidth" indicatorColor="primary" textColor="primary" onChange={handleChange}>
+          <MyTab label="News" />
+          <MyTab label="Opening hours" />
+          <MyTab label="Opinions" />
+        </Tabs>
+      </Paper>
+      <Grid container style={{ height: 495 }}>
+        <Scrollbars>{tabs[value]}</Scrollbars>
+      </Grid>
+    </Grid>
   );
 };
-
-
-

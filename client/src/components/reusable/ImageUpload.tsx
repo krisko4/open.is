@@ -2,13 +2,12 @@ import React, { FC, useRef } from 'react';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {
-  setImageFile?: any,
-  name: string,
-  setImg: React.Dispatch<React.SetStateAction<string | File | ArrayBuffer | null>>
+  setImageFile?: any;
+  name: string;
+  setImg: React.Dispatch<React.SetStateAction<string | File | ArrayBuffer | null>>;
 }
 
-export const ImageUpload: FC<Props> = ({  name, children, setImg, setImageFile }) => {
-
+export const ImageUpload: FC<Props> = ({ name, children, setImg, setImageFile }) => {
   const uploadRef = useRef<HTMLInputElement>(null);
   const { enqueueErrorSnackbar } = useCustomSnackbar();
 
@@ -16,7 +15,7 @@ export const ImageUpload: FC<Props> = ({  name, children, setImg, setImageFile }
     if (event.target.files && event.target.files[0]) {
       const image = event.target.files[0];
       console.log(image.size);
-      if (image.size > 2000000){
+      if (image.size > 2000000) {
         enqueueErrorSnackbar('The size of selected file exceeds maximum size limit, which is 2 MB');
         return;
       }
@@ -25,7 +24,7 @@ export const ImageUpload: FC<Props> = ({  name, children, setImg, setImageFile }
       }
       const fileReader = new FileReader();
       fileReader.readAsDataURL(image);
-      fileReader.onload = e => {
+      fileReader.onload = (e) => {
         if (e.target) {
           setImg(e.target.result);
         }
@@ -33,18 +32,19 @@ export const ImageUpload: FC<Props> = ({  name, children, setImg, setImageFile }
     }
   };
 
-
-  return <>
-        <label htmlFor={name}>
-            <input
-                type="file"
-                id={name}
-                accept="image/*"
-                ref={uploadRef}
-                style={{ display: 'none' }}
-                onChange={e => uploadImage(e)}
-            />
-            {children}
-        </label>
-    </>;
+  return (
+    <>
+      <label htmlFor={name}>
+        <input
+          type="file"
+          id={name}
+          accept="image/*"
+          ref={uploadRef}
+          style={{ display: 'none' }}
+          onChange={(e) => uploadImage(e)}
+        />
+        {children}
+      </label>
+    </>
+  );
 };

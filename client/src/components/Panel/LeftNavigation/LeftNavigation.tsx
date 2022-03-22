@@ -23,7 +23,6 @@ import CloudCircle from '@mui/icons-material/CloudCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-
 const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
   {
     name: 'Dashboard',
@@ -34,7 +33,6 @@ const generateNavigationButtons = (places: RawPlaceDataProps[]) => [
     name: 'My account',
     icon: <SettingsIcon color="primary" />,
     url: 'account',
-
   },
   {
     name: 'New place',
@@ -80,88 +78,74 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: open ? 'normal' : 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: open ? 'normal' : 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+}));
 
 interface Props {
-  drawerOpen: boolean,
-  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>
+  drawerOpen: boolean;
+  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
-
   const { data: places } = useGetPlacesByUserId();
   const navigate = useNavigate();
   const { userData } = useLoginContext();
   const theme = useTheme();
 
-
   return (
-        <Drawer variant="permanent" open={drawerOpen}>
-            <DrawerHeader>
-                <IconButton onClick={() => setDrawerOpen(false)}>
-                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
-            </DrawerHeader>
-            <Divider />
-                <Paper sx={{ height: '100%' }}>
-            <Scrollbars autoHide>
-                    <ListItem >
-                        <ListItemAvatar>
-                            <Avatar
-                                imgProps={{
-                                  style: { objectFit: 'contain' },
-                                }}
-                                alt={userData.fullName}
-                                src={userData.img as string}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={userData.fullName}
-                            secondary="Standard user"
-                        />
-                    </ListItem>
-                    <List>
-                        {drawerOpen && <ListSubheader disableSticky>Settings</ListSubheader>}
-                        {
-                            places && generateNavigationButtons(places).map((button, index) =>
-                                <ListItem
-                                    key={index}
-                                    button
-                                    onClick={() => {
-                                      navigate(`${button.url}`);
-                                    }
-                                    }
-                                >
-                                    <ListItemIcon>
-                                        {button.icon}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={button.name}>
-                                    </ListItemText>
-                                </ListItem>,
-                            )
-                        }
-                        <MyPlaces drawerOpen={drawerOpen} />
-                        <MyBusinessChains drawerOpen={drawerOpen}
-                        />
-                    </List>
-            </Scrollbars>
-                </Paper>
-        </Drawer>
+    <Drawer variant="permanent" open={drawerOpen}>
+      <DrawerHeader>
+        <IconButton onClick={() => setDrawerOpen(false)}>
+          {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
+      <Paper sx={{ height: '100%' }}>
+        <Scrollbars autoHide>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar
+                imgProps={{
+                  style: { objectFit: 'contain' },
+                }}
+                alt={userData.fullName}
+                src={userData.img as string}
+              />
+            </ListItemAvatar>
+            <ListItemText primary={userData.fullName} secondary="Standard user" />
+          </ListItem>
+          <List>
+            {drawerOpen && <ListSubheader disableSticky>Settings</ListSubheader>}
+            {places &&
+              generateNavigationButtons(places).map((button, index) => (
+                <ListItem
+                  key={index}
+                  button
+                  onClick={() => {
+                    navigate(`${button.url}`);
+                  }}
+                >
+                  <ListItemIcon>{button.icon}</ListItemIcon>
+                  <ListItemText primary={button.name}></ListItemText>
+                </ListItem>
+              ))}
+            <MyPlaces drawerOpen={drawerOpen} />
+            <MyBusinessChains drawerOpen={drawerOpen} />
+          </List>
+        </Scrollbars>
+      </Paper>
+    </Drawer>
   );
 };

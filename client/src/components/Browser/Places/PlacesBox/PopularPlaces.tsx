@@ -5,17 +5,21 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setPopup } from 'redux-toolkit/slices/mapSlice';
 import { useSearcherOptionsSelector } from 'redux-toolkit/slices/searcherOptionsSlice';
-import {  useSelectedLocationsSelector, setSelectedLocations, addLocations, SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import {
+  useSelectedLocationsSelector,
+  setSelectedLocations,
+  addLocations,
+  SelectedLocationProps,
+} from 'redux-toolkit/slices/selectedLocationsSlice';
 import { getPaginatedPlaces } from 'requests/PlaceRequests';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { PlaceCard } from '../PlaceCard';
 
-interface Props{
-  fetchUrl: string
+interface Props {
+  fetchUrl: string;
 }
 
 export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
-
   const places = useSelectedLocationsSelector();
   const dispatch = useAppDispatch();
 
@@ -68,47 +72,47 @@ export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
     })();
   }, [total]);
 
-
-  const openPlaceDetails = (place : SelectedLocationProps, index: number) => {
-    dispatch(setPopup({
-      isOpen: true,
-      index: index,
-    }));
+  const openPlaceDetails = (place: SelectedLocationProps, index: number) => {
+    dispatch(
+      setPopup({
+        isOpen: true,
+        index: index,
+      })
+    );
     navigate(`/search/${place._id}/${place.locationId}`);
   };
 
   return (
-        <>
-            {firstLoading ?
-                <Grid container justifyContent="center" alignItems="center">
-                    <CircularProgress disableShrink />
-                </Grid> :
-                <Scrollbars
-                    onScrollFrame={handleScroll}
-                    autoHide >
-                    {places.map((place, index) => (
-                        <div key={place.locationId}>
-                            <Fade in={true} timeout={1000}>
-                                <ListItem
-                                    disableGutters
-                                    disablePadding
-                                    sx={{ mt: 1, mb: 1, ml: 1, mr: 1, width: 'inherit' }}
-                                    onClick={() => openPlaceDetails(place, index)}
-                                    key={place._id}
-                                    button
-                                >
-                                    <PlaceCard cardData={place} />
-                                </ListItem>
-                            </Fade>
-                        </div>
-                    ))}
-                    {loading &&
-                        <Grid container justifyContent="center">
-                            <CircularProgress disableShrink color="secondary" />
-                        </Grid>
-                    }
-                </Scrollbars >
-            }
-        </>
+    <>
+      {firstLoading ? (
+        <Grid container justifyContent="center" alignItems="center">
+          <CircularProgress disableShrink />
+        </Grid>
+      ) : (
+        <Scrollbars onScrollFrame={handleScroll} autoHide>
+          {places.map((place, index) => (
+            <div key={place.locationId}>
+              <Fade in={true} timeout={1000}>
+                <ListItem
+                  disableGutters
+                  disablePadding
+                  sx={{ mt: 1, mb: 1, ml: 1, mr: 1, width: 'inherit' }}
+                  onClick={() => openPlaceDetails(place, index)}
+                  key={place._id}
+                  button
+                >
+                  <PlaceCard cardData={place} />
+                </ListItem>
+              </Fade>
+            </div>
+          ))}
+          {loading && (
+            <Grid container justifyContent="center">
+              <CircularProgress disableShrink color="secondary" />
+            </Grid>
+          )}
+        </Scrollbars>
+      )}
+    </>
   );
 };

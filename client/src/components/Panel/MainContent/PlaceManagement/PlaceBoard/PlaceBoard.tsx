@@ -10,7 +10,6 @@ import { Opinions } from './Opinions/Opinions';
 import { PlaceDashboard } from './PlaceDashboard/PlaceDashboard.';
 import { PlaceSettings } from './Settings/PlaceSettings';
 
-
 export enum Destinations {
   HOME = 'home',
   STATISTICS = 'statistics',
@@ -24,14 +23,15 @@ export enum Destinations {
   NONE = '',
 }
 
-
 export const PlaceBoard: FC = () => {
-
   const { enqueueErrorSnackbar } = useCustomSnackbar();
   const { placeId, locationId } = useParams();
 
-
-  const { data: place, isFetching, isError } = useGetPlaceByIdAndSelectedLocationQuery({
+  const {
+    data: place,
+    isFetching,
+    isError,
+  } = useGetPlaceByIdAndSelectedLocationQuery({
     placeId: placeId as string,
     locationId: locationId as string,
   });
@@ -41,9 +41,6 @@ export const PlaceBoard: FC = () => {
       enqueueErrorSnackbar();
     }
   }, [isError]);
-
-
-
 
   const tabs = useMemo(() => {
     const key = place?._id as string;
@@ -99,16 +96,15 @@ export const PlaceBoard: FC = () => {
     return returnedTabs;
   }, [place]);
 
-
-
   return (
-        <>
-            {isFetching ?
-                <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                    <CircularProgress disableShrink />
-                </Grid> :
-                <PanelTabNavigator tabs={tabs} />
-            }
-        </>
+    <>
+      {isFetching ? (
+        <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+          <CircularProgress disableShrink />
+        </Grid>
+      ) : (
+        <PanelTabNavigator tabs={tabs} />
+      )}
+    </>
   );
 };

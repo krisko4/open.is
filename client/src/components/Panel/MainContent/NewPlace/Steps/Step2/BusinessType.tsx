@@ -6,16 +6,19 @@ import { setType, useTypeSelector } from 'redux-toolkit/slices/currentPlaceSlice
 import { getBusinessTypes } from 'requests/BusinessTypeRequests';
 
 export const BusinessType: FC = () => {
-
   const [businessTypes, setBusinessTypes] = useState<any>([]);
   const dispatch = useAppDispatch();
   const businessType = useTypeSelector();
-  const { control, setValue, formState: { errors } } = useFormContext();
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
   useEffect(() => {
-    getBusinessTypes().then(res => setBusinessTypes(res.data))
-      .catch(err => console.log(err));
+    getBusinessTypes()
+      .then((res) => setBusinessTypes(res.data))
+      .catch((err) => console.log(err));
   }, []);
-
 
   const type = useWatch({
     control,
@@ -33,30 +36,31 @@ export const BusinessType: FC = () => {
     dispatch(setType(type));
   }, [type]);
 
-
   return (
-        <Controller
-            control={control}
-            name="type"
-            render={({ field: { onChange, value } }) =>
-              (
-                <Autocomplete
-                    onChange={(e, newValue) => onChange(newValue)}
-                    value={value}
-                    options={businessTypes}
-                    fullWidth={true}
-                    renderInput={(params) => <TextField
-                        placeholder="Select your business type"
-                        error={errors.type?.message ? true : false}
-                        helperText={errors.type?.message && <span style={{ color: 'red' }}>Please choose a correct business type</span>}
-                        variant="outlined"
-                        color="primary"
-                        {...params}
-                        label="Business type" />}
-                />
-              )
-
-            }
+    <Controller
+      control={control}
+      name="type"
+      render={({ field: { onChange, value } }) => (
+        <Autocomplete
+          onChange={(e, newValue) => onChange(newValue)}
+          value={value}
+          options={businessTypes}
+          fullWidth={true}
+          renderInput={(params) => (
+            <TextField
+              placeholder="Select your business type"
+              error={errors.type?.message ? true : false}
+              helperText={
+                errors.type?.message && <span style={{ color: 'red' }}>Please choose a correct business type</span>
+              }
+              variant="outlined"
+              color="primary"
+              {...params}
+              label="Business type"
+            />
+          )}
         />
+      )}
+    />
   );
 };

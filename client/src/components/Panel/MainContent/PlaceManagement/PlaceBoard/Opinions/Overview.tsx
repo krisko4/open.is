@@ -1,4 +1,4 @@
-// @flow 
+// @flow
 import { CircularProgress, Grid, Rating, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { CachedOpinions } from 'components/reusable/CachedPlaceData/CachedOpinions';
@@ -16,28 +16,26 @@ const StyledRating = styled(Rating)({
   },
 });
 
-export const Overview : FC = () => {
+export const Overview: FC = () => {
   const { locationId } = useParams();
   const { data: averageNote, isFetching } = useGetAverageNoteForSelectedLocationQuery(locationId as string);
   return (
-        <Scrollbars>
-            <Grid container sx={{ height: '100%' }} alignItems="center" direction="column" justifyContent="center">
-                {isFetching ? <CircularProgress /> :
-                    <>
-                        <Grid item>
-                            <StyledRating readOnly value={averageNote?.average || 0} />
-                        </Grid>
-                        <Typography variant="h3">
-                            Average note: {averageNote?.average || 0}
-                        </Typography>
-                        <Grid container sx={{ flexGrow: 1 }}>
-                            <CachedOpinions
-                            />
-                        </Grid>
-                    </>
-                }
+    <Scrollbars>
+      <Grid container sx={{ height: '100%' }} alignItems="center" direction="column" justifyContent="center">
+        {isFetching ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <Grid item>
+              <StyledRating readOnly value={averageNote?.average || 0} />
             </Grid>
-
-        </Scrollbars>
+            <Typography variant="h3">Average note: {averageNote?.average || 0}</Typography>
+            <Grid container sx={{ flexGrow: 1 }}>
+              <CachedOpinions />
+            </Grid>
+          </>
+        )}
+      </Grid>
+    </Scrollbars>
   );
 };

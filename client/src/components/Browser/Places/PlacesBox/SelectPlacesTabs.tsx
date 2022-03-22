@@ -2,7 +2,6 @@ import { NavigationTabs } from 'components/reusable/NavigationTabs';
 import { Favorite, FiberNew, Star, Subscriptions, Timelapse } from '@mui/icons-material';
 import { FC } from 'react';
 
-
 export const SelectPlacesTabs: FC = () => {
   const tabs = [
     {
@@ -32,10 +31,5 @@ export const SelectPlacesTabs: FC = () => {
     },
   ];
 
-  return (
-        <NavigationTabs
-            variant="fullWidth"
-            tabs={tabs}
-        />
-  );
+  return <NavigationTabs variant="fullWidth" tabs={tabs} />;
 };

@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppSelector } from 'redux-toolkit/hooks';
 
 interface SelectedAddressProps {
-  label: string,
-  lat: number,
-  lng: number,
-  postcode?: string,
-  addressId: string,
-  language: string
+  label: string;
+  lat: number;
+  lng: number;
+  postcode?: string;
+  addressId: string;
+  language: string;
 }
 const initialState: SelectedAddressProps = {
   label: '',
@@ -23,16 +23,11 @@ const selectedAddressSlice = createSlice({
   reducers: {
     setSelectedAddress: (state, action: PayloadAction<SelectedAddressProps>) => action.payload,
     resetSelectedAddress: () => initialState,
-
   },
 });
 
 export const useSelectedAddressSelector = () => useAppSelector((state) => state.selectedAddress);
 
-export const {
-  setSelectedAddress,
-  resetSelectedAddress,
-
-} = selectedAddressSlice.actions;
+export const { setSelectedAddress, resetSelectedAddress } = selectedAddressSlice.actions;
 
 export const selectedAddressReducer = selectedAddressSlice.reducer;

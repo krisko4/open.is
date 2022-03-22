@@ -4,12 +4,12 @@ import { Link, useLocation, matchPath, useResolvedPath } from 'react-router-dom'
 
 interface Props {
   tabs: {
-    name: string,
-    url: string,
-    content?: any,
-    icon?: any
-  }[],
-  variant?: any
+    name: string;
+    url: string;
+    content?: any;
+    icon?: any;
+  }[];
+  variant?: any;
 }
 
 function useRouteMatch(patterns: readonly string[]) {
@@ -27,23 +27,29 @@ function useRouteMatch(patterns: readonly string[]) {
 }
 
 export const NavigationTabs: FC<Props> = ({ tabs, variant }) => {
-
-  const currentTab = useRouteMatch(tabs.map(tab => tab.url));
+  const currentTab = useRouteMatch(tabs.map((tab) => tab.url));
 
   return (
-        <Tabs
-            square={false}
-            component={Paper}
-            variant={variant}
-            value={currentTab}
-            indicatorColor="secondary"
-            textColor="secondary"
-            sx={{ width: '100%' }}
-        >
-            {tabs.map((tab) =>
-                <Tab key={tab.url} icon={tab.icon} value={tab.url} component={Link} to={tab.url} disableRipple label={tab.name} />,
-            )}
-        </Tabs>
+    <Tabs
+      square={false}
+      component={Paper}
+      variant={variant}
+      value={currentTab}
+      indicatorColor="secondary"
+      textColor="secondary"
+      sx={{ width: '100%' }}
+    >
+      {tabs.map((tab) => (
+        <Tab
+          key={tab.url}
+          icon={tab.icon}
+          value={tab.url}
+          component={Link}
+          to={tab.url}
+          disableRipple
+          label={tab.name}
+        />
+      ))}
+    </Tabs>
   );
-
 };

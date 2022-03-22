@@ -15,13 +15,12 @@ const schema = yup.object({
 });
 
 interface Inputs {
-  subtitle: string,
-  type: string | null,
-  description: string
+  subtitle: string;
+  type: string | null;
+  description: string;
 }
 
 export const PlaceDetailsForm: FC = () => {
-
   const { setActiveStep, activeStep, steps } = useStepContext();
 
   const methods = useForm<Inputs>({
@@ -38,34 +37,31 @@ export const PlaceDetailsForm: FC = () => {
     steps[activeStep].isValid = methods.formState.isValid;
   }, [methods.formState.isValid]);
 
-
-
-
   return (
-        <FormProvider {...methods}>
-            <form style={{ flexGrow: 1 }}>
-                <Grid item container>
-                    {/* <BusinessTypeContainer /> */}
-                    <BusinessType />
-                    <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
-                        {/* <SubtitleContainer /> */}
-                        <Subtitle />
-                    </Grid>
-                    {/* <DescriptionContainer /> */}
-                    <Description />
-                    <Button
-                        size="large"
-                        fullWidth={true}
-                        variant="contained"
-                        style={{ marginTop: 10 }}
-                        color="primary"
-                        onClick={() => setActiveStep(step => step + 1)}
-                        disabled={!methods.formState.isValid}
-                    >
-                        Submit
-                    </Button>
-                </Grid>
-            </form>
-        </FormProvider>
+    <FormProvider {...methods}>
+      <form style={{ flexGrow: 1 }}>
+        <Grid item container>
+          {/* <BusinessTypeContainer /> */}
+          <BusinessType />
+          <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
+            {/* <SubtitleContainer /> */}
+            <Subtitle />
+          </Grid>
+          {/* <DescriptionContainer /> */}
+          <Description />
+          <Button
+            size="large"
+            fullWidth={true}
+            variant="contained"
+            style={{ marginTop: 10 }}
+            color="primary"
+            onClick={() => setActiveStep((step) => step + 1)}
+            disabled={!methods.formState.isValid}
+          >
+            Submit
+          </Button>
+        </Grid>
+      </form>
+    </FormProvider>
   );
 };

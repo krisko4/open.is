@@ -9,9 +9,7 @@ import Header from './Header';
 import { DrawerHeader, LeftNavigation } from './LeftNavigation/LeftNavigation';
 import { MainContent } from './MainContent/MainContent';
 
-
 export const Panel: FC = () => {
-
   const { isFetching, data, isSuccess } = useGetPlacesByUserId();
 
   const navigate = useNavigate();
@@ -22,7 +20,7 @@ export const Panel: FC = () => {
     if (isSuccess && data) {
       dispatch(setPlaces(data));
     }
-  }, [isSuccess]);
+  }, [isSuccess, dispatch, data]);
 
   useEffect(() => {
     const uid: string = localStorage.getItem('uid') as string;
@@ -30,23 +28,24 @@ export const Panel: FC = () => {
       navigate('/');
       return;
     }
-  }, []);
+  }, [navigate]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      {isFetching ?
+    <Box data-testid="panel" sx={{ display: 'flex' }}>
+      {isFetching ? (
         <Grid container sx={{ height: '100vh' }} justifyContent="center" alignItems="center">
           <CircularProgress disableShrink />
-        </Grid> :
+        </Grid>
+      ) : (
         <>
           <Header drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
           <LeftNavigation drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-          <Box component="main" sx={{  display: 'flex', flexGrow: 1, flexDirection: 'column', height: '100vh' }}>
+          <Box component="main" sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column', height: '100vh' }}>
             <DrawerHeader />
             <MainContent />
           </Box>
         </>
-      }
+      )}
     </Box>
   );
 };

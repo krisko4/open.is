@@ -1,4 +1,3 @@
-
 import { TextField } from '@mui/material';
 import { FC, useRef, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -8,36 +7,37 @@ export const PhoneField: FC = () => {
   const { control, getValues, setValue } = useFormContext();
   const phone = usePhoneSelector();
   const isFirstRender = useRef(true);
-  
+
   useEffect(() => {
-    if (isFirstRender.current){
+    if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    if (phone !== getValues('phone')){
+    if (phone !== getValues('phone')) {
       setValue('phone', phone, { shouldValidate: true });
     }
   }, [phone]);
 
   return (
-        <Controller
-            name="phone"
-            control={control}
-            render={
-                ({ field }) =>
-                    <PhoneInput
-                    //@ts-ignore
-                        style={
-                            {
-                              flexGrow: 1,
-                            }
-                        }
-                        {...field}
-                        component={TextField}
-                        //@ts-ignore
-                        label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
-                    />
-            }
+    <Controller
+      name="phone"
+      control={control}
+      render={({ field }) => (
+        <PhoneInput
+          //@ts-ignore
+          style={{
+            flexGrow: 1,
+          }}
+          {...field}
+          component={TextField}
+          //@ts-ignore
+          label={
+            <span>
+              Phone number <span style={{ color: 'red' }}>*</span>
+            </span>
+          }
         />
+      )}
+    />
   );
 };

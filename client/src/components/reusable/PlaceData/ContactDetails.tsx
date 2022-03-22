@@ -6,47 +6,37 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import { FC } from 'react';
 import { usePhoneSelector, useWebsiteSelector, useEmailSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 
-
 interface SocialBoxProps {
-  value: string,
-  icon: any
-
+  value: string;
+  icon: any;
 }
 
-const SocialBox : FC<SocialBoxProps> = ({ value, icon }) => {
+const SocialBox: FC<SocialBoxProps> = ({ value, icon }) => {
   return (
-        <Grid item lg={3} >
-            <Card elevation={10}>
-                <CardContent>
-                    <Grid container justifyContent="center">
-                        <Grid item lg={12} style={{ textAlign: 'center' }}>
-                            {icon}
-                        </Grid>
-                        <Grid item>
-                            {value}
-                        </Grid>
-                    </Grid>
-                </CardContent>
-            </Card>
-        </Grid>
-
+    <Grid item lg={3}>
+      <Card elevation={10}>
+        <CardContent>
+          <Grid container justifyContent="center">
+            <Grid item lg={12} style={{ textAlign: 'center' }}>
+              {icon}
+            </Grid>
+            <Grid item>{value}</Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
   );
-
 };
 
-
-export const ContactDetails : FC = () => {
+export const ContactDetails: FC = () => {
   const phone = usePhoneSelector();
   const email = useEmailSelector();
   const website = useWebsiteSelector();
   return (
-        <>
-            <SocialBox value={phone || 'Phone number'} icon={<PhoneIcon color="primary" />} />
-            <SocialBox value={email || 'E-mail address'} icon={<MailOutlineIcon color="primary" />} />
-            <SocialBox value={website || 'Website address'} icon={<LanguageIcon color="primary" />} />
-        </>
+    <>
+      <SocialBox value={phone || 'Phone number'} icon={<PhoneIcon color="primary" />} />
+      <SocialBox value={email || 'E-mail address'} icon={<MailOutlineIcon color="primary" />} />
+      <SocialBox value={website || 'Website address'} icon={<LanguageIcon color="primary" />} />
+    </>
   );
-
-
 };
-

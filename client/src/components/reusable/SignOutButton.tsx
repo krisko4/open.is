@@ -4,22 +4,18 @@ import { useLoginContext } from '../../contexts/LoginContext';
 import { signOut } from '../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../utils/snackbars';
 
-
 export const SignOutButton: FC<any> = (props) => {
   const { enqueueSuccessSnackbar } = useCustomSnackbar();
   const { setUserData } = useLoginContext();
   const { children } = props;
 
-
   const logout = async () => {
     await signOut();
-    setUserData(data => (
-      {
-        ...data,
-        email: '',
-        isLoggedIn: false,
-      }
-    ));
+    setUserData((data) => ({
+      ...data,
+      email: '',
+      isLoggedIn: false,
+    }));
     localStorage.removeItem('uid');
     localStorage.removeItem('fullName');
     localStorage.removeItem('email');
@@ -27,6 +23,9 @@ export const SignOutButton: FC<any> = (props) => {
     enqueueSuccessSnackbar('You have signed out.');
   };
 
-  return <Button {...props} onClick={logout}>{children}</Button>;
-
+  return (
+    <Button {...props} onClick={logout}>
+      {children}
+    </Button>
+  );
 };

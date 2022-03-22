@@ -1,22 +1,19 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { CurrentPlaceProps } from '../redux-toolkit/slices/PlaceProps';
 
-
 export const AddressDetailsContext = createContext<AddressDetailsContextData | null>(null);
 interface Props {
-  children: ReactNode,
-  isEditionMode: boolean
-
+  children: ReactNode;
+  isEditionMode: boolean;
 }
 
-
 interface SelectedAddressProps {
-  label: string,
-  lat: number,
-  lng: number,
-  postcode?: string,
-  addressId: string,
-  language: string
+  label: string;
+  lat: number;
+  lng: number;
+  postcode?: string;
+  addressId: string;
+  language: string;
 }
 
 const useProviderSettings = (isEdition: boolean) => {
@@ -45,11 +42,7 @@ const useProviderSettings = (isEdition: boolean) => {
 
 const AddressDetailsContextProvider: FC<Props> = ({ isEditionMode, children }) => {
   const state = useProviderSettings(isEditionMode);
-  return (
-        <AddressDetailsContext.Provider value={state}>
-            {children}
-        </AddressDetailsContext.Provider>
-  );
+  return <AddressDetailsContext.Provider value={state}>{children}</AddressDetailsContext.Provider>;
 };
 type AddressDetailsContextData = ReturnType<typeof useProviderSettings>;
 

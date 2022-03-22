@@ -4,20 +4,20 @@ import { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { useFacebookSelector, useInstagramSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 
-interface SocialProps{
-  url: string
+interface SocialProps {
+  url: string;
 }
 
-const SocialIconButton : FC<SocialProps> = ({ url }) => {
+const SocialIconButton: FC<SocialProps> = ({ url }) => {
   return (
-        <IconButton size="large">
-            <SocialIcon
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ width: 35, height: 35, display: 'table-cell' }}
-                url={url} />
-        </IconButton>
-
+    <IconButton size="large">
+      <SocialIcon
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ width: 35, height: 35, display: 'table-cell' }}
+        url={url}
+      />
+    </IconButton>
   );
 };
 
@@ -27,10 +27,10 @@ export const SocialIcons: FC = () => {
   const fb = facebook.startsWith('https://facebook.com') ? facebook : `https://facebook.com/${facebook}`;
   const ig = instagram.startsWith('https://instagram.com') ? instagram : `https://instagram.com/${instagram}`;
   return (
-        <div>
-            <SocialIconButton url={fb} />
-            <SocialIconButton url={ig} />
-        </div>
+    <div>
+      <SocialIconButton url={fb} />
+      <SocialIconButton url={ig} />
+    </div>
   );
 };
 

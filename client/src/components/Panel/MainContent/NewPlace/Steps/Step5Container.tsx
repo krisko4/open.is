@@ -5,18 +5,17 @@ import { Step5 } from './Step5/Step5';
 import { useSelectedAddressSelector } from 'redux-toolkit/slices/selectedAddressSlice';
 
 interface Props {
-  isEditionMode?: boolean,
-  logoFile: File | null,
-  initialPlaceData? : CurrentPlaceProps
+  isEditionMode?: boolean;
+  logoFile: File | null;
+  initialPlaceData?: CurrentPlaceProps;
 }
 
 export const Step5Container: FC<Props> = ({ initialPlaceData, isEditionMode, logoFile }) => {
-
   const currentPlace = useCurrentPlaceSelector();
   const selectedAddress = useSelectedAddressSelector();
 
   const formData = useMemo(() => {
-    const images: any = currentPlace.images.filter(image => image.file !== null).map(image => image.file);
+    const images: any = currentPlace.images.filter((image) => image.file !== null).map((image) => image.file);
     const place = {
       logo: logoFile as File,
       name: currentPlace.name,
@@ -37,7 +36,6 @@ export const Step5Container: FC<Props> = ({ initialPlaceData, isEditionMode, log
         website: currentPlace.website,
         facebook: `https://facebook.com/${currentPlace.facebook}`,
         instagram: `https://instagram.com/${currentPlace.instagram}`,
-
       },
     ];
     const form = new FormData();
@@ -48,8 +46,7 @@ export const Step5Container: FC<Props> = ({ initialPlaceData, isEditionMode, log
       form.append('images', image);
     }
     return form;
-  }, [logoFile, currentPlace.images ]);
+  }, [logoFile, currentPlace.images]);
 
   return <Step5 initialPlaceData={initialPlaceData} isEditionMode={isEditionMode} formData={formData} />;
-
 };

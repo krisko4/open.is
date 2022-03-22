@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppSelector } from 'redux-toolkit/hooks';
 
-interface Props{
-  email: string
+interface Props {
+  email: string;
 }
 
-const initialState : Props = {
+const initialState: Props = {
   email: '',
 };
 
@@ -13,13 +13,13 @@ const emailSlice = createSlice({
   name: 'email',
   initialState,
   reducers: {
-    setEmail: (state, action : PayloadAction<string>) => {
+    setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
   },
 });
 
-export const useEmailSelector = () => useAppSelector(state => state.email.email);
+export const useEmailSelector = () => useAppSelector((state) => state.email.email);
 
 export const emailReducer = emailSlice.reducer;
 export const { setEmail } = emailSlice.actions;

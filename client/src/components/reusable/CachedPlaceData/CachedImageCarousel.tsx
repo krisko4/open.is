@@ -1,4 +1,3 @@
-
 import { makeStyles } from '@mui/styles';
 import { FC, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
@@ -16,7 +15,6 @@ const useStyles = makeStyles({
       filter: 'brightness(85%)',
     },
     transition: '.5s',
-
   },
   bottomText: {
     position: 'absolute',
@@ -28,42 +26,34 @@ const useStyles = makeStyles({
     '&&:hover': {
       opacity: '0.8',
     },
-
   },
 });
-interface Props{
-  images: Image[],
-  address : string
+interface Props {
+  images: Image[];
+  address: string;
 }
 
 export const CachedImageCarousel: FC<Props> = ({ images, address }) => {
-
   const classes = useStyles();
   const [currentIndex, setCurrentIndex] = useState(1);
 
   return (
-        <Carousel
-            stopAutoPlayOnHover
-            autoPlay={false}
-            indicators={false}
-            interval={10000}
-            swipe={false}
-            index={currentIndex}
-            onChange={(now) => setCurrentIndex(now as number)}
-            animation="slide"
-            className={classes.carousel}
-        >
-            {images.map((item, index) =>
-                <div
-                    key={index}
-                >
-                    <ImageCarouselItem
-                        address={address}
-                        index={index}
-                        item={item}
-                    />
-                </div>)
-            }
-        </Carousel >
+    <Carousel
+      stopAutoPlayOnHover
+      autoPlay={false}
+      indicators={false}
+      interval={10000}
+      swipe={false}
+      index={currentIndex}
+      onChange={(now) => setCurrentIndex(now as number)}
+      animation="slide"
+      className={classes.carousel}
+    >
+      {images.map((item, index) => (
+        <div key={index}>
+          <ImageCarouselItem address={address} index={index} item={item} />
+        </div>
+      ))}
+    </Carousel>
   );
 };

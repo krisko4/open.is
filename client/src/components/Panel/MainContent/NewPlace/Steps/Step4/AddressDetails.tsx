@@ -13,15 +13,12 @@ import { MapBox } from '../../../../../Browser/Places/MapBox/MapBox';
 import { AddressSearcher } from '../../../../../reusable/AddressSearcher';
 
 interface Props {
-  setActiveStep?: React.Dispatch<React.SetStateAction<number>>,
-  isEditionMode?: boolean,
-  isBusinessChain?: boolean
-
+  setActiveStep?: React.Dispatch<React.SetStateAction<number>>;
+  isEditionMode?: boolean;
+  isBusinessChain?: boolean;
 }
 
-
 export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusinessChain }) => {
-
   const { enqueueErrorSnackbar, enqueueInfoSnackbar } = useCustomSnackbar();
   const dispatch = useAppDispatch();
   const selectedAddress = useSelectedAddressSelector();
@@ -38,8 +35,8 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusi
       setErrorMessage('This is not a valid address. Please provide a street number.');
       return;
     }
-    if (!isBusinessChain){
-      if (setActiveStep) setActiveStep(currentStep => currentStep + 1);
+    if (!isBusinessChain) {
+      if (setActiveStep) setActiveStep((currentStep) => currentStep + 1);
       return;
     }
     if (formLocations[selectedAddress.addressId]) {
@@ -50,7 +47,9 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusi
     try {
       const res = await getPlaceByLatLng(selectedAddress.lat, selectedAddress.lng);
       if (res.data && (!isEditionMode || (isEditionMode && selectedAddress.label !== res.data.locations[0].address))) {
-        setErrorMessage('Selected location is already occupied. If your place is located on this address, try to change the position of a marker.');
+        setErrorMessage(
+          'Selected location is already occupied. If your place is located on this address, try to change the position of a marker.'
+        );
         return;
       }
       const newLocation: SelectedLocationProps = {
@@ -66,7 +65,7 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusi
         facebook: '',
       };
       dispatch(addFormLocation(newLocation));
-      if (setActiveStep) setActiveStep(currentStep => currentStep + 1);
+      if (setActiveStep) setActiveStep((currentStep) => currentStep + 1);
     } catch (err) {
       enqueueErrorSnackbar();
     } finally {
@@ -79,33 +78,39 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusi
       isFirstRender.current = false;
       return;
     }
-    dispatch(setSelectedLocations([
-      {
-        name: name,
-        type: type as string,
-        logo: logo as string,
-        lat: selectedAddress.lat,
-        lng: selectedAddress.lng,
-      },
-    ]));
+    dispatch(
+      setSelectedLocations([
+        {
+          name: name,
+          type: type as string,
+          logo: logo as string,
+          lat: selectedAddress.lat,
+          lng: selectedAddress.lng,
+        },
+      ])
+    );
   }, [selectedAddress]);
 
   return (
     <Fade timeout={1000} in={true}>
       <Grid container justifyContent="center">
         <Grid container justifyContent="center">
-          {selectedAddress.postcode &&
+          {selectedAddress.postcode && (
             <Fade timeout={500} in={true}>
-              <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">Current address: {selectedAddress.label}</Alert>
+              <Alert style={{ marginBottom: 10, flexGrow: 1 }} variant="filled" severity="info">
+                Current address: {selectedAddress.label}
+              </Alert>
             </Fade>
-          }
+          )}
         </Grid>
         <Grid item lg={12}>
           <AddressSearcher errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
         </Grid>
         <Fade in={errorMessage !== ''}>
           <Grid item lg={12} style={{ textAlign: 'center' }}>
-            <Typography style={{ color: 'red' }} variant="caption">{errorMessage}</Typography>
+            <Typography style={{ color: 'red' }} variant="caption">
+              {errorMessage}
+            </Typography>
           </Grid>
         </Fade>
         <Grid style={{ height: 500, marginTop: 10 }} container>
@@ -124,7 +129,6 @@ export const AddressDetails: FC<Props> = ({ setActiveStep, isEditionMode, isBusi
           Submit
         </LoadingButton>
       </Grid>
-
     </Fade>
   );
 };

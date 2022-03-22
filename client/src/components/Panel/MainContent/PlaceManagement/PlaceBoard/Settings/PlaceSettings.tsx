@@ -9,18 +9,13 @@ import { StepContextProvider } from '../../../../../../contexts/StepContext';
 import { NewPlace } from '../../../NewPlace/NewPlace';
 import newPlaceSteps from '../../../NewPlace/Steps/steps';
 
-
-
 export const PlaceSettings: FC = () => {
-
   const { placeId, locationId } = useParams();
   const { data: place, isFetching } = useGetPlaceByIdAndSelectedLocationQuery({
     placeId: placeId as string,
     locationId: locationId as string,
   });
   const dispatch = useAppDispatch();
-
-
 
   const initialPlaceData = useMemo(() => {
     if (place) {
@@ -32,38 +27,34 @@ export const PlaceSettings: FC = () => {
         });
       }
       console.log(place);
-      dispatch(setSelectedAddress({
-        label: place.address,
-        language: navigator.language,
-        lat: place.lat,
-        lng: place.lng,
-        addressId: place.addressId, 
-
-      }));
+      dispatch(
+        setSelectedAddress({
+          label: place.address,
+          language: navigator.language,
+          lat: place.lat,
+          lng: place.lng,
+          addressId: place.addressId,
+        })
+      );
       return {
         ...place,
         facebook: place.facebook.substring(21),
         instagram: place.instagram.substring(22),
       };
-
     }
   }, [place]);
 
   return (
-        <>
-            {isFetching ?
-                <Grid container sx={{ height: '100%' }} >
-                    <CircularProgress />
-                </Grid>
-              :
-                <StepContextProvider steps={newPlaceSteps}>
-                    <NewPlace
-                        isEditionMode={true}
-                        initialPlaceData={initialPlaceData}
-                    />
-                </StepContextProvider>
-            }
-        </>
+    <>
+      {isFetching ? (
+        <Grid container sx={{ height: '100%' }}>
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <StepContextProvider steps={newPlaceSteps}>
+          <NewPlace isEditionMode={true} initialPlaceData={initialPlaceData} />
+        </StepContextProvider>
+      )}
+    </>
   );
-
 };

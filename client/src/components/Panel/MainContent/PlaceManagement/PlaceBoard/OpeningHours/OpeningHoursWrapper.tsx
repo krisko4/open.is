@@ -8,21 +8,22 @@ export const OpeningHoursWrapper: FC = () => {
   const { locationId, placeId } = useParams();
   const { data, isFetching } = useGetOpeningHoursForSelectedLocationQuery(locationId as string);
   return (
-        <>
-            {isFetching ?
-                <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
-                    <CircularProgress />
-                </Grid>
-              :
-              data && <OpeningHours
-                    placeId={placeId}
-                    locationId={locationId}
-                    openingHours={data.openingHours}
-                    alwaysOpen={data.alwaysOpen}
-                    isActive={data.isActive}
-                />
-            }
-        </>
-
+    <>
+      {isFetching ? (
+        <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
+          <CircularProgress />
+        </Grid>
+      ) : (
+        data && (
+          <OpeningHours
+            placeId={placeId}
+            locationId={locationId}
+            openingHours={data.openingHours}
+            alwaysOpen={data.alwaysOpen}
+            isActive={data.isActive}
+          />
+        )
+      )}
+    </>
   );
 };

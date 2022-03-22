@@ -5,5 +5,4 @@ const myAxios = axios.create({
   withCredentials: true,
 });
 
-
 export default myAxios;

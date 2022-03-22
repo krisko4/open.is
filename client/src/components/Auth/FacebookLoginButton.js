@@ -3,12 +3,9 @@
 // import FacebookIcon from "@mui/icons-material/Facebook";
 // import { FC } from "react";
 
-
-
 // const signIn = (response) => {
 //     console.log(response);
 // }
-
 
 // export const FacebookLoginButton = () => {
 //     return (

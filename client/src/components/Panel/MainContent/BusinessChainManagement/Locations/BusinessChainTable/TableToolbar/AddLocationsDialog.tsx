@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { FC, useEffect } from 'react';
 import { useAppDispatch } from 'redux-toolkit/hooks';
-import {  useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
 import { resetMap } from 'redux-toolkit/slices/mapSlice';
 import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
@@ -12,12 +12,11 @@ import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/Lo
 import { LocationSelection } from '../../../../NewBusinessChain/LocationDetails/LocationSelection';
 
 interface Props {
-  dialogOpen: boolean,
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  dialogOpen: boolean;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => {
-
-  const logo  = useLogoSelector();
+  const logo = useLogoSelector();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,28 +33,17 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
   }, [dialogOpen]);
 
   return (
-
-        <FullHeightDialog
-            title="Add new locations"
-            dialogOpen={dialogOpen}
-            setDialogOpen={setDialogOpen}
-        >
-            <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center" justifyContent="space-evenly">
-                    <LocationContextProvider>
-                        <Grid item container sx={{ height: '100%' }} alignItems="center" lg={6}>
-                            <LocationSelection  />
-                        </Grid>
-                        <Grid item lg={6} sx={{ height: '100%' }}>
-                            <LocationDetails
-                                img={logo}
-                                isEditionMode={true}
-                                setAddLocationsDialogOpen={setDialogOpen}
-                            />
-                        </Grid>
-                    </LocationContextProvider>
-            </Grid>
-
-        </FullHeightDialog>
-
+    <FullHeightDialog title="Add new locations" dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}>
+      <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center" justifyContent="space-evenly">
+        <LocationContextProvider>
+          <Grid item container sx={{ height: '100%' }} alignItems="center" lg={6}>
+            <LocationSelection />
+          </Grid>
+          <Grid item lg={6} sx={{ height: '100%' }}>
+            <LocationDetails img={logo} isEditionMode={true} setAddLocationsDialogOpen={setDialogOpen} />
+          </Grid>
+        </LocationContextProvider>
+      </Grid>
+    </FullHeightDialog>
   );
 };

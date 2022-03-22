@@ -2,7 +2,6 @@
 // import Button from "@mui/material/Button";
 // import GoogleLogin from "react-google-login";
 
-
 // const signIn = (response) => {
 //     console.log(response);
 // }
@@ -10,7 +9,6 @@
 // const setFailureResponse = (response) => {
 //     console.log(response);
 // }
-
 
 // export const GoogleLoginButton = () => {
 //     return (

@@ -4,27 +4,14 @@ import * as React from 'react';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { RegistrationForm } from './RegistrationForm';
 
-
-
-
-
-
-
-
 export const Registration = () => {
-
-
-  const { registrationOpen,  setRegistrationOpen } = useAuthContext();
+  const { registrationOpen, setRegistrationOpen } = useAuthContext();
 
   return (
-        <Drawer
-            anchor="right"
-            open={registrationOpen}
-            onClose={() => setRegistrationOpen(false)}
-        >
-            <Grid container sx={{ width: 800, height: '100%' }} alignItems="center">
-                <RegistrationForm />
-                {/* <Grid item container alignItems="center" lg={6}
+    <Drawer anchor="right" open={registrationOpen} onClose={() => setRegistrationOpen(false)}>
+      <Grid container sx={{ width: 800, height: '100%' }} alignItems="center">
+        <RegistrationForm />
+        {/* <Grid item container alignItems="center" lg={6}
                     style={{ background: 'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.5)),url(https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80)' }}>
                     <Grid item lg={12} style={{ textAlign: 'center' }}>
                         <CardMedia style={{ height: 200 }}
@@ -41,8 +28,7 @@ export const Registration = () => {
                         </Button>
                     </Grid>
                 </Grid> */}
-            </Grid>
-        </Drawer>
+      </Grid>
+    </Drawer>
   );
-
 };

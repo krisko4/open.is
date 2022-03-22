@@ -1,12 +1,12 @@
 import { createContext, FC, useContext, useMemo, useState } from 'react';
 
 interface ColorMode {
-  toggleColorMode: () => void
-  mode: 'dark' | 'light'
+  toggleColorMode: () => void;
+  mode: 'dark' | 'light';
 }
 
 export const ColorModeContext = createContext<ColorMode>({
-  toggleColorMode: () => { },
+  toggleColorMode: () => ({}),
   mode: 'light',
 });
 
@@ -21,17 +21,14 @@ export const ColorModeContextProvider: FC = ({ children }) => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
       },
       mode,
-    }), [mode],
+    }),
+    [mode]
   );
-  return (
-        <ColorModeContext.Provider value={colorMode}>
-            {children}
-        </ColorModeContext.Provider>
-  );
+  return <ColorModeContext.Provider value={colorMode}>{children}</ColorModeContext.Provider>;
 };
 
 export const useColorMode = () => {
   const context = useContext(ColorModeContext);
   if (!context) throw new Error('ColorModeContext should be used inside ColorModeContextProvider');
   return context;
-}; 
+};

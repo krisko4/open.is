@@ -15,43 +15,48 @@ import { PanelTheme } from './themes/PanelTheme';
 
 export function NoMatch() {
   return (
-        <div>
-            <h2>Nothing to see here!</h2>
-            <p>
-                <Link to="/">Go to the home page</Link>
-            </p>
-        </div>
+    <div>
+      <h2>Nothing to see here!</h2>
+      <p>
+        <Link to="/">Go to the home page</Link>
+      </p>
+    </div>
   );
 }
 export const Router: FC = () => {
   return (
-        <BrowserRouter>
-            <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                <Route path="/panel/*" element={
-                    <ColorModeContextProvider>
-                        <PanelTheme>
-                            <CssBaseline enableColorScheme />
-                            <Panel />
-                        </PanelTheme>
-                    </ColorModeContextProvider>
-                }>
-                </Route>
-                <Route path="/search/*" element={
-                    <ColorModeContextProvider>
-                        <BrowserTheme>
-                            <CssBaseline enableColorScheme />
-                            <Browser />
-                        </BrowserTheme>
-                    </ColorModeContextProvider>
-                } />
-                <Route path="/confirm/:token" element={<Confirmation />} />
-                <Route path="/:email/confirm/:token" element={<EmailChangeConfirmation />} />
-                <Route path="*" element={<NoMatch />} />
-                <Route path="/test" element={<Test />} />
-            </Routes>
-        </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/panel/*"
+          element={
+            <ColorModeContextProvider>
+              <PanelTheme>
+                <CssBaseline enableColorScheme />
+                <Panel />
+              </PanelTheme>
+            </ColorModeContextProvider>
+          }
+        ></Route>
+        <Route
+          path="/search/*"
+          element={
+            <ColorModeContextProvider>
+              <BrowserTheme>
+                <CssBaseline enableColorScheme />
+                <Browser />
+              </BrowserTheme>
+            </ColorModeContextProvider>
+          }
+        />
+        <Route path="/confirm/:token" element={<Confirmation />} />
+        <Route path="/:email/confirm/:token" element={<EmailChangeConfirmation />} />
+        <Route path="*" element={<NoMatch />} />
+        <Route path="/test" element={<Test />} />
+      </Routes>
+    </BrowserRouter>
   );
 };

@@ -3,12 +3,14 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import { Card, CardContent, CircularProgress, Fade, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetStatusForSelectedLocationQuery, useSetStatusForSelectedLocationMutation } from 'redux-toolkit/api/placesApi';
+import {
+  useGetStatusForSelectedLocationQuery,
+  useSetStatusForSelectedLocationMutation,
+} from 'redux-toolkit/api/placesApi';
 import { Status } from '../../../../../../redux-toolkit/slices/PlaceProps';
 import { useCustomSnackbar } from '../../../../../../utils/snackbars';
 
 export const PlaceStatus: FC = () => {
-
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
   const { locationId } = useParams();
   const [setStatusForSelectedLocation, { isLoading }] = useSetStatusForSelectedLocationMutation();
@@ -19,9 +21,7 @@ export const PlaceStatus: FC = () => {
     if (status) {
       setDoorColor(status === Status.OPEN ? 'success' : 'error');
     }
-
   }, [status]);
-
 
   const changeStatus = async (newStatus: Status) => {
     try {
@@ -41,62 +41,55 @@ export const PlaceStatus: FC = () => {
   return (
     <Card sx={{ flexGrow: 1 }} elevation={3}>
       <CardContent>
-        <Typography variant="h5">
-          Opening status
-        </Typography>
+        <Typography variant="h5">Opening status</Typography>
         <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
           This is the current opening state of your place
         </Typography>
         <Fade in={true} timeout={500}>
           <Grid container alignItems="center" direction="column">
-            {status === Status.OPEN ?
+            {status === Status.OPEN ? (
               <>
-                <Tooltip title="Close" arrow placement="top" >
+                <Tooltip title="Close" arrow placement="top">
                   <IconButton
                     disabled={isLoading}
                     onClick={() => changeStatus(Status.CLOSED)}
                     onMouseEnter={() => setDoorColor('error')}
                     onMouseLeave={() => setDoorColor('success')}
                   >
-                    {doorColor === 'error' ?
+                    {doorColor === 'error' ? (
                       <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
-                      :
+                    ) : (
                       <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
-
-                    }
+                    )}
                   </IconButton>
                 </Tooltip>
                 <Typography variant="h1">
-                  {isLoading || isFetching ? <CircularProgress /> :
-                    status?.toUpperCase()
-                  }
+                  {isLoading || isFetching ? <CircularProgress /> : status?.toUpperCase()}
                 </Typography>
-              </> :
+              </>
+            ) : (
               <>
-                <Tooltip title="Open" arrow placement="top" >
+                <Tooltip title="Open" arrow placement="top">
                   <IconButton
                     onClick={() => changeStatus(Status.OPEN)}
                     onMouseEnter={() => setDoorColor('success')}
                     onMouseLeave={() => setDoorColor('error')}
                   >
-                    {doorColor === 'error' ?
+                    {doorColor === 'error' ? (
                       <DoorFrontIcon color={doorColor} sx={{ width: '200px', height: '200px' }}></DoorFrontIcon>
-                      :
+                    ) : (
                       <MeetingRoomIcon color={doorColor} sx={{ width: '200px', height: '200px' }} />
-
-                    }
+                    )}
                   </IconButton>
                 </Tooltip>
                 <Typography variant="h1">
-                  {isLoading || isFetching ? <CircularProgress /> :
-                    status?.toUpperCase()
-                  }
+                  {isLoading || isFetching ? <CircularProgress /> : status?.toUpperCase()}
                 </Typography>
               </>
-            }
+            )}
           </Grid>
         </Fade>
       </CardContent>
-    </Card >
+    </Card>
   );
 };

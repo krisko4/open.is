@@ -14,7 +14,6 @@ import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
 import { TableToolbar } from './TableToolbar/TableToolbar';
 
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -29,11 +28,8 @@ type Order = 'asc' | 'desc';
 
 function getComparator<Key extends keyof any>(
   order: Order,
-  orderBy: Key,
-): (
-    a: { [key in Key]: number | string | boolean },
-    b: { [key in Key]: number | string | boolean },
-  ) => number {
+  orderBy: Key
+): (a: { [key in Key]: number | string | boolean }, b: { [key in Key]: number | string | boolean }) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -52,21 +48,17 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 }
 
 interface Data {
-  address: string,
-  visits: number,
-  opinions: number,
-  rating: number,
-  state: string
+  address: string;
+  visits: number;
+  opinions: number;
+  rating: number;
+  state: string;
 }
 
-
 export const BusinessChainTable: React.FC = () => {
-
-  const locations  = useLocationsSelector();
+  const locations = useLocationsSelector();
   const businessChainId = useBusinessChainIdSelector();
   const navigate = useNavigate();
-
-
 
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof Data>('visits');
@@ -76,21 +68,16 @@ export const BusinessChainTable: React.FC = () => {
 
   const rows = useMemo(() => {
     setRowsPerPage(locations.length);
-    return locations.map(location => (
-      {
-        address: location.address,
-        visits: location.visits?.reduce((a, b) => a + b.visitCount, 0) || 0,
-        opinions: location.opinions?.length || 0,
-        rating: location.averageNote?.average || 0,
-        state: location.isActive || false,
-        id: location._id,
-      }
-    ));
+    return locations.map((location) => ({
+      address: location.address,
+      visits: location.visits?.reduce((a, b) => a + b.visitCount, 0) || 0,
+      opinions: location.opinions?.length || 0,
+      rating: location.averageNote?.average || 0,
+      state: location.isActive || false,
+      id: location._id,
+    }));
   }, [locations]);
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -109,7 +96,7 @@ export const BusinessChainTable: React.FC = () => {
     event.stopPropagation();
     let newLocations = [...selectedLocations];
     if (newLocations.includes(locationId)) {
-      newLocations = newLocations.filter(locId => locId !== locationId);
+      newLocations = newLocations.filter((locId) => locId !== locationId);
     } else {
       newLocations.push(locationId);
     }
@@ -127,81 +114,82 @@ export const BusinessChainTable: React.FC = () => {
     setPage(0);
   };
 
-
   const chooseLocation = (index: number) => {
     const location = locations[index];
-    navigate(`/panel/management/${businessChainId}/${location._id}/${location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS}`);
+    navigate(
+      `/panel/management/${businessChainId}/${location._id}/${
+        location.isActive ? Destinations.HOME : Destinations.OPENING_HOURS
+      }`
+    );
   };
 
   return (
-        <Paper sx={{ margin: 1, flexGrow: 1 }}>
-            <Grid container sx={{ width: '100%', flexGrow: 1, mt: 1 }}>
-                <TableToolbar setSelectedLocations={setSelectedLocations} selectedLocations={selectedLocations} />
-                <TableContainer>
-                    <Table>
-                        <CustomTableHead
-                            selectedLocations={selectedLocations}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+    <Paper sx={{ margin: 1, flexGrow: 1 }}>
+      <Grid container sx={{ width: '100%', flexGrow: 1, mt: 1 }}>
+        <TableToolbar setSelectedLocations={setSelectedLocations} selectedLocations={selectedLocations} />
+        <TableContainer>
+          <Table>
+            <CustomTableHead
+              selectedLocations={selectedLocations}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {stableSort(rows, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const isItemSelected = isSelected(row.id as string);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      onClick={() => chooseLocation(index)}
+                      tabIndex={-1}
+                      key={row.address}
+                      selected={isItemSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          onClick={(event) => handleClick(event, row.id as string)}
+                          checked={isItemSelected}
                         />
-                        <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy))
-                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                              .map((row, index) => {
-                                const isItemSelected = isSelected(row.id as string);
-                                const labelId = `enhanced-table-checkbox-${index}`;
-                                return (
-                                        <TableRow
-                                            hover
-                                            role="checkbox"
-                                            onClick={() => chooseLocation(index)}
-                                            tabIndex={-1}
-                                            key={row.address}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    onClick={(event) => handleClick(event, row.id as string)}
-                                                    checked={isItemSelected}
-                                                />
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                            >
-                                                {row.address}
-                                            </TableCell>
-                                            <TableCell align="right">{row.visits}</TableCell>
-                                            <TableCell align="right">{row.opinions}</TableCell>
-                                            <TableCell align="right">{row.rating}</TableCell>
-                                            <TableCell align="right">
-                                                <Button size="small" onClick={(e) => e.stopPropagation()} color={row.state ? 'success' : 'error'}>
-                                                    {row.state ? 'Active' : 'Inactive'}
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                );
-                              })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, { value: locations.length, label: 'All' }]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Grid>
-
-        </Paper>
+                      </TableCell>
+                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                        {row.address}
+                      </TableCell>
+                      <TableCell align="right">{row.visits}</TableCell>
+                      <TableCell align="right">{row.opinions}</TableCell>
+                      <TableCell align="right">{row.rating}</TableCell>
+                      <TableCell align="right">
+                        <Button
+                          size="small"
+                          onClick={(e) => e.stopPropagation()}
+                          color={row.state ? 'success' : 'error'}
+                        >
+                          {row.state ? 'Active' : 'Inactive'}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, { value: locations.length, label: 'All' }]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Grid>
+    </Paper>
   );
 };

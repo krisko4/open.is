@@ -5,10 +5,6 @@ import React, { FC } from 'react';
 import { OpinionCard } from './OpinionCard';
 import { format } from 'date-fns';
 
-
-
-
-
 export const opinions = [
   {
     date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
@@ -34,28 +30,26 @@ export const opinions = [
     averageNote: 0,
     authorImg: `${[process.env.REACT_APP_BASE_URL]}/images/admin.png`,
   },
-
-
 ];
 
 export const Opinions: FC = () => {
-
-
   return (
-        <Fade in={true} timeout={500}>
-            <Grid container style={{ height: '100%' }} justifyContent="center">
-                <Grid container item xs={11} direction="column" style={{ marginTop: 20, marginBottom: 20 }}>
-                    <Grid container justifyContent="space-between" >
-                        <Alert severity="info" variant="filled">{opinions.length} {opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on this place.</Alert>
-                    </Grid>
-                    {
-                        opinions.map((opinion, index) =>
-                            <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
-                                <OpinionCard opinion={opinion} />
-                            </Grid>,
-                        )}
-                </Grid >
+    <Fade in={true} timeout={500}>
+      <Grid container style={{ height: '100%' }} justifyContent="center">
+        <Grid container item xs={11} direction="column" style={{ marginTop: 20, marginBottom: 20 }}>
+          <Grid container justifyContent="space-between">
+            <Alert severity="info" variant="filled">
+              {opinions.length} {opinions.length > 1 ? <span>users have</span> : <span>user has</span>} commented on
+              this place.
+            </Alert>
+          </Grid>
+          {opinions.map((opinion, index) => (
+            <Grid item key={index} style={{ marginTop: 20, marginBottom: 20 }}>
+              <OpinionCard opinion={opinion} />
             </Grid>
-        </Fade>
+          ))}
+        </Grid>
+      </Grid>
+    </Fade>
   );
 };

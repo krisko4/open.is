@@ -7,7 +7,6 @@
       "esnext"
     ],
     "allowJs": true,
-    // "checkJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -21,11 +20,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
-    // "paths": {
-    //   "@redux-toolkit/*": [
-    //     "src/redux-toolkit/*"
-    //   ]
-    // }
   },
   "include": ["src"],
   "exclude": [

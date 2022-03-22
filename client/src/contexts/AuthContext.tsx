@@ -4,7 +4,6 @@ import { ContextProps } from './ContextProps';
 export const AuthContext = createContext<AuthContextData | null>(null);
 
 const useProviderData = () => {
-
   const [registrationOpen, setRegistrationOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -22,21 +21,13 @@ const useProviderData = () => {
   };
 };
 
-
-
-
 export const AuthContextProvider: FC<ContextProps> = ({ children }) => {
-
   const state = useProviderData();
 
-  return (
-        <AuthContext.Provider value={state}>
-            {children}
-        </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
 };
 
-type AuthContextData = ReturnType<typeof useProviderData>; 
+type AuthContextData = ReturnType<typeof useProviderData>;
 
 export const useAuthContext = () => {
   const authContext = useContext(AuthContext);

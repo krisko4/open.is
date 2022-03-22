@@ -12,7 +12,6 @@ import { ColorModeSwitch } from '../reusable/ColorModeSwitch';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
-
 const drawerWidth = 300;
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -37,83 +36,63 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 interface Props {
-  drawerOpen: boolean,
-  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>
+  drawerOpen: boolean;
+  setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
-
   // const { setPanelOpen } = usePageContext()
   // const { places, setSelectedOption} = usePanelContext()
 
   const navigate = useNavigate();
 
-
-
   return (
-        <Slide in={true} timeout={500}>
-            <AppBar
-                open={drawerOpen}
-                position="fixed"
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={() => setDrawerOpen(true)}
-                        edge="start"
-                        sx={{
-                          marginRight: '36px',
-                          ...(drawerOpen && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Grid item container justifyContent="flex-end" alignItems="center">
-                        <ColorModeSwitch />
-                        <Tooltip title="Home">
-                            <IconButton onClick={() => navigate('/')} color="inherit" size="large">
-                                <HomeIcon />
-                            </IconButton>
-
-                        </Tooltip>
-                        <Tooltip title="Dashboard">
-                            <IconButton
-                                onClick={() => navigate('')}
-                                color="inherit"
-                                size="large">
-                                <DashboardIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="New place">
-                            <IconButton
-                                onClick={() => navigate('new-place')}
-                                color="inherit"
-                                size="large">
-                                <AddIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="New business chain">
-                            <IconButton
-                                onClick={() => navigate('new-business-chain')}
-                                color="inherit"
-                                size="large">
-                                <CloudCircle />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Browser">
-                            <IconButton
-                                onClick={() => navigate('/search')}
-                                color="inherit"
-                                size="large">
-                                <TravelExploreIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
-
-        </Slide>
+    <Slide in={true} timeout={500}>
+      <AppBar open={drawerOpen} position="fixed">
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={() => setDrawerOpen(true)}
+            edge="start"
+            sx={{
+              marginRight: '36px',
+              ...(drawerOpen && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Grid item container justifyContent="flex-end" alignItems="center">
+            <ColorModeSwitch />
+            <Tooltip title="Home">
+              <IconButton onClick={() => navigate('/')} color="inherit" size="large">
+                <HomeIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Dashboard">
+              <IconButton onClick={() => navigate('')} color="inherit" size="large">
+                <DashboardIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="New place">
+              <IconButton onClick={() => navigate('new-place')} color="inherit" size="large">
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="New business chain">
+              <IconButton onClick={() => navigate('new-business-chain')} color="inherit" size="large">
+                <CloudCircle />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Browser">
+              <IconButton onClick={() => navigate('/search')} color="inherit" size="large">
+                <TravelExploreIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+    </Slide>
   );
 };
 

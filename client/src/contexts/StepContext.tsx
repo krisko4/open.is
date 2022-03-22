@@ -1,8 +1,6 @@
 import { createContext, FC, useContext, useState } from 'react';
 
-
-const useProviderSettings = (steps : Step[]) => {
-    
+const useProviderSettings = (steps: Step[]) => {
   const [activeStep, setActiveStep] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
   const [areStepsValid, setStepsValid] = useState(false);
@@ -15,33 +13,26 @@ const useProviderSettings = (steps : Step[]) => {
     steps,
     areStepsValid,
     setStepsValid,
-
   };
 };
 
 export const StepContext = createContext<StepContextData | null>(null);
 
-interface Step{
-  title: string,
-  content: string,
-  isValid?: boolean
+interface Step {
+  title: string;
+  content: string;
+  isValid?: boolean;
 }
 
-interface Props{
-  steps : Step[]
+interface Props {
+  steps: Step[];
 }
 
 export const StepContextProvider: FC<Props> = ({ children, steps }) => {
   const value = useProviderSettings(steps);
 
-  return (
-        <StepContext.Provider value={value}>
-            {children}
-        </StepContext.Provider>
-  );
-
+  return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
 };
-
 
 type StepContextData = ReturnType<typeof useProviderSettings>;
 

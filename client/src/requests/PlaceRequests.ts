@@ -3,12 +3,11 @@ import { SearcherOptionsProps } from 'redux-toolkit/slices/searcherOptionsSlice'
 import myAxios from '../axios/axios';
 
 export interface ContactData {
-  website?: string,
-  phone?: string,
-  email?: string,
-  facebook?: string,
-  instagram?: string
-
+  website?: string;
+  phone?: string;
+  email?: string;
+  facebook?: string;
+  instagram?: string;
 }
 
 const provider = new OpenStreetMapProvider({
@@ -17,11 +16,15 @@ const provider = new OpenStreetMapProvider({
   },
 });
 
-
-export const getPaginatedPlaces = async (fetchUrl: string, start: number, limit: number, searcherOptions: SearcherOptionsProps[]) => {
+export const getPaginatedPlaces = async (
+  fetchUrl: string,
+  start: number,
+  limit: number,
+  searcherOptions: SearcherOptionsProps[]
+) => {
   console.log(searcherOptions);
   const searchParams: any = {};
-  searcherOptions.forEach(option => {
+  searcherOptions.forEach((option) => {
     const key = option.foundBy;
     const value = option.name;
     searchParams[key] = value;
@@ -66,7 +69,6 @@ const getPlacesWithParams = async (url: string, params: any) => {
   } catch (err) {
     console.log(err);
   }
-
 };
 
 export const getPlacesBySearchParams = async (searchParams: SearcherOptionsProps[]) => {
@@ -74,9 +76,12 @@ export const getPlacesBySearchParams = async (searchParams: SearcherOptionsProps
   const addresses: string[] = [];
   const types: string[] = [];
   searchParams.forEach((param) =>
-    param.foundBy === 'name' ? names.push(param.name) :
-      param.foundBy === 'type' ? types.push(param.name) :
-        addresses.push(param.name));
+    param.foundBy === 'name'
+      ? names.push(param.name)
+      : param.foundBy === 'type'
+      ? types.push(param.name)
+      : addresses.push(param.name)
+  );
   const params: any = {};
   if (addresses.length > 0) params.address = addresses.join('|');
   if (names.length > 0) params.name = names.join('|');
@@ -94,10 +99,10 @@ export const getPlacesByAddress = (address: string) => {
   });
 };
 
-
 export const getPlaceById = (placeId: string) => myAxios.get(`/places/${placeId}`);
 
-export const getPlaceByIdAndSelectedLocation = (placeId: string, locationId: string) => myAxios.get(`/places/${placeId}/locations/${locationId}`);
+export const getPlaceByIdAndSelectedLocation = (placeId: string, locationId: string) =>
+  myAxios.get(`/places/${placeId}/locations/${locationId}`);
 
 export const getPlaceByLatLng = (lat: number, lng: number) => {
   return myAxios.get('/places', {
@@ -107,7 +112,6 @@ export const getPlaceByLatLng = (lat: number, lng: number) => {
     },
   });
 };
-
 
 export const incrementVisitCount = (placeId: string) => {
   return myAxios.patch(`/places/${placeId}/visit-count`);
@@ -120,11 +124,9 @@ export const getPlaces = async (url: string) => {
   } catch (err) {
     console.log(err);
   }
-
 };
 
-
-export const getFoundPlaceNamesOrTypes = (inputValue: string) => getPlacesWithParams('/places/active/name-or-type', { inputValue: inputValue });
+export const getFoundPlaceNamesOrTypes = (inputValue: string) =>
+  getPlacesWithParams('/places/active/name-or-type', { inputValue: inputValue });
 
 export const getPlacesByUserId = (uid: string) => getPlacesWithParams('/places', { uid: uid });
-

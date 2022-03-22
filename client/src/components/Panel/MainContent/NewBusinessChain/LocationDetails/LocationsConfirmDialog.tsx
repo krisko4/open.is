@@ -7,10 +7,9 @@ import { FormLocationProps, useFormLocationsSelector } from 'redux-toolkit/slice
 import { useCustomSnackbar } from '../../../../../utils/snackbars';
 
 interface Props {
-  dialogOpen: boolean,
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setAddLocationsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>,
-
+  dialogOpen: boolean;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setAddLocationsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, setAddLocationsDialogOpen }) => {
   // const { selectedLocations } = useLocationContext();
@@ -19,11 +18,9 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
   const businessChainId = useBusinessChainIdSelector();
   const [addLocations, { isLoading }] = useAddLocationsMutation();
 
-
-
   const handleClick = async () => {
     try {
-      const locations: FormLocationProps[] = Object.values(formLocations).map(location => {
+      const locations: FormLocationProps[] = Object.values(formLocations).map((location) => {
         const newLocation = { ...location };
         newLocation.facebook = 'https://facebook.com/' + newLocation.facebook;
         newLocation.instagram = 'https://instagram.com/' + newLocation.instagram;
@@ -39,36 +36,27 @@ export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, s
     } catch (err) {
       console.log(err);
       enqueueErrorSnackbar();
-    }  
+    }
   };
 
   return (
-        <Dialog open={dialogOpen}
-        >
-            <DialogTitle>
-                Confirm new locations
-            </DialogTitle>
-            <DialogContent>
-                You have decided to add <b>{Object.values(formLocations).length}</b> new {Object.values(formLocations).length === 1 ? 'location' : 'locations'} to your business chain.
-                Are you sure you would like to save your changes?
-            </DialogContent>
-            <DialogActions>
-                <Grid container justifyContent="space-between">
-                    <Button disabled={isLoading} onClick={() => setDialogOpen(false)}>
-                        Cancel
-                    </Button>
-                    <LoadingButton
-                        loading={isLoading}
-                        disabled={isLoading}
-                        onClick={handleClick}
-                    >
-                        Yes, I am sure
-                    </LoadingButton>
-                </Grid>
-
-            </DialogActions>
-
-        </Dialog>
-
+    <Dialog open={dialogOpen}>
+      <DialogTitle>Confirm new locations</DialogTitle>
+      <DialogContent>
+        You have decided to add <b>{Object.values(formLocations).length}</b> new{' '}
+        {Object.values(formLocations).length === 1 ? 'location' : 'locations'} to your business chain. Are you sure you
+        would like to save your changes?
+      </DialogContent>
+      <DialogActions>
+        <Grid container justifyContent="space-between">
+          <Button disabled={isLoading} onClick={() => setDialogOpen(false)}>
+            Cancel
+          </Button>
+          <LoadingButton loading={isLoading} disabled={isLoading} onClick={handleClick}>
+            Yes, I am sure
+          </LoadingButton>
+        </Grid>
+      </DialogActions>
+    </Dialog>
   );
 };

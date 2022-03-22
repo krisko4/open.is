@@ -10,7 +10,6 @@ import { PanelTabNavigator } from '../../../reusable/PanelTabNavigator';
 import { Locations } from './Locations/Locations';
 import { BusinessChainSettings } from './Settings/BusinessChainSettings';
 
-
 // interface Props {
 //     placeId?: string
 // }
@@ -27,7 +26,7 @@ export const BusinessChainManagement: FC = () => {
   }, [place]);
 
   const tabs = useMemo(() => {
-    return  [
+    return [
       {
         name: 'Dashboard',
         content: <NotReady key={placeId} />,
@@ -44,19 +43,17 @@ export const BusinessChainManagement: FC = () => {
         url: 'settings',
       },
     ];
-
   }, [placeId]);
 
-
   return (
-        <>
-            {
-                isLoading || isFetching ?
-                    <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center" >
-                        <CircularProgress />
-                    </Grid > :
-                    <PanelTabNavigator tabs={tabs} />
-            }
-        </>
+    <>
+      {isLoading || isFetching ? (
+        <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <PanelTabNavigator tabs={tabs} />
+      )}
+    </>
   );
 };

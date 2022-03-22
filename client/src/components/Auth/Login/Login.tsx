@@ -4,24 +4,14 @@ import Grid from '@mui/material/Grid';
 import { LoginForm } from './LoginForm';
 import { useAuthContext } from 'contexts/AuthContext';
 
-
-
-
-
-
 export const Login = () => {
-
   const { loginOpen, setLoginOpen } = useAuthContext();
 
   return (
-        <Drawer
-            anchor="right"
-            open={loginOpen}
-            onClose={() => setLoginOpen(false)}
-        >
-            <Grid container sx={{ width: 800, height: '100%' }} justifyContent="center" alignItems="center">
-                <LoginForm/>
-            </Grid>
-        </Drawer>
+    <Drawer data-testid="auth-drawer" anchor="right" open={loginOpen} onClose={() => setLoginOpen(false)}>
+      <Grid container sx={{ width: 800, height: '100%' }} justifyContent="center" alignItems="center">
+        <LoginForm />
+      </Grid>
+    </Drawer>
   );
 };

@@ -5,17 +5,13 @@ import Scrollbars from 'react-custom-scrollbars';
 export const BusinessChainSettings: FC = () => {
   // const { imageFile, setImageFile, currentPlace, setCurrentPlace } = useCurrentPlaceContext()
 
-
-
-
   return (
-        <Grid container alignItems="center" justifyContent="center">
-            <Grid item lg={6}>
-            </Grid>
-            <Grid item sx={{ height: '100%' }} lg={6}>
-                <Scrollbars>
-                    <Paper sx={{ height: '100%' }}>
-                        {/* <ImagesCarousel
+    <Grid container alignItems="center" justifyContent="center">
+      <Grid item lg={6}></Grid>
+      <Grid item sx={{ height: '100%' }} lg={6}>
+        <Scrollbars>
+          <Paper sx={{ height: '100%' }}>
+            {/* <ImagesCarousel
                             isEditable={true}
                             images={businessChain.images as Image[]}
                             setCurrentPlace={setCurrentPlace}
@@ -52,10 +48,9 @@ export const BusinessChainSettings: FC = () => {
                         <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
                             <ContactDetails />
                         </Grid> */}
-                    </Paper>
-                </Scrollbars>
-            </Grid>
-
-        </Grid >
+          </Paper>
+        </Scrollbars>
+      </Grid>
+    </Grid>
   );
 };

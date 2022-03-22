@@ -3,10 +3,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { getPaginatedPlaces } from 'requests/PlaceRequests';
 import Scrollbars, { positionValues } from 'react-custom-scrollbars';
 
-
 export const Test: FC = () => {
-
-
   const [places, setPlaces] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -16,7 +13,6 @@ export const Test: FC = () => {
   const isFirstFetch = useRef(true);
 
   const fetchPlaces = async () => {
-
     console.log(total.current);
     console.log(places.length);
     console.log(start.current);
@@ -34,9 +30,8 @@ export const Test: FC = () => {
     } else {
       setHasMore(false);
     }
-    setLoading(false );
+    setLoading(false);
   };
-
 
   const handleScroll = (values: positionValues) => {
     if (values.top === 1 && hasMore) {
@@ -49,12 +44,10 @@ export const Test: FC = () => {
   }, [total]);
 
   return (
-        <Grid container direction="column" sx={{ height: '100vh' }} alignItems="center" justifyContent="center">
-            <List sx={{ height: '200px', width: '400px' }} >
-                <Scrollbars
-                    onScrollFrame={handleScroll}
-                >
-                    {/* <InfiniteScroll
+    <Grid container direction="column" sx={{ height: '100vh' }} alignItems="center" justifyContent="center">
+      <List sx={{ height: '200px', width: '400px' }}>
+        <Scrollbars onScrollFrame={handleScroll}>
+          {/* <InfiniteScroll
                         dataLength={places.length}
                         next={fetchPlaces}
                         hasMore={hasMore}
@@ -66,16 +59,15 @@ export const Test: FC = () => {
                             </p>
                         }
                     > */}
-                    {places.map((place, index) => (
-                        <ListItem key={index}>
-                            <ListItemText primary={place.name} />
-                        </ListItem>
-                    ))}
-                    {loading && <p>Loading..</p>}
-                    {/* </InfiniteScroll> */}
-                </Scrollbars>
-            </List>
-
-        </Grid >
+          {places.map((place, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={place.name} />
+            </ListItem>
+          ))}
+          {loading && <p>Loading..</p>}
+          {/* </InfiniteScroll> */}
+        </Scrollbars>
+      </List>
+    </Grid>
   );
 };

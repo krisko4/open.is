@@ -1,11 +1,9 @@
-import {
-  Grid, Fade, Typography, Slide, Card, CardContent, Button,
-} from '@mui/material';
+import { Grid, Fade, Typography, Slide, Card, CardContent, Button } from '@mui/material';
 import React, { FC } from 'react';
 import { NewPlaceStepper } from '../NewPlace/Steps/NewPlaceStepper';
 
 interface Props {
-  setStartClicked: React.Dispatch<React.SetStateAction<boolean>>
+  setStartClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Intro: FC<Props> = ({ setStartClicked }) => (
@@ -17,7 +15,9 @@ const Intro: FC<Props> = ({ setStartClicked }) => (
           <img src={`${process.env.REACT_APP_BASE_URL}/images/chain2.gif`} />
           <Grid justifyContent="center" container>
             <Grid item lg={8}>
-              <Button fullWidth variant="contained" onClick={() => setStartClicked(true)} size="large" color="primary">Let&quot;s start</Button>
+              <Button fullWidth variant="contained" onClick={() => setStartClicked(true)} size="large" color="primary">
+                Let&quot;s start
+              </Button>
             </Grid>
           </Grid>
         </Grid>
@@ -31,10 +31,8 @@ const Intro: FC<Props> = ({ setStartClicked }) => (
                 <Typography variant="body1" sx={{ mb: 1 }}>
                   If you are an owner of a business with multiple locations, business chain is a great option for you.
                   Follow some simple steps to add your locations quickly and conveniently.
-                                    </Typography>
-                <NewPlaceStepper
-                  orientation="vertical"
-                />
+                </Typography>
+                <NewPlaceStepper orientation="vertical" />
               </Grid>
             </CardContent>
           </Card>

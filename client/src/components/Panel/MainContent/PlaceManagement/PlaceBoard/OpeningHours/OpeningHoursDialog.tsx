@@ -8,32 +8,36 @@ import { useCustomSnackbar } from '../../../../../../utils/snackbars';
 import DialogTransition from '../../../../../reusable/DialogTransition';
 import { OpeningHoursCard } from './OpeningHoursCard';
 
-
 interface Props {
-  dialogOpen: boolean,
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  openingHours: any,
-  selectedLocations?: string[],
-  locationId?: string,
-  placeId?: string
-
+  dialogOpen: boolean;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  openingHours: any;
+  selectedLocations?: string[];
+  locationId?: string;
+  placeId?: string;
 }
 
-export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, locationId, placeId, selectedLocations, setDialogOpen, openingHours }) => {
-
+export const OpeningHoursDialog: FC<Props> = ({
+  dialogOpen,
+  locationId,
+  placeId,
+  selectedLocations,
+  setDialogOpen,
+  openingHours,
+}) => {
   const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const businessChainId = useBusinessChainIdSelector();
 
   const [changeOpeningHoursForSelectedLocations, { isLoading }] = useChangeOpeningHoursForSelectedLocationsMutation();
 
   const saveChanges = async () => {
-    Object.keys(openingHours).forEach(day => {
+    Object.keys(openingHours).forEach((day) => {
       delete openingHours[day].valid;
       openingHours[day].start = new Date(openingHours[day].start);
       openingHours[day].end = new Date(openingHours[day].end);
     });
     try {
-      // this means that openingHoursDialog is open in business chain management 
+      // this means that openingHoursDialog is open in business chain management
       if (selectedLocations) {
         await changeOpeningHoursForSelectedLocations({
           placeId: businessChainId as string,
@@ -55,49 +59,37 @@ export const OpeningHoursDialog: FC<Props> = ({ dialogOpen, locationId, placeId,
     }
   };
 
-
   return (
-
-        <Dialog fullScreen
-            open={dialogOpen}
-            onClose={() => setDialogOpen(false)}
-            TransitionComponent={DialogTransition}
-        >
-            <AppBar sx={{ position: 'relative' }}>
-                <Toolbar>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={() => setDialogOpen(false)}
-                        aria-label="close"
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                        Summary
-                    </Typography>
-                    <LoadingButton
-                        loading={isLoading}
-                        disabled={isLoading}
-                        color="primary"
-                        variant="contained"
-                        size="large"
-                        onClick={saveChanges}>
-                        Save changes
-                    </LoadingButton>
-                </Toolbar>
-            </AppBar>
-            <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                <Grid item lg={5}>
-
-                    <Alert severity="info" sx={{ mb: 1 }}>
-                        This is the summary board of your opening hours. Press the button in the top-right corner to save your changes.
-                    </Alert>
-                    <OpeningHoursCard openingHours={openingHours} />
-                </Grid>
-
-            </Grid>
-
-        </Dialog>
+    <Dialog fullScreen open={dialogOpen} onClose={() => setDialogOpen(false)} TransitionComponent={DialogTransition}>
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" onClick={() => setDialogOpen(false)} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            Summary
+          </Typography>
+          <LoadingButton
+            loading={isLoading}
+            disabled={isLoading}
+            color="primary"
+            variant="contained"
+            size="large"
+            onClick={saveChanges}
+          >
+            Save changes
+          </LoadingButton>
+        </Toolbar>
+      </AppBar>
+      <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+        <Grid item lg={5}>
+          <Alert severity="info" sx={{ mb: 1 }}>
+            This is the summary board of your opening hours. Press the button in the top-right corner to save your
+            changes.
+          </Alert>
+          <OpeningHoursCard openingHours={openingHours} />
+        </Grid>
+      </Grid>
+    </Dialog>
   );
 };

@@ -19,25 +19,24 @@ import { useAppDispatch } from 'redux-toolkit/hooks';
 import { fillFormData, setValid, useFormSaveTriggerSelector } from 'redux-toolkit/slices/formLocationsSlice';
 // import PhoneInput from "react-phone-input-2";
 
-
 // const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/;
-const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(\/)?([\w\-\.]{5,})/;
+const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w-]*\/)*?(\/)?([\w\-.]{5,})/;
 const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/;
-const urlRegExp = /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/;
-
+const urlRegExp =
+  /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/;
 
 type Inputs = {
-  example: string,
-  exampleRequired: string,
-  website: string,
-  phone: string,
-  email: string,
-  facebook: string,
-  instagram: string
+  example: string;
+  exampleRequired: string;
+  website: string;
+  phone: string;
+  email: string;
+  facebook: string;
+  instagram: string;
 };
 
 interface Props {
-  location: SelectedLocationProps,
+  location: SelectedLocationProps;
 }
 
 const schema = yup.object({
@@ -45,12 +44,12 @@ const schema = yup.object({
   email: yup.string().email('This is not a valid e-mail address'),
   website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
   facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
-  instagram: yup.string().matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
-
+  instagram: yup
+    .string()
+    .matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
 });
 
 export const LocationDetailsForm: FC<Props> = ({ location }) => {
-
   //   const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext();
   const isFirstRender = useRef(true);
   //   const isFirstFieldForAllRender = useRef(true);
@@ -71,24 +70,26 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
   });
 
   useEffect(() => {
-    dispatch(setValid({
-      addressId: location.addressId as string,
-      isValid: methods.formState.isValid,
-    }));
+    dispatch(
+      setValid({
+        addressId: location.addressId as string,
+        isValid: methods.formState.isValid,
+      })
+    );
   }, [methods.formState.isValid]);
 
   useEffect(() => {
-    if (isFirstRender.current){
+    if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    dispatch(fillFormData({
-      addressId: location.addressId as string,
-      ...methods.getValues(),
-    }));
+    dispatch(
+      fillFormData({
+        addressId: location.addressId as string,
+        ...methods.getValues(),
+      })
+    );
   }, [formSaveTrigger]);
-
-
 
   //   useEffect(() => {
   //     if (isFirstFieldForAllRender.current) {
@@ -113,51 +114,50 @@ export const LocationDetailsForm: FC<Props> = ({ location }) => {
   //     location = Object.assign(location, getValues());
   //   }, [saveButtonClicked]);
 
-
   return (
-        <FormProvider {...methods}>
-            <form style={{ flexGrow: 1 }} >
-                <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
-                    <Grid item lg={5}>
-                        <PhoneButton />
-                    </Grid>
-                    <Grid item lg={6} >
-                        <PhoneField />
-                    </Grid>
-                </Grid>
-                <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
-                    <Grid item lg={5}>
-                        <EmailButton/>
-                    </Grid>
-                    <Grid item lg={6}>
-                        <EmailField/>
-                    </Grid>
-                </Grid>
-                <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
-                    <Grid item lg={5}>
-                        <WebsiteButton/>
-                    </Grid>
-                    <Grid item lg={6}>
-                        <WebsiteField />
-                    </Grid>
-                </Grid>
-                <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
-                    <Grid item lg={5}>
-                        <FacebookButton />
-                    </Grid>
-                    <Grid item lg={6}>
-                        <FacebookField />
-                    </Grid>
-                </Grid>
-                <Grid container justifyContent="center" alignItems="center">
-                    <Grid item lg={5}>
-                        <InstagramButton/>
-                    </Grid>
-                    <Grid item lg={6}>
-                        <InstagramField />
-                    </Grid>
-                </Grid>
-            </form>
-        </FormProvider>
+    <FormProvider {...methods}>
+      <form style={{ flexGrow: 1 }}>
+        <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
+          <Grid item lg={5}>
+            <PhoneButton />
+          </Grid>
+          <Grid item lg={6}>
+            <PhoneField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+          <Grid item lg={5}>
+            <EmailButton />
+          </Grid>
+          <Grid item lg={6}>
+            <EmailField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+          <Grid item lg={5}>
+            <WebsiteButton />
+          </Grid>
+          <Grid item lg={6}>
+            <WebsiteField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+          <Grid item lg={5}>
+            <FacebookButton />
+          </Grid>
+          <Grid item lg={6}>
+            <FacebookField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item lg={5}>
+            <InstagramButton />
+          </Grid>
+          <Grid item lg={6}>
+            <InstagramField />
+          </Grid>
+        </Grid>
+      </form>
+    </FormProvider>
   );
 };

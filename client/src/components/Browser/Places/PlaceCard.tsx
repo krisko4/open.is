@@ -7,8 +7,6 @@ import { useLocation } from 'react-router-dom';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { removeLocation, SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
 
-
-
 // const useStyles = makeStyles({
 //     card: {
 //         backgroundColor: '#2C2C2C',
@@ -23,9 +21,8 @@ import { removeLocation, SelectedLocationProps } from 'redux-toolkit/slices/sele
 // }
 // )
 
-
 interface PlaceProps {
-  cardData: SelectedLocationProps
+  cardData: SelectedLocationProps;
 }
 
 const StyledRating = styled(Rating)({
@@ -40,9 +37,6 @@ const StyledRating = styled(Rating)({
   },
 });
 
-
-
-
 export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
   // const classes = useStyles()
   const [value, setValue] = useState<number | null>(0);
@@ -50,17 +44,16 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
   const location = useLocation();
   const [elevation, setElevation] = useState(3);
 
-
   useEffect(() => {
-    const isFavorite = Cookies.get('favIds')?.split(',').some(el => el === cardData.locationId);
-    if (isFavorite){
+    const isFavorite = Cookies.get('favIds')
+      ?.split(',')
+      .some((el) => el === cardData.locationId);
+    if (isFavorite) {
       setValue(1);
       return;
     }
     setValue(null);
   }, []);
-
-
 
   const setFavoritePlace = (newValue: number | null) => {
     let favIds = Cookies.get('favIds');
@@ -71,14 +64,14 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
         Cookies.set('favIds', `${locationId}`);
         return;
       }
-      if (favIds){
+      if (favIds) {
         const favIdsArray = favIds.split(',');
-        const index = favIdsArray.findIndex(id => id === locationId);
+        const index = favIdsArray.findIndex((id) => id === locationId);
         // index not found && no value || index found && value
         if ((index === -1 && !newValue) || (index !== -1 && newValue === 1)) return;
         if (index !== -1) {
           favIdsArray.splice(index, 1);
-          if (location.pathname === '/search/favorite'){
+          if (location.pathname === '/search/favorite') {
             dispatch(removeLocation(locationId as string));
           }
           if (favIdsArray.length === 0) {
@@ -94,78 +87,75 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
     }
   };
 
-
   return (
-        <Card
-            // className={classes.card}
-            sx={{ flexGrow: 1 }}
-            elevation={elevation}
-            onMouseEnter={() => setElevation(10)}
-            onMouseLeave={() => setElevation(3)}
-        >
-            <CardContent>
-                <Grid container justifyContent="space-between">
-                    <Grid item container alignItems="center" >
-                        <Grid item>
-                            <Avatar
-                                imgProps={{
-                                  style: {
-                                    objectFit: 'contain',
-                                  },
-                                }}
-                                style={{ width: 80, height: 80 }}
-                                src={cardData.logo as string}
-                                alt={cardData.name}
-                            />
-                        </Grid>
-                        <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
-                            <Typography variant="h6">
-                                {cardData.name}
-                            </Typography>
-                            <Typography variant="body1" sx={{ color: 'text.secondary' }} >
-                                {cardData.subtitle}
-                            </Typography>
-                            <Grid container alignItems="center">
-                                <Typography variant="overline" >
-                                    {cardData.type}
-                                </Typography>
-                                <Tooltip title="Add to favorites">
-                                    <StyledRating
-                                        name={`${cardData._id}`}
-                                        onClick={(event) => event.stopPropagation()}
-                                        value={value}
-                                        onChange={(event, newValue) => {
-                                          setFavoritePlace(newValue);
-                                        }}
-                                        style={{ marginLeft: 5 }}
-                                        icon={<Favorite fontSize="inherit" />}
-                                        emptyIcon={<FavoriteBorder fontSize="inherit" />}
-                                        max={1}
-                                    />
-                                </Tooltip>
-                            </Grid>
-                            <Typography variant="body2" color="primary">
-                                Address: {cardData.address}
-                            </Typography>
-                        </Grid>
-                        <Grid item style={{ flexGrow: 1 }}>
-                            <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
-                                {cardData.status === 'open' ?
-                                    <Tooltip title="This place is now open">
-                                        <Button variant="contained" color="success" size="small" >Open</Button>
-                                    </Tooltip>
-                                  :
-                                    <Tooltip title="This place is now closed">
-                                        <Button variant="contained" color="error" size="small" >Closed</Button>
-                                    </Tooltip>
-                                }
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-            </CardContent>
-        </Card>
+    <Card
+      // className={classes.card}
+      sx={{ flexGrow: 1 }}
+      elevation={elevation}
+      onMouseEnter={() => setElevation(10)}
+      onMouseLeave={() => setElevation(3)}
+    >
+      <CardContent>
+        <Grid container justifyContent="space-between">
+          <Grid item container alignItems="center">
+            <Grid item>
+              <Avatar
+                imgProps={{
+                  style: {
+                    objectFit: 'contain',
+                  },
+                }}
+                style={{ width: 80, height: 80 }}
+                src={cardData.logo as string}
+                alt={cardData.name}
+              />
+            </Grid>
+            <Grid item xs={9} lg={9} sm={9} md={9} style={{ marginLeft: 10 }}>
+              <Typography variant="h6">{cardData.name}</Typography>
+              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                {cardData.subtitle}
+              </Typography>
+              <Grid container alignItems="center">
+                <Typography variant="overline">{cardData.type}</Typography>
+                <Tooltip title="Add to favorites">
+                  <StyledRating
+                    name={`${cardData._id}`}
+                    onClick={(event) => event.stopPropagation()}
+                    value={value}
+                    onChange={(event, newValue) => {
+                      setFavoritePlace(newValue);
+                    }}
+                    style={{ marginLeft: 5 }}
+                    icon={<Favorite fontSize="inherit" />}
+                    emptyIcon={<FavoriteBorder fontSize="inherit" />}
+                    max={1}
+                  />
+                </Tooltip>
+              </Grid>
+              <Typography variant="body2" color="primary">
+                Address: {cardData.address}
+              </Typography>
+            </Grid>
+            <Grid item style={{ flexGrow: 1 }}>
+              <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
+                {cardData.status === 'open' ? (
+                  <Tooltip title="This place is now open">
+                    <Button variant="contained" color="success" size="small">
+                      Open
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="This place is now closed">
+                    <Button variant="contained" color="error" size="small">
+                      Closed
+                    </Button>
+                  </Tooltip>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 };
-

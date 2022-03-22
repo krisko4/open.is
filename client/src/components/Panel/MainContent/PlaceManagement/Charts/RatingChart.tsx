@@ -3,18 +3,16 @@ import { FC, useState } from 'react';
 import { StatisticChart } from '../../Dashboard/StatisticChart';
 
 const defaultOptions = {
-  ones : 0,
+  ones: 0,
   twos: 0,
   threes: 0,
   fours: 0,
   fives: 0,
 };
-interface Props{
-  averageNote : AverageNoteProps
+interface Props {
+  averageNote: AverageNoteProps;
 }
 export const RatingChart: FC<Props> = ({ averageNote }) => {
-
-
   const [ratingOptions, setRatingOptions] = useState({
     chart: {
       width: 380,
@@ -43,27 +41,35 @@ export const RatingChart: FC<Props> = ({ averageNote }) => {
     fill: {
       type: 'gradient',
     },
-    responsive: [{
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 200,
-        },
-        legend: {
-          position: 'bottom',
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: 'bottom',
+          },
         },
       },
-    }],
+    ],
   });
 
   const { ones, twos, threes, fours, fives } = averageNote || defaultOptions;
   const ratingSeries = [ones, twos, threes, fours, fives];
 
   return (
-        <>
-            {averageNote &&
-                <StatisticChart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
-            }
-        </>
+    <>
+      {averageNote && (
+        <StatisticChart
+          type="donut"
+          width={380}
+          options={ratingOptions}
+          setOptions={setRatingOptions}
+          series={ratingSeries}
+        />
+      )}
+    </>
   );
 };

@@ -1,33 +1,29 @@
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppSelector } from 'redux-toolkit/hooks';
 
-
 export interface MapProps {
-  zoom: number,
-  lat: number,
-  lng: number
-
+  zoom: number;
+  lat: number;
+  lng: number;
 }
 
 interface PopupProps {
-  index: number,
-  isOpen: boolean
+  index: number;
+  isOpen: boolean;
 }
 
 interface StateProps {
-  mapCoords: MapProps,
-  popup: PopupProps
+  mapCoords: MapProps;
+  popup: PopupProps;
 }
 
-const defaultCoords = {
+export const defaultCoords = {
   zoom: 5,
   lat: 53.13333,
   lng: 23.16433,
 };
 
-
-const initialState: StateProps = {
+export const initialState: StateProps = {
   mapCoords: defaultCoords,
   popup: {
     index: -1,
@@ -52,18 +48,10 @@ const mapDataSlice = createSlice({
       state.popup.isOpen = false;
       state.mapCoords = defaultCoords;
     },
-
     resetMap: () => initialState,
-
   },
 });
-export const useMapDataSelector = () => useAppSelector(state => state.mapData.mapCoords);
-export const usePopupSelector = () => useAppSelector(state => state.mapData.popup);
-export const {
-  setMapCoords,
-  setPopupIndex,
-  setPopup,
-  closePopup,
-  resetMap,
-} = mapDataSlice.actions;
+export const useMapDataSelector = () => useAppSelector((state) => state.mapData.mapCoords);
+export const usePopupSelector = () => useAppSelector((state) => state.mapData.popup);
+export const { setMapCoords, setPopupIndex, setPopup, closePopup, resetMap } = mapDataSlice.actions;
 export const mapDataReducer = mapDataSlice.reducer;

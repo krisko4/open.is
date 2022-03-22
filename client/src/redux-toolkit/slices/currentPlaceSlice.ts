@@ -1,5 +1,13 @@
 import { createDraftSafeSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AddressDataProps, AverageNoteProps, CurrentPlaceProps, ImageType, NewsProps, OpinionProps, Status } from './PlaceProps';
+import {
+  AddressDataProps,
+  AverageNoteProps,
+  CurrentPlaceProps,
+  ImageType,
+  NewsProps,
+  OpinionProps,
+  Status,
+} from './PlaceProps';
 import { defaultImages, defaultNews } from '../../utils/defaults';
 import { useAppSelector } from '../hooks';
 import { Image } from 'redux-toolkit/slices/PlaceProps';
@@ -28,17 +36,15 @@ const initialState: CurrentPlaceProps = {
   alwaysOpen: false,
 };
 
-
 interface ConcreteImageProps {
-  image: Image
-  index: number
+  image: Image;
+  index: number;
 }
 
 interface NewOpinionProps {
-  opinion: OpinionProps,
-  averageNote: AverageNoteProps
+  opinion: OpinionProps;
+  averageNote: AverageNoteProps;
 }
-
 
 const currentPlaceSlice = createSlice({
   name: 'currentPlace',
@@ -156,16 +162,11 @@ const selectAddressLanguage = (state: RootState) => state.currentPlace.addressLa
 const selectLat = (state: RootState) => state.currentPlace.lat;
 const selectLng = (state: RootState) => state.currentPlace.lng;
 
-
-
-export const basicPlaceDataSelector = createDraftSafeSelector(
-  selectSelf,
-  (state) => ({
-    name: state.currentPlace.name,
-    type: state.currentPlace.type,
-    logo: state.currentPlace.logo,
-  }),
-);
+export const basicPlaceDataSelector = createDraftSafeSelector(selectSelf, (state) => ({
+  name: state.currentPlace.name,
+  type: state.currentPlace.type,
+  logo: state.currentPlace.logo,
+}));
 export const addressDataSelector = createDraftSafeSelector(
   selectAddress,
   selectAddressId,
@@ -178,54 +179,46 @@ export const addressDataSelector = createDraftSafeSelector(
     addressLanguage: lang,
     lat: lat,
     lng: lng,
-  }),
+  })
 );
-export const openingHoursDataSelector = createDraftSafeSelector(
-  selectSelf,
-  (state) => ({
-    openingHours: state.currentPlace.openingHours,
-    alwaysOpen: state.currentPlace.alwaysOpen,
-    isUserOwner: state.currentPlace.isUserOwner,
-    isActive: state.currentPlace.isActive,
-    placeId: state.currentPlace._id,
-  }),
-);
-export const opinionDataSelector = createDraftSafeSelector(
-  selectSelf,
-  (state) => ({
-    opinions: state.currentPlace.opinions,
-    placeId: state.currentPlace._id,
-    isUserOwner: state.currentPlace.isUserOwner,
-  }),
-);
-export const useIsBusinessChainSelector = () => useAppSelector(state => state.currentPlace.isBusinessChain);
-export const useOpinionsSelector = () => useAppSelector(state => state.currentPlace.opinions);
-export const useNewsSelector = () => useAppSelector(state => state.currentPlace.news);
-export const useIsAlwaysOpenSelector = () => useAppSelector(state => state.currentPlace.alwaysOpen);
-export const useIsUserOwnerSelector = () => useAppSelector(state => state.currentPlace.isUserOwner);
-export const useOpeningHoursSelector = () => useAppSelector(state => state.currentPlace.openingHours);
-export const useIdSelector = () => useAppSelector(state => state.currentPlace._id);
-export const useNameSelector = () => useAppSelector(state => state.currentPlace.name);
-export const useTypeSelector = () => useAppSelector(state => state.currentPlace.type);
-export const useCurrentPlaceSelector = () => useAppSelector(state => state.currentPlace);
-export const useDescriptionSelector = () => useAppSelector(state => state.currentPlace.description);
-export const useEmailSelector = () => useAppSelector(state => state.currentPlace.email);
-export const useFacebookSelector = () => useAppSelector(state => state.currentPlace.facebook);
-export const useInstagramSelector = () => useAppSelector(state => state.currentPlace.instagram);
-export const useLogoSelector = () => useAppSelector(state => state.currentPlace.logo);
-export const usePhoneSelector = () => useAppSelector(state => state.currentPlace.phone);
-export const useSubtitleSelector = () => useAppSelector(state => state.currentPlace.subtitle);
-export const useWebsiteSelector = () => useAppSelector(state => state.currentPlace.website);
-export const useImagesSelector = () => useAppSelector(state => state.currentPlace.images);
-export const useAddressSelector = () => useAppSelector(state => state.currentPlace.address);
-export const useAverageNoteSelector = () => useAppSelector(state => state.currentPlace.averageNote);
-export const useStatusSelector = () => useAppSelector(state => state.currentPlace.status);
-export const useVisitsSelector = () => useAppSelector(state => state.currentPlace.visits);
-export const useAddressDataSelector = () => useAppSelector(state => addressDataSelector(state));
-export const useBasicPlaceDataSelector = () => useAppSelector(state => basicPlaceDataSelector(state));
-export const useOpeningHoursDataSelector = () => useAppSelector(state => openingHoursDataSelector(state));
-export const useOpinionDataSelector = () => useAppSelector(state => opinionDataSelector(state));
-
-
+export const openingHoursDataSelector = createDraftSafeSelector(selectSelf, (state) => ({
+  openingHours: state.currentPlace.openingHours,
+  alwaysOpen: state.currentPlace.alwaysOpen,
+  isUserOwner: state.currentPlace.isUserOwner,
+  isActive: state.currentPlace.isActive,
+  placeId: state.currentPlace._id,
+}));
+export const opinionDataSelector = createDraftSafeSelector(selectSelf, (state) => ({
+  opinions: state.currentPlace.opinions,
+  placeId: state.currentPlace._id,
+  isUserOwner: state.currentPlace.isUserOwner,
+}));
+export const useIsBusinessChainSelector = () => useAppSelector((state) => state.currentPlace.isBusinessChain);
+export const useOpinionsSelector = () => useAppSelector((state) => state.currentPlace.opinions);
+export const useNewsSelector = () => useAppSelector((state) => state.currentPlace.news);
+export const useIsAlwaysOpenSelector = () => useAppSelector((state) => state.currentPlace.alwaysOpen);
+export const useIsUserOwnerSelector = () => useAppSelector((state) => state.currentPlace.isUserOwner);
+export const useOpeningHoursSelector = () => useAppSelector((state) => state.currentPlace.openingHours);
+export const useIdSelector = () => useAppSelector((state) => state.currentPlace._id);
+export const useNameSelector = () => useAppSelector((state) => state.currentPlace.name);
+export const useTypeSelector = () => useAppSelector((state) => state.currentPlace.type);
+export const useCurrentPlaceSelector = () => useAppSelector((state) => state.currentPlace);
+export const useDescriptionSelector = () => useAppSelector((state) => state.currentPlace.description);
+export const useEmailSelector = () => useAppSelector((state) => state.currentPlace.email);
+export const useFacebookSelector = () => useAppSelector((state) => state.currentPlace.facebook);
+export const useInstagramSelector = () => useAppSelector((state) => state.currentPlace.instagram);
+export const useLogoSelector = () => useAppSelector((state) => state.currentPlace.logo);
+export const usePhoneSelector = () => useAppSelector((state) => state.currentPlace.phone);
+export const useSubtitleSelector = () => useAppSelector((state) => state.currentPlace.subtitle);
+export const useWebsiteSelector = () => useAppSelector((state) => state.currentPlace.website);
+export const useImagesSelector = () => useAppSelector((state) => state.currentPlace.images);
+export const useAddressSelector = () => useAppSelector((state) => state.currentPlace.address);
+export const useAverageNoteSelector = () => useAppSelector((state) => state.currentPlace.averageNote);
+export const useStatusSelector = () => useAppSelector((state) => state.currentPlace.status);
+export const useVisitsSelector = () => useAppSelector((state) => state.currentPlace.visits);
+export const useAddressDataSelector = () => useAppSelector((state) => addressDataSelector(state));
+export const useBasicPlaceDataSelector = () => useAppSelector((state) => basicPlaceDataSelector(state));
+export const useOpeningHoursDataSelector = () => useAppSelector((state) => openingHoursDataSelector(state));
+export const useOpinionDataSelector = () => useAppSelector((state) => opinionDataSelector(state));
 
 export const currentPlaceReducer = currentPlaceSlice.reducer;

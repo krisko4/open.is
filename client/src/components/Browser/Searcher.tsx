@@ -12,24 +12,24 @@ import parse from 'autosuggest-highlight/parse';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from 'redux-toolkit/hooks';
-import { resetSearcherOptions, SearcherOptionsProps, setSearcherOptions, useSearcherOptionsSelector } from 'redux-toolkit/slices/searcherOptionsSlice';
+import {
+  resetSearcherOptions,
+  SearcherOptionsProps,
+  setSearcherOptions,
+  useSearcherOptionsSelector,
+} from 'redux-toolkit/slices/searcherOptionsSlice';
 import { SelectedLocationProps, setSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { getFoundPlaceNamesOrTypes, getPlacesBySearchParams } from '../../requests/PlaceRequests';
 
-
 const provider = new OpenStreetMapProvider({});
 
-
 const Searcher: FC = () => {
-
-
   const [options, setOptions] = useState<SearcherOptionsProps[]>([]);
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const isFirstFind = useRef(true);
   const searcherOptions = useSearcherOptionsSelector();
-
 
   useEffect(() => {
     return () => {
@@ -51,12 +51,12 @@ const Searcher: FC = () => {
     const delaySearch = setTimeout(async () => {
       const namesOrTypes: SearcherOptionsProps[] = await getFoundPlaceNamesOrTypes(inputValue);
       if (namesOrTypes.length > 0) {
-        const isAlreadyFound = searcherOptions.some(option => option.foundBy === 'name' || option.foundBy === 'type');
+        const isAlreadyFound = searcherOptions.some((option) => option.foundBy === 'name' || option.foundBy === 'type');
         setOptions(isAlreadyFound ? [] : namesOrTypes);
         setLoading(false);
         return;
       }
-      const isAlreadyFound = searcherOptions.some(option => option.foundBy === 'address');
+      const isAlreadyFound = searcherOptions.some((option) => option.foundBy === 'address');
       if (isAlreadyFound) {
         setOptions([]);
         setLoading(false);
@@ -68,13 +68,9 @@ const Searcher: FC = () => {
         setLoading(false);
         return;
       }
-
     }, 500);
     return () => clearTimeout(delaySearch);
-
-  }, [inputValue],
-  );
-
+  }, [inputValue]);
 
   const selectPlace = async (searchOptions: SearcherOptionsProps[]) => {
     dispatch(setSearcherOptions(searchOptions));
@@ -84,76 +80,69 @@ const Searcher: FC = () => {
   };
 
   return (
-        <Autocomplete
-            loading={loading}
-            multiple
-            freeSolo={true}
-            options={options}
-            getOptionLabel={(option) => option.name}
-            onChange={(event, value) => selectPlace(value as SearcherOptionsProps[])}
-            noOptionsText="No options"
-            renderInput={(params) =>
-                <TextField
-                    {...params}
-                    variant="outlined"
-                    placeholder="Name, address, type"
-                    label="What place are you searching for?"
-                    onChange={e => setInputValue(e.target.value)}
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                      ),
-                    }}
-                />}
-            renderOption={(props, option) => {
-              const label = option.name;
-              const matches = match(label, inputValue);
-              const parts = parse(label, matches);
-              return (
-                    <li {...props}>
-                        <Grid container alignItems="center" justifyContent="space-evenly" sx={{ p: 2 }}>
-                            <Grid item>
-                                {option.foundBy === 'name' ?
-                                    <HomeIcon color="primary" />
-                                  :
-                                  option.foundBy === 'type' ?
-                                        <FlipCameraAndroidIcon color="primary" />
-                                    :
-                                        <PlaceTwoToneIcon color="primary" />
-                                }
-                            </Grid>
-                            <Grid item lg={11} container justifyContent="space-between" alignItems="center">
-                                <Grid item>
-                                    {
-                                        parts.map((part, index) => (
-                                            <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                                                <span>{part.text}</span>
-                                            </span>
-                                        ))
-                                    }
-                                    <div>
-                                        <Typography variant="overline" >
-                                            Found by {option.foundBy}
-                                        </Typography>
-                                    </div>
-                                </Grid>
-                                <Button size="small" variant="contained">
-                                    {option.foundBy === 'name' ? 'Place' : 'Address'}
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </li>
-              );
-            }}
-
-
+    <Autocomplete
+      loading={loading}
+      multiple
+      freeSolo={true}
+      options={options}
+      getOptionLabel={(option) => option.name}
+      onChange={(event, value) => selectPlace(value as SearcherOptionsProps[])}
+      noOptionsText="No options"
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          placeholder="Name, address, type"
+          label="What place are you searching for?"
+          onChange={(e) => setInputValue(e.target.value)}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <React.Fragment>
+                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {params.InputProps.endAdornment}
+              </React.Fragment>
+            ),
+          }}
         />
+      )}
+      renderOption={(props, option) => {
+        const label = option.name;
+        const matches = match(label, inputValue);
+        const parts = parse(label, matches);
+        return (
+          <li {...props}>
+            <Grid container alignItems="center" justifyContent="space-evenly" sx={{ p: 2 }}>
+              <Grid item>
+                {option.foundBy === 'name' ? (
+                  <HomeIcon color="primary" />
+                ) : option.foundBy === 'type' ? (
+                  <FlipCameraAndroidIcon color="primary" />
+                ) : (
+                  <PlaceTwoToneIcon color="primary" />
+                )}
+              </Grid>
+              <Grid item lg={11} container justifyContent="space-between" alignItems="center">
+                <Grid item>
+                  {parts.map((part, index) => (
+                    <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                      <span>{part.text}</span>
+                    </span>
+                  ))}
+                  <div>
+                    <Typography variant="overline">Found by {option.foundBy}</Typography>
+                  </div>
+                </Grid>
+                <Button size="small" variant="contained">
+                  {option.foundBy === 'name' ? 'Place' : 'Address'}
+                </Button>
+              </Grid>
+            </Grid>
+          </li>
+        );
+      }}
+    />
   );
-
 };
 
 export default Searcher;

@@ -2,8 +2,6 @@ import React, { FC, useState } from 'react';
 import { StatisticChart } from '../../Dashboard/StatisticChart';
 
 export const TotalVisitsChart: FC<any> = ({ visits }) => {
-
-
   const [totalVisitsOptions, setTotalVisitsOptions] = useState({
     chart: {
       type: 'area',
@@ -35,15 +33,20 @@ export const TotalVisitsChart: FC<any> = ({ visits }) => {
   });
 
   const totalVisitsSeries = [
-
     {
       name: 'visits',
-      data: visits.map((visit : any) => visit.visitCount),
+      data: visits.map((visit: any) => visit.visitCount),
     },
   ];
 
   return (
-        <StatisticChart height={100} width={150} type="area" options={totalVisitsOptions} setOptions={setTotalVisitsOptions} series={totalVisitsSeries} />
+    <StatisticChart
+      height={100}
+      width={150}
+      type="area"
+      options={totalVisitsOptions}
+      setOptions={setTotalVisitsOptions}
+      series={totalVisitsSeries}
+    />
   );
-
 };

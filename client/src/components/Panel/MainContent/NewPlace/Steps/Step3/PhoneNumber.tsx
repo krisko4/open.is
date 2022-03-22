@@ -7,12 +7,8 @@ import { useAppDispatch } from 'redux-toolkit/hooks';
 import { usePhoneSelector, setPhone } from 'redux-toolkit/slices/currentPlaceSlice';
 // import "react-phone-input-material-ui/lib/style.css";
 
-
-
-
 export const PhoneNumber: FC = () => {
-
-  const { control,  setValue } = useFormContext();
+  const { control, setValue } = useFormContext();
   const dispatch = useAppDispatch();
   const phone = usePhoneSelector();
   const currentPhone = useWatch({
@@ -31,24 +27,25 @@ export const PhoneNumber: FC = () => {
     dispatch(setPhone(currentPhone));
   }, [currentPhone]);
   return (
-        <Controller
-            name="phone"
-            control={control}
-            render={
-                ({ field }) =>
-                    <PhoneInput
-                    //@ts-ignore
-                        style={
-                            {
-                              flexGrow: 1,
-                            }
-                        }
-                        {...field}
-                        component={TextField}
-                        //@ts-ignore
-                        label={<span>Phone number <span style={{ color: 'red' }}>*</span></span>}
-                    />
-            }
+    <Controller
+      name="phone"
+      control={control}
+      render={({ field }) => (
+        <PhoneInput
+          //@ts-ignore
+          style={{
+            flexGrow: 1,
+          }}
+          {...field}
+          component={TextField}
+          //@ts-ignore
+          label={
+            <span>
+              Phone number <span style={{ color: 'red' }}>*</span>
+            </span>
+          }
         />
+      )}
+    />
   );
 };

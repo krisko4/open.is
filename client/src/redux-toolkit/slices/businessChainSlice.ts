@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { useAppSelector } from 'redux-toolkit/hooks';
 import { ContactData } from 'requests/PlaceRequests';
@@ -33,23 +32,18 @@ export const clearBusinessChain = {
   images: defaultImages,
   userId: '',
   isBusinessChain: true,
-
 };
 const initialState: RawPlaceDataProps = { ...clearBusinessChain };
 
 interface ContactDetailsProps {
-  selectedLocations: string[],
-  contactDetails: ContactData
+  selectedLocations: string[];
+  contactDetails: ContactData;
 }
-
 
 interface OpeningHoursProps {
-  openingHours: any,
-  selectedLocations: string[],
+  openingHours: any;
+  selectedLocations: string[];
 }
-
-
-
 
 const businessChainSlice = createSlice({
   name: 'businessChain',
@@ -68,17 +62,19 @@ const businessChainSlice = createSlice({
       state.locations = action.payload;
     },
     deleteSelectedLocations: (state, action: PayloadAction<string[]>) => {
-      state.locations = state.locations.filter(loc => !action.payload.includes(loc._id as string));
+      state.locations = state.locations.filter((loc) => !action.payload.includes(loc._id as string));
     },
     setLocationsAlwaysOpen: (state, action: PayloadAction<string[]>) => {
-      state.locations = state.locations.filter(loc => action.payload.includes(loc._id as string)).map(loc => ({
-        ...loc,
-        alwaysOpen: true,
-        isActive: true,
-      }));
+      state.locations = state.locations
+        .filter((loc) => action.payload.includes(loc._id as string))
+        .map((loc) => ({
+          ...loc,
+          alwaysOpen: true,
+          isActive: true,
+        }));
     },
     setContactDetailsForSelectedLocations: (state, action: PayloadAction<ContactDetailsProps>) => {
-      state.locations = state.locations.map(loc => {
+      state.locations = state.locations.map((loc) => {
         if (action.payload.selectedLocations.includes(loc._id as string)) {
           return {
             ...loc,
@@ -89,7 +85,7 @@ const businessChainSlice = createSlice({
       });
     },
     setOpeningHoursForSelectedLocations: (state, action: PayloadAction<OpeningHoursProps>) => {
-      state.locations = state.locations.map(loc => {
+      state.locations = state.locations.map((loc) => {
         if (action.payload.selectedLocations.includes(loc._id as string)) {
           return {
             ...loc,
@@ -113,12 +109,11 @@ export const {
   setLocationsAlwaysOpen,
 } = businessChainSlice.actions;
 
-export const useSubtitleSelector = () => useAppSelector(state => state.businessChain.subtitle);
-export const useNameSelector = () => useAppSelector(state => state.businessChain.name);
-export const useLogoSelector = () => useAppSelector(state => state.businessChain.logo);
-export const useBusinessChainSelector = () => useAppSelector(state => state.businessChain);
-export const useLocationsSelector = () => useAppSelector(state => state.businessChain.locations);
-export const useBusinessChainIdSelector = () => useAppSelector(state => state.businessChain._id);
-
+export const useSubtitleSelector = () => useAppSelector((state) => state.businessChain.subtitle);
+export const useNameSelector = () => useAppSelector((state) => state.businessChain.name);
+export const useLogoSelector = () => useAppSelector((state) => state.businessChain.logo);
+export const useBusinessChainSelector = () => useAppSelector((state) => state.businessChain);
+export const useLocationsSelector = () => useAppSelector((state) => state.businessChain.locations);
+export const useBusinessChainIdSelector = () => useAppSelector((state) => state.businessChain._id);
 
 export const businessChainReducer = businessChainSlice.reducer;

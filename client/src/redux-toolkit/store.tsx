@@ -9,6 +9,8 @@ import { searcherOptionsReducer } from './slices/searcherOptionsSlice';
 import { selectedAddressReducer } from './slices/selectedAddressSlice';
 import { selectedLocationsReducer } from './slices/selectedLocationsSlice';
 import { formLocationsReducer } from './slices/formLocationsSlice';
+import { Provider } from 'react-redux';
+import { FC } from 'react';
 
 export const store = configureStore({
   reducer: {
@@ -18,15 +20,15 @@ export const store = configureStore({
     [placesApi.reducerPath]: placesApi.reducer,
     selectedLocations: selectedLocationsReducer,
     mapData: mapDataReducer,
-    selectedAddress : selectedAddressReducer,
+    selectedAddress: selectedAddressReducer,
     searcherOptions: searcherOptionsReducer,
     formLocations: formLocationsReducer,
     email: emailReducer,
-
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(placesApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(placesApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const StoreProvider: FC = ({ children }) => <Provider store={store}>{children}</Provider>;

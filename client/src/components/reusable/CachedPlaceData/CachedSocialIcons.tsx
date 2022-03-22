@@ -3,25 +3,24 @@ import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
 
 interface SocialProps {
-  url: string
+  url: string;
 }
 
 const SocialIconButton: FC<SocialProps> = ({ url }) => {
   return (
-        <IconButton size="large">
-            <SocialIcon
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ width: 35, height: 35, display: 'table-cell' }}
-                url={url} />
-        </IconButton>
-
+    <IconButton size="large">
+      <SocialIcon
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ width: 35, height: 35, display: 'table-cell' }}
+        url={url}
+      />
+    </IconButton>
   );
 };
 interface Props {
-
-  facebook: string,
-  instagram: string
+  facebook: string;
+  instagram: string;
 }
 
 export const CachedSocialIcons: FC<Props> = ({ facebook, instagram }) => {
@@ -29,9 +28,9 @@ export const CachedSocialIcons: FC<Props> = ({ facebook, instagram }) => {
   const ig = instagram.startsWith('https://instagram.com') ? instagram : `https://instagram.com/${instagram}`;
 
   return (
-        <div>
-            <SocialIconButton url={fb as string} />
-            <SocialIconButton url={ig as string} />
-        </div>
+    <div>
+      <SocialIconButton url={fb as string} />
+      <SocialIconButton url={ig as string} />
+    </div>
   );
 };

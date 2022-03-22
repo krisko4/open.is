@@ -9,13 +9,7 @@ import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/place
 import { addNewVisit } from 'requests/VisitRequests';
 import { PlaceToolbar } from './PlaceToolbar';
 
-
-
-
-
-
 export const PlaceDetails: FC = () => {
-
   // const { setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
   // const dispatch = useAppDispatch()
 
@@ -27,7 +21,7 @@ export const PlaceDetails: FC = () => {
 
   useEffect(() => {
     (async () => {
-      if (place){
+      if (place) {
         try {
           const response = await addNewVisit(place._id as string);
           return response.data;
@@ -38,25 +32,24 @@ export const PlaceDetails: FC = () => {
     })();
   }, [place]);
 
-
-
-
   return (
     <Scrollbars>
-        {isFetching ?
-            <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center" >
-                <CircularProgress />
-            </Grid> : place &&
-            <Grid container>
-                <Slide in={true} direction="right">
-                    <Paper sx={{ flexGrow: 1 }}>
-                        <PlaceToolbar place={place} />
-                        <CachedPlaceData />
-                    </Paper >
-
-                </Slide>
-            </Grid >
-        }
+      {isFetching ? (
+        <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
+          <CircularProgress />
+        </Grid>
+      ) : (
+        place && (
+          <Grid container>
+            <Slide in={true} direction="right">
+              <Paper sx={{ flexGrow: 1 }}>
+                <PlaceToolbar place={place} />
+                <CachedPlaceData />
+              </Paper>
+            </Slide>
+          </Grid>
+        )
+      )}
     </Scrollbars>
   );
 };

@@ -11,33 +11,32 @@ import { TotalVisitsCard } from './TotalVisitsCard';
 
 const generateVisitsData = (visits: VisitCount[]) => {
   let count = 0;
-  return visits.map(visit => {
+  return visits.map((visit) => {
     count += visit.visitCount;
     return [visit.date, count];
   });
 };
 
 export const Dashboard: FC = () => {
-
-
   //   const [mostPopularPlace, setMostPopularPlace] = useState<RawPlaceDataProps | null>(null);
   const [activityChartSeries, setActivityChartSeries] = useState<any>();
   const { data: totalVisitsData, isFetching, refetch } = useGetAllVisitsByUserIdQuery();
 
   useEffect(() => {
     if (totalVisitsData) {
-      const {  locations } = totalVisitsData;
-      setActivityChartSeries(locations.map(loc => {
-        return {
-          name: loc.name,
-          data: generateVisitsData(loc.visits),
-        };
-      }));
+      const { locations } = totalVisitsData;
+      setActivityChartSeries(
+        locations.map((loc) => {
+          return {
+            name: loc.name,
+            data: generateVisitsData(loc.visits),
+          };
+        })
+      );
       // //@ts-ignore
       // const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]
       // setMostPopularPlace(mostPopularPlace)
     }
-
   }, [totalVisitsData]);
 
   useEffect(() => {
@@ -45,49 +44,48 @@ export const Dashboard: FC = () => {
   }, []);
 
   return (
-            <Grid container sx={{ flexGrow: 1, height: '100%' }}>
-                {isFetching ?
-                    <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-                        <CircularProgress />
-                    </Grid> :
-                  totalVisitsData &&
-                    <Grid container justifyContent="center" sx={{ pb: '50px', pt: '50px' }}>
-                        <Grid item lg={11}>
-                            <Typography variant="h3" >
-                                <Grid container>
-                                    <Grid item lg={10}>
-                                        Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
-                                    </Grid>
-                                </Grid>
-                            </Typography>
-                            <Typography variant="body1" >welcome to your personal dashboard</Typography>
-                            <Grid container style={{ marginTop: 20 }} spacing={2} justifyContent="space-between">
-                                <Grid item lg={6}>
-                                    <TotalVisitsCard />
-                                </Grid>
-                                <Grid item lg={6}>
-                                    <TotalOpinionsCard />
-                                </Grid>
-                                <Grid container item>
-                                    <Slide in={true} direction="up" timeout={1000}>
-                                        <Card sx={{ flexGrow: 1 }}>
-                                            <CardContent>
-                                                <Typography variant="h5">
-                                                    Activity
-                                                </Typography>
-                                                <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
-                                                    The following chart represents historical data of user activity in your places
-                                                </Typography>
-                                                {activityChartSeries &&
-                                                <Grid item>
-                                                 <ActivityChart series={activityChartSeries} />
-                                                </Grid>
-                                                 }
-                                            </CardContent>
-                                        </Card>
-                                    </Slide>
-                                </Grid>
-                                {/* <Grid item lg={6}>
+    <Grid container sx={{ flexGrow: 1, height: '100%' }}>
+      {isFetching ? (
+        <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+          <CircularProgress />
+        </Grid>
+      ) : (
+        totalVisitsData && (
+          <Grid container justifyContent="center" sx={{ pb: '50px', pt: '50px' }}>
+            <Grid item lg={11}>
+              <Typography variant="h3">
+                <Grid container>
+                  <Grid item lg={10}>
+                    Hello, {`${localStorage.getItem('fullName')?.split(' ')[0]}`}
+                  </Grid>
+                </Grid>
+              </Typography>
+              <Typography variant="body1">welcome to your personal dashboard</Typography>
+              <Grid container style={{ marginTop: 20 }} spacing={2} justifyContent="space-between">
+                <Grid item lg={6}>
+                  <TotalVisitsCard />
+                </Grid>
+                <Grid item lg={6}>
+                  <TotalOpinionsCard />
+                </Grid>
+                <Grid container item>
+                  <Slide in={true} direction="up" timeout={1000}>
+                    <Card sx={{ flexGrow: 1 }}>
+                      <CardContent>
+                        <Typography variant="h5">Activity</Typography>
+                        <Typography variant="subtitle2" style={{ marginBottom: 10 }}>
+                          The following chart represents historical data of user activity in your places
+                        </Typography>
+                        {activityChartSeries && (
+                          <Grid item>
+                            <ActivityChart series={activityChartSeries} />
+                          </Grid>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Slide>
+                </Grid>
+                {/* <Grid item lg={6}>
                                     <Fade in={true} timeout={2000}>
                                         <Card style={{ flexGrow: 1 }} >
                                             <CardContent>
@@ -175,12 +173,11 @@ export const Dashboard: FC = () => {
                                         </Card>
                                     </Fade>
                                 </Grid> */}
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                }
+              </Grid>
             </Grid>
-
+          </Grid>
+        )
+      )}
+    </Grid>
   );
 };
