@@ -5,55 +5,83 @@ import React, { FC } from 'react';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { useLoginContext } from '../../../../contexts/LoginContext';
 import { StyledSection, StyledVideo } from './Section1';
+import { VideoSection } from './VideoSection';
 
 const WingsSection: FC = () => {
   const { setLoginOpen } = useAuthContext();
   const { userData } = useLoginContext();
   return (
-    <Fade in={true} timeout={1000}>
-      <StyledSection style={{ height: '800px' }}>
-        <StyledVideo autoPlay muted loop>
-          <source src={`${process.env.REACT_APP_BASE_URL}/images/wings.mp4`} type="video/mp4" />
-        </StyledVideo>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            height: '100%',
-            width: '100%',
-          }}
-        >
-          <Fade style={{ zIndex: 1 }} in={true} timeout={1000}>
-            <Grid
-              container
-              sx={{ background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3))', height: '100%' }}
-              justifyContent="center"
-              alignItems="center"
+    <VideoSection isVisible={true} videoSource={`${process.env.REACT_APP_BASE_URL}/images/wings.mp4`}>
+      <Grid
+        container
+        sx={{ background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3))', height: '100%' }}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={10} lg={6} sx={{ textAlign: 'center' }}>
+          <Typography data-testid="title" variant="h3" style={{ color: 'white' }}>
+            Spread your wings
+          </Typography>
+          <Typography data-testid="content" variant="subtitle1" style={{ color: 'lightgrey', marginTop: 20 }}>
+            Let us take care of your development
+          </Typography>
+          {!userData.isLoggedIn && (
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => setLoginOpen(true)}
+              style={{ color: 'white', borderColor: 'white', marginTop: 10 }}
             >
-              <Grid item xs={6} sx={{ textAlign: 'center' }}>
-                <Typography data-testid="title" variant="h3" style={{ color: 'white' }}>
-                  Spread your wings
-                </Typography>
-                <Typography data-testid="content" variant="subtitle1" style={{ color: 'lightgrey', marginTop: 20 }}>
-                  Let us take care of your development
-                </Typography>
-                {!userData.isLoggedIn && (
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={() => setLoginOpen(true)}
-                    style={{ color: 'white', borderColor: 'white', marginTop: 10 }}
-                  >
-                    Join us
-                  </Button>
-                )}
-              </Grid>
-            </Grid>
-          </Fade>
+              Join us
+            </Button>
+          )}
         </Grid>
-      </StyledSection>
-    </Fade>
+      </Grid>
+    </VideoSection>
+    // <Fade in={true} timeout={1000}>
+    //   <StyledSection style={{ height: '800px' }}>
+    //     <StyledVideo autoPlay muted loop>
+    //       <source src={`${process.env.REACT_APP_BASE_URL}/images/wings.mp4`} type="video/mp4" />
+    //     </StyledVideo>
+    //     <Grid
+    //       container
+    //       alignItems="center"
+    //       justifyContent="center"
+    //       sx={{
+    //         height: '100%',
+    //         width: '100%',
+    //       }}
+    //     >
+    //       <Fade style={{ zIndex: 1 }} in={true} timeout={1000}>
+    //         <Grid
+    //           container
+    //           sx={{ background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3))', height: '100%' }}
+    //           justifyContent="center"
+    //           alignItems="center"
+    //         >
+    //           <Grid item xs={6} sx={{ textAlign: 'center' }}>
+    //             <Typography data-testid="title" variant="h3" style={{ color: 'white' }}>
+    //               Spread your wings
+    //             </Typography>
+    //             <Typography data-testid="content" variant="subtitle1" style={{ color: 'lightgrey', marginTop: 20 }}>
+    //               Let us take care of your development
+    //             </Typography>
+    //             {!userData.isLoggedIn && (
+    //               <Button
+    //                 variant="outlined"
+    //                 size="large"
+    //                 onClick={() => setLoginOpen(true)}
+    //                 style={{ color: 'white', borderColor: 'white', marginTop: 10 }}
+    //               >
+    //                 Join us
+    //               </Button>
+    //             )}
+    //           </Grid>
+    //         </Grid>
+    //       </Fade>
+    //     </Grid>
+    //   </StyledSection>
+    // </Fade>
     // <Grid
     //   container
     //   style={{

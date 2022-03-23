@@ -73,7 +73,7 @@ const Section5: FC<Props> = ({ isVisible }) => {
                       boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
                     }}
                   />
-                  <Grid item xs={10} lg={6} style={{ marginLeft: 10, marginBottom: 20 }}>
+                  <Grid item xs={10} md={8} sm={8} lg={6} style={{ marginLeft: 10, marginBottom: 20 }}>
                     <h2 style={{ color: '#3c4858' }}>{opinion.name}</h2>
                     <div style={{ fontStyle: 'italic', color: 'grey' }}>{opinion.content}</div>
                   </Grid>

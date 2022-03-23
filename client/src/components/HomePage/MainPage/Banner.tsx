@@ -64,7 +64,7 @@ export const Banner: FC = () => {
         </video>
         <Grid container alignItems="center" className={classes.banner}>
           <Grid item container lg={6} justifyContent="center">
-            <Grid item lg={10} sx={{ textAlign: 'center', pt: '50px' }}>
+            <Grid item lg={10} xs={8} sm={10} sx={{ textAlign: 'center', pt: '50px' }}>
               <Collapse in={window.scrollY < 150} timeout={1500}>
                 <Typography className={classes.bannerTitle} variant="h3">
                   An easy way to track open destinations all over the world
@@ -82,22 +82,6 @@ export const Banner: FC = () => {
           </Grid>
         </Grid>
       </div>
-      {/* <Grid container className={classes.banner} alignItems="center">
-        <Grid item container lg={8} justifyContent="center">
-          <Grid item lg={7} md={7} sm={7} style={{ textAlign: 'center', marginBottom: 200 }}>
-            <Collapse in={window.scrollY < 150} timeout={1500}>
-              <Typography variant="h3" color="common.white">
-                An easy way to track open destinations all over the world
-              </Typography>
-            </Collapse>
-            <Fade in={window.scrollY < 150} timeout={2000}>
-              <Button color="error" className={classes.button} onClick={() => navigate('/search')} variant="contained">
-                Get started
-              </Button>
-            </Fade>
-          </Grid>
-        </Grid>
-      </Grid> */}
     </Fade>
   );
 };
