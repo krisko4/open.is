@@ -38,13 +38,6 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
     minHeight: 60,
     marginTop: 20,
   },
-  bannerz: {
-    height: 1200,
-    backgroundPosition: 'center',
-    backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/images/back.mp4)`,
-    // backgroundImage: (props) =>
-    //   `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, ${props.gradient2})), url(https://images.unsplash.com/photo-1437196582938-795c4854b3da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80)`,
-  },
 }));
 
 export const Banner: FC = () => {
@@ -73,7 +66,9 @@ export const Banner: FC = () => {
           <Grid item container lg={6} justifyContent="center">
             <Grid item lg={10} sx={{ textAlign: 'center', pt: '50px' }}>
               <Collapse in={window.scrollY < 150} timeout={1500}>
-                <Typography variant="h3">An easy way to track open destinations all over the world</Typography>
+                <Typography className={classes.bannerTitle} variant="h3">
+                  An easy way to track open destinations all over the world
+                </Typography>
                 <Button
                   // color="error"
                   className={classes.button}

@@ -1,36 +1,20 @@
-import { Collapse, Fade } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import React, { FC } from 'react';
+import { Grid, Collapse, Typography, Fade } from '@mui/material';
+import { FC } from 'react';
 
 interface Props {
-  isVisible: boolean;
-  isVisible7: boolean;
+  isVisible1: boolean;
+  isVisible2: boolean;
 }
 
-const Section6: FC<Props> = ({ isVisible, isVisible7 }) => {
+export const PanelSection: FC<Props> = ({ isVisible1, isVisible2 }) => {
   return (
     <Grid
       justifyContent="center"
       container
       style={{ overflowX: 'clip', background: 'linear-gradient(0deg, rgba(248,248,248,1) 4%, rgba(0,0,0,1) 20%)' }}
     >
-      <Collapse in={isVisible} timeout={2000}>
-        <Grid data-testid="content" container justifyContent="center" style={{ marginTop: 40 }}>
-          <Grid item lg={6} style={{ textAlign: 'center' }} xs={10}>
-            <Typography variant="h5" style={{ color: 'white' }}>
-              Watch your business grow using our dedicated panel
-            </Typography>
-            <Typography variant="subtitle1" style={{ color: 'lightgrey', marginTop: 10, textAlign: 'center' }}>
-              Your success is our goal. For this reason we have built a platform where our users are able to manage
-              their places and keep track of all the activity related to their businesses. Using interactive charts, you
-              can observe the amount of people visiting your profile and sharing their opinions on daily basis.
-            </Typography>
-          </Grid>
-        </Grid>
-      </Collapse>
       <Grid item style={{ marginTop: 20 }} xs={8}>
-        <Fade in={isVisible} timeout={2000}>
+        <Fade in={isVisible1} timeout={2000}>
           <img
             data-testid="dark-panel"
             alt="dark-panel"
@@ -42,7 +26,7 @@ const Section6: FC<Props> = ({ isVisible, isVisible7 }) => {
                         style={{ height: 600, marginTop: 100, transform: 'translate(27%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
                     /> */}
         </Fade>
-        <Fade in={isVisible7} timeout={2000}>
+        <Fade in={isVisible2} timeout={2000}>
           <img
             data-testid="light-panel"
             alt="light-panel"
@@ -62,5 +46,3 @@ const Section6: FC<Props> = ({ isVisible, isVisible7 }) => {
     </Grid>
   );
 };
-
-export default Section6;

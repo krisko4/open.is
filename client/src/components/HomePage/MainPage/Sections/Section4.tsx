@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import React, { FC } from 'react';
-import { Fade, Grow, Zoom } from '@mui/material';
+import { Slide, Fade, Grow, Zoom } from '@mui/material';
 
 interface Props {
   isVisible: boolean;
@@ -25,7 +25,7 @@ const Section4: FC<Props> = ({ isVisible }) => {
           </Fade>
         </Grid>
       </Grow>
-      <Zoom in={true} timeout={500}>
+      <Slide direction="left" in={isVisible} timeout={500}>
         <Grid item container lg={5}>
           <img
             alt="gifik"
@@ -33,7 +33,7 @@ const Section4: FC<Props> = ({ isVisible }) => {
             style={{ width: '100%', objectFit: 'contain' }}
           />
         </Grid>
-      </Zoom>
+      </Slide>
     </Grid>
   );
 };

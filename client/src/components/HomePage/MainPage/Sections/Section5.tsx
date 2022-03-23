@@ -1,4 +1,4 @@
-import { Grow } from '@mui/material';
+import { Fade, Grow } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -36,41 +36,49 @@ const opinions = [
   },
 ];
 
-const Section5: FC = () => {
+interface Props {
+  isVisible: boolean;
+}
+
+const Section5: FC<Props> = ({ isVisible }) => {
   return (
     <Grid container style={{ background: 'white' }} justifyContent="center">
       <Grid container justifyContent="center" style={{ marginTop: 100, marginBottom: 100 }}>
         <Grid item xs={12} style={{ textAlign: 'center' }}>
-          <Grow in={true}>
-            <Typography variant="h3" style={{ color: '#3c4858' }}>
+          <Grow in={isVisible}>
+            <Typography variant="h3" style={{ color: '#3c4858', fontFamily: 'georgia' }}>
               Trusted by people
             </Typography>
           </Grow>
         </Grid>
-        <Grid item lg={7} xs={10} style={{ textAlign: 'center' }}>
-          <Typography variant="subtitle1" style={{ marginTop: 20, color: 'grey' }}>
-            We are extremely grateful for the feedback provided by our users. Your opinions are highly appreciated.
-            Below you can find some of them:
-          </Typography>
-        </Grid>
+        <Fade in={isVisible}>
+          <Grid item lg={7} xs={10} style={{ textAlign: 'center' }}>
+            <Typography variant="subtitle1" style={{ marginTop: 20, color: 'grey' }}>
+              We are extremely grateful for the feedback provided by our users. Your opinions are highly appreciated.
+              Below you can find some of them:
+            </Typography>
+          </Grid>
+        </Fade>
         <Grid container style={{ marginTop: 100 }} justifyContent="space-around">
           {opinions.map((opinion, i) => (
             <Grid data-testid="opinions" item lg={3} key={i}>
-              <Grid container justifyContent="center">
-                <Avatar
-                  src={opinion.image}
-                  style={{
-                    height: 100,
-                    width: 100,
-                    objectFit: 'cover',
-                    boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
-                  }}
-                />
-                <Grid item xs={10} lg={6} style={{ marginLeft: 10, marginBottom: 20 }}>
-                  <h2 style={{ color: '#3c4858' }}>{opinion.name}</h2>
-                  <div style={{ fontStyle: 'italic', color: 'grey' }}>{opinion.content}</div>
+              <Fade in={isVisible} timeout={1000}>
+                <Grid container justifyContent="center">
+                  <Avatar
+                    src={opinion.image}
+                    style={{
+                      height: 100,
+                      width: 100,
+                      objectFit: 'cover',
+                      boxShadow: 'rgba(17, 12, 46, 0.15) 0px 48px 100px 0px',
+                    }}
+                  />
+                  <Grid item xs={10} lg={6} style={{ marginLeft: 10, marginBottom: 20 }}>
+                    <h2 style={{ color: '#3c4858' }}>{opinion.name}</h2>
+                    <div style={{ fontStyle: 'italic', color: 'grey' }}>{opinion.content}</div>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Fade>
             </Grid>
           ))}
         </Grid>
