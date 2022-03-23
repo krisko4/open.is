@@ -36,7 +36,9 @@ You can either create a new account and go through entire account and business r
 ## Overview
 
 ### Main page
-![stronka](https://user-images.githubusercontent.com/80395610/159160448-fd7c1091-a9cb-4032-be48-c4d418250980.png)
+<!-- ![stronka](https://user-images.githubusercontent.com/80395610/159160448-fd7c1091-a9cb-4032-be48-c4d418250980.png) -->
+![screencapture-localhost-3000-2022-03-23-21_54_48](https://user-images.githubusercontent.com/80395610/159794221-de33ab50-60eb-4a80-b9b5-2a00b39b52b8.png)
+
 
 ### Empty panel
 ![hello](https://user-images.githubusercontent.com/80395610/159161881-5176ca2e-b737-44dd-9428-8ae53c4559cc.png)
