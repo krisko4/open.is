@@ -5,7 +5,6 @@ import { FC } from 'react';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { removeFormLocationByAddressId } from 'redux-toolkit/slices/formLocationsSlice';
 import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
-// import { useLocationContext } from '../../../../../contexts/PanelContexts/LocationContext';
 import { LocationDetailsForm } from './LocationDetailsForm/LocationDetailsForm';
 
 interface Props {
@@ -13,7 +12,6 @@ interface Props {
 }
 
 export const Location: FC<Props> = ({ location }) => {
-  //   let { setSelectedLocations, selectedLocations } = useLocationContext();
   const dispatch = useAppDispatch();
 
   const deleteLocation = (e: any) => {
@@ -21,11 +19,6 @@ export const Location: FC<Props> = ({ location }) => {
     if (location.addressId) {
       dispatch(removeFormLocationByAddressId(location.addressId));
     }
-    // setSelectedLocations(locations => locations.filter(loc => location !== loc));
-    //   const newSelectedLocations = selectedLocations.filter(loc => location !== loc);
-    //   // setLocations([...newSelectedLocations])
-    //   setValidationStateChanged((state) => !state);
-    //   setSelectedLocations([...newSelectedLocations]);
   };
 
   return (

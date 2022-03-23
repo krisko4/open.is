@@ -1,6 +1,5 @@
 import React, { createContext, FC, useContext, useEffect, useState } from 'react';
 import { auth } from '../requests/AuthRequests';
-import { ContextProps } from './ContextProps';
 
 export const LoginContext = createContext<LoginContextData | null>(null);
 
@@ -27,7 +26,7 @@ const useProviderData = () => {
   };
 };
 
-export const LoginContextProvider: FC<ContextProps> = ({ children }) => {
+export const LoginContextProvider: FC = ({ children }) => {
   const state = useProviderData();
   const [isAuthFinished, setAuthFinished] = useState(false);
 

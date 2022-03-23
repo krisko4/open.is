@@ -1,6 +1,5 @@
 import { Contact } from './Contact';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { TestMockWrapper } from 'test-utils/TestMockWrapper';
 
 describe('Contact', () => {

@@ -12,7 +12,6 @@ interface Props {
   setAddLocationsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const LocationsConfirmDialog: FC<Props> = ({ dialogOpen, setDialogOpen, setAddLocationsDialogOpen }) => {
-  // const { selectedLocations } = useLocationContext();
   const formLocations = useFormLocationsSelector();
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
   const businessChainId = useBusinessChainIdSelector();

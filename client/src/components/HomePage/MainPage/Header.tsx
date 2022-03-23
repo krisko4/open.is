@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     },
   },
   solidAppBar: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     transition: 'all .5s ease 0s',
     '& .aboutButton': {
       color: '#2196f3',
@@ -77,7 +77,7 @@ const Header: FC = () => {
 
   const handleScroll = () => {
     const isSolid = window.scrollY > 800;
-    const isElevated = window.scrollY > 300;
+    const isElevated = window.scrollY > 150;
     if (isSolid) {
       appBarRef.current = 'solidAppBar';
       setAppBarState({ elevation: 10, buttonColor: 'primary' });
@@ -102,8 +102,7 @@ const Header: FC = () => {
   return (
     <AppBar data-testid="header" elevation={appBarState.elevation} className={classes[appBarRef.current]}>
       <Grid container justifyContent="center">
-        <Grid item style={{ flexGrow: 1 }} />
-        <Grid item lg={4}>
+        <Grid item>
           <Slide in={true} timeout={1000}>
             <Toolbar>
               {location.pathname === '/' ? (
@@ -133,25 +132,22 @@ const Header: FC = () => {
                 <div>
                   <Button
                     data-testid="panel-navigate-button"
-                    variant="contained"
                     onClick={() => navigate('/panel')}
-                    color={appBarState.buttonColor}
-                    style={{ marginRight: 10 }}
+                    className="contactButton"
                   >
                     My panel
                   </Button>
-                  <SignOutButton variant="contained" data-testid="signout-button" color={appBarState.buttonColor}>
+                  <SignOutButton data-testid="signout-button" className="contactButton">
                     Sign out
                   </SignOutButton>
                 </div>
               ) : (
                 <Button
                   data-testid="login-button"
-                  variant="contained"
+                  className="contactButton"
                   onClick={() => {
                     setLoginOpen(true);
                   }}
-                  color={appBarState.buttonColor}
                 >
                   Sign in
                 </Button>

@@ -8,7 +8,7 @@ import Header from './Header';
 
 const HomePage: FC = () => {
   return (
-    <>
+    <div style={{ overflowX: 'hidden' }}>
       <AuthContextProvider>
         <Header />
         <Auth />
@@ -16,7 +16,7 @@ const HomePage: FC = () => {
         <Content />
       </AuthContextProvider>
       <Footer />
-    </>
+    </div>
   );
 };
 

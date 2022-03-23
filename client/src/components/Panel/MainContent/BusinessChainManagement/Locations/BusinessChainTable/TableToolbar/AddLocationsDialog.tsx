@@ -6,7 +6,6 @@ import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
 import { resetMap } from 'redux-toolkit/slices/mapSlice';
 import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { LocationContextProvider } from '../../../../../../../contexts/PanelContexts/LocationContext';
 import { FullHeightDialog } from '../../../../../../reusable/FullHeightDialog';
 import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/LocationDetails';
 import { LocationSelection } from '../../../../NewBusinessChain/LocationDetails/LocationSelection';
@@ -35,14 +34,12 @@ export const AddLocationsDialog: FC<Props> = ({ dialogOpen, setDialogOpen }) => 
   return (
     <FullHeightDialog title="Add new locations" dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}>
       <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center" justifyContent="space-evenly">
-        <LocationContextProvider>
           <Grid item container sx={{ height: '100%' }} alignItems="center" lg={6}>
             <LocationSelection />
           </Grid>
           <Grid item lg={6} sx={{ height: '100%' }}>
             <LocationDetails img={logo} isEditionMode={true} setAddLocationsDialogOpen={setDialogOpen} />
           </Grid>
-        </LocationContextProvider>
       </Grid>
     </FullHeightDialog>
   );

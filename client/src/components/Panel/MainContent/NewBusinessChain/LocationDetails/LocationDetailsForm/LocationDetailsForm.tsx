@@ -50,9 +50,7 @@ const schema = yup.object({
 });
 
 export const LocationDetailsForm: FC<Props> = ({ location }) => {
-  //   const { saveButtonClicked, fieldForAll, setFieldForAll } = useLocationContext();
   const isFirstRender = useRef(true);
-  //   const isFirstFieldForAllRender = useRef(true);
 
   const dispatch = useAppDispatch();
   const formSaveTrigger = useFormSaveTriggerSelector();

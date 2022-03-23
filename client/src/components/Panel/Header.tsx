@@ -40,10 +40,35 @@ interface Props {
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
-  // const { setPanelOpen } = usePageContext()
-  // const { places, setSelectedOption} = usePanelContext()
+const navigationButtons = [
+  {
+    title: 'Home',
+    icon: <HomeIcon />,
+    url: '/',
+  },
+  {
+    title: 'Dashboard',
+    icon: <DashboardIcon />,
+    url: '',
+  },
+  {
+    title: 'New place',
+    icon: <AddIcon />,
+    url: 'new-place',
+  },
+  {
+    title: 'New business chain',
+    icon: <CloudCircle />,
+    url: 'new-business-chain',
+  },
+  {
+    title: 'Browser',
+    icon: <TravelExploreIcon />,
+    url: '/browser',
+  },
+];
 
+const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
   const navigate = useNavigate();
 
   return (
@@ -64,7 +89,14 @@ const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
           </IconButton>
           <Grid item container justifyContent="flex-end" alignItems="center">
             <ColorModeSwitch />
-            <Tooltip title="Home">
+            {navigationButtons.map((button) => (
+              <Tooltip key={button.url} title={button.title}>
+                <IconButton onClick={() => navigate(button.url)} color="inherit" size="large">
+                  {button.icon}
+                </IconButton>
+              </Tooltip>
+            ))}
+            {/* <Tooltip title="Home">
               <IconButton onClick={() => navigate('/')} color="inherit" size="large">
                 <HomeIcon />
               </IconButton>
@@ -88,7 +120,7 @@ const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
               <IconButton onClick={() => navigate('/search')} color="inherit" size="large">
                 <TravelExploreIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </Grid>
         </Toolbar>
       </AppBar>

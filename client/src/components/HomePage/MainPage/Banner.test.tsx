@@ -1,5 +1,4 @@
 import { screen, render, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { Banner } from './Banner';
 import { BrowserRouter } from 'react-router-dom';
 import Content from './Content';

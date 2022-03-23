@@ -1,5 +1,4 @@
 import React, { createContext, FC, useContext, useState } from 'react';
-import { ContextProps } from './ContextProps';
 
 export const AuthContext = createContext<AuthContextData | null>(null);
 
@@ -21,7 +20,7 @@ const useProviderData = () => {
   };
 };
 
-export const AuthContextProvider: FC<ContextProps> = ({ children }) => {
+export const AuthContextProvider: FC = ({ children }) => {
   const state = useProviderData();
 
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;

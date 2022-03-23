@@ -1,4 +1,4 @@
-import { Collapse, Fade, Theme } from '@mui/material';
+import { CardMedia, Collapse, Fade, Theme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,24 @@ interface StyleProps {
 }
 
 const useStyles = makeStyles<Theme, StyleProps>(() => ({
+  banner: {
+    height: '100%',
+    color: 'white',
+    background: (props) => `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, ${props.gradient2}))`,
+  },
+  backgroundVideo: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    zIndex: -1,
+    position: 'absolute',
+    // position: 'fixed',
+    // left: 0,
+    // right: 0,
+    // top: 0,
+    // bottom: 0,
+    // zIndex: -1,
+  },
   bannerTitle: {
     color: 'white',
     fontFamily: 'Georgia',
@@ -20,11 +38,12 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
     minHeight: 60,
     marginTop: 20,
   },
-  banner: {
+  bannerz: {
     height: 1200,
     backgroundPosition: 'center',
-    backgroundImage: (props) =>
-      `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, ${props.gradient2})), url(https://images.unsplash.com/photo-1437196582938-795c4854b3da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80)`,
+    backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/images/back.mp4)`,
+    // backgroundImage: (props) =>
+    //   `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, ${props.gradient2})), url(https://images.unsplash.com/photo-1437196582938-795c4854b3da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80)`,
   },
 }));
 
@@ -45,8 +64,30 @@ export const Banner: FC = () => {
   }, []);
 
   return (
-    <Fade in={true} timeout={1000}>
-      <Grid container className={classes.banner} alignItems="center">
+    <Fade in={true} timeout={1500}>
+      <div style={{ height: '100vh' }}>
+        <video className={classes.backgroundVideo} autoPlay muted loop>
+          <source src={`${process.env.REACT_APP_BASE_URL}/images/back.mp4`} type="video/mp4" />
+        </video>
+        <Grid container alignItems="center" className={classes.banner}>
+          <Grid item container lg={6} justifyContent="center">
+            <Grid item lg={10} sx={{ textAlign: 'center', pt: '50px' }}>
+              <Collapse in={window.scrollY < 150} timeout={1500}>
+                <Typography variant="h3">An easy way to track open destinations all over the world</Typography>
+                <Button
+                  // color="error"
+                  className={classes.button}
+                  onClick={() => navigate('/search')}
+                  variant="contained"
+                >
+                  Get started
+                </Button>
+              </Collapse>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+      {/* <Grid container className={classes.banner} alignItems="center">
         <Grid item container lg={8} justifyContent="center">
           <Grid item lg={7} md={7} sm={7} style={{ textAlign: 'center', marginBottom: 200 }}>
             <Collapse in={window.scrollY < 150} timeout={1500}>
@@ -61,7 +102,7 @@ export const Banner: FC = () => {
             </Fade>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Fade>
   );
 };
