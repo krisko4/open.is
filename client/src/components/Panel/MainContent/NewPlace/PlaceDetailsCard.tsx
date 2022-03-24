@@ -14,7 +14,7 @@ interface Props {
 
 export const PlaceDetailsCard: FC<Props> = ({ isCacheable, isEditable, setLogoFile }) => {
   return (
-    <Card elevation={3} sx={{ minWidth: 800 }}>
+    <Card>
       <Grid container item>
         <Toolbar style={{ flexGrow: 1 }} disableGutters>
           <Grid container justifyContent="flex-end" style={{ paddingRight: 20 }} item>

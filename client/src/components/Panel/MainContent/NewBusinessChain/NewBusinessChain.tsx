@@ -73,21 +73,21 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
               </Grid>
             </Paper>
           )}
-          <Grid container sx={{ flexGrow: 1 }}>
+          <Grid container sx={{ flexGrow: 1, p: 1 }}>
             <Grid container sx={{ height: '100%' }} justifyContent="space-evenly" alignItems="center">
               {activeStep === 2 ? (
                 <Grid container justifyContent="space-between" sx={{ height: '100%' }}>
-                  <Grid item container justifyContent="center" alignItems="center" lg={6}>
+                  <Grid item container justifyContent="center" alignItems="center" lg={6} xs={12}>
                     <LocationSelection />
                   </Grid>
-                  <Grid item lg={6}>
+                  <Grid item lg={6} xs={12}>
                     <LocationDetails setActiveStep={setActiveStep} />
                   </Grid>
                 </Grid>
               ) : (
                 <Grid container item justifyContent="space-evenly">
                   {activeStep !== 3 && (
-                    <Grid container item lg={activeStep === 3 || activeStep === 2 ? 5 : 4}>
+                    <Grid container item xs={12} lg={activeStep === 3 || activeStep === 2 ? 5 : 4}>
                       {getStepContent(activeStep)}
                     </Grid>
                   )}

@@ -44,11 +44,11 @@ export const PlaceData: FC<Props> = ({ isEditable, setLogoFile }) => {
         </Grid>
       </Grid>
       <Grid container item sx={{ mt: '20px' }}>
-        <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
+        <Grid item xs={3} style={{ textAlign: 'center', marginLeft: 20 }}>
           <PlaceLogo isEditable={isEditable} setLogoFile={setLogoFile} />
           <PlaceRating />
         </Grid>
-        <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
+        <Grid item container direction="column" xs={8} sx={{ ml: '30px' }}>
           <PlaceName />
           <PlaceSubtitle />
           <PlaceType />

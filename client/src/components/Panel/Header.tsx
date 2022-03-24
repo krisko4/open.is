@@ -20,14 +20,18 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  [theme.breakpoints.up('sm')]: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+    },
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -64,7 +68,7 @@ const navigationButtons = [
   {
     title: 'Browser',
     icon: <TravelExploreIcon />,
-    url: '/browser',
+    url: '/search',
   },
 ];
 
@@ -81,7 +85,6 @@ const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
             onClick={() => setDrawerOpen(true)}
             edge="start"
             sx={{
-              marginRight: '36px',
               ...(drawerOpen && { display: 'none' }),
             }}
           >
@@ -96,31 +99,6 @@ const Header: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
                 </IconButton>
               </Tooltip>
             ))}
-            {/* <Tooltip title="Home">
-              <IconButton onClick={() => navigate('/')} color="inherit" size="large">
-                <HomeIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Dashboard">
-              <IconButton onClick={() => navigate('')} color="inherit" size="large">
-                <DashboardIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="New place">
-              <IconButton onClick={() => navigate('new-place')} color="inherit" size="large">
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="New business chain">
-              <IconButton onClick={() => navigate('new-business-chain')} color="inherit" size="large">
-                <CloudCircle />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Browser">
-              <IconButton onClick={() => navigate('/search')} color="inherit" size="large">
-                <TravelExploreIcon />
-              </IconButton>
-            </Tooltip> */}
           </Grid>
         </Toolbar>
       </AppBar>

@@ -47,13 +47,13 @@ export const PlaceDashboard: FC = () => {
           </Slide>
         </Grid>
         <Grid container justifyContent="space-around" spacing={1} sx={{ mb: 2 }}>
-          <Grid item lg={4} md={4} sm={4}>
+          <Grid item xs={4}>
             <TotalVisits />
           </Grid>
-          <Grid item lg={4} md={4} sm={4}>
+          <Grid item xs={4}>
             <VisitsToday />
           </Grid>
-          <Grid item lg={4} md={4} sm={4}>
+          <Grid item xs={4}>
             <TotalOpinions />
           </Grid>
         </Grid>
@@ -81,7 +81,7 @@ export const PlaceDashboard: FC = () => {
           </Grid>
         </Grid>
         <Slide in={true} direction="left" timeout={500}>
-          <Grid item lg={7}>
+          <Grid item xs={12} lg={7}>
             <PlaceDetailsCard isCacheable={true} />
           </Grid>
         </Slide>

@@ -194,7 +194,7 @@ export const AccountSettings: FC = () => {
             {({ dirty, errors, isValid }) => (
               <Form>
                 <Grid container justifyContent="center">
-                  <Grid container item rowSpacing={2} lg={8}>
+                  <Grid container item rowSpacing={2} xs={10} lg={8}>
                     <Grid item container>
                       <FastField
                         fullWidth
@@ -244,6 +244,7 @@ export const AccountSettings: FC = () => {
                       <LoadingButton
                         size="large"
                         fullWidth
+                        sx={{ mb: 1 }}
                         variant="contained"
                         type="submit"
                         loading={loading}
@@ -270,7 +271,7 @@ export const AccountSettings: FC = () => {
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
                   alt={userData.fullName}
-                  sx={{ width: 200, height: 200 }}
+                  sx={{ width: 200, height: 200, mt: 1 }}
                 >
                   <Grid
                     justifyContent="center"
@@ -317,7 +318,7 @@ export const AccountSettings: FC = () => {
                 <Typography variant="h6">{userData.email}</Typography>
               </Grid>
               <Grid container justifyContent="center">
-                <Grid item lg={8}>
+                <Grid item xs={8}>
                   <List style={{ flexGrow: 1 }}>
                     <ListItem button>
                       <ListItemIcon>

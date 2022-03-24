@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
   media: {
-    height: 400,
+    // height: 400,
     flexGrow: 1,
     '&&:hover': {
       filter: 'brightness(85%)',

@@ -10,7 +10,7 @@ export const RatingCard: FC = () => {
   const { data: averageNote, isFetching } = useGetAverageNoteForSelectedLocationQuery(locationId as string);
   return (
     <Fade in={true} timeout={2000}>
-      <Card sx={{ flexGrow: 1, height: '370px' }} elevation={3}>
+      <Card sx={{ flexGrow: 1 }} elevation={3}>
         <Grid container direction="column" sx={{ height: '100%', padding: 2 }}>
           <Typography variant="h5">Rating</Typography>
           <Typography variant="subtitle2" style={{ marginBottom: 10 }}>

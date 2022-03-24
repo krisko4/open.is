@@ -7,14 +7,14 @@ interface Props {
 }
 
 const Intro: FC<Props> = ({ setStartClicked }) => (
-  <Grid container sx={{ height: '100%', overflow: 'hidden' }} alignItems="center">
+  <Grid container sx={{ height: '100%', p: 1, overflow: 'hidden' }} alignItems="center">
     <Grid container justifyContent="space-evenly">
       <Fade in={true} timeout={1000}>
-        <Grid item container direction="column" alignItems="center" justifyContent="space-evenly" lg={6}>
+        <Grid item container direction="column" alignItems="center" justifyContent="space-evenly" lg={6} xs={12}>
           <Typography variant="h2">New business chain</Typography>
           <img src={`${process.env.REACT_APP_BASE_URL}/images/chain2.gif`} />
           <Grid justifyContent="center" container>
-            <Grid item lg={8}>
+            <Grid item lg={8} xs={12}>
               <Button fullWidth variant="contained" onClick={() => setStartClicked(true)} size="large" color="primary">
                 Let&quot;s start
               </Button>
@@ -22,7 +22,7 @@ const Intro: FC<Props> = ({ setStartClicked }) => (
           </Grid>
         </Grid>
       </Fade>
-      <Grid item container lg={4} justifyContent="center" alignItems="center">
+      <Grid item container lg={4} xs={12} justifyContent="center" alignItems="center">
         <Slide in timeout={500} direction="left">
           <Card>
             <CardContent>

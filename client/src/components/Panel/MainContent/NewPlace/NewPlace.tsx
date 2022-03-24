@@ -62,10 +62,10 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
       dispatch(resetMap());
       dispatch(resetSelectedLocations());
     };
-  }, []);
+  }, [isEditionMode, dispatch, enqueueInfoSnackbar, initialPlaceData]);
 
   return (
-    <Grid container style={{ height: '100%' }} direction="column">
+    <Grid container sx={{ height: '100%' }} direction="column">
       {activeStep > 0 && activeStep !== 3 && (
         <Paper sx={{ width: '100%' }}>
           <Grid container sx={{ height: '120px' }} alignItems="center">
@@ -82,21 +82,21 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
         </Paper>
       )}
       <Grid container sx={{ flexGrow: 1 }}>
-        <Grid container sx={{ height: '100%' }} justifyContent="space-evenly" alignItems="center">
+        <Grid container sx={{ height: '100%', p: 1 }} justifyContent="space-evenly" alignItems="center">
           <Grid container item justifyContent="space-evenly">
             {activeStep !== 4 && (
-              <Grid container item lg={activeStep === 3 ? 5 : 4}>
+              <Grid container item xs={12} sm={8} lg={activeStep === 3 ? 5 : 4}>
                 {getStepContent(activeStep, isEditionMode || false)}
               </Grid>
             )}
             {activeStep === 4 && (
               <Grid container justifyContent="space-around" sx={{ pt: '20px', overflow: 'hidden', pb: '20px' }}>
                 <Slide in={true} direction="right" timeout={500}>
-                  <Grid item lg={5} sx={{ mr: 2 }}>
+                  <Grid item xs={5} sx={{ mr: 2 }}>
                     <PlaceDetailsCard logoFile={logoFile} setLogoFile={setLogoFile} isEditable={true} />
                   </Grid>
                 </Slide>
-                <Grid item lg={5}>
+                <Grid item xs={5}>
                   <Step5Container
                     initialPlaceData={initialPlaceData}
                     logoFile={logoFile}
@@ -106,7 +106,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
               </Grid>
             )}
             {activeStep === 1 || activeStep === 2 ? (
-              <Grid container item style={{ height: 700, marginTop: 20, overflow: 'hidden' }} lg={6}>
+              <Grid container item style={{ height: 700, marginTop: 20, overflow: 'hidden' }} xs={11} lg={6}>
                 <TransformWrapper
                   limitToBounds={false}
                   doubleClick={{
@@ -128,13 +128,13 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
               </Grid>
             ) : (
               activeStep !== 4 && (
-                <Grid container item lg={4}>
+                <Grid container item lg={4} xs={12}>
                   <Slide in={true} timeout={500}>
                     <div>
                       <Card>
                         <CardContent>
                           <Typography variant="h2">Step {activeStep + 1}</Typography>
-                          <Grid container item style={{ marginTop: 10 }} lg={11}>
+                          <Grid container item style={{ marginTop: 10 }} xs={11}>
                             <Typography variant="body1">
                               {activeStep === 0
                                 ? 'The name of your business will be used in our search engines. Each user will be able to find your place in the browser by entering the name of your business in the search bar.'

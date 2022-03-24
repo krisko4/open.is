@@ -125,7 +125,7 @@ export const OpeningHours: FC<Props> = ({
           )}
         </>
       )}
-      <Grid sx={{ flexGrow: 1 }} container alignItems="center">
+      <Grid sx={{ flexGrow: 1, p: 1 }} container alignItems="center">
         <Grid container justifyContent="space-evenly">
           <Grid
             data-testid="opening-hours-container"

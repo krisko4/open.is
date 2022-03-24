@@ -43,7 +43,7 @@ export const CachedPlaceData: FC = () => {
             </Grid>
           </Grid>
           <Grid container item sx={{ mt: '20px' }}>
-            <Grid item lg={3} style={{ textAlign: 'center', marginLeft: 20 }}>
+            <Grid item xs={3} style={{ textAlign: 'center', marginLeft: 20 }}>
               <CardMedia
                 style={{
                   height: 200,
@@ -61,7 +61,7 @@ export const CachedPlaceData: FC = () => {
                 readOnly
               />
             </Grid>
-            <Grid item container direction="column" lg={8} sx={{ ml: '30px' }}>
+            <Grid item container direction="column" xs={8} sx={{ ml: '30px' }}>
               <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
                 {place.name || 'This is the name of your business'}
               </Typography>
@@ -71,23 +71,23 @@ export const CachedPlaceData: FC = () => {
             </Grid>
           </Grid>
           <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
-            <Grid item lg={10}>
+            <Grid item xs={10}>
               <Card elevation={10} style={{ flexGrow: 1 }}>
-                <CardContent>
+                {/* <CardContent>
                   <div style={{ display: 'inline-block', overflowWrap: 'break-word' }}>
                     <Typography variant="body1">
                       {place.description ||
                         'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
                     </Typography>
                   </div>
-                </CardContent>
+                </CardContent> */}
               </Card>
             </Grid>
-            <Grid item lg={10} style={{ marginTop: 20 }}>
+            <Grid item xs={10} style={{ marginTop: 20 }}>
               <Divider sx={{ width: '100%' }}></Divider>
             </Grid>
           </Grid>
-          <Grid item container lg={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
+          <Grid item container xs={12} justifyContent="space-around" sx={{ mt: '20px', mb: '20px' }}>
             <CachedContactDetails phone={place.phone} email={place.email} website={place.website} />
           </Grid>
           <PlaceTabs isUserOwner={place.isUserOwner} isCacheable={true} />

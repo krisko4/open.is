@@ -39,7 +39,7 @@ export const ImageCarouselItem: FC<Props> = ({ item, address, isEditable, index 
       };
       dispatch(setConcreteImage(updatedImage));
     }
-  }, [img]);
+  }, [img, isEditable, index, dispatch, imageFile]);
 
   const clearImage = () => {
     setImg(null);

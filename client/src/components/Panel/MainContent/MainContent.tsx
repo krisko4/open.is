@@ -18,7 +18,7 @@ export const MainContent: FC = () => {
   const { data: places } = useGetPlacesByUserId();
 
   return (
-    <Grid container item style={{ flexGrow: 1 }}>
+    <Grid container item sx={{ flexGrow: 1 }}>
       <Routes>
         <Route path="*" element={<NoMatch />} />
         <Route index element={places && places.length === 0 ? <NoPlaces /> : <Navigate to="dashboard" />} />

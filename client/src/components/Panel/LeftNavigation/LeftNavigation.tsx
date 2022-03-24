@@ -98,54 +98,77 @@ interface Props {
   setDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
+const DrawerContent: FC<{ drawerOpen: boolean }> = ({ drawerOpen }) => {
   const { data: places } = useGetPlacesByUserId();
   const navigate = useNavigate();
   const { userData } = useLoginContext();
+  return (
+    <Paper sx={{ height: '100%' }}>
+      <Scrollbars autoHide>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar
+              imgProps={{
+                style: { objectFit: 'contain' },
+              }}
+              alt={userData.fullName}
+              src={userData.img as string}
+            />
+          </ListItemAvatar>
+          <ListItemText primary={userData.fullName} secondary="Standard user" />
+        </ListItem>
+        <List>
+          {drawerOpen && <ListSubheader disableSticky>Settings</ListSubheader>}
+          {places &&
+            generateNavigationButtons(places).map((button, index) => (
+              <ListItem
+                key={index}
+                button
+                onClick={() => {
+                  navigate(`${button.url}`);
+                }}
+              >
+                <ListItemIcon>{button.icon}</ListItemIcon>
+                <ListItemText primary={button.name}></ListItemText>
+              </ListItem>
+            ))}
+          <MyPlaces drawerOpen={drawerOpen} />
+          <MyBusinessChains drawerOpen={drawerOpen} />
+        </List>
+      </Scrollbars>
+    </Paper>
+  );
+};
+
+export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
   const theme = useTheme();
 
   return (
-    <Drawer variant="permanent" open={drawerOpen}>
-      <DrawerHeader>
-        <IconButton onClick={() => setDrawerOpen(false)}>
+    <>
+      <Drawer variant="permanent" open={drawerOpen} sx={{ display: { xs: 'none', sm: 'block' } }}>
+        <DrawerHeader>
+          <IconButton onClick={() => setDrawerOpen(false)}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <DrawerContent drawerOpen={drawerOpen} />
+      </Drawer>
+      <MuiDrawer
+        variant="temporary"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '70%' },
+        }}
+      >
+        {/* <IconButton onClick={() => setDrawerOpen(false)}>
           {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
-      </DrawerHeader>
-      <Divider />
-      <Paper sx={{ height: '100%' }}>
-        <Scrollbars autoHide>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar
-                imgProps={{
-                  style: { objectFit: 'contain' },
-                }}
-                alt={userData.fullName}
-                src={userData.img as string}
-              />
-            </ListItemAvatar>
-            <ListItemText primary={userData.fullName} secondary="Standard user" />
-          </ListItem>
-          <List>
-            {drawerOpen && <ListSubheader disableSticky>Settings</ListSubheader>}
-            {places &&
-              generateNavigationButtons(places).map((button, index) => (
-                <ListItem
-                  key={index}
-                  button
-                  onClick={() => {
-                    navigate(`${button.url}`);
-                  }}
-                >
-                  <ListItemIcon>{button.icon}</ListItemIcon>
-                  <ListItemText primary={button.name}></ListItemText>
-                </ListItem>
-              ))}
-            <MyPlaces drawerOpen={drawerOpen} />
-            <MyBusinessChains drawerOpen={drawerOpen} />
-          </List>
-        </Scrollbars>
-      </Paper>
-    </Drawer>
+        </IconButton> */}
+        <Divider />
+        <DrawerContent drawerOpen={drawerOpen} />
+      </MuiDrawer>
+    </>
   );
 };
