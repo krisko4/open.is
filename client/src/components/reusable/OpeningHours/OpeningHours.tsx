@@ -1,30 +1,7 @@
 import { Fade, Grid, Alert } from '@mui/material';
 import React, { FC } from 'react';
+import { defaultOpeningHours } from 'utils/defaults';
 import { OpeningHoursCard } from '../../Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
-
-const defaultHours = {
-  monday: {
-    isOpen: true,
-  },
-  tuesday: {
-    isOpen: true,
-  },
-  wednesday: {
-    isOpen: true,
-  },
-  thursday: {
-    isOpen: true,
-  },
-  friday: {
-    isOpen: true,
-  },
-  saturday: {
-    isOpen: false,
-  },
-  sunday: {
-    isOpen: false,
-  },
-};
 
 export const OpeningHours: FC = () => {
   return (
@@ -34,7 +11,7 @@ export const OpeningHours: FC = () => {
           <Alert severity="info" variant="filled" sx={{ mb: 1 }}>
             This is just an example. You will be able to specify opening hours after your place is registered.
           </Alert>
-          <OpeningHoursCard openingHours={defaultHours} />
+          <OpeningHoursCard openingHours={defaultOpeningHours} />
         </Grid>
       </Grid>
     </Fade>

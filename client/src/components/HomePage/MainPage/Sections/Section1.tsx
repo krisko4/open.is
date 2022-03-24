@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import React, { FC } from 'react';
+import React, { useRef, FC, useEffect, useState } from 'react';
 import { CardMedia, Fade, Grow } from '@mui/material';
 import { styled } from '@mui/styles';
 import { VideoSection } from './VideoSection';

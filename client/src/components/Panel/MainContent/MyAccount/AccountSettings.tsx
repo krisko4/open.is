@@ -172,7 +172,15 @@ export const AccountSettings: FC = () => {
         <CircularProgress color="inherit"></CircularProgress>
       </Backdrop>
       <Fade in={true} timeout={1000}>
-        <Grid container item lg={7} direction="column" justifyContent="space-evenly" alignItems="center">
+        <Grid
+          container
+          item
+          lg={7}
+          order={{ lg: 1, xs: 2 }}
+          direction="column"
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
           <Grid item sx={{ textAlign: 'center' }}>
             <Typography variant="h2">Account credentials</Typography>
             <Typography variant="h6">Manage your personal data</Typography>
@@ -254,7 +262,7 @@ export const AccountSettings: FC = () => {
       </Fade>
 
       <Slide direction="left" in={true}>
-        <Grid container item lg={5}>
+        <Grid container order={{ xs: 1, lg: 2 }} item lg={5}>
           <Paper sx={{ flexGrow: 1 }}>
             <Grid container sx={{ height: '100%' }} alignItems="center">
               <Grid container direction="column" alignItems="center">

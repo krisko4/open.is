@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { CardMedia, Fade, Grow } from '@mui/material';
 import { styled } from '@mui/styles';
 
@@ -22,6 +22,7 @@ export const StyledSection = styled('div')({
   position: 'relative',
   background: 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5))',
 });
+
 export const VideoSection: FC<Props> = ({ children, isVisible, videoSource }) => {
   return (
     <Fade in={isVisible} timeout={1000}>

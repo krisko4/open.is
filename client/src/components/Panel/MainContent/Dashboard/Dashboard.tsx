@@ -41,7 +41,7 @@ export const Dashboard: FC = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   return (
     <Grid container sx={{ flexGrow: 1, height: '100%' }}>
@@ -52,7 +52,7 @@ export const Dashboard: FC = () => {
       ) : (
         totalVisitsData && (
           <Grid container justifyContent="center" sx={{ pb: '50px', pt: '50px' }}>
-            <Grid item lg={11}>
+            <Grid item lg={11} xs={10}>
               <Typography variant="h3">
                 <Grid container>
                   <Grid item lg={10}>
@@ -62,10 +62,10 @@ export const Dashboard: FC = () => {
               </Typography>
               <Typography variant="body1">welcome to your personal dashboard</Typography>
               <Grid container style={{ marginTop: 20 }} spacing={2} justifyContent="space-between">
-                <Grid item lg={6}>
+                <Grid item lg={6} xs={12}>
                   <TotalVisitsCard />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} xs={12}>
                   <TotalOpinionsCard />
                 </Grid>
                 <Grid container item>

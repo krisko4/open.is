@@ -17,6 +17,17 @@ export interface AverageNoteProps {
   average: number;
 }
 
+export type OpeningHoursKeys = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export type OpeningHoursProps = {
+  [key in OpeningHoursKeys]: {
+    start?: Date;
+    end?: Date;
+    valid?: boolean;
+    open: boolean;
+  };
+};
+
 export type ImageType = string | ArrayBuffer | null | File;
 
 export interface CurrentPlaceProps extends LocationProps {

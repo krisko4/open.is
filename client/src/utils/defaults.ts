@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Image } from '../redux-toolkit/slices/PlaceProps';
+import { Image, OpeningHoursProps } from '../redux-toolkit/slices/PlaceProps';
 
 export const defaultNews = [
   {
@@ -60,3 +60,51 @@ export const defaultLocations = [
     averageNote: defaultAverageNote,
   },
 ];
+
+const defaultStartHour = new Date(0, 0, 0, 8);
+const defaultEndHour = new Date(0, 0, 0, 18);
+
+export const defaultOpeningHours: OpeningHoursProps = {
+  monday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+  tuesday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+  wednesday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+  thursday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+  friday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+  saturday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+  sunday: {
+    start: defaultStartHour,
+    end: defaultEndHour,
+    valid: true,
+    open: false,
+  },
+};

@@ -8,16 +8,17 @@ import TextField from '@mui/material/TextField';
 import { getHours } from 'date-fns';
 import frLocale from 'date-fns/locale/fr';
 import { FC, useEffect, useState } from 'react';
+import { OpeningHoursKeys, OpeningHoursProps } from 'redux-toolkit/slices/PlaceProps';
 
 interface Props {
-  day: string;
-  openingHours: any;
-  setOpeningHours: any;
+  day: OpeningHoursKeys;
+  openingHours: OpeningHoursProps;
+  setOpeningHours: React.Dispatch<React.SetStateAction<OpeningHoursProps>>;
 }
 
 export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpeningHours }) => {
-  const [startHour, setStartHour] = useState<any>(openingHours[day].start);
-  const [endHour, setEndHour] = useState<any>(openingHours[day].end);
+  const [startHour, setStartHour] = useState(openingHours[day].start as Date);
+  const [endHour, setEndHour] = useState(openingHours[day].end as Date);
   const [areHoursValid, setHoursValid] = useState(true);
   const [doorColor, setDoorColor] = useState<any>('error');
 
@@ -45,26 +46,25 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
       newOpeningHours[day].end = endHour;
       setOpeningHours(newOpeningHours);
     }
-  }, [startHour, endHour]);
+  }, [startHour, endHour, setOpeningHours]);
 
   useEffect(() => {
-    setStartHour(openingHours[day].start);
-    setEndHour(openingHours[day].end);
-  }, [day]);
+    setStartHour(openingHours[day].start as Date);
+    setEndHour(openingHours[day].end as Date);
+  }, [day, openingHours]);
 
   return (
     <Grid container sx={{ flexGrow: 1 }} direction="column">
       {openingHours[day].open && (
-        <Grid container justifyContent="center" sx={{ mt: 2 }}>
+        <Grid container item justifyContent="center" sx={{ mt: 2 }}>
           <Grid item container justifyContent="flex-end" lg={10}>
             <Button onClick={closePlace} variant="outlined" color="error">
               Close
             </Button>
           </Grid>
-
-          {areHoursValid || (
+          {!areHoursValid && (
             <Grid item lg={10} sx={{ mb: 1, mt: 1 }}>
-              <Alert severity="error" variant="outlined" sx={{ flexGrow: 1 }}>
+              <Alert data-testid="error-alert" severity="error" variant="outlined" sx={{ flexGrow: 1 }}>
                 The difference between opening and closing hour is invalid
               </Alert>
             </Grid>
@@ -77,13 +77,13 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
             <>
               <LocalizationProvider locale={frLocale} dateAdapter={AdapterDateFns}>
                 <Fade in={true} timeout={500}>
-                  <Grid container justifyContent="space-evenly">
+                  <Grid data-testid="time-picker-container" container justifyContent="space-evenly">
                     <StaticTimePicker
                       toolbarTitle="Opening hour"
                       displayStaticWrapperAs="mobile"
                       value={startHour}
                       onChange={(newValue) => {
-                        setStartHour(newValue);
+                        setStartHour(newValue as Date);
                       }}
                       renderInput={(params) => <TextField {...params} />}
                     />
@@ -92,7 +92,7 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
                       displayStaticWrapperAs="mobile"
                       value={endHour}
                       onChange={(newValue) => {
-                        setEndHour(newValue);
+                        setEndHour(newValue as Date);
                       }}
                       renderInput={(params) => <TextField {...params} />}
                     />
@@ -102,7 +102,7 @@ export const SingleDayOpeningHours: FC<Props> = ({ day, openingHours, setOpening
             </>
           ) : (
             <Fade in={true} timeout={500}>
-              <Grid container alignItems="center" direction="column">
+              <Grid container data-testid="closed-container" alignItems="center" direction="column">
                 <Tooltip title="Open" arrow placement="top">
                   <IconButton
                     onClick={() => openPlace()}

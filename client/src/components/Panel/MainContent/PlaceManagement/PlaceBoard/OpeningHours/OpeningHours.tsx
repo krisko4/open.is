@@ -19,17 +19,15 @@ import _ from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { useSetSelectedLocationsAlwaysOpenMutation } from 'redux-toolkit/api/placesApi';
 import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { OpeningHoursProps, OpeningHoursKeys } from 'redux-toolkit/slices/PlaceProps';
+import { defaultOpeningHours } from 'utils/defaults';
 import { useCustomSnackbar } from '../../../../../../utils/snackbars';
 import { OpeningHoursDialog } from './OpeningHoursDialog';
 import { SingleDayOpeningHours } from './SingleDayOpeningHours';
 
-const defaultStartHour = new Date(0, 0, 0, 8);
-const defaultEndHour = new Date(0, 0, 0, 18);
-
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 interface Props {
   selectedLocations?: string[];
-  openingHours?: any;
+  openingHours?: OpeningHoursProps;
   alwaysOpen?: boolean;
   isActive?: boolean;
   locationId?: string;
@@ -45,78 +43,36 @@ export const OpeningHours: FC<Props> = ({
   locationId,
 }) => {
   const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
-  // const { openingHours, alwaysOpen, placeId, isActive } = useOpeningHoursDataSelector()
-  // const alwaysOpen = useIsAlwaysOpenSelector()
 
-  const [value, setValue] = useState('monday');
+  const [value, setValue] = useState<OpeningHoursKeys>('monday');
   const [areHoursValid, setHoursValid] = useState(false);
-  const [checked, setChecked] = useState(alwaysOpen);
+  const [checked, setChecked] = useState(alwaysOpen || false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const businessChainId = useBusinessChainIdSelector();
   const [setSelectedLocationsAlwaysOpen, { isLoading }] = useSetSelectedLocationsAlwaysOpenMutation();
 
-  const [hours, setHours] = useState<any>({
-    monday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-    tuesday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-    wednesday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-    thursday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-    friday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-    saturday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-    sunday: {
-      start: defaultStartHour,
-      end: defaultEndHour,
-      valid: true,
-      open: false,
-    },
-  });
+  const [hours, setHours] = useState<OpeningHoursProps>(defaultOpeningHours);
 
   useEffect(() => {
-    setChecked(alwaysOpen);
+    if (alwaysOpen) {
+      setChecked(alwaysOpen);
+    }
     if (openingHours) {
       const newHours = _.cloneDeep(openingHours);
-      for (const day of Object.keys(newHours)) {
-        newHours[day].valid = true;
+      for (const value of Object.values(newHours)) {
+        value.valid = true;
       }
+      console.log(newHours);
       setHours({ ...newHours });
     }
-  }, [openingHours]);
+  }, [openingHours, alwaysOpen]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: OpeningHoursKeys) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    if (Object.keys(hours).some((day) => !hours[day].valid)) {
+    if (Object.values(hours).some((value) => !value.valid)) {
       setHoursValid(false);
       return;
     }
@@ -153,7 +109,7 @@ export const OpeningHours: FC<Props> = ({
     <Grid container sx={{ height: '100%', overflow: 'hidden' }} direction="column">
       {selectedLocations ? (
         <Slide in={true}>
-          <Alert variant="filled" severity="info">
+          <Alert data-testid="locations-alert" variant="filled" severity="info">
             You have selected {selectedLocations.length} {selectedLocations.length === 1 ? 'location' : 'locations'}.
             The changes will be applied to each selected location.
           </Alert>
@@ -162,7 +118,7 @@ export const OpeningHours: FC<Props> = ({
         <>
           {isActive || (
             <Slide in={true}>
-              <Alert variant="filled" severity="warning">
+              <Alert data-testid="active-alert" variant="filled" severity="warning">
                 Your place is currently not visible in the browser. Please set opening hours to activate your business.
               </Alert>
             </Slide>
@@ -171,23 +127,29 @@ export const OpeningHours: FC<Props> = ({
       )}
       <Grid sx={{ flexGrow: 1 }} container alignItems="center">
         <Grid container justifyContent="space-evenly">
-          <Grid item lg={6} md={10} sx={checked ? { opacity: '0.4', pointerEvents: 'none' } : {}}>
+          <Grid
+            data-testid="opening-hours-container"
+            item
+            lg={6}
+            xs={10}
+            sx={checked ? { opacity: '0.4', pointerEvents: 'none' } : {}}
+          >
             <Slide direction="right" in={true} timeout={1000}>
               <Card sx={{ height: '100%' }}>
                 <Grid container direction="column" sx={{ height: '100%' }}>
                   <Paper>
                     <Tabs value={value} onChange={handleChange} variant="fullWidth">
-                      {days.map((day) => (
-                        <Tab value={day.toLowerCase()} label={day} key={day} />
+                      {Object.keys(hours).map((day) => (
+                        <Tab data-testid="day-tab" value={day} label={day} key={day} />
                       ))}
                     </Tabs>
                   </Paper>
-                  <SingleDayOpeningHours openingHours={hours} setOpeningHours={setHours} day={value.toLowerCase()} />
+                  <SingleDayOpeningHours openingHours={hours} setOpeningHours={setHours} day={value} />
                 </Grid>
               </Card>
             </Slide>
           </Grid>
-          <Grid item lg={5} md={8}>
+          <Grid item lg={5} xs={10}>
             <Slide in={true} timeout={1000} direction="left">
               <Card sx={{ height: '100%' }}>
                 <CardContent>
@@ -224,7 +186,13 @@ export const OpeningHours: FC<Props> = ({
               <Grid container justifyContent="space-between">
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox onChange={(e) => setChecked(e.target.checked)} checked={checked} />}
+                    control={
+                      <Checkbox
+                        data-testid="checkbox"
+                        onChange={(e) => setChecked(e.target.checked)}
+                        checked={checked}
+                      />
+                    }
                     label="My place is always open"
                     labelPlacement="end"
                   />

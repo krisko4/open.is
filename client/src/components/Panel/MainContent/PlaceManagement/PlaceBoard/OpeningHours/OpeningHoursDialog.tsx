@@ -60,7 +60,13 @@ export const OpeningHoursDialog: FC<Props> = ({
   };
 
   return (
-    <Dialog fullScreen open={dialogOpen} onClose={() => setDialogOpen(false)} TransitionComponent={DialogTransition}>
+    <Dialog
+      data-testid="opening-hours-dialog"
+      fullScreen
+      open={dialogOpen}
+      onClose={() => setDialogOpen(false)}
+      TransitionComponent={DialogTransition}
+    >
       <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={() => setDialogOpen(false)} aria-label="close">
@@ -82,7 +88,7 @@ export const OpeningHoursDialog: FC<Props> = ({
         </Toolbar>
       </AppBar>
       <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
-        <Grid item lg={5}>
+        <Grid item xs={10} lg={5}>
           <Alert severity="info" sx={{ mb: 1 }}>
             This is the summary board of your opening hours. Press the button in the top-right corner to save your
             changes.

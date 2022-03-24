@@ -1,8 +1,14 @@
 import { Card, Toolbar, Grid, Typography, Divider, CardContent, Button } from '@mui/material';
 import { format } from 'date-fns';
 import { FC } from 'react';
+import { OpeningHoursKeys, OpeningHoursProps } from 'redux-toolkit/slices/PlaceProps';
 
-export const OpeningHoursCard: FC<any> = ({ openingHours }) => {
+interface Props {
+  openingHours: OpeningHoursProps;
+}
+
+export const OpeningHoursCard: FC<Props> = ({ openingHours }) => {
+  console.log(openingHours);
   return (
     <Card>
       <Toolbar>
@@ -13,21 +19,22 @@ export const OpeningHoursCard: FC<any> = ({ openingHours }) => {
       <Divider />
       <CardContent>
         <Grid container justifyContent="center" sx={{ pt: 1, pb: 1 }}>
-          <Grid container item lg={8}>
-            {Object.keys(openingHours).map((day) => (
+          <Grid container item xs={8}>
+            {Object.entries(openingHours).map(([day, value]) => (
               <Grid container sx={{ mb: 1 }} key={day}>
-                <Grid item container alignItems="center" lg={6}>
-                  <Typography variant="h6">{day.toUpperCase()}</Typography>
+                <Grid item container alignItems="center" xs={6}>
+                  <Typography data-testid="day" variant="h6">
+                    {day.toUpperCase()}
+                  </Typography>
                 </Grid>
-                <Grid item container justifyContent="flex-end" lg={6}>
-                  {!openingHours[day].open ? (
-                    <Button variant="outlined" color="error">
+                <Grid item container justifyContent="flex-end" xs={6}>
+                  {!value.open ? (
+                    <Button data-testid="closed-button" variant="outlined" color="error">
                       Closed
                     </Button>
                   ) : (
-                    <Typography variant="h6">
-                      {format(new Date(openingHours[day].start), 'HH:mm')} -{' '}
-                      {format(new Date(openingHours[day].end), 'HH:mm')}
+                    <Typography variant="h6" data-testid="open-date">
+                      {format(new Date(value.start as Date), 'HH:mm')} -{format(new Date(value.end as Date), 'HH:mm')}
                     </Typography>
                   )}
                 </Grid>
