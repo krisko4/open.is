@@ -91,7 +91,6 @@ export const LoginForm = () => {
           direction="column"
           style={{ marginBottom: 10 }}
         >
-          {/* <img src={`${process.env.REACT_APP_BASE_URL}/images/logo.png`} style={{ width: '300px' }} /> */}
           <Typography variant="h1">Hello!</Typography>
           <Typography variant="h6">Please sign in to continue</Typography>
           {errorMessage && (
@@ -130,15 +129,6 @@ export const LoginForm = () => {
           >
             Sign in
           </LoadingButton>
-          {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <h4>OR</h4>
-                                    </Grid> */}
-          {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
-          {/*    <GoogleLoginButton/>*/}
-          {/*</Grid>*/}
-          {/*<Grid item lg={10}>*/}
-          {/*    <FacebookLoginButton/>*/}
-          {/*</Grid>*/}
           <Typography sx={{ mt: 1 }} variant="caption">
             Don&quot;t have an account?{' '}
             <Link

@@ -1,5 +1,4 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { TestMockWrapper } from 'test-utils/TestMockWrapper';
 import { Auth } from 'components/Auth/Auth';
 import { rest } from 'msw';
