@@ -9,7 +9,7 @@ export const Registration = () => {
 
   return (
     <Drawer anchor="right" open={registrationOpen} onClose={() => setRegistrationOpen(false)}>
-      <Grid container sx={{ width: 800, height: '100%' }} alignItems="center">
+      <Grid container sx={{ height: '100%', width: { xs: '70vw', lg: '45vw' } }} alignItems="center">
         <RegistrationForm />
         {/* <Grid item container alignItems="center" lg={6}
                     style={{ background: 'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.5)),url(https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80)' }}>

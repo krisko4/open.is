@@ -9,7 +9,12 @@ export const Login = () => {
 
   return (
     <Drawer data-testid="auth-drawer" anchor="right" open={loginOpen} onClose={() => setLoginOpen(false)}>
-      <Grid container sx={{ width: 800, height: '100%' }} justifyContent="center" alignItems="center">
+      <Grid
+        container
+        sx={{ height: '100%', width: { xs: '70vw', lg: '45vw' } }}
+        justifyContent="center"
+        alignItems="center"
+      >
         <LoginForm />
       </Grid>
     </Drawer>

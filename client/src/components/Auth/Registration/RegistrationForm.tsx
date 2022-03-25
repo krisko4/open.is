@@ -95,7 +95,7 @@ export const RegistrationForm = () => {
   return (
     <form data-testid="registration-form" style={{ flexGrow: 1 }}>
       <Grid container justifyContent="center" alignItems="center">
-        <Grid container item lg={8} alignItems="center" direction="column">
+        <Grid container item xs={10} lg={8} alignItems="center" direction="column">
           <Typography variant="h1">Hello!</Typography>
           <Typography variant="h6" sx={{ color: 'grey' }}>
             Please sign up to continue
@@ -108,7 +108,7 @@ export const RegistrationForm = () => {
           <Grid container justifyContent="space-evenly" sx={{ mb: 1, mt: 5 }}>
             <TextField
               onKeyDown={isLetter}
-              sx={{ flexGrow: 1, mr: 1 }}
+              sx={{ flexGrow: 1, mr: { lg: 1, xs: 0 }, mb: { lg: 0, xs: 1 } }}
               label="First name"
               helperText={errors.firstName?.message}
               {...register('firstName')}
@@ -173,13 +173,13 @@ export const RegistrationForm = () => {
           >
             Sign up
           </LoadingButton>
-          {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
+          {/* <Grid item xs={10} style={{ textAlign: 'center' }}>
                                         <h4>OR</h4>
                                     </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10 }}>
+                                    <Grid item xs={10} style={{ marginBottom: 10 }}>
                                         <GoogleLoginButton />
                                     </Grid>
-                                    <Grid item lg={10}>
+                                    <Grid item xs={10}>
                                         <FacebookLoginButton />
                                          <Button color="primary" onClick={() => signInWithFacebook()}>Sign in with facebook</Button>
                                     </Grid> */}

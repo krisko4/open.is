@@ -35,7 +35,7 @@ export const Contact: FC = () => {
         </div>
       </Grid>
       <Grid container justifyContent="center">
-        <Grid item lg={7} md={7} sm={11} xs={11} style={{ marginTop: -50, paddingBottom: 50 }}>
+        <Grid item lg={7} md={10} sm={11} xs={11} style={{ marginTop: -50, paddingBottom: 50 }}>
           <Slide in={true} timeout={2000}>
             <Card>
               <CardContent>

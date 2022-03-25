@@ -85,7 +85,7 @@ export const LoginForm = () => {
         <Grid
           container
           item
-          lg={8}
+          xs={8}
           justifyContent="center"
           alignItems="center"
           direction="column"
@@ -120,6 +120,7 @@ export const LoginForm = () => {
           </Link>
           <LoadingButton
             loading={loading}
+            data-cy="login-button"
             fullWidth={true}
             size="large"
             color="primary"
