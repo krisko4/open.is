@@ -11,7 +11,7 @@ describe('Authentication tests', () => {
     cy.contains('My panel').should('exist');
     cy.contains('You have signed in.').should('exist');
   });
-  it('Should display invalid credentials if invalid credentials are provided', () => {
+  it('Should display invalid credentials label if invalid credentials are provided', () => {
     cy.visit(Cypress.env('TEST_URL'));
     cy.get('button').contains('Sign in').click();
     cy.contains('Invalid credentials').should('not.exist');

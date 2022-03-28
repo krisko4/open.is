@@ -1,4 +1,4 @@
-import { Grid, CircularProgress, Fade, ListItem } from '@mui/material';
+import { Grid, CircularProgress, Fade, ListItem, Typography } from '@mui/material';
 import { FC, useState, useRef, useEffect } from 'react';
 import Scrollbars, { positionValues } from 'react-custom-scrollbars';
 import { useNavigate } from 'react-router-dom';
@@ -40,6 +40,7 @@ export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
       try {
         const res = await getPaginatedPlaces(fetchUrl, start.current, limit.current, searcherOptions);
         const newPlaces = res.data.data;
+        console.log(newPlaces);
         if (start.current === 0) {
           dispatch(setSelectedLocations(newPlaces));
         } else {
@@ -48,7 +49,10 @@ export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
         start.current += limit.current;
         if (isFirstFetch.current) {
           isFirstFetch.current = false;
-          total.current = res.data.metadata[0].total;
+          const meta = res.data.metadata;
+          if (meta.length > 0) {
+            total.current = res.data.metadata[0].total;
+          }
         }
       } catch (err) {
         enqueueErrorSnackbar();
@@ -90,6 +94,18 @@ export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
         </Grid>
       ) : (
         <Scrollbars onScrollFrame={handleScroll} autoHide>
+          {places.length === 0 && (
+            <Grid container alignItems="center" direction="column" sx={{ height: '100%' }} justifyContent="center">
+              <Grid container justifyContent="center">
+                <Grid item xs={10}>
+                  <Typography variant="h5" sx={{ mb: 1 }}>
+                    Unfortunately, we could not find any locations matching your requirements.
+                  </Typography>
+                  <img src="https://forum.e-liquid-recipes.com/uploads/default/original/3X/7/e/7e2e2ea07c17c2607dc4ba412ba22fcdd7b50f20.gif" />
+                </Grid>
+              </Grid>
+            </Grid>
+          )}
           {places.map((place, index) => (
             <div key={place.locationId}>
               <Fade in={true} timeout={1000}>
