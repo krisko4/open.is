@@ -73,14 +73,11 @@ export const CachedPlaceData: FC = () => {
           <Grid item container justifyContent="center" sx={{ mt: '10px', mb: '10px' }}>
             <Grid item xs={10}>
               <Card elevation={10} style={{ flexGrow: 1 }}>
-                {/* <CardContent>
+                <CardContent>
                   <div style={{ display: 'inline-block', overflowWrap: 'break-word' }}>
-                    <Typography variant="body1">
-                      {place.description ||
-                        'This is a brief description of your business. In this section you can make your visitors interested in your company.'}
-                    </Typography>
+                    <Typography variant="body1">{place.description}</Typography>
                   </div>
-                </CardContent> */}
+                </CardContent>
               </Card>
             </Grid>
             <Grid item xs={10} style={{ marginTop: 20 }}>

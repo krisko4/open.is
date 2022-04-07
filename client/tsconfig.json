@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2016",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -19,11 +19,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
+    "baseUrl": "src"
   },
-  "include": ["src", "cypress"],
+  
+  "include": [
+    "src/**/*.ts", "src/**/*.tsx", "tests", "cypress"
+  ],
   "exclude": [
     "node_modules",
-    "build"
-  ],
+    "build",
+    "src/*.test.ts"
+  ]
 }

@@ -1,11 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LocalizationProvider, DatePicker } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
+import { differenceInYears } from 'date-fns';
 import * as React from 'react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setEmail } from 'redux-toolkit/slices/emailSlice';
 import * as Yup from 'yup';
@@ -37,6 +40,13 @@ const SignupSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required('This field is required')
     .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  birthdate: Yup.string()
+    .nullable()
+    .test('birthdate', 'You should be at least 18 years old', function (birthdate) {
+      const yearDiff = differenceInYears(new Date(), new Date(birthdate as string));
+      return yearDiff >= 18;
+    })
+    .required('Please enter your date of birth'),
 });
 
 export interface RegistrationInputs {
@@ -46,6 +56,7 @@ export interface RegistrationInputs {
   confirmEmail: string;
   confirmPassword: string;
   password: string;
+  birthdate: Date | null;
 }
 
 export const RegistrationForm = () => {
@@ -58,6 +69,7 @@ export const RegistrationForm = () => {
   const {
     register,
     getValues,
+    control,
     formState: { isValid, errors },
   } = useForm<RegistrationInputs>({
     resolver: yupResolver(SignupSchema),
@@ -69,6 +81,7 @@ export const RegistrationForm = () => {
       confirmEmail: '',
       confirmPassword: '',
       password: '',
+      birthdate: new Date(),
     },
   });
 
@@ -82,7 +95,7 @@ export const RegistrationForm = () => {
       setRegistrationOpen(false);
       setConfirmationOpen(true);
       dispatch(setEmail(userData.email));
-      enqueueSuccessSnackbar('You have successfully registered');
+      enqueueSuccessSnackbar('You have successfully registered your account');
     } catch (err: any) {
       console.error(err);
       enqueueErrorSnackbar();
@@ -124,6 +137,28 @@ export const RegistrationForm = () => {
               label="Last name"
             />
           </Grid>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Controller
+              name="birthdate"
+              control={control}
+              defaultValue={null}
+              render={({ field, fieldState: { error, invalid } }) => (
+                <DatePicker
+                  label="Date of birth"
+                  inputFormat="MM/dd/yyyy"
+                  {...field}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      error={invalid}
+                      helperText={error ? error.message : null}
+                      sx={{ mb: 1, width: '100%' }}
+                    />
+                  )}
+                />
+              )}
+            />
+          </LocalizationProvider>
           <TextField
             fullWidth
             sx={{ mb: 1 }}

@@ -42,9 +42,9 @@ export const Description: FC = () => {
       variant="outlined"
       placeholder="Describe your business in few words"
       error={errors.description?.message ? true : false}
-      helperText={errors.description?.message || `${description.length}/600`}
+      helperText={errors.description?.message || `${description.length}/1000`}
       inputProps={{
-        maxLength: 600,
+        maxLength: 1000,
       }}
     />
   );

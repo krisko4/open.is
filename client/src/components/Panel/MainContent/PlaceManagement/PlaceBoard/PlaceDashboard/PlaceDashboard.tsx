@@ -8,7 +8,7 @@ import {
 } from 'redux-toolkit/api/placesApi';
 import { Status } from '../../../../../../redux-toolkit/slices/PlaceProps';
 import { PlaceDetailsCard } from '../../../NewPlace/PlaceDetailsCard';
-import { ActivityChart } from '../../Charts/ActivityChart';
+import { ActivityChart } from '../../Charts';
 import { PlaceStatus } from './PlaceStatus';
 import { RatingCard } from './RatingCard';
 import { TotalOpinions } from './TotalOpinions';

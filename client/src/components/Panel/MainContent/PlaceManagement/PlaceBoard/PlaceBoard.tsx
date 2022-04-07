@@ -7,8 +7,9 @@ import { NotReady } from '../../../../reusable/NotReady';
 import { PanelTabNavigator } from '../../../../reusable/PanelTabNavigator';
 import { OpeningHoursWrapper } from './OpeningHours/OpeningHoursWrapper';
 import { Opinions } from './Opinions/Opinions';
-import { PlaceDashboard } from './PlaceDashboard/PlaceDashboard.';
-import { PlaceSettings } from './Settings/PlaceSettings';
+import { PlaceDashboard } from './PlaceDashboard';
+import { PlaceSettings } from './Settings';
+import { Subscriptions } from './Subscriptions';
 
 export enum Destinations {
   HOME = 'home',
@@ -89,7 +90,7 @@ export const PlaceBoard: FC = () => {
       {
         name: 'Subscriptions',
         url: Destinations.SUBSCRIPTIONS,
-        content: <NotReady />,
+        content: <Subscriptions />,
       },
     ];
     if (!place?.isBusinessChain) returnedTabs.push(settingsTab);

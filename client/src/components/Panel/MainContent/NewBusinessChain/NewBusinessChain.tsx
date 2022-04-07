@@ -73,7 +73,7 @@ export const NewBusinessChain: FC<Props> = ({ isEditionMode }) => {
               </Grid>
             </Paper>
           )}
-          <Grid container sx={{ flexGrow: 1, p: 1 }}>
+          <Grid container sx={{ flexGrow: 1 }}>
             <Grid container sx={{ height: '100%' }} justifyContent="space-evenly" alignItems="center">
               {activeStep === 2 ? (
                 <Grid container justifyContent="space-between" sx={{ height: '100%' }}>

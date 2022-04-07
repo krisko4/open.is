@@ -5,6 +5,14 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { PopularPlaces } from './PopularPlaces';
 import { SelectPlacesTabs } from './SelectPlacesTabs';
 
+enum PlaceFilters {
+  POPULAR = '/places/active/popular',
+  NEW = '/places/active/new',
+  TOP = '/places/active/top',
+  FAVORITE = '/places/active/favorite',
+  SUBSCRIBED = '/places/active/subscribed',
+}
+
 export const PlaceList: FC = () => {
   const { userData } = useLoginContext();
   return (
@@ -13,15 +21,12 @@ export const PlaceList: FC = () => {
       <Grid container style={{ flexGrow: 1 }}>
         <Routes>
           <Route index element={<Navigate to="popular" />} />
-          <Route path="popular" element={<PopularPlaces key="popular" fetchUrl="/places/active/popular" />} />
-          <Route path="recent" element={<PopularPlaces key="recent" fetchUrl="/places/active/new" />} />
-          <Route path="top" element={<PopularPlaces key="top" fetchUrl="/places/active/top" />} />
-          <Route path="favorite" element={<PopularPlaces key="favorite" fetchUrl="/places/active/favorite" />} />
+          <Route path="popular" element={<PopularPlaces key="popular" fetchUrl={PlaceFilters.POPULAR} />} />
+          <Route path="recent" element={<PopularPlaces key="recent" fetchUrl={PlaceFilters.NEW} />} />
+          <Route path="top" element={<PopularPlaces key="top" fetchUrl={PlaceFilters.TOP} />} />
+          <Route path="favorite" element={<PopularPlaces key="favorite" fetchUrl={PlaceFilters.FAVORITE} />} />
           {userData.isLoggedIn && (
-            <Route
-              path="subscribed"
-              element={<PopularPlaces key="subscribed" fetchUrl="/places/active/subscribed" />}
-            />
+            <Route path="subscribed" element={<PopularPlaces key="subscribed" fetchUrl={PlaceFilters.SUBSCRIBED} />} />
           )}
         </Routes>
       </Grid>

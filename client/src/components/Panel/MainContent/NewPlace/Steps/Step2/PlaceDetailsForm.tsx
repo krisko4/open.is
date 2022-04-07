@@ -9,8 +9,8 @@ import { Description } from './Description';
 import { Subtitle } from './Subtitle';
 
 const schema = yup.object({
-  subtitle: yup.string().required('This field is required').max(100),
-  description: yup.string().required('This field is required').max(600),
+  subtitle: yup.string().required('This field is required').max(100, 'You have exceeded  the maximum word limit'),
+  description: yup.string().required('This field is required').max(1000, 'You have exceeded the maximum word limit'),
   type: yup.string().required(),
 });
 

@@ -62,7 +62,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
       dispatch(resetMap());
       dispatch(resetSelectedLocations());
     };
-  }, [isEditionMode, dispatch, enqueueInfoSnackbar, initialPlaceData]);
+  }, []);
 
   return (
     <Grid container sx={{ height: '100%' }} direction="column">
