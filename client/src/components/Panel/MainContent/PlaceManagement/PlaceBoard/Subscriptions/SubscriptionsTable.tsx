@@ -1,44 +1,100 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { FC } from 'react';
+import { Button, CircularProgress, Grid, IconButton, Tooltip } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { FC, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGetSubscribersForSelectedLocationQuery } from 'redux-toolkit/api';
+import { format } from 'date-fns';
+import { CustomTable, TableData } from 'components/reusable/Table';
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein };
+interface ToolbarProps {
+  selectedRows: TableData[];
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-export const SubscriptionsTable: FC = () => {
+const ToolbarComponent: FC<ToolbarProps> = ({ selectedRows }) => {
+  const handleClick = () => {
+    console.log(selectedRows);
+  };
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Grid container justifyContent="flex-end">
+      {selectedRows.length > 0 && (
+        <Tooltip title="Say hello!">
+          <Button variant="contained" onClick={handleClick} color="primary">
+            Say hello!
+          </Button>
+        </Tooltip>
+      )}
+    </Grid>
+  );
+};
+
+export const SubscriptionsTable: FC = () => {
+  const { locationId } = useParams();
+  const { data: subscribers, isFetching } = useGetSubscribersForSelectedLocationQuery(locationId as string);
+  const tableData = useMemo(() => {
+    if (subscribers && subscribers.length > 0) {
+      const firstSub = subscribers[0];
+      const keys = Object.keys(firstSub) as Array<keyof typeof firstSub>;
+      return {
+        rows: subscribers.map(
+          (sub) =>
+            ({
+              id: sub._id,
+              firstName: sub.firstName,
+              lastName: sub.lastName,
+              email: sub.email,
+              birthdate: format(new Date(sub.birthdate), 'yyyy-MM-dd'),
+              subscribedAt: format(new Date(sub.subscribedAt), 'yyyy-MM-dd'),
+            } as TableData)
+        ),
+        columns: [
+          {
+            key: keys[1],
+            label: 'First name',
+            disablePadding: true,
+            numeric: false,
+          },
+          {
+            key: keys[2],
+            label: 'Last name',
+            disablePadding: true,
+            numeric: false,
+          },
+          {
+            key: keys[3],
+            label: 'E-mail address',
+            disablePadding: true,
+            numeric: false,
+          },
+          {
+            key: keys[4],
+            label: 'Date of birth',
+            disablePadding: true,
+            numeric: true,
+          },
+          {
+            key: keys[5],
+            label: 'Subscribes since',
+            disablePadding: true,
+            numeric: true,
+          },
+        ],
+      };
+    }
+  }, [subscribers]);
+
+  return (
+    <>
+      {isFetching ? (
+        <CircularProgress />
+      ) : (
+        tableData && (
+          <CustomTable
+            tableTitle="Subscribers"
+            rows={tableData.rows}
+            columns={tableData.columns}
+            renderToolbar={(selectedRows) => <ToolbarComponent selectedRows={selectedRows} />}
+          />
+        )
+      )}
+    </>
   );
 };

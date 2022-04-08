@@ -103,6 +103,17 @@ interface AllVisitsProps {
   locations: VisitLocationProps[];
 }
 
+interface Subscriber {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  placeId: string;
+  locationId: string;
+  subscribedAt: Date;
+  birthdate: Date;
+}
+
 export const placesApi = createApi({
   reducerPath: 'placesApi',
   baseQuery: fetchBaseQuery({
@@ -123,6 +134,7 @@ export const placesApi = createApi({
     'SelectedLocations',
     'News',
     'AverageNote',
+    'Subscribers',
   ],
   endpoints: (builder) => ({
     getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
@@ -330,6 +342,10 @@ export const placesApi = createApi({
       query: (locationId) => `/users/${localStorage.getItem('uid')}/subscriptions/${locationId}`,
       providesTags: ['Subscription'],
     }),
+    getSubscribersForSelectedLocation: builder.query<Subscriber[], string>({
+      query: (locationId) => `/places/${locationId}/subscribers`,
+      providesTags: ['Subscribers'],
+    }),
     deletePlace: builder.mutation<void, string>({
       query: (id) => ({
         url: `/places/${id}`,
@@ -360,6 +376,7 @@ export const useGetPlacesByUserId = () => {
 };
 
 export const {
+  useGetSubscribersForSelectedLocationQuery,
   useAddOpinionMutation,
   useIsUserSubscriberQuery,
   useSubscribeLocationMutation,

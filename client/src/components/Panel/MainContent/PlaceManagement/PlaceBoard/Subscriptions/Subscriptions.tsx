@@ -5,7 +5,7 @@ import { SubscriptionsTable } from './SubscriptionsTable';
 export const Subscriptions: FC = () => {
   return (
     <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
-      <Grid item xs={10}>
+      <Grid item xs={11}>
         <SubscriptionsTable />
       </Grid>
     </Grid>
