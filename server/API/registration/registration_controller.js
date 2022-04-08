@@ -2,10 +2,15 @@ const registrationService = require('./registration_service')
 const registrationController = {
 
     registerUser: async (req, res, next) => {
-        const userData = req.body
-        console.log(userData)
+        const {firstName, lastName, password, email, birthdate} = req.body
         try {
-            const token = await registrationService.registerUser(userData)
+            const token = await registrationService.registerUser({
+                firstName,
+                lastName,
+                password,
+                email,
+                birthdate
+            })
             res.status(200).json(token)
         } catch (err) {
             next(err)

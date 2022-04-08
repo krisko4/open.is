@@ -121,7 +121,7 @@ router.post('/',
     cookie('uid').notEmpty().isMongoId(),
     body('name').isString().isLength({ min: 2, max: 50 }),
     body('subtitle').isString().isLength({ min: 1, max: 100 }),
-    body('description').isString().isLength({ min: 1, max: 600 }),
+    body('description').isString().isLength({ min: 1, max: 1000 }),
     body('locations.*.phone').isMobilePhone().notEmpty(),
     body('locations.*.email').isEmail().optional({ nullable: true, checkFalsy: true }),
     body('locations.*.website').optional({ nullable: true, checkFalsy: true }).isURL(),
@@ -147,6 +147,14 @@ router.get('/active/subscribed',
 // router.delete('/', (req, res, next) => {
 //     placeController.deleteAll(req, res, next)
 // })
+
+router.get('/:locationId/subscribers',
+    param('locationId').isMongoId().notEmpty(),
+    cookie('uid').notEmpty().isMongoId(),
+    validateRequest,
+    (req, res, next) => {
+        placeController.getSubscribersForSelectedLocation(req, res, next)
+    })
 
 router.delete('/:placeId',
     param('placeId').notEmpty().isMongoId(),

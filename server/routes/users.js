@@ -79,7 +79,7 @@ router.get(`/:id/subscriptions/:locationId`,
         userController.checkIfUserIsSubscriber(req, res, next)
     })
 
-router.patch('/:id/subscriptions',
+router.post('/:id/subscriptions',
     param('id').notEmpty().isMongoId(),
     body('locationId').notEmpty().isMongoId(),
     cookie('uid').notEmpty().isMongoId(),

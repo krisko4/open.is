@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { NameString, Email, Password, DefaultBoolean, Image, Subscription } = require('./field_types')
+const { NameString, Email, Password, DefaultBoolean, Image, Birthdate, Subscription } = require('./field_types')
 const uniqueValidator = require('mongoose-unique-validator');
 mongoose.set('useCreateIndex', true)
 
@@ -13,13 +13,18 @@ const UserSchema = new mongoose.Schema({
     password: Password,
     isActive: DefaultBoolean,
     img: Image,
+    birthdate: Birthdate,
     subscriptions: [{
         place: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Place'
         },
-        subscribedLocations : [{
-            type : mongoose.Schema.Types.ObjectId
+        subscribedLocations: [{
+            _id: mongoose.Schema.Types.ObjectId,
+            subscribedAt: {
+                type: Date,
+                default: new Date()
+            },
         }]
     }
     ]

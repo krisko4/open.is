@@ -1,4 +1,4 @@
-const userDto = require("../../user/model/user_dto")
+const userDto = require("../../user/dto/user_dto")
 const { format, isToday } = require('date-fns')
 
 const opinionDto = (opinions) => {

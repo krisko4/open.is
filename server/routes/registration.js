@@ -19,6 +19,7 @@ router.post('/',
     body('lastName').notEmpty().isString().isLength({ max: 30 }),
     body('password').isStrongPassword().notEmpty(),
     body('email').isEmail().notEmpty(),
+    body('birthdate').isISO8601().notEmpty(),
     validateRequest,
     (req, res, next) => {
         registrationController.registerUser(req, res, next)

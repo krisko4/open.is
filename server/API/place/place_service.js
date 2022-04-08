@@ -1,7 +1,6 @@
 const Place = require('./model/place')
 const mongoose = require('mongoose')
 const ApiError = require('../../errors/ApiError')
-const fs = require('fs')
 const cloudinary = require('../../config/cloudinary')
 
 
@@ -11,7 +10,6 @@ const placeService = {
 
 
     async getPlaceOwnedByUser(placeId, userId) {
-        console.log(placeId)
         const place = await this.getPlaceById(placeId)
         if (!place) throw ApiError.internal('Invalid placeId')
         if (place.userId.toString() !== userId.toString()) throw ApiError.internal('Illegal operation')
@@ -395,19 +393,7 @@ const placeService = {
     incrementVisitCount: (id) => Place.find({ 'locations._id': id }, { $inc: { 'visitCount': 1 } }, { new: true }).exec(),
     setStatus: (id, status) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.status': status }, { new: true, runValidators: true }).exec(),
     setOpeningHours: (id, hours) => Place.findOneAndUpdate({ 'locations._id': id }, { 'locations.$.openingHours': hours, 'locations.$.isActive': true, 'locations.$.alwaysOpen': false }, { new: true, runValidators: true }).exec(),
-
-    // deletePlace: async (id) => {
-    //     const place = await placeService.getPlaceById(id)
-    //     if (!place) throw new Error('No place with provided id found')
-    //     const imagePath = process.cwd() + `\\public\\images\\places\\` + place.img
-    //     fs.unlink(imagePath, err => {
-    //         if (err) throw new Error(err)
-    //     })
-    //     await Place.findByIdAndDelete(id).exec()
-
-    // },
-
-
+    getLocationByIdAndUserId: (locationId, uid) => Place.findOne({'locations._id' : locationId, userId: uid}).exec(),
     updateNote: async (note, locationId, session) => {
         const place = await Place.findOne({ 'locations._id': locationId }).exec()
         const location = place.locations.find(loc => loc._id.toString() === locationId)

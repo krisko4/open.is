@@ -12,11 +12,6 @@ const placeService = require('../place/place_service')
 
 const userService = {
 
-    // checkEmailAvailability: async (email) => {
-    //     const duplicateUser = await userService.getUserByEmail(email)
-    //     if (duplicateUser ) throw ApiError.internal(ALREADY_EXISTS_MSG)
-    //     return duplicateUser
-    // },
 
     removeProfilePicture: async (uid) => {
         const user = await User.findById(uid).lean().exec()
@@ -47,88 +42,90 @@ const userService = {
         return subscriptions
     },
 
-    removeSubscription: async (locationId, placeId, uid) => {
+
+    removeSubscription: async (locationId, place, uid) => {
         const subscriptions = await userService.getSubscriptions(uid)
         if (!subscriptions) throw ApiError.internal(`User with uid : ${uid} has no subscribed locations`)
-        console.log(subscriptions)
-        let subscribedPlace = subscriptions.find(sub => sub.place.toString() === placeId.toString())
+        let subscribedPlace = subscriptions.find(sub => sub.place.toString() === place._id.toString())
         if (!subscribedPlace) throw ApiError.internal(`User with uid : ${uid} is not a subscriber of place with id: ${placeId}`)
-        const subscribedLocation = subscribedPlace.subscribedLocations.find(loc => loc.toString() === locationId.toString())
+        const subscribedLocation = subscribedPlace.subscribedLocations.find(loc => loc._id.toString() === locationId.toString())
         if (!subscribedLocation) throw ApiError.internal(`User with uid: ${uid} is not a subscriber of location with id: ${locationId}`)
+        if (!place.isBusinessChain) {
+            return User.findByIdAndUpdate(uid,
+                { $pull: { 'subscriptions': { place: place._id } } }, { new: true, upsert: true }
+            ).exec()
+        }
         return User.findByIdAndUpdate(uid,
-            { $pull: { 'subscriptions.$[item].subscribedLocations': locationId } },
-            { arrayFilters: [{ 'item.place': placeId }], new: true, upsert: true }).exec()
+            { $pull: { 'subscriptions.$[item].subscribedLocations': { _id: locationId } } },
+            { arrayFilters: [{ 'item.place': place._id }], new: true, upsert: true }).exec()
 
+    },
+    async getSubscriptionsByPlaceId(uid, placeId) {
+        console.log(uid, placeId)
+        const user = await User.findOne({ _id: uid, 'subscriptions.place': placeId }).lean().populate('subscriptions.place').exec()
+        if (!user) throw ApiError.internal(`User with uid: ${uid} not found.`)
     },
 
     addSubscription: async (locationId, placeId, uid) => {
         const subscriptions = await userService.getSubscriptions(uid)
         let subs = []
+        // if user has not subscribed any places yet
         if (!subscriptions) {
             subs.push({
                 place: placeId,
-                subscribedLocations: [locationId]
+                subscribedLocations: [{
+                    _id: locationId
+                }]
+            })
+            return User.findByIdAndUpdate(uid, { 'subscriptions': subs }, { new: true, upsert: true }).exec()
+        }
+        // if user already has some subscriptions
+        subs = [...subscriptions]
+        // if user has not yet subscribed to that place
+        if (!subs.some(sub => sub.place.toString() === placeId.toString())) {
+            subs.push({
+                place: placeId,
+                subscribedLocations: [{
+                    _id: locationId
+                }]
             })
         }
+        // if user already subscribes a place
         else {
-            subs = [...subscriptions]
-            console.log(subs)
-            if (!subs.some(sub => sub.place.toString() === placeId.toString())) {
-                subs.push({
-                    place: placeId,
-                    subscribedLocations: [locationId]
-                })
-            }
-            else {
-                const isAlreadySubscribed = subs.some(sub => sub.subscribedLocations.some(loc => loc.toString() === locationId))
-                if (isAlreadySubscribed) throw ApiError.internal('User is already a subscriber of this location')
-                const { subscribedLocations } = subs.find(sub => sub.place.toString() === placeId.toString())
-                subscribedLocations.push(locationId)
-            }
+            const isAlreadySubscribed = subs.some(sub => sub.subscribedLocations.some(loc => loc._id.toString() === locationId))
+            if (isAlreadySubscribed) throw ApiError.internal('User is already a subscriber of this location')
+            const { subscribedLocations } = subs.find(sub => sub.place.toString() === placeId.toString())
+            subscribedLocations.push({ _id: locationId })
         }
+        console.log(subs)
         return User.findByIdAndUpdate(uid, { 'subscriptions': subs }, { new: true, upsert: true }).exec()
     },
 
 
     checkIfUserIsSubscriber: async (uid, locationId) => {
-        const user = await User.findOne({_id: uid, 'subscriptions.subscribedLocations' : locationId}).exec() 
+        const user = await User.findOne({ _id: uid, 'subscriptions.subscribedLocations._id': locationId }).exec()
         return user ? true : false
     },
 
     async getSubscribedLocationIds(uid) {
-        const results = await User.find({}, {'subscriptions.subscribedLocations' : 1, _id: 0}).lean().exec()
+        const results = await User.find({}, { 'subscriptions.subscribedLocations': 1, _id: 0 }).lean().exec()
         const locationIds = []
-        for(const result of results){
-            for(const sub of result.subscriptions){
+        for (const result of results) {
+            for (const sub of result.subscriptions) {
                 locationIds.push(...sub.subscribedLocations)
             }
         }
+        console.log(locationIds)
         return locationIds
-
     },
 
     async getSubscribedPlaces(uid) {
         const subscribedLocationIds = await this.getSubscribedLocationIds(uid)
-        
         return subscribedLocationIds
-        //     places = await placeService.getActivePlacesBy(searchObj, start, limit)
-        // const user = await User.findById(uid).lean().populate('subscriptions.place').exec()
-        // if (!user) throw ApiError.internal(`User with uid: ${uid} not found`);
-        // const subscribedPlaces = user.subscriptions && user.subscriptions.map(subscription => {
-        //     const locations = subscription.place.locations.filter(location => {
-        //         if (subscription.subscribedLocations.some(id => id.toString() === location._id.toString())) {
-        //             location.isUserSubscriber = true
-        //             return location
-        //         }
-        //     })
-        //     subscription.place.locations = locations
-        //     return { ...subscription.place }
-        // }) || []
-        // return subscribedPlaces
     },
 
     getSubscribedLocations: async (id) => {
-        
+
         const user = await User.findById(id).lean().exec()
         let subscribedLocations = []
         if (user.subscriptions) {
@@ -155,7 +152,25 @@ const userService = {
             _id: new mongoose.Types.ObjectId,
             ...userData
         }).save({ session })
+    },
 
+    async getSubscribersForSelectedLocation(locationId) {
+        locationId = mongoose.Types.ObjectId(locationId)
+        return User.aggregate()
+            .match({ "subscriptions.subscribedLocations._id": locationId })
+            .unwind("subscriptions")
+            .match({ "subscriptions.subscribedLocations._id": locationId })
+            .unwind("subscriptions.subscribedLocations")
+            .match({ "subscriptions.subscribedLocations._id": locationId })
+            .project({
+                firstName: 1,
+                lastName: 1,
+                email: 1,
+                placeId: "$subscriptions.place",
+                locationId: "$subscriptions.subscribedLocations._id",
+                subscribedAt: "$subscriptions.subscribedLocations.subscribedAt",
+                birthdate: 1
+            })
     },
 
 

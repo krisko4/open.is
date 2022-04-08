@@ -2,13 +2,6 @@ const placeService = require('./place_service')
 const userService = require('../user/user_service')
 const placeDto = require('./model/place_dto')
 const ApiError = require('../../errors/ApiError')
-const visitService = require('../visit/visit_service')
-const visitDto = require('../visit/model/visit_dto')
-const opinionService = require('../opinion/opinion_service')
-const opinionDto = require('../opinion/model/opinion_dto')
-const newsService = require('../news/news_service')
-const newsDto = require('../news/model/news_dto')
-const mongoose = require('mongoose')
 
 const placeController = {
 
@@ -27,6 +20,20 @@ const placeController = {
             return next(err)
         }
 
+    },
+
+    async getSubscribersForSelectedLocation(req, res, next) {
+        try {
+            const {locationId} = req.params
+            const { uid } = req.cookies
+            const selectedLocation = await placeService.getLocationByIdAndUserId(locationId, uid);
+            if(!selectedLocation) throw ApiError.internal('Location not found for provided user id');
+            const subscribers  = await userService.getSubscribersForSelectedLocation(locationId);
+            return res.status(200).json(subscribers);
+        }
+        catch(err){
+            return next(err)
+        }
     },
 
     async setSelectedLocationsAlwaysOpen(req, res, next) {
@@ -222,44 +229,21 @@ const placeController = {
         }
 
     },
-
-    getVisitsNewsOpinionsForPlace: async (place, uid) => {
-        for (const location of place.locations) {
-            const [visits, opinions, news] = await Promise.all([
-                // visitService.getVisitsByLocationId(place._id, location._id, uid),
-                opinionService.getOpinionsBy({ locationId: location._id }),
-                // newsService.getNewsBy({ locationId: location._id }),
-            ])
-            // location.visits = visits && visits.map(visit => visitDto(visit))
-            location.opinions = opinions.map(opinion => opinionDto(opinion))
-            // location.news = news.map(news => newsDto(news))
-        }
-        return place
-    },
     getSubscribedPlaces: async (req, res, next) => {
         const { uid } = req.cookies
         const { start, limit } = req.query
         try {
-            let locationIds = await userService.getSubscribedLocationIds(uid)
-            const searchObj = { 'locations._id': {$in: locationIds} }
-            console.log(searchObj)
+            let subscribedLocations = await userService.getSubscribedLocationIds(uid)
+            const locationIds = subscribedLocations.map(loc => loc._id)
+            const searchObj = { 'locations._id': { $in: locationIds } }
             const places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            console.log(places)
             return res.status(200).json(places[0])
         } catch (err) {
             return next(err)
         }
     },
 
-    getVisitsNewsOpinions: async (places, uid) => {
-        const subscribedLocations = uid && await userService.getSubscribedLocations(uid)
-        places = await Promise.all(places.map(async (place) => {
-            place.locations.forEach(loc => {
-                loc['isUserSubscriber'] = subscribedLocations && subscribedLocations.some(location => location._id.toString() === loc._id.toString())
-            })
-            return placeController.getVisitsNewsOpinionsForPlace(place, uid)
-        }))
-        return places
-    },
 
     async getStatus(req, res, next) {
         try {
@@ -271,25 +255,12 @@ const placeController = {
         }
     },
 
-    async getPlaceById(req, res, next) {
-        try {
-            const { uid } = req.cookies
-            const user = await userService.getUserById(uid)
-            if (!user) throw ApiError.internal('Invalid uid')
-            const { id } = req.params
-            let place = await placeService.getPlaceOwnedByUser(id, uid)
-            // place = await this.getVisitsNewsOpinionsForPlace(place, uid)
-            return res.status(200).json(placeDto(place, uid))
-        } catch (err) {
-            return next(err)
-        }
-    },
 
     async getPlaceByIdAndSelectedLocation(req, res, next) {
         try {
             const { uid } = req.cookies
             const { placeId, locationId } = req.params
-            let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId )
+            let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId)
             return res.status(200).json(placeDto(place, uid))
         } catch (err) {
             return next(err)
