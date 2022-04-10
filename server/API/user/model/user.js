@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
     isActive: DefaultBoolean,
     img: Image,
     birthdate: Birthdate,
+    notificationToken: String,
     subscriptions: [{
         place: {
             type: mongoose.Schema.Types.ObjectId,

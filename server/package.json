@@ -27,6 +27,7 @@
     "express-fileupload": "^1.2.1",
     "express-rate-limit": "^5.5.0",
     "express-validator": "^6.12.1",
+    "firebase-admin": "^10.0.2",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.15",

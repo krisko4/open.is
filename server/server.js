@@ -2,6 +2,7 @@ const cookie = require('cookie')
 const cookieParser = require('cookie-parser')
 const express = require('express');
 require('dotenv').config()
+require('./firebase/firebase-admin')
 const path = require('path');
 const logoutRouter = require('./routes/logout')
 const tokensRouter = require('./routes/tokens')

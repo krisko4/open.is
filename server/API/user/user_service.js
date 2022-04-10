@@ -139,6 +139,7 @@ const userService = {
         const isPasswordValid = bcrypt.compareSync(userData.password, foundUser.password)
         if (!isPasswordValid) throw ApiError.internal(INVALID_CREDENTIALS_MSG)
         if (!foundUser.isActive) throw ApiError.internal(USER_INACTIVE_MSG)
+        await User.findOneAndUpdate({email: userData['email']}, {notificationToken: userData.notificationToken}, {new: true})
         return foundUser
     },
 

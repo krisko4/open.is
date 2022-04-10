@@ -5,6 +5,8 @@ const ApiError = require('../../errors/ApiError')
 const loginController = {
     login: async (req, res, next) => {
         const userData = req.body
+        const {notificationToken} = req.cookies
+        userData['notificationToken'] = notificationToken
         console.log(userData)
         try {
             const { accessToken, refreshToken, uid, fullName , img} = await loginService.login(userData)

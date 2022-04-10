@@ -6,7 +6,7 @@ const newsService = require('../news/news_service')
 const visitService = require('../visit/visit_service')
 const opinionService = require('../opinion/opinion_service')
 const userDto = require('./dto/user_dto')
-const placeDto = require('../place/model/place_dto')
+const greet = require('../../firebase/notifications/greet')
 
 const userController = {
 
@@ -68,13 +68,14 @@ const userController = {
     addSubscription: async (req, res, next) => {
         const { id } = req.params
         const { locationId } = req.body
-        const { uid } = req.cookies
+        const { uid, notificationToken } = req.cookies
         if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
         try {
             const place = await placeService.findByLocationId(locationId)
             if (!place) throw ApiError.badRequest('Invalid placeId')
             if (place.userId === uid) throw ApiError.internal('You cannot subscribe to your own place')
             const updatedUser = await userService.addSubscription(locationId, place._id, uid)
+            greet(notificationToken);
             return res.status(200).json(updatedUser)
         } catch (err) {
             return next(err)
