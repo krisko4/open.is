@@ -324,7 +324,7 @@ export const placesApi = createApi({
     subscribeLocation: builder.mutation<void, string>({
       query: (locationId) => ({
         url: `/users/${localStorage.getItem('uid')}/subscriptions`,
-        method: 'PATCH',
+        method: 'POST',
         body: {
           locationId: locationId,
         },

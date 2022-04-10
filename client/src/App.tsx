@@ -1,11 +1,15 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import { requestToken } from './firebase';
 import { SnackbarProvider } from 'notistack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Router } from 'Router';
 import { LoginContextProvider } from './contexts/LoginContext';
 import mainTheme from './themes/MainTheme';
 
 function App() {
+  useEffect(() => {
+    requestToken();
+  }, []);
   return (
     <StyledEngineProvider injectFirst>
       <SnackbarProvider
