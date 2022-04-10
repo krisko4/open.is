@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, IconButton, Tooltip } from '@mui/material';
+import { Typography, Button, CircularProgress, Grid, IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -30,7 +30,13 @@ export const SubscriptionsTable: FC = () => {
   const { locationId } = useParams();
   const { data: subscribers, isFetching } = useGetSubscribersForSelectedLocationQuery(locationId as string);
   const tableData = useMemo(() => {
-    if (subscribers && subscribers.length > 0) {
+    if (subscribers) {
+      if (subscribers.length === 0) {
+        return {
+          rows: [],
+          columns: [],
+        };
+      }
       const firstSub = subscribers[0];
       const keys = Object.keys(firstSub) as Array<keyof typeof firstSub>;
       return {
@@ -81,19 +87,26 @@ export const SubscriptionsTable: FC = () => {
     }
   }, [subscribers]);
 
+  console.log(tableData);
+
   return (
     <>
       {isFetching ? (
         <CircularProgress />
       ) : (
-        tableData && (
+        tableData &&
+        (tableData.rows.length > 0 ? (
           <CustomTable
             tableTitle="Subscribers"
             rows={tableData.rows}
             columns={tableData.columns}
             renderToolbar={(selectedRows) => <ToolbarComponent selectedRows={selectedRows} />}
           />
-        )
+        ) : (
+          <Grid container justifyContent="center">
+            <Typography variant="h4">Your place does not have any subscribers.</Typography>
+          </Grid>
+        ))
       )}
     </>
   );

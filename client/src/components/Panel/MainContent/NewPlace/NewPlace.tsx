@@ -106,7 +106,15 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
               </Grid>
             )}
             {activeStep === 1 || activeStep === 2 ? (
-              <Grid container item style={{ height: 700, marginTop: 20, overflow: 'hidden' }} xs={11} lg={6}>
+              <Grid
+                container
+                item
+                justifyContent="center"
+                alignItems="center"
+                style={{ height: 700, marginTop: 20, overflow: 'hidden' }}
+                xs={11}
+                lg={6}
+              >
                 <TransformWrapper
                   limitToBounds={false}
                   doubleClick={{

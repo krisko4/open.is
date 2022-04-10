@@ -75,7 +75,7 @@ export const PlaceBoard: FC = () => {
       {
         name: 'Opinions',
         url: Destinations.OPINIONS,
-        content: <Opinions key={key} />,
+        content: <NotReady />,
       },
       {
         name: 'News',
