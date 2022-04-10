@@ -2,6 +2,9 @@ import { getToken, onMessage } from 'firebase/messaging';
 import { Howl } from 'howler';
 import Cookies from 'js-cookie';
 import messaging from './firebase';
+let sound = new Howl({
+  src: [`${process.env.REACT_APP_BASE_URL}/sounds/babka.mp3`],
+});
 export const requestToken = async () => {
   try {
     onMessage(messaging, (payload) => {
@@ -12,8 +15,9 @@ export const requestToken = async () => {
           body: payload.notification?.body,
         };
         console.log(notificationOptions, notificationTitle);
-        const sound = new Howl({
-          src: [`${process.env.REACT_APP_BASE_URL}/sounds/notification.wav`],
+        sound.pause();
+        sound = new Howl({
+          src: [`${process.env.REACT_APP_BASE_URL}/sounds/${notificationTitle}`],
         });
         sound.play();
       }
