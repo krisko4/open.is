@@ -1,7 +1,12 @@
 import myAxios from '../axios/axios';
-import { initialValues } from '../components/HomePage/Contact/ContactForm';
 
-export const sendContactMessage = (values: typeof initialValues) =>
+export interface ContactFormValues {
+  name: string;
+  email: string;
+  content: string;
+}
+
+export const sendContactMessage = (values: ContactFormValues) =>
   myAxios.post('/contact', {
     ...values,
     date: new Date(),

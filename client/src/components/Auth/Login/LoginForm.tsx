@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LoadingButton } from '@mui/lab';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
@@ -10,7 +11,6 @@ import { useAuthContext } from '../../../contexts/AuthContext';
 import { useLoginContext } from '../../../contexts/LoginContext';
 import { login } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';
-import { LoadingButton } from '../../reusable/LoadingButton';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('This is not a valid e-mail').required('This field is required'),

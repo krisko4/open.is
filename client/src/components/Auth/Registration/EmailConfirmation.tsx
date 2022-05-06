@@ -1,14 +1,14 @@
+import { LoadingButton } from '@mui/lab';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { DialogTransition } from 'components/Transitions';
 import React, { FC, useState } from 'react';
 import { useEmailSelector } from 'redux-toolkit/slices/emailSlice';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { resendConfirmationEmail } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';
-import DialogTransition from '../../reusable/DialogTransition';
-import { LoadingButton } from '../../reusable/LoadingButton';
 
 export const EmailConfirmation: FC = () => {
   const { confirmationOpen, setConfirmationOpen, setLoginOpen } = useAuthContext();

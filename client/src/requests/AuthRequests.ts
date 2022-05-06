@@ -4,9 +4,9 @@ import { RegistrationInputs } from '../components/Auth/Registration/Registration
 
 export const confirmRegistrationToken = (token: string) => myAxios.get(`/confirmation/${token}`);
 
-export const login = (loginData: LoginInputs) => myAxios.post('/login', { ...loginData });
+export const login = (loginData: LoginInputs) => myAxios.post('auth/login', { ...loginData });
 
-export const signOut = () => myAxios.get('/logout');
+export const signOut = () => myAxios.get('auth/logout');
 
 export const signUp = (userData: RegistrationInputs) => myAxios.post('/registration', { ...userData });
 

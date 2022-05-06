@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LocalizationProvider, DatePicker } from '@mui/lab';
+import { LocalizationProvider, DatePicker, LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -15,7 +15,6 @@ import * as Yup from 'yup';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { signUp } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';
-import { LoadingButton } from '../../reusable/LoadingButton';
 
 const isLetter = (e: React.KeyboardEvent) => {
   // let char = String.fromCharCode(e.keyCode);

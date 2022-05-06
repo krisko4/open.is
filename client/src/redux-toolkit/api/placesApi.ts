@@ -138,7 +138,7 @@ export const placesApi = createApi({
   ],
   endpoints: (builder) => ({
     getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
-      query: (uid) => `/places?uid=${uid}`,
+      query: (uid) => `/places/search?uid=${uid}`,
       providesTags: [{ type: 'Places', id: 'LIST' }],
     }),
     getPlaceById: builder.query<RawPlaceDataProps, string>({
@@ -189,7 +189,7 @@ export const placesApi = createApi({
     }),
     getSelectedLocations: builder.query<SelectedLocationProps[], GetSelectedLocationsProps>({
       query: ({ start, limit }) => ({
-        url: '/places/active/popular',
+        url: '/places/popular',
         params: {
           start: start,
           limit: limit,
@@ -242,7 +242,7 @@ export const placesApi = createApi({
     }),
     getOpinionsForSelectedLocation: builder.query<OpinionData, string>({
       query: (locationId) => ({
-        url: '/opinions',
+        url: '/opinions/search',
         params: {
           locationId: locationId,
         },
@@ -251,7 +251,7 @@ export const placesApi = createApi({
     }),
     getAllOpinionsByUserId: builder.query<AllOpinionsProps, void>({
       query: () => ({
-        url: '/opinions',
+        url: '/opinions/search',
         params: {
           uid: localStorage.getItem('uid'),
         },
@@ -269,7 +269,7 @@ export const placesApi = createApi({
     }),
     getAllVisitsByUserId: builder.query<AllVisitsProps, void>({
       query: () => ({
-        url: '/visits',
+        url: '/visits/search',
         params: {
           uid: localStorage.getItem('uid'),
         },
