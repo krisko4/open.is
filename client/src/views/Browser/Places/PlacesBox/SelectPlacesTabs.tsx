@@ -3,10 +3,16 @@ import { FC, useMemo } from 'react';
 import { useLoginContext } from 'contexts/LoginContext';
 import { NavigationTabs } from 'components/NavigationTabs';
 
+interface Tab {
+  name: string;
+  url: string;
+  icon: JSX.Element;
+}
+
 export const SelectPlacesTabs: FC = () => {
   const { userData } = useLoginContext();
   const tabs = useMemo(() => {
-    const returnedTabs = [
+    return [
       {
         name: 'Popular',
         url: 'popular',
@@ -27,14 +33,12 @@ export const SelectPlacesTabs: FC = () => {
         url: 'favorite',
         icon: <Favorite />,
       },
-    ];
-    if (userData.isLoggedIn)
-      returnedTabs.push({
+      userData.isLoggedIn && {
         name: 'Subscriptions',
         url: 'subscribed',
         icon: <Subscriptions />,
-      });
-    return returnedTabs;
+      },
+    ] as Tab[];
   }, [userData.isLoggedIn]);
   return <NavigationTabs variant="fullWidth" tabs={tabs} />;
 };

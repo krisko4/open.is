@@ -1,7 +1,6 @@
 import myAxios from '../axios/axios';
 
-export const addNewVisit = (placeId: string) =>
+export const addNewVisit = (locationId: string) =>
   myAxios.post('/visits', {
-    date: new Date(),
-    placeId: placeId,
+    locationId: locationId,
   });

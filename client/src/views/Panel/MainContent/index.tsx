@@ -1,18 +1,18 @@
 import { Grid } from '@mui/material';
 import React, { FC } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useGetPlacesByUserId } from 'redux-toolkit/api/placesApi';
+import { useGetPlacesByUserId } from 'redux-toolkit/api';
 import { NoMatch } from 'routes/Router';
 import { StepContextProvider } from '../../../contexts/StepContext';
-import { BusinessChainManagement } from './BusinessChainManagement/BusinessChainManagement';
+import { BusinessChainManagement } from './BusinessChainManagement';
 import { Dashboard } from './Dashboard/Dashboard';
 import { AccountSettings } from './MyAccount/AccountSettings';
-import { NewBusinessChain } from './NewBusinessChain/NewBusinessChain';
+import { NewBusinessChain } from './NewBusinessChain';
 import businessChainSteps from './NewBusinessChain/steps';
-import { NewPlace } from './NewPlace/NewPlace';
+import { NewPlace } from './NewPlace';
 import newPlaceSteps from './NewPlace/Steps/steps';
-import { NoPlaces } from './NoPlaces/NoPlaces';
-import { PlaceBoard } from './PlaceManagement/PlaceBoard/PlaceBoard';
+import { NoPlaces } from './NoPlaces';
+import { PlaceBoard } from './PlaceManagement/PlaceBoard';
 
 export const MainContent: FC = () => {
   const { data: places } = useGetPlacesByUserId();

@@ -22,14 +22,12 @@ export const getPaginatedPlaces = async (
   limit: number,
   searcherOptions: SearcherOptionsProps[]
 ) => {
-  console.log(searcherOptions);
   const searchParams: any = {};
   searcherOptions.forEach((option) => {
     const key = option.foundBy;
     const value = option.name;
     searchParams[key] = value;
   });
-  console.log(searchParams);
   return myAxios.get(fetchUrl, {
     params: {
       start: start,

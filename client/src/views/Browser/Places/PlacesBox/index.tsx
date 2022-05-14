@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { PlaceDetails } from './PlaceDetails/PlaceDetails';
-import { PlaceList } from './PlacesBox/PlaceList';
+import { PlaceDetails } from '../PlaceDetails';
+import { PlaceList } from './PlaceList';
 
 const PlacesBox: FC = () => {
   return (

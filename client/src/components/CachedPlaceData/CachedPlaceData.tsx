@@ -1,7 +1,7 @@
 import { Card, CardContent, CardMedia, Divider, Grid, Rating, Typography } from '@mui/material';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
 import { PlaceTabs } from '../PlaceData/PlaceTabs';
 import { CachedContactDetails } from './CachedContactDetails';
 import { CachedImageCarousel } from './CachedImageCarousel';
@@ -14,6 +14,7 @@ export const CachedPlaceData: FC = () => {
     placeId: placeId as string,
     locationId: locationId as string,
   });
+  console.log(place);
 
   return (
     <>

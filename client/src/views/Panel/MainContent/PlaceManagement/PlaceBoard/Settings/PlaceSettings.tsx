@@ -2,11 +2,11 @@ import { Grid, CircularProgress } from '@mui/material';
 import _ from 'lodash';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { StepContextProvider } from '../../../../../../contexts/StepContext';
-import { NewPlace } from '../../../NewPlace/NewPlace';
+import { NewPlace } from '../../../NewPlace';
 import newPlaceSteps from '../../../NewPlace/Steps/steps';
 
 export const PlaceSettings: FC = () => {

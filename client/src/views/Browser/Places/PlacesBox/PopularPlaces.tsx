@@ -22,7 +22,6 @@ interface Props {
 export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
   const places = useSelectedLocationsSelector();
   const dispatch = useAppDispatch();
-
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
@@ -40,7 +39,6 @@ export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
       try {
         const res = await getPaginatedPlaces(fetchUrl, start.current, limit.current, searcherOptions);
         const newPlaces = res.data.data;
-        console.log(newPlaces);
         if (start.current === 0) {
           dispatch(setSelectedLocations(newPlaces));
         } else {
@@ -55,6 +53,7 @@ export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
           }
         }
       } catch (err) {
+        console.log(err);
         enqueueErrorSnackbar();
       }
     } else {

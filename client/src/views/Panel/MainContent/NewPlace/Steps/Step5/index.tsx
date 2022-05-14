@@ -18,7 +18,7 @@ import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
 import _ from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAddPlaceMutation, useEditPlaceDataMutation } from 'redux-toolkit/api/placesApi';
+import { useAddPlaceMutation, useEditPlaceDataMutation } from 'redux-toolkit/api';
 import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { useStepContext } from '../../../../../../contexts/StepContext';
 import { useCustomSnackbar } from '../../../../../../utils/snackbars';
@@ -51,7 +51,7 @@ export const Step5: FC<Props> = ({ isEditionMode, initialPlaceData, formData }) 
 
   const editPlace = async () => {
     try {
-      formData.append('_id', currentPlace._id as string);
+      formData.append('locationId', currentPlace._id as string);
       await editPlaceData(formData).unwrap();
       enqueueSuccessSnackbar('You have successfully modified your place');
       setOpen(false);

@@ -2,10 +2,7 @@ import { Slide, Card, CardContent, Grid, Typography } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  useGetOpeningHoursForSelectedLocationQuery,
-  useGetStatusForSelectedLocationQuery,
-} from 'redux-toolkit/api/placesApi';
+import { useGetOpeningHoursForSelectedLocationQuery, useGetStatusForSelectedLocationQuery } from 'redux-toolkit/api';
 import { Status } from '../../../../../../redux-toolkit/slices/PlaceProps';
 import { PlaceDetailsCard } from '../../../NewPlace/PlaceDetailsCard';
 import { ActivityChart } from '../../Charts';

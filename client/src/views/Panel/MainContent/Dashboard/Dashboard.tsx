@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import React, { FC, useEffect, useState } from 'react';
-import { useGetAllVisitsByUserIdQuery } from 'redux-toolkit/api/placesApi';
+import { useGetAllVisitsByUserIdQuery } from 'redux-toolkit/api';
 import { VisitCount } from '../../../../redux-toolkit/slices/PlaceProps';
 import { ActivityChart } from './Charts/ActivityChart';
 import { TotalOpinionsCard } from './TotalOpinionsCard';

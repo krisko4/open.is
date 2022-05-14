@@ -7,7 +7,7 @@ import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
 import { resetMap } from 'redux-toolkit/slices/mapSlice';
 import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
 import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails/LocationDetails';
+import { LocationDetails } from '../../../../NewBusinessChain/LocationDetails';
 import { LocationSelection } from '../../../../NewBusinessChain/LocationDetails/LocationSelection';
 
 interface Props {

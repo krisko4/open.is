@@ -7,7 +7,7 @@ import { resetMap } from 'redux-toolkit/slices/mapSlice';
 import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { AuthContextProvider } from '../../contexts/AuthContext';
 import FirstHeader from './FirstHeader';
-import { MapBox } from './Places/MapBox/MapBox';
+import { MapBox } from '../../components/MapBox';
 import PlacesBox from './Places/PlacesBox';
 import { SecondHeader } from './SecondHeader';
 

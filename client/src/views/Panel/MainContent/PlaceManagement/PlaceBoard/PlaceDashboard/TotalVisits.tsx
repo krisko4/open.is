@@ -3,7 +3,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from '@mui/material';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api';
 
 export const TotalVisits: FC = () => {
   const { locationId } = useParams();
@@ -12,14 +12,12 @@ export const TotalVisits: FC = () => {
   });
 
   const visitsDiff = useMemo(() => {
-    console.log(visits);
     if (visits) {
-      const totalVisits = visits.total;
-      const visitsToday = visits.today;
-      if (totalVisits === visitsToday) {
-        return visitsToday * 100;
+      const { total, today } = visits;
+      if (total === today) {
+        return today * 100;
       }
-      return Math.round(((totalVisits / (totalVisits - visitsToday)) * 100 - 100) * 10) / 10;
+      return Math.round(((total / (total - today)) * 100 - 100) * 10) / 10;
     }
     return 0;
   }, [visits]);

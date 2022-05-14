@@ -10,7 +10,7 @@ import { useSelectedAddressSelector } from 'redux-toolkit/slices/selectedAddress
 import { SelectedLocationProps, setSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
 import { getPlaceByLatLng } from '../../../../../../requests/PlaceRequests';
 import { useCustomSnackbar } from '../../../../../../utils/snackbars';
-import { MapBox } from '../../../../../Browser/Places/MapBox/MapBox';
+import { MapBox } from '../../../../../../components/MapBox';
 
 interface Props {
   setActiveStep?: React.Dispatch<React.SetStateAction<number>>;

@@ -4,7 +4,7 @@ import { PanelTabNavigator } from 'components/PanelTabNavigator';
 import * as React from 'react';
 import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdQuery } from 'redux-toolkit/api/placesApi';
+import { useGetPlaceByIdQuery } from 'redux-toolkit/api';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setBusinessChain } from 'redux-toolkit/slices/businessChainSlice';
 import { Locations } from './Locations/Locations';

@@ -4,7 +4,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api';
 
 export const VisitsToday: FC = () => {
   const [visitsToday, setVisitsToday] = useState(0);

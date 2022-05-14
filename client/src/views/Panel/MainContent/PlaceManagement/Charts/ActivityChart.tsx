@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api';
 import { StatisticChart } from '../../Dashboard/StatisticChart';
 import { CircularProgress } from '@mui/material';
 import { useParams } from 'react-router-dom';

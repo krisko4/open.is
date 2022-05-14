@@ -3,7 +3,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from '@mui/material';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api';
 
 export const TotalOpinions: FC<any> = () => {
   const { locationId } = useParams();

@@ -2,12 +2,12 @@ import { Box, CircularProgress } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetPlacesByUserId } from 'redux-toolkit/api/placesApi';
+import { useGetPlacesByUserId } from 'redux-toolkit/api';
 import { setPlaces } from 'redux-toolkit/slices/placesSlice';
 import { useAppDispatch } from '../../redux-toolkit/hooks';
 import Header from './Header';
-import { DrawerHeader, LeftNavigation } from './LeftNavigation/LeftNavigation';
-import { MainContent } from './MainContent/MainContent';
+import { DrawerHeader, LeftNavigation } from './LeftNavigation';
+import { MainContent } from './MainContent';
 
 export const Panel: FC = () => {
   const { isFetching, data, isSuccess } = useGetPlacesByUserId();

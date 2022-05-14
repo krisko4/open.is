@@ -14,7 +14,7 @@ import { FC, useRef, useState } from 'react';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { LoadingButton } from '../Buttons/LoadingButton';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import { useAddNewsMutation } from 'redux-toolkit/api/placesApi';
+import { useAddNewsMutation } from 'redux-toolkit/api';
 import { DialogTransition } from 'components/Transitions';
 
 interface Props {

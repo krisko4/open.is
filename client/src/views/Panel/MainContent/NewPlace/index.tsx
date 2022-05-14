@@ -11,10 +11,10 @@ import { useStepContext } from '../../../../contexts/StepContext';
 import { useCustomSnackbar } from '../../../../utils/snackbars';
 import { PlaceDetailsCard } from './PlaceDetailsCard';
 import { NewPlaceStepper } from './Steps/NewPlaceStepper';
-import { Step1 } from './Steps/Step1/Step1';
-import { Step2 } from './Steps/Step2/Step2';
-import { Step3 } from './Steps/Step3/Step3';
-import { Step4 } from './Steps/Step4/Step4';
+import { Step1 } from './Steps/Step1';
+import { Step2 } from './Steps/Step2';
+import { Step3 } from './Steps/Step3';
+import { Step4 } from './Steps/Step4';
 import { Step5Container } from './Steps/Step5Container';
 
 function getStepContent(step: number, isEditionMode: boolean) {
@@ -44,6 +44,7 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('no kiszka');
     if (isEditionMode)
       enqueueInfoSnackbar(
         'In edition mode you can switch freely between steps. Click on the step label to check it out.'

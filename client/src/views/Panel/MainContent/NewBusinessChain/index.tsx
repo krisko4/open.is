@@ -10,10 +10,10 @@ import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSl
 import { useStepContext } from '../../../../contexts/StepContext';
 import { PlaceDetailsCard } from '../NewPlace/PlaceDetailsCard';
 import { NewPlaceStepper } from '../NewPlace/Steps/NewPlaceStepper';
-import { Step1 } from '../NewPlace/Steps/Step1/Step1';
-import { Step2 } from '../NewPlace/Steps/Step2/Step2';
+import { Step1 } from '../NewPlace/Steps/Step1';
+import { Step2 } from '../NewPlace/Steps/Step2';
 import Intro from './Intro';
-import { LocationDetails } from './LocationDetails/LocationDetails';
+import { LocationDetails } from './LocationDetails';
 import { LocationSelection } from './LocationDetails/LocationSelection';
 import { Step5Container } from './Step5Container';
 

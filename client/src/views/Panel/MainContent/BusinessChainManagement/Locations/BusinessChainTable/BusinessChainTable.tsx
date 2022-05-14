@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocationsSelector, useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { Destinations } from '../../../PlaceManagement/PlaceBoard/PlaceBoard';
+import { Destinations } from '../../../PlaceManagement/PlaceBoard';
 import { CustomTableHead } from './CustomTableHead';
 import { TableToolbar } from './TableToolbar/TableToolbar';
 

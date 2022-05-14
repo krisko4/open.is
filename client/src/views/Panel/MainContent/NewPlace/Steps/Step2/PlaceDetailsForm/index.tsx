@@ -1,12 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Grid } from '@mui/material';
+import { useStepContext } from 'contexts';
 import React, { FC, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { useStepContext } from '../../../../../../contexts/StepContext';
-import { BusinessType } from './BusinessType';
-import { Description } from './Description';
-import { Subtitle } from './Subtitle';
+import { BusinessType, Subtitle, Description } from './Fields';
 
 const schema = yup.object({
   subtitle: yup.string().required('This field is required').max(100, 'You have exceeded  the maximum word limit'),

@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { placesApi } from './api/placesApi';
 import { businessChainReducer } from './slices/businessChainSlice';
 import { currentPlaceReducer } from './slices/currentPlaceSlice';
 import { emailReducer } from './slices/emailSlice';
@@ -11,6 +10,8 @@ import { selectedLocationsReducer } from './slices/selectedLocationsSlice';
 import { formLocationsReducer } from './slices/formLocationsSlice';
 import { Provider } from 'react-redux';
 import { FC } from 'react';
+import { eventReducer } from './slices/eventSlice';
+import { placesApi } from './api';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     searcherOptions: searcherOptionsReducer,
     formLocations: formLocationsReducer,
     email: emailReducer,
+    event: eventReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(placesApi.middleware),
 });

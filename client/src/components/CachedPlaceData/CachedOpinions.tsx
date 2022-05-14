@@ -19,7 +19,7 @@ import Grid from '@mui/material/Grid';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAddOpinionMutation, useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useAddOpinionMutation, useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api';
 import { useLoginContext } from '../../contexts/LoginContext';
 import { useCustomSnackbar } from '../../utils/snackbars';
 import { LoadingButton } from '../Buttons/LoadingButton';

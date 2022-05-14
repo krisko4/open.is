@@ -2,7 +2,7 @@ import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { Slide, CircularProgress, Card, CardContent, Typography, Grid } from '@mui/material';
 import { FC, useState, useEffect } from 'react';
-import { useGetAllVisitsByUserIdQuery } from 'redux-toolkit/api/placesApi';
+import { useGetAllVisitsByUserIdQuery } from 'redux-toolkit/api';
 export const TotalVisitsCard: FC = () => {
   const [totalVisitsDiff, setTotalVisitsDiff] = useState(0);
   const { data: totalVisitsData, isFetching } = useGetAllVisitsByUserIdQuery();

@@ -27,7 +27,7 @@ import { useCustomSnackbar } from '../../../../utils/snackbars';
 import { PasswordChange } from './PasswordChange';
 import * as Yup from 'yup';
 import { PhotoCamera } from '@mui/icons-material';
-import { ImageUpload } from 'components/ImageUpload';
+import { ImageUpload } from 'components/ImageUpload/ImageUpload';
 
 const AccountDetailsSchema = Yup.object().shape({
   email: Yup.string().email('This is not a valid e-mail address').required('E-mail address is required'),

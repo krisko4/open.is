@@ -8,12 +8,13 @@ interface Props {
 }
 
 export const OpeningHoursCard: FC<Props> = ({ openingHours }) => {
-  console.log(openingHours);
   return (
     <Card>
       <Toolbar>
         <Grid container sx={{ pb: 1, pt: 1 }} justifyContent="center">
-          <Typography variant="h2">OPENING HOURS</Typography>
+          <Typography sx={{ textAlign: 'center' }} variant="h2">
+            OPENING HOURS
+          </Typography>
         </Grid>
       </Toolbar>
       <Divider />

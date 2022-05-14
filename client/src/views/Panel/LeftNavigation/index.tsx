@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MuiDrawer from '@mui/material/Drawer';
 import { useLoginContext } from 'contexts/LoginContext';
 import { FC } from 'react';
-import { useGetPlacesByUserId } from 'redux-toolkit/api/placesApi';
+import { useGetPlacesByUserId } from 'redux-toolkit/api';
 import { RawPlaceDataProps } from 'redux-toolkit/slices/PlaceProps';
 import { MyBusinessChains } from './MyBusinessChains/MyBusinessChains';
 import { MyPlaces } from './MyPlaces';

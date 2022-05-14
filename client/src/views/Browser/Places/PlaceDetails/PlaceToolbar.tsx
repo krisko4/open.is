@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLoginContext } from 'contexts/LoginContext';
 import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
 import { setMapCoords, closePopup } from 'redux-toolkit/slices/mapSlice';
-import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'redux-toolkit/api/placesApi';
+import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'redux-toolkit/api';
 import { skipToken } from '@reduxjs/toolkit/query';
 
 interface Props {

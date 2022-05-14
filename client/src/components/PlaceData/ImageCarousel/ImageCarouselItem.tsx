@@ -4,7 +4,7 @@ import { CardMedia, Grid, IconButton, Slide, Typography } from '@mui/material';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from 'redux-toolkit/hooks';
 import { setConcreteImage } from 'redux-toolkit/slices/currentPlaceSlice';
-import { ImageUpload } from '../../ImageUpload';
+import { ImageUpload } from '../../ImageUpload/ImageUpload';
 
 interface Image {
   img: string;

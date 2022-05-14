@@ -2,10 +2,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { Fade, Button, Grid, Typography, CircularProgress } from '@mui/material';
 import React, { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetOpeningHoursForSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetOpeningHoursForSelectedLocationQuery } from 'redux-toolkit/api';
 import { useColorMode } from '../../contexts/ColorModeContext';
 import { OpeningHoursCard } from '../../views/Panel/MainContent/PlaceManagement/PlaceBoard/OpeningHours/OpeningHoursCard';
-import { Destinations } from '../../views/Panel/MainContent/PlaceManagement/PlaceBoard/PlaceBoard';
+import { Destinations } from '../../views/Panel/MainContent/PlaceManagement/PlaceBoard';
 
 export const CachedOpeningHours: FC = () => {
   const { mode } = useColorMode();

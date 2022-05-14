@@ -8,7 +8,7 @@ import { Button, Grid, InputAdornment, SxProps, TextField, Theme, Typography } f
 import { FC, useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import ReactPhoneInput from 'react-phone-input-material-ui';
-import { useChangeContactDetailsForSelectedLocationsMutation } from 'redux-toolkit/api/placesApi';
+import { useChangeContactDetailsForSelectedLocationsMutation } from 'redux-toolkit/api';
 import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
 import * as yup from 'yup';
 import { ContactData } from '../../../../../../../requests/PlaceRequests';

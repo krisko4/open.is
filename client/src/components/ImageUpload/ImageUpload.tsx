@@ -14,7 +14,6 @@ export const ImageUpload: FC<Props> = ({ name, children, setImg, setImageFile })
   const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const image = event.target.files[0];
-      console.log(image.size);
       if (image.size > 2000000) {
         enqueueErrorSnackbar('The size of selected file exceeds maximum size limit, which is 2 MB');
         return;

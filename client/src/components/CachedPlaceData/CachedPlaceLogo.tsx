@@ -1,7 +1,7 @@
 import { CardMedia } from '@mui/material';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
 
 export const CachedPlaceLogo: FC = () => {
   const { placeId, locationId } = useParams();

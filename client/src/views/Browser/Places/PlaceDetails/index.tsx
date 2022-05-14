@@ -5,14 +5,11 @@ import { CachedPlaceData } from 'components/CachedPlaceData/CachedPlaceData';
 import React, { FC, useEffect } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
 import { addNewVisit } from 'requests/VisitRequests';
 import { PlaceToolbar } from './PlaceToolbar';
 
 export const PlaceDetails: FC = () => {
-  // const { setPopupOpen, setPlaceCoords, setPopupIndex } = useMapContext()
-  // const dispatch = useAppDispatch()
-
   const { placeId, locationId } = useParams();
   const { data: place, isFetching } = useGetPlaceByIdAndSelectedLocationQuery({
     placeId: placeId as string,

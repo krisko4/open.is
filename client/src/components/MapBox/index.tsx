@@ -3,7 +3,7 @@ import { FC, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { useMapDataSelector } from 'redux-toolkit/slices/mapSlice';
 import { useSelectedLocationsSelector } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { useColorMode } from '../../../../contexts/ColorModeContext';
+import { useColorMode } from '../../contexts/ColorModeContext';
 import { PlaceMarker } from './PlaceMarker';
 import { SetViewOnClick } from './SetViewOnClick';
 

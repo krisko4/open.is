@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import _ from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
-import { useSetSelectedLocationsAlwaysOpenMutation } from 'redux-toolkit/api/placesApi';
+import { useSetSelectedLocationsAlwaysOpenMutation } from 'redux-toolkit/api';
 import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
 import { OpeningHoursProps, OpeningHoursKeys } from 'redux-toolkit/slices/PlaceProps';
 import { defaultOpeningHours } from 'utils/defaults';

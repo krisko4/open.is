@@ -7,9 +7,9 @@ import { LoginContextProvider } from './contexts/LoginContext';
 import mainTheme from './themes/MainTheme';
 
 function App() {
-  useEffect(() => {
-    requestToken();
-  }, []);
+  // useEffect(() => {
+  //   requestToken();
+  // }, []);
   return (
     <StyledEngineProvider injectFirst>
       <SnackbarProvider

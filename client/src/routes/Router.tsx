@@ -2,7 +2,7 @@ import { CssBaseline } from '@mui/material';
 import React, { FC } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Confirmation } from '../components/Auth/Confirmation/Confirmation';
-import { Panel } from '../views/Panel/Panel';
+import { Panel } from '../views/Panel';
 import { ColorModeContextProvider } from '../contexts/ColorModeContext';
 import { BrowserTheme } from '../themes/BrowserTheme';
 import { PanelTheme } from '../themes/PanelTheme';

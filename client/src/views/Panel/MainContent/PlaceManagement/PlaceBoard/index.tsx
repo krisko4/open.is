@@ -3,8 +3,9 @@ import { NotReady } from 'components/NotReady';
 import { PanelTabNavigator } from 'components/PanelTabNavigator';
 import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api/placesApi';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
 import { useCustomSnackbar } from 'utils/snackbars';
+import { Events } from './Events';
 import { OpeningHoursWrapper } from './OpeningHours/OpeningHoursWrapper';
 import { Opinions } from './Opinions/Opinions';
 import { PlaceDashboard } from './PlaceDashboard';
@@ -70,7 +71,7 @@ export const PlaceBoard: FC = () => {
       {
         name: 'Events',
         url: Destinations.EVENTS,
-        content: <NotReady />,
+        content: <Events />,
       },
       {
         name: 'Opinions',
