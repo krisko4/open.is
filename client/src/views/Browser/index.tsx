@@ -10,6 +10,8 @@ import FirstHeader from './FirstHeader';
 import { MapBox } from '../../components/MapBox';
 import PlacesBox from './Places/PlacesBox';
 import { SecondHeader } from './SecondHeader';
+import { Routes, Route } from 'react-router';
+import { EventBoard } from './Events';
 
 export const Browser: FC = () => {
   const dispatch = useAppDispatch();
@@ -28,19 +30,29 @@ export const Browser: FC = () => {
         <FirstHeader />
         <Auth />
       </AuthContextProvider>
-      <SecondHeader />
-      <Grid container style={{ flexGrow: 1, overflow: 'hidden' }}>
-        <Slide in={true} direction="right">
-          <Grid item lg={5} xs={12} order={{ lg: 1, xs: 2 }}>
-            <PlacesBox />
-          </Grid>
-        </Slide>
-        <Slide in={true} direction="left">
-          <Grid item lg={7} xs={12} order={{ lg: 2, xs: 1 }}>
-            <MapBox />
-          </Grid>
-        </Slide>
-      </Grid>
+      <Routes>
+        <Route path="/events/*" element={<EventBoard />} />
+        <Route
+          path="/*"
+          element={
+            <>
+              <SecondHeader />
+              <Grid container style={{ flexGrow: 1, overflow: 'hidden' }}>
+                <Slide in={true} direction="right">
+                  <Grid item lg={5} xs={12} order={{ lg: 1, xs: 2 }}>
+                    <PlacesBox />
+                  </Grid>
+                </Slide>
+                <Slide in={true} direction="left">
+                  <Grid item lg={7} xs={12} order={{ lg: 2, xs: 1 }}>
+                    <MapBox />
+                  </Grid>
+                </Slide>
+              </Grid>
+            </>
+          }
+        />
+      </Routes>
     </Grid>
   );
 };

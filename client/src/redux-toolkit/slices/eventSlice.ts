@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { EventData } from 'redux-toolkit/api/types';
 import { useAppSelector } from 'redux-toolkit/hooks';
 import { ImageType } from './PlaceProps';
 
@@ -10,16 +11,27 @@ export interface EventProps {
   endDate?: string;
 }
 
-const initialState: EventProps = {
+interface StateProps extends EventProps {
+  selectedEvents: EventData[];
+}
+
+const initialState: StateProps = {
   title: '',
   content: '',
   img: `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`,
+  selectedEvents: [],
 };
 
 const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {
+    setSelectedEvents: (state, action: PayloadAction<EventData[]>) => {
+      state.selectedEvents = action.payload;
+    },
+    addEvents: (state, action: PayloadAction<EventData[]>) => {
+      state.selectedEvents.push(...action.payload);
+    },
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
@@ -46,6 +58,8 @@ export const useContentSelector = () => useAppSelector((state) => state.event.co
 export const useImageSelector = () => useAppSelector((state) => state.event.img);
 export const useStartDateSelector = () => useAppSelector((state) => state.event.startDate);
 export const useEndDateSelector = () => useAppSelector((state) => state.event.endDate);
+export const useSelectedEventsSelector = () => useAppSelector((state) => state.event.selectedEvents);
 
 export const eventReducer = eventSlice.reducer;
-export const { setTitle, setContent, setImg, setStartDate, setEndDate, reset } = eventSlice.actions;
+export const { setTitle, setContent, setSelectedEvents, addEvents, setImg, setStartDate, setEndDate, reset } =
+  eventSlice.actions;

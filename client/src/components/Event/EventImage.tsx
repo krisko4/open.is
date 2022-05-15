@@ -13,7 +13,7 @@ export const EventImage: FC<Props> = ({ setImageFile }) => {
   return (
     <UploadCardMedia
       isEditable={true}
-      style={{ height: '400px' }}
+      style={{ height: '400px', width: '100%' }}
       setImageFile={setImageFile}
       setCurrentImg={setCurrentImg}
       currentImg={currentImg}

@@ -7,7 +7,7 @@ interface Props {
   isEditable?: boolean;
   setImageFile?: React.Dispatch<React.SetStateAction<File | null>>;
   currentImg: string | ArrayBuffer | File | null;
-  setCurrentImg: React.Dispatch<React.SetStateAction<string | ArrayBuffer | File | null>>;
+  setCurrentImg?: React.Dispatch<React.SetStateAction<string | ArrayBuffer | File | null>>;
   style?: React.CSSProperties;
 }
 export const UploadCardMedia: FC<Props> = ({ currentImg, setCurrentImg, style, isEditable, setImageFile }) => {

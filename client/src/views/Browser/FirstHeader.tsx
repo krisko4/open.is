@@ -23,6 +23,12 @@ const FirstHeader: FC = () => {
     <AppBar position="static">
       <NotificationDrawer open={notificationsOpen} setOpen={setNotificationsOpen} />
       <Toolbar>
+        <Button onClick={() => navigate('')} color="primary">
+          Home
+        </Button>
+        <Button onClick={() => navigate('events/today')} color="primary">
+          Events
+        </Button>
         <Grid container alignItems="center" justifyContent="flex-end">
           <ColorModeSwitch />
           <Tooltip title="Home">

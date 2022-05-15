@@ -7,9 +7,9 @@ import React, { FC, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useParams } from 'react-router-dom';
 import { useGetNewsByLocationIdQuery } from 'redux-toolkit/api';
-import { useLoginContext } from '../../contexts/LoginContext';
-import { NewsDialog } from '../News/NewsDialog';
-import { NewsItem } from '../News/NewsItem';
+import { useLoginContext } from '../../../contexts/LoginContext';
+import { NewsDialog } from '../../News/NewsDialog';
+import { NewsItem } from '../../News/NewsItem';
 
 interface Props {
   isUserOwner?: boolean;

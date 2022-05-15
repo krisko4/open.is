@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { useLoginContext } from 'contexts/LoginContext';
 import { FC, useMemo } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { PopularPlaces } from './PopularPlaces';
+import { FilteredPlaces } from './FilteredPlaces';
 import { SelectPlacesTabs } from './SelectPlacesTabs';
 
 enum PlaceFilters {
@@ -51,7 +51,7 @@ export const PlaceList: FC = () => {
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={<PopularPlaces key={route.path} fetchUrl={route.filter} />}
+                  element={<FilteredPlaces key={route.path} fetchUrl={route.filter} />}
                 />
               )
           )}

@@ -28,6 +28,7 @@ export interface VisitData {
 }
 
 export interface EventData {
+  _id: string;
   title: string;
   content: string;
   img: string;

@@ -19,7 +19,7 @@ interface Props {
   fetchUrl: string;
 }
 
-export const PopularPlaces: FC<Props> = ({ fetchUrl }) => {
+export const FilteredPlaces: FC<Props> = ({ fetchUrl }) => {
   const places = useSelectedLocationsSelector();
   const dispatch = useAppDispatch();
   const [hasMore, setHasMore] = useState(true);

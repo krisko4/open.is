@@ -1,9 +1,9 @@
 import { Divider, Grid, Paper, Tab, Tabs } from '@mui/material';
 import React, { FC, useMemo, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { CachedNews } from '../CachedPlaceData/CachedNews';
-import { CachedOpeningHours } from '../CachedPlaceData/CachedOpeningHours';
-import { CachedOpinions } from '../CachedPlaceData/CachedOpinions';
+import { CachedNews } from './CachedPlaceData/CachedNews';
+import { CachedOpeningHours } from './CachedPlaceData/CachedOpeningHours';
+import { CachedOpinions } from './CachedPlaceData/CachedOpinions';
 import { News } from '../News/News';
 import { OpeningHours } from '../OpeningHours/OpeningHours';
 import { Opinions } from '../Opinions/Opinions';

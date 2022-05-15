@@ -4,7 +4,7 @@ import { useCustomSnackbar } from 'utils/snackbars';
 interface Props {
   setImageFile?: any;
   name: string;
-  setImg: React.Dispatch<React.SetStateAction<string | File | ArrayBuffer | null>>;
+  setImg?: React.Dispatch<React.SetStateAction<string | File | ArrayBuffer | null>>;
 }
 
 export const ImageUpload: FC<Props> = ({ name, children, setImg, setImageFile }) => {
@@ -24,7 +24,7 @@ export const ImageUpload: FC<Props> = ({ name, children, setImg, setImageFile })
       const fileReader = new FileReader();
       fileReader.readAsDataURL(image);
       fileReader.onload = (e) => {
-        if (e.target) {
+        if (e.target && setImg) {
           setImg(e.target.result);
         }
       };

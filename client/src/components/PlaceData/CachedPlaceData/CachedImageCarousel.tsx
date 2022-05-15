@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles';
 import { FC, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { ImageCarouselItem } from '../PlaceData/ImageCarousel/ImageCarouselItem';
+import { ImageCarouselItem } from '../ImageCarousel/ImageCarouselItem';
 import { Image } from 'redux-toolkit/slices/PlaceProps';
 
 const useStyles = makeStyles({

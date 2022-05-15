@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useGetEventsByLocationIdQuery } from 'redux-toolkit/api';
 import { Options } from './enums';
+import { EventList } from './EventList';
 import { NewEvent } from './NewEvent';
 import { NoEvents } from './NoEvents';
 
@@ -25,10 +26,15 @@ export const Events: FC = () => {
       {isLoading ? (
         <CircularProgress />
       ) : (
-        <>
-          {selectedOption === Options.NO_EVENTS && <NoEvents setSelectedOption={setSelectedOption} />}
-          {selectedOption === Options.NEW_EVENT && <NewEvent />}
-        </>
+        events && (
+          <>
+            {selectedOption === Options.NO_EVENTS && <NoEvents setSelectedOption={setSelectedOption} />}
+            {selectedOption === Options.EVENT_LIST && (
+              <EventList setSelectedOption={setSelectedOption} events={events} />
+            )}
+            {selectedOption === Options.NEW_EVENT && <NewEvent />}
+          </>
+        )
       )}
     </Grid>
   );

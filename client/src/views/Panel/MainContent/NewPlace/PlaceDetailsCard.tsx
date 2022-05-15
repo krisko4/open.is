@@ -1,7 +1,7 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, Toolbar, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import { CachedPlaceData } from 'components/CachedPlaceData/CachedPlaceData';
+import { CachedPlaceData } from 'components/PlaceData/CachedPlaceData/CachedPlaceData';
 import { PlaceData } from 'components/PlaceData';
 import React, { FC } from 'react';
 

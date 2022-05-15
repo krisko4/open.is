@@ -1,7 +1,7 @@
 import { CircularProgress, Slide } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { CachedPlaceData } from 'components/CachedPlaceData/CachedPlaceData';
+import { CachedPlaceData } from 'components/PlaceData/CachedPlaceData/CachedPlaceData';
 import React, { FC, useEffect } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useParams } from 'react-router-dom';

@@ -1,7 +1,7 @@
 // @flow
 import { CircularProgress, Grid, Rating, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
-import { CachedOpinions } from 'components/CachedPlaceData/CachedOpinions';
+import { CachedOpinions } from 'components/PlaceData/CachedPlaceData/CachedOpinions';
 import * as React from 'react';
 import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
