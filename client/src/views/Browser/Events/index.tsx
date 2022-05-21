@@ -1,12 +1,15 @@
 import { Grid } from '@mui/material';
 import { NavigationTabs } from 'components/NavigationTabs';
-import { FC } from 'react';
-import { Routes, Route } from 'react-router';
+import React, { FC } from 'react';
+import { Events } from './Events';
+import { Navigate, Routes, Route } from 'react-router';
+import { useSelectedEventsSelector } from 'redux-toolkit/slices/eventSlice';
+import { EventDetails } from './EventDetails';
 import { FilteredEvents } from './FilteredEvents';
 
 enum EventFilters {
-  POPULAR = '/events/popular',
-  TODAY = '/events/today',
+  POPULAR = '/events/search/popular',
+  TODAY = '/events/search/today',
 }
 
 const TABS = [
@@ -38,17 +41,12 @@ const FILTER_ROUTES = [
     filter: EventFilters.TODAY,
   },
 ];
-
 export const EventBoard: FC = () => {
+  const selectedEvents = useSelectedEventsSelector();
   return (
-    <Grid container sx={{ flexGrow: 1 }} direction="column">
-      {/* <Routes>
-        {selectedEvents.map((event) => (
-          <Route path={event._id} key={event._id} element={<EventDetails event={event} />} />
-        ))}
-      </Routes> */}
-      <NavigationTabs tabs={TABS} />
-      <Routes>
+    <Routes>
+      <Route path="/" element={<Events />}>
+        <Route index element={<Navigate to={TABS[0].url} />} />
         {FILTER_ROUTES.map((route) => (
           <Route
             key={route.path}
@@ -56,7 +54,11 @@ export const EventBoard: FC = () => {
             element={<FilteredEvents key={route.path} fetchUrl={route.filter} />}
           />
         ))}
-      </Routes>
-    </Grid>
+      </Route>
+      <Route path="/:id" element={<EventDetails />} />
+      {/* {selectedEvents.map((event) => (
+        <Route path={event._id} key={event._id} element={<EventDetails />} />
+      ))} */}
+    </Routes>
   );
 };

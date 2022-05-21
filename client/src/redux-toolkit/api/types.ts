@@ -1,3 +1,4 @@
+import { UserData } from 'contexts';
 import { EventProps } from 'redux-toolkit/slices/eventSlice';
 import { FormLocationProps } from 'redux-toolkit/slices/formLocationsSlice';
 import { OpinionProps, VisitProps, VisitCount, Opinion } from 'redux-toolkit/slices/PlaceProps';
@@ -27,7 +28,7 @@ export interface VisitData {
   yesterday: number;
 }
 
-export interface EventData {
+interface Event {
   _id: string;
   title: string;
   content: string;
@@ -35,6 +36,14 @@ export interface EventData {
   startDate: Date;
   endDate: Date;
   locationId: string;
+}
+
+export interface EventData extends Event {
+  participators: string[];
+}
+
+export interface EventDetails extends Event {
+  participators: UserData[];
 }
 
 export interface ChangeContactDetailsProps {

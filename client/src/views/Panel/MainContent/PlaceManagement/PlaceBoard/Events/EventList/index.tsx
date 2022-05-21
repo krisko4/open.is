@@ -12,16 +12,18 @@ interface Props {
 }
 export const EventList: FC<Props> = ({ events, setSelectedOption }) => {
   return (
-    <Grid container sx={{ p: 1 }}>
+    <Grid container sx={{ p: 2 }}>
       <Grid sx={{ mb: 1 }} container justifyContent="flex-end">
-        <Button startIcon={<Add />} variant="contained" onClick={() => setSelectedOption(Options.NEW_EVENT)}>
-          New event
-        </Button>
-        <Tooltip title="Filter events">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <Grid item>
+          <Button startIcon={<Add />} variant="contained" onClick={() => setSelectedOption(Options.NEW_EVENT)}>
+            New event
+          </Button>
+          <Tooltip title="Filter events">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        </Grid>
       </Grid>
       {events.map((event, index) => (
         <Fade in={true} timeout={1000} key={event.title + index}>

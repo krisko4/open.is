@@ -234,6 +234,26 @@ export const placesApi = createApi({
       }),
       invalidatesTags: [TagTypes.EVENTS],
     }),
+    participate: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/events/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: [TagTypes.EVENT],
+    }),
+    unparticipate: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/events/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [TagTypes.EVENT],
+    }),
+    getEventById: builder.query<EventData, string>({
+      query: (id) => ({
+        url: `/events/${id}`,
+      }),
+      providesTags: [TagTypes.EVENT],
+    }),
     getEventsByLocationId: builder.query<EventData[], string>({
       query: (locationId) => ({
         url: '/events',
@@ -241,7 +261,7 @@ export const placesApi = createApi({
           locationId,
         },
       }),
-      providesTags: [TagTypes.EVENTS],
+      providesTags: [TagTypes.EVENTS, TagTypes.EVENT],
     }),
     addPlace: builder.mutation<RawPlaceDataProps, FormData>({
       query: (formData) => ({
@@ -348,4 +368,7 @@ export const {
   useGetAllOpinionsByUserIdQuery,
   useAddEventMutation,
   useGetEventsByLocationIdQuery,
+  useGetEventByIdQuery,
+  useParticipateMutation,
+  useUnparticipateMutation,
 } = placesApi;

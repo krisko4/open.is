@@ -8,7 +8,10 @@ interface Props {
   eventData: EventData;
   onClick?: () => void;
 }
-export const CachedEvent: FC<Props> = ({ onClick, eventData: { title, content, img, startDate, endDate } }) => {
+export const CachedEvent: FC<Props> = ({
+  onClick,
+  eventData: { title, content, img, startDate, endDate, participators },
+}) => {
   const [elevation, setElevation] = useState(1);
   return (
     <Card
@@ -21,7 +24,7 @@ export const CachedEvent: FC<Props> = ({ onClick, eventData: { title, content, i
         <UploadCardMedia isEditable={false} style={{ height: '400px', width: '100%' }} currentImg={img} />
         <Grid sx={{ mt: 1 }} container justifyContent="flex-end">
           <Typography color="primary" variant="overline">
-            0 users will participate
+            {participators.length} {participators.length === 1 ? 'user' : 'users'} will participate
           </Typography>
         </Grid>
         <Grid item>

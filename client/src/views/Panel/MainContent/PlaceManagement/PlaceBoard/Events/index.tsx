@@ -13,7 +13,6 @@ export const Events: FC = () => {
   const [selectedOption, setSelectedOption] = useState<Options | null>(Options.NO_EVENTS);
 
   useEffect(() => {
-    console.log(events);
     if (events && events.length > 0) {
       setSelectedOption(Options.EVENT_LIST);
       return;
@@ -22,9 +21,11 @@ export const Events: FC = () => {
   }, [events]);
 
   return (
-    <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
+    <Grid container sx={{ height: '100%' }} direction="column">
       {isLoading ? (
-        <CircularProgress />
+        <Grid container alignItems="center" justifyContent="center">
+          <CircularProgress />
+        </Grid>
       ) : (
         events && (
           <>

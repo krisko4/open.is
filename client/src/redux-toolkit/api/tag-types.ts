@@ -14,4 +14,5 @@ export enum TagTypes {
   AVERAGE_NOTE = 'AverageNote',
   SUBSCRIBERS = 'Subscribers',
   EVENTS = 'Events',
+  EVENT = 'Event',
 }

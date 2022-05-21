@@ -29,11 +29,10 @@ interface Props {
 
 export const NoEvents: FC<Props> = ({ setSelectedOption }) => {
   return (
-    <Grid container justifyContent="space-evenly">
+    <Grid container sx={{ flexGrow: 1 }} justifyContent="space-evenly">
       <Fade in={true} timeout={1000}>
-        <Grid item container direction="column" alignItems="center" justifyContent="space-evenly" lg={5} xs={12}>
+        <Grid item container direction="column" lg={5} xs={12} alignItems="center" justifyContent="center">
           <Typography variant="h2">New event</Typography>
-
           <Grid justifyContent="center" container>
             <Grid item lg={9} xs={12}>
               <img style={{ width: '100%' }} src={`${process.env.REACT_APP_BASE_URL}/images/event.gif`} />

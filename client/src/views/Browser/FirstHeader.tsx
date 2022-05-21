@@ -26,7 +26,7 @@ const FirstHeader: FC = () => {
         <Button onClick={() => navigate('')} color="primary">
           Home
         </Button>
-        <Button onClick={() => navigate('events/today')} color="primary">
+        <Button onClick={() => navigate('events')} color="primary">
           Events
         </Button>
         <Grid container alignItems="center" justifyContent="flex-end">

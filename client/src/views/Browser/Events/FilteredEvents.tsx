@@ -85,7 +85,7 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
           {selectedEvents.map((event) => (
             <Fade in={true} key={event._id} timeout={1000}>
               <Grid item xs={4} sx={{ p: 1 }}>
-                <CachedEvent onClick={() => navigate(event._id)} eventData={event} />
+                <CachedEvent onClick={() => navigate(`/search/events/${event._id}`)} eventData={event} />
               </Grid>
             </Fade>
           ))}

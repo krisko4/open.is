@@ -7,12 +7,8 @@ import { useAppDispatch } from 'redux-toolkit/hooks';
 import { reset } from 'redux-toolkit/slices/eventSlice';
 
 export const NewEvent: FC = () => {
-  const { enqueueInfoSnackbar } = useCustomSnackbar();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    enqueueInfoSnackbar('Drag over an image section to upload a picture.');
-  }, [enqueueInfoSnackbar]);
 
   useEffect(() => {
     return () => {
@@ -21,7 +17,7 @@ export const NewEvent: FC = () => {
   });
 
   return (
-    <Grid container alignItems="center" justifyContent="space-evenly">
+    <Grid container alignItems="center" sx={{ flexGrow: 1 }} justifyContent="space-evenly">
       <Grid item xs={4}>
         <Fade in={true} timeout={1000}>
           <div>
