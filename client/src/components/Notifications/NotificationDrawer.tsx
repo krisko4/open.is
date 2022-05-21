@@ -35,12 +35,9 @@ export const NotificationDrawer: FC<Props> = ({ open, setOpen }) => {
         </Grid>
         <Divider />
         {notifications.map((notification, index) => (
-          <div key={notification.image}>
-            <ListItem disableGutters disablePadding sx={{ width: 'inherit' }} button key={index}>
-              <Notification notificationData={notification} />
-            </ListItem>
-            <Divider />
-          </div>
+          <ListItem disableGutters disablePadding sx={{ width: 'inherit' }} button key={index}>
+            <Notification notificationData={notification} />
+          </ListItem>
         ))}
       </Grid>
     </Drawer>

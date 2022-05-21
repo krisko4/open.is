@@ -22,7 +22,7 @@ export const Browser: FC = () => {
       dispatch(resetMap());
       dispatch(resetSelectedLocations());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid container direction="column" style={{ height: '100vh' }}>

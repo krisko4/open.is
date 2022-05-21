@@ -1,5 +1,5 @@
 import { Alert, Tooltip, Typography, Grid, IconButton } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { useUnparticipateMutation, useParticipateMutation } from 'redux-toolkit/api';
 import { useCustomSnackbar } from 'utils/snackbars';
@@ -8,7 +8,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
 
 const isParticipator = (uid: string, participators: any[]) => {
-  return participators.some((user) => user._id === uid);
+  console.log(participators);
 };
 
 interface Props {
@@ -20,9 +20,12 @@ export const Participate: FC<Props> = ({ participators }) => {
   const [participate, { isLoading }] = useParticipateMutation();
   const [unparticipate, { isLoading: isUnparticipateLoading }] = useUnparticipateMutation();
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
-  const [color, setColor] = useState<'error' | 'success'>(
-    isParticipator(localStorage.getItem('uid') as string, participators) ? 'success' : 'error'
-  );
+  const isParticipator = useMemo(() => {
+    return participators.some((user) => user._id === localStorage.getItem('uid'));
+  }, [participators]);
+  console.log(participators);
+  console.log(isParticipator);
+  const [color, setColor] = useState<'error' | 'success'>(isParticipator ? 'success' : 'error');
   const setParticipation = async (status: boolean) => {
     if (id) {
       try {
@@ -41,7 +44,7 @@ export const Participate: FC<Props> = ({ participators }) => {
   return (
     <Grid container justifyContent="space-evenly" alignItems="center">
       <Grid item sx={{ textAlign: 'center' }}>
-        {isParticipator(localStorage.getItem('uid') as string, participators) ? (
+        {isParticipator ? (
           <>
             <Typography variant="h2">You are participating</Typography>
             <Tooltip arrow title="Cancel participation">

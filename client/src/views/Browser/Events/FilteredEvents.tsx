@@ -1,4 +1,4 @@
-import { Grid, CircularProgress, Fade, Dialog, AppBar, Toolbar, IconButton } from '@mui/material';
+import { Grid, CircularProgress, Typography, Fade, Dialog, AppBar, Toolbar, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Event } from 'components/Event';
 import { CachedEvent } from 'components/Event/CachedEvent';
@@ -82,13 +82,19 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
           </Grid>
         )}
         <Grid container>
-          {selectedEvents.map((event) => (
-            <Fade in={true} key={event._id} timeout={1000}>
-              <Grid item xs={4} sx={{ p: 1 }}>
-                <CachedEvent onClick={() => navigate(`/search/events/${event._id}`)} eventData={event} />
-              </Grid>
-            </Fade>
-          ))}
+          {selectedEvents.length === 0 ? (
+            <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+              <Typography>No events</Typography>
+            </Grid>
+          ) : (
+            selectedEvents.map((event) => (
+              <Fade in={true} key={event._id} timeout={1000}>
+                <Grid item xs={4} sx={{ p: 1 }}>
+                  <CachedEvent onClick={() => navigate(`/search/events/${event._id}`)} eventData={event} />
+                </Grid>
+              </Fade>
+            ))
+          )}
         </Grid>
       </Scrollbars>
     </Grid>

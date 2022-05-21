@@ -16,7 +16,7 @@ export const EventDetails: FC = () => {
   return (
     <Grid container sx={{ flexGrow: 1, overflow: 'hidden' }} justifyContent="center">
       {isFetching ? (
-        <Grid container alignItems="center">
+        <Grid container alignItems="center" justifyContent="center">
           <CircularProgress />
         </Grid>
       ) : (

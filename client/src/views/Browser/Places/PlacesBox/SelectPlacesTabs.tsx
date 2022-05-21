@@ -16,27 +16,27 @@ export const SelectPlacesTabs: FC = () => {
       {
         name: 'Popular',
         url: 'popular',
-        icon: <FiberNew />,
+        icon: <FiberNew color="success" />,
       },
       {
         name: 'Recently added',
         url: 'recent',
-        icon: <Timelapse />,
+        icon: <Timelapse color="primary" />,
       },
       {
         name: 'Top rated',
         url: 'top',
-        icon: <Star />,
+        icon: <Star sx={{ color: 'yellow' }} />,
       },
       {
         name: 'Favorite',
         url: 'favorite',
-        icon: <Favorite />,
+        icon: <Favorite color="error" />,
       },
       userData.isLoggedIn && {
         name: 'Subscriptions',
         url: 'subscribed',
-        icon: <Subscriptions />,
+        icon: <Subscriptions color="error" />,
       },
     ] as Tab[];
   }, [userData.isLoggedIn]);
