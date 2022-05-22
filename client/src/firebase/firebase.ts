@@ -14,4 +14,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+export * from './get_token';
 export default messaging;

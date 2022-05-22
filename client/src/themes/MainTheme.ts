@@ -23,9 +23,9 @@ const mainTheme = createTheme({
       dark: '#A52A2A',
       contrastText: '#fff',
     },
-    background: {
-      default: 'red',
-    },
+    // background: {
+    //   default: 'red',
+    // },
   },
 });
 

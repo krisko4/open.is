@@ -1,6 +1,6 @@
 import { Divider, Drawer, Grid, IconButton, ListItem, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Notification } from './Notification';
+import { NotificationListItem } from './NotificationListItem';
 import { FC } from 'react';
 
 interface Props {
@@ -36,7 +36,7 @@ export const NotificationDrawer: FC<Props> = ({ open, setOpen }) => {
         <Divider />
         {notifications.map((notification, index) => (
           <ListItem disableGutters disablePadding sx={{ width: 'inherit' }} button key={index}>
-            <Notification notificationData={notification} />
+            <NotificationListItem notificationData={notification} />
           </ListItem>
         ))}
       </Grid>

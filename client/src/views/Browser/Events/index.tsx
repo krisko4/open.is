@@ -42,7 +42,6 @@ const FILTER_ROUTES = [
   },
 ];
 export const EventBoard: FC = () => {
-  const selectedEvents = useSelectedEventsSelector();
   return (
     <Routes>
       <Route path="/" element={<Events />}>
@@ -56,9 +55,6 @@ export const EventBoard: FC = () => {
         ))}
       </Route>
       <Route path="/:id" element={<EventDetails />} />
-      {/* {selectedEvents.map((event) => (
-        <Route path={event._id} key={event._id} element={<EventDetails />} />
-      ))} */}
     </Routes>
   );
 };
