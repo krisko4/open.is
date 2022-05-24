@@ -1,7 +1,6 @@
-import { UserData } from 'contexts';
 import { EventProps } from 'redux-toolkit/slices/eventSlice';
 import { FormLocationProps } from 'redux-toolkit/slices/formLocationsSlice';
-import { OpinionProps, VisitProps, VisitCount, Opinion } from 'redux-toolkit/slices/PlaceProps';
+import { OpinionProps, VisitProps, VisitCount, Opinion, RawPlaceDataProps } from 'redux-toolkit/slices/PlaceProps';
 import { ContactData } from 'requests';
 
 export interface SelectedLocationsProps {
@@ -36,14 +35,16 @@ interface Event {
   startDate: Date;
   endDate: Date;
   locationId: string;
+  place: RawPlaceDataProps;
 }
 
 export interface EventData extends Event {
-  participators: string[];
+  participators: any[];
 }
 
 export interface EventDetails extends Event {
-  participators: UserData[];
+  participators: any[];
+  isUserOwner: boolean;
 }
 
 export interface ChangeContactDetailsProps {

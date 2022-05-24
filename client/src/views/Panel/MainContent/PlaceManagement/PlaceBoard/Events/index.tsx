@@ -2,7 +2,7 @@ import { Alert, Button, Card, CardContent, CircularProgress, Divider, Grid, Typo
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useGetEventsByLocationIdQuery } from 'redux-toolkit/api';
-import { Options } from './enums';
+import { EventOptions } from './enums';
 import { EventList } from './EventList';
 import { NewEvent } from './NewEvent';
 import { NoEvents } from './NoEvents';
@@ -10,14 +10,14 @@ import { NoEvents } from './NoEvents';
 export const Events: FC = () => {
   const { locationId } = useParams();
   const { data: events, isLoading } = useGetEventsByLocationIdQuery(locationId as string);
-  const [selectedOption, setSelectedOption] = useState<Options | null>(Options.NO_EVENTS);
+  const [selectedOption, setSelectedOption] = useState<EventOptions | null>(EventOptions.NO_EVENTS);
 
   useEffect(() => {
     if (events && events.length > 0) {
-      setSelectedOption(Options.EVENT_LIST);
+      setSelectedOption(EventOptions.EVENT_LIST);
       return;
     }
-    setSelectedOption(Options.NO_EVENTS);
+    setSelectedOption(EventOptions.NO_EVENTS);
   }, [events]);
 
   return (
@@ -29,11 +29,11 @@ export const Events: FC = () => {
       ) : (
         events && (
           <>
-            {selectedOption === Options.NO_EVENTS && <NoEvents setSelectedOption={setSelectedOption} />}
-            {selectedOption === Options.EVENT_LIST && (
+            {selectedOption === EventOptions.NO_EVENTS && <NoEvents setSelectedOption={setSelectedOption} />}
+            {selectedOption === EventOptions.EVENT_LIST && (
               <EventList setSelectedOption={setSelectedOption} events={events} />
             )}
-            {selectedOption === Options.NEW_EVENT && <NewEvent />}
+            {selectedOption === EventOptions.NEW_EVENT && <NewEvent />}
           </>
         )
       )}

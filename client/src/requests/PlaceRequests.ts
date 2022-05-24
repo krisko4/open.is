@@ -103,7 +103,7 @@ export const getPlaceByIdAndSelectedLocation = (placeId: string, locationId: str
   myAxios.get(`/places/${placeId}/locations/${locationId}`);
 
 export const getPlaceByLatLng = (lat: number, lng: number) => {
-  return myAxios.get('/places', {
+  return myAxios.get('/places/by-coords', {
     params: {
       lat: lat,
       lng: lng,

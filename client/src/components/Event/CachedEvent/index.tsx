@@ -1,7 +1,18 @@
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import {
+  Tooltip,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from '@mui/material';
 import { UploadCardMedia } from 'components/ImageUpload/UploadCardMedia';
 import { FC, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
+import { useNavigate } from 'react-router';
 import { EventData } from 'redux-toolkit/api/types';
 
 interface Props {
@@ -10,19 +21,34 @@ interface Props {
 }
 export const CachedEvent: FC<Props> = ({
   onClick,
-  eventData: { title, content, img, startDate, endDate, participators },
+  eventData: { title, content, img, startDate, endDate, participators, place, locationId },
 }) => {
   const [elevation, setElevation] = useState(1);
+  const navigate = useNavigate();
+  const navigateToLocation = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    navigate(`/search/${place._id}/${locationId}`);
+  };
   return (
     <Card
       onClick={onClick}
       elevation={elevation}
-      onMouseEnter={() => setElevation(6)}
+      onMouseEnter={() => setElevation(3)}
       onMouseLeave={() => setElevation(1)}
     >
       <CardContent>
         <UploadCardMedia isEditable={false} style={{ height: '400px', width: '100%' }} currentImg={img} />
-        <Grid sx={{ mt: 1 }} container justifyContent="flex-end">
+        <Grid sx={{ mt: 1 }} container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Tooltip title="Visit location">
+              <ListItem button onClick={navigateToLocation}>
+                <ListItemAvatar>
+                  <Avatar src={place.logo as string} />
+                </ListItemAvatar>
+                <ListItemText primary={place.name} />
+              </ListItem>
+            </Tooltip>
+          </Grid>
           <Typography color="primary" variant="overline">
             {participators.length} {participators.length === 1 ? 'user' : 'users'} will participate
           </Typography>

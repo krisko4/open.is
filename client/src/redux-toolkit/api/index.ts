@@ -22,6 +22,7 @@ import {
   Subscription,
   Subscriber,
   EventData,
+  EventDetails,
 } from './types';
 
 export const placesApi = createApi({
@@ -248,7 +249,7 @@ export const placesApi = createApi({
       }),
       invalidatesTags: [TagTypes.EVENT],
     }),
-    getEventById: builder.query<EventData, string>({
+    getEventById: builder.query<EventDetails, string>({
       query: (id) => ({
         url: `/events/${id}`,
       }),

@@ -2,7 +2,7 @@ import { Tooltip, Slide, Divider, Alert, Typography, Grid, IconButton, CircularP
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
 import { FC, useEffect, useState } from 'react';
-import { EventData } from 'redux-toolkit/api/types';
+import { EventDetails } from 'redux-toolkit/api/types';
 import { CachedEvent } from 'components/Event/CachedEvent';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
@@ -16,9 +16,10 @@ import {
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {
-  event: EventData;
+  event: EventDetails;
 }
 export const Subscribe: FC<Props> = ({ event }) => {
+  const { isUserOwner, locationId } = event;
   const { userData } = useLoginContext();
   const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(
     userData.isLoggedIn ? event.locationId : skipToken
@@ -35,11 +36,11 @@ export const Subscribe: FC<Props> = ({ event }) => {
   const setSubscription = async (status: boolean) => {
     try {
       if (status) {
-        await subscribeLocation(event.locationId).unwrap();
+        await subscribeLocation(locationId).unwrap();
         enqueueSuccessSnackbar('You have subscribed to a new place');
         return;
       }
-      await unsubscribeLocation(event.locationId).unwrap();
+      await unsubscribeLocation(locationId).unwrap();
       enqueueSuccessSnackbar('You have cancelled your subscription');
     } catch (err) {
       enqueueErrorSnackbar();
@@ -57,7 +58,14 @@ export const Subscribe: FC<Props> = ({ event }) => {
         </Alert>
       </Grid>
       <Grid item sx={{ textAlign: 'center' }}>
-        {isUserSubscriber ? (
+        {isUserOwner ? (
+          <>
+            <Typography variant="h2">Subscribed</Typography>
+            <Tooltip title="You are the owner of an event" arrow>
+              <CheckIcon color={'success'} sx={{ width: 200, height: 200 }} />
+            </Tooltip>
+          </>
+        ) : isUserSubscriber ? (
           <>
             <Typography variant="h2">Subscribed</Typography>
             <Tooltip title="Unsubscribe" arrow>

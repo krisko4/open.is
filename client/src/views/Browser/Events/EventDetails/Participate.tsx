@@ -6,25 +6,21 @@ import { useCustomSnackbar } from 'utils/snackbars';
 import { useParams } from 'react-router';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
-
-const isParticipator = (uid: string, participators: any[]) => {
-  console.log(participators);
-};
+import { EventDetails } from 'redux-toolkit/api/types';
 
 interface Props {
-  participators: any[];
+  event: EventDetails;
 }
 
-export const Participate: FC<Props> = ({ participators }) => {
+export const Participate: FC<Props> = ({ event }) => {
   const { id } = useParams();
+  const { participators, isUserOwner } = event;
   const [participate, { isLoading }] = useParticipateMutation();
   const [unparticipate, { isLoading: isUnparticipateLoading }] = useUnparticipateMutation();
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
   const isParticipator = useMemo(() => {
     return participators.some((user) => user._id === localStorage.getItem('uid'));
   }, [participators]);
-  console.log(participators);
-  console.log(isParticipator);
   const [color, setColor] = useState<'error' | 'success'>(isParticipator ? 'success' : 'error');
   const setParticipation = async (status: boolean) => {
     if (id) {
@@ -44,7 +40,14 @@ export const Participate: FC<Props> = ({ participators }) => {
   return (
     <Grid container justifyContent="space-evenly" alignItems="center">
       <Grid item sx={{ textAlign: 'center' }}>
-        {isParticipator ? (
+        {isUserOwner ? (
+          <>
+            <Typography variant="h2">You are participating</Typography>
+            <Tooltip arrow title="You are the owner of an event">
+              <CheckIcon color={'success'} sx={{ width: 200, height: 200 }} />
+            </Tooltip>
+          </>
+        ) : isParticipator ? (
           <>
             <Typography variant="h2">You are participating</Typography>
             <Tooltip arrow title="Cancel participation">

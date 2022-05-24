@@ -44,7 +44,7 @@ interface Props {
 export const EventForm: FC<Props> = ({ imageFile }) => {
   const [addEvent, { isLoading }] = useAddEventMutation();
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
-  const { locationId } = useParams();
+  const { locationId, placeId } = useParams();
 
   const methods = useForm<Inputs>({
     resolver: yupResolver(schema),
@@ -64,6 +64,7 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
       startDate: format(fieldValues.startDate as Date, 'yyyy-MM-dd hh:mm'),
       endDate: format(fieldValues.endDate as Date, 'yyyy-MM-dd hh:mm'),
       locationId: locationId as string,
+      placeId: placeId as string,
     };
     const form = new FormData();
     if (imageFile) {

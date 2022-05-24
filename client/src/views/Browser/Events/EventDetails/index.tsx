@@ -30,7 +30,7 @@ export const EventDetails: FC = () => {
   return (
     <Grid container direction="column" sx={{ flexGrow: 1, overflow: 'hidden' }}>
       {isFetching ? (
-        <Grid container alignItems="center" justifyContent="center">
+        <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
           <CircularProgress />
         </Grid>
       ) : (
@@ -41,11 +41,11 @@ export const EventDetails: FC = () => {
                 <Grid item container xs={11} direction="column" alignItems="center" justifyContent="center">
                   <Slide in={true} direction="right" timeout={1000}>
                     <div>
-                      <Participate participators={event.participators} />
+                      <Participate event={event} />
                     </div>
                   </Slide>
                   <Divider sx={{ width: '100%', mt: 5, mb: 5 }} />
-                  <Slide in={true} direction="up" timeout={1000}>
+                  <Slide in={true} direction="right" timeout={1000}>
                     <div>
                       <Subscribe event={event} />
                     </div>
@@ -65,7 +65,9 @@ export const EventDetails: FC = () => {
                 </Grid>
               </Grid>
               <Grid container justifyContent="center">
-                <Typography variant="h2">Rewards</Typography>
+                <Slide in={true} timeout={1000} direction="up">
+                  <Typography variant="h2">Rewards</Typography>
+                </Slide>
               </Grid>
               <Grid container sx={{ pt: 10, pb: 10 }} justifyContent="space-evenly">
                 <Grid item container justifyContent="center" direction="column" alignItems="center" xs={5}>

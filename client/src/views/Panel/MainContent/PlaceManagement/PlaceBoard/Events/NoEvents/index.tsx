@@ -14,17 +14,17 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import { Options } from '../enums';
+import { EventOptions } from '../enums';
 
 const STEPS = [
   { title: 'Prepare the content of your event' },
   { title: 'Pick the date range of your event' },
-  { title: 'Invite selected subscribers to participate in your event' },
+  { title: 'Encourage your subscribers to participate in the event by creating reward drawings' },
   { title: 'Track the activity of event participators' },
 ];
 
 interface Props {
-  setSelectedOption: React.Dispatch<React.SetStateAction<Options | null>>;
+  setSelectedOption: React.Dispatch<React.SetStateAction<EventOptions | null>>;
 }
 
 export const NoEvents: FC<Props> = ({ setSelectedOption }) => {
@@ -37,7 +37,7 @@ export const NoEvents: FC<Props> = ({ setSelectedOption }) => {
             <Grid item lg={9} xs={12}>
               <img style={{ width: '100%' }} src={`${process.env.REACT_APP_BASE_URL}/images/event.gif`} />
               <Button
-                onClick={() => setSelectedOption(Options.NEW_EVENT)}
+                onClick={() => setSelectedOption(EventOptions.NEW_EVENT)}
                 fullWidth
                 variant="contained"
                 size="large"

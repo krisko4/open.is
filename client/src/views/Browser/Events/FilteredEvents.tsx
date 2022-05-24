@@ -81,9 +81,9 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
             <CircularProgress disableShrink color="secondary" />
           </Grid>
         )}
-        <Grid container>
+        <Grid container sx={{ height: '100%' }}>
           {selectedEvents.length === 0 ? (
-            <Grid container sx={{ height: '100%' }} justifyContent="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
               <Typography>No events</Typography>
             </Grid>
           ) : (
