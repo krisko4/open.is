@@ -20,57 +20,57 @@ import { EventData } from 'redux-toolkit/api/types';
 import { ParticipatorList } from './ParticipatorList';
 const PARTICIPATORS = [
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: true,
   },
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: true,
   },
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: true,
   },
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
+    isSubscriber: false,
+  },
+  {
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: true,
   },
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: true,
   },
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
+    isSubscriber: false,
+  },
+  {
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: true,
   },
   {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
-    isSubscriber: true,
-  },
-  {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
-    isSubscriber: true,
-  },
-  {
-    firstName: 'robert',
-    img: '',
-    email: 'kuku',
+    firstName: 'Patrick Watson',
+    img: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+    email: 'patrick@gmail.com',
     isSubscriber: false,
   },
 ];
@@ -98,12 +98,12 @@ export const Participators: FC<Props> = ({ participators }) => {
         <Typography variant="h2">Participators</Typography>
         <Grid item xs={10}>
           <Grid container justifyContent="space-between">
-            <Typography>Total: 10</Typography>
+            <Typography>Total: 20</Typography>
             <Typography>Subscribers: 10</Typography>
             <Typography>Non-subscribers: 10</Typography>
           </Grid>
           <Alert variant="outlined" sx={{ mt: 1 }} severity="info">
-            70% of all participators are subscribers
+            50% of all participators are subscribers
           </Alert>
           <Divider sx={{ pt: 1, pb: 1 }} />
           <ParticipatorList participators={PARTICIPATORS} />

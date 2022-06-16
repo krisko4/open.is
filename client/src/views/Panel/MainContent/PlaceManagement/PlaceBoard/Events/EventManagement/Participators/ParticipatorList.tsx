@@ -16,11 +16,13 @@ export const ParticipatorList: FC<Props> = ({ participators }) => {
             <Grid item container alignItems="center">
               <Grid item>
                 <Avatar
-                  imgProps={{
-                    style: {
-                      objectFit: 'contain',
-                    },
-                  }}
+                  imgProps={
+                    {
+                      // style: {
+                      //   objectFit: 'contain',
+                      // },
+                    }
+                  }
                   style={{ width: 80, height: 80 }}
                   src={participator.img}
                 />
