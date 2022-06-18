@@ -27,7 +27,7 @@ export const EventManagement: FC<Props> = ({ event }) => {
   return (
     <Grid container sx={{ height: '100%' }}>
       <Grid item xs={6}>
-        <Rewards />
+        <Rewards eventId={event._id} />
       </Grid>
       <Grid item container xs={6}>
         <Scrollbars>

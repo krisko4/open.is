@@ -23,6 +23,7 @@ import {
   Subscriber,
   EventData,
   EventDetails,
+  Reward,
 } from './types';
 
 export const placesApi = createApi({
@@ -32,23 +33,6 @@ export const placesApi = createApi({
     credentials: 'include',
   }),
   tagTypes: Object.keys(TagTypes),
-  // tagTypes: [
-  //   'Places',
-  //   'Subscription',
-  //   'AllOpinions',
-  //   'AllVisits',
-  //   'OpeningHours',
-  //   'Visits',
-  //   'Status',
-  //   'SelectedBusinessChain',
-  //   'Opinions',
-  //   'SelectedPlace',
-  //   'SelectedLocations',
-  //   'News',
-  //   'AverageNote',
-  //   'Subscribers',
-  //   'Events',
-  // ],
   endpoints: (builder) => ({
     getPlacesByUserId: builder.query<RawPlaceDataProps[], string>({
       query: (uid) => `/places/search?uid=${uid}`,
@@ -310,6 +294,15 @@ export const placesApi = createApi({
       query: (locationId) => `/places/${locationId}/subscribers`,
       providesTags: ['Subscribers'],
     }),
+    getRewardByLocationId: builder.query<Reward, string>({
+      query: (locationId) => ({
+        url: '/rewards',
+        params: {
+          locationId,
+        },
+      }),
+      providesTags: [TagTypes.REWARDS],
+    }),
     deletePlace: builder.mutation<void, string>({
       query: (id) => ({
         url: `/places/${id}`,
@@ -372,4 +365,5 @@ export const {
   useGetEventByIdQuery,
   useParticipateMutation,
   useUnparticipateMutation,
+  useGetRewardByLocationIdQuery,
 } = placesApi;

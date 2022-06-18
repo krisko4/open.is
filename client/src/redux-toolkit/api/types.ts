@@ -38,12 +38,22 @@ interface Event {
   place: RawPlaceDataProps;
 }
 
+export interface Participator {
+  _id: string;
+  img: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  birthdate: Date;
+  isSubscriber: boolean;
+}
+
 export interface EventData extends Event {
-  participators: any[];
+  participators: Participator[];
 }
 
 export interface EventDetails extends Event {
-  participators: any[];
+  participators: Participator[];
   isUserOwner: boolean;
 }
 
@@ -66,6 +76,14 @@ export interface PlaceAndLocationProps {
 export interface AddLocationsProps {
   placeId: string;
   locations: FormLocationProps[];
+}
+
+export interface Reward {
+  scheduledFor?: Date;
+  date?: Date;
+  description: string;
+  eventId: string;
+  rewardPercentage: number;
 }
 
 export interface GetSelectedLocationsProps {

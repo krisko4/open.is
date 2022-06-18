@@ -2,9 +2,10 @@ import { Button, List, ListItemButton, Grid, Avatar, Typography } from '@mui/mat
 import { FC } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { Participator } from 'redux-toolkit/api/types';
 
 interface Props {
-  participators: any[];
+  participators: Participator[];
 }
 
 export const ParticipatorList: FC<Props> = ({ participators }) => {
@@ -15,17 +16,7 @@ export const ParticipatorList: FC<Props> = ({ participators }) => {
           <Grid container>
             <Grid item container alignItems="center">
               <Grid item>
-                <Avatar
-                  imgProps={
-                    {
-                      // style: {
-                      //   objectFit: 'contain',
-                      // },
-                    }
-                  }
-                  style={{ width: 80, height: 80 }}
-                  src={participator.img}
-                />
+                <Avatar style={{ width: 80, height: 80 }} src={participator.img} />
               </Grid>
               <Grid item style={{ marginLeft: 10 }}>
                 <Typography variant="h5">{participator.firstName}</Typography>

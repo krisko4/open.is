@@ -15,4 +15,5 @@ export enum TagTypes {
   SUBSCRIBERS = 'Subscribers',
   EVENTS = 'Events',
   EVENT = 'Event',
+  REWARDS = 'Rewards',
 }

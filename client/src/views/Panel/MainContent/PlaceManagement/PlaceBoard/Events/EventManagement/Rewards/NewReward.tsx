@@ -49,7 +49,7 @@ export const NewReward: FC = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     const reward = {
       description,
       date,
