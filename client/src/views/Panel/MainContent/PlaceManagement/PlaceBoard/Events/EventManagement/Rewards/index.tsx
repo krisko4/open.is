@@ -1,6 +1,6 @@
 import { Grid, CircularProgress, Typography } from '@mui/material';
 import { FC, useState } from 'react';
-import { useGetRewardByLocationIdQuery } from 'redux-toolkit/api';
+import { useGetRewardByEventIdQuery } from 'redux-toolkit/api';
 import { RewardDrawingOptions } from '../../enums';
 import { NewReward } from './NewReward';
 import { NoRewards } from './NoRewards';
@@ -15,7 +15,7 @@ export const Rewards: FC<Props> = ({ eventId }) => {
   const [selectedOption, setSelectedOption] = useState<RewardDrawingOptions | null>(
     RewardDrawingOptions.NO_REWARD_DRAWINGS
   );
-  const { data: reward, isFetching } = useGetRewardByLocationIdQuery(eventId);
+  const { data: reward, isFetching } = useGetRewardByEventIdQuery(eventId);
 
   return (
     <Grid container sx={{ height: '100%' }}>
@@ -28,7 +28,7 @@ export const Rewards: FC<Props> = ({ eventId }) => {
       ) : (
         <>
           {selectedOption === RewardDrawingOptions.NEW_REWARD_DRAWING ? (
-            <NewReward />
+            <NewReward eventId={eventId} />
           ) : (
             <NoRewards setSelectedOption={setSelectedOption} />
           )}

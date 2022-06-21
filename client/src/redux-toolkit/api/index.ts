@@ -294,14 +294,22 @@ export const placesApi = createApi({
       query: (locationId) => `/places/${locationId}/subscribers`,
       providesTags: ['Subscribers'],
     }),
-    getRewardByLocationId: builder.query<Reward, string>({
-      query: (locationId) => ({
+    getRewardByEventId: builder.query<Reward, string>({
+      query: (eventId) => ({
         url: '/rewards',
         params: {
-          locationId,
+          eventId,
         },
       }),
       providesTags: [TagTypes.REWARDS],
+    }),
+    addReward: builder.mutation<void, Reward>({
+      query: (rewardPayload) => ({
+        url: `/rewards`,
+        method: 'POST',
+        body: rewardPayload,
+      }),
+      invalidatesTags: [TagTypes.REWARDS],
     }),
     deletePlace: builder.mutation<void, string>({
       query: (id) => ({
@@ -365,5 +373,6 @@ export const {
   useGetEventByIdQuery,
   useParticipateMutation,
   useUnparticipateMutation,
-  useGetRewardByLocationIdQuery,
+  useGetRewardByEventIdQuery,
+  useAddRewardMutation,
 } = placesApi;

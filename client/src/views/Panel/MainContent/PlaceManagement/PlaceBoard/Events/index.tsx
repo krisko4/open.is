@@ -23,7 +23,7 @@ export const Events: FC = () => {
   return (
     <Grid container sx={{ height: '100%' }} direction="column">
       {isLoading ? (
-        <Grid container alignItems="center" justifyContent="center">
+        <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
           <CircularProgress />
         </Grid>
       ) : (

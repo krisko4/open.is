@@ -10,6 +10,9 @@ import { Collapse, Fade, Slider, Switch, Button, TextField, Grid, Divider } from
 import { LocalizationProvider, DateTimePicker, MobileDateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { useAddRewardMutation } from 'redux-toolkit/api';
+import { Reward } from 'redux-toolkit/api/types';
+import { useCustomSnackbar } from 'utils/snackbars';
 
 const marks = [
   {
@@ -34,12 +37,18 @@ const marks = [
   },
 ];
 
-export const NewReward: FC = () => {
+interface Props {
+  eventId: string;
+}
+
+export const NewReward: FC<Props> = ({ eventId }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date | null>(null);
   const [checked, setChecked] = useState(true);
   const [rewardPercentage, setRewardPercentage] = useState(0);
+  const [addReward, { isLoading }] = useAddRewardMutation();
+  const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -50,13 +59,20 @@ export const NewReward: FC = () => {
   };
 
   const handleFinish = async () => {
-    const reward = {
+    const reward: Reward = {
       description,
-      date,
-      checked,
       rewardPercentage,
+      eventId,
     };
-    console.log(reward);
+    if (!checked && date) {
+      reward['scheduledFor'] = date;
+    }
+    try {
+      await addReward(reward).unwrap();
+      enqueueSuccessSnackbar('You have successully created a reward drawing');
+    } catch (err) {
+      enqueueErrorSnackbar();
+    }
   };
 
   return (
@@ -154,7 +170,12 @@ export const NewReward: FC = () => {
                 valueLabelDisplay="auto"
               />
               <Box sx={{ mt: 1 }}>
-                <Button disabled={rewardPercentage === 0} variant="contained" onClick={handleFinish} sx={{ mr: 1 }}>
+                <Button
+                  disabled={rewardPercentage === 0 || isLoading}
+                  variant="contained"
+                  onClick={handleFinish}
+                  sx={{ mr: 1 }}
+                >
                   Finish
                 </Button>
                 <Button onClick={handleBack} sx={{ mr: 1 }}>

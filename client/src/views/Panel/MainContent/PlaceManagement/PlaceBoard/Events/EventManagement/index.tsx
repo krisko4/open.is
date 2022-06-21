@@ -30,9 +30,7 @@ export const EventManagement: FC<Props> = ({ event }) => {
         <Rewards eventId={event._id} />
       </Grid>
       <Grid item container xs={6}>
-        <Scrollbars>
-          <Participators participators={event.participators} />
-        </Scrollbars>
+        <Participators participators={event.participators} />
       </Grid>
     </Grid>
   );
