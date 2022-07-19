@@ -24,6 +24,7 @@ import {
   EventData,
   EventDetails,
   Reward,
+  NotificationStatistics,
 } from './types';
 
 export const placesApi = createApi({
@@ -288,11 +289,21 @@ export const placesApi = createApi({
         },
       }),
       transformResponse: (response: Subscription | null) => response !== null,
-      providesTags: ['Subscription'],
+      providesTags: [TagTypes.SUBSCRIPTION],
     }),
     getSubscribersForSelectedLocation: builder.query<Subscriber[], string>({
       query: (locationId) => `/places/${locationId}/subscribers`,
-      providesTags: ['Subscribers'],
+      providesTags: [TagTypes.SUBSCRIBERS],
+    }),
+    getNotificationStatistics: builder.query<NotificationStatistics[], string>({
+      query: (eventId) => ({
+        url: `/notifications`,
+        method: 'GET',
+        params: {
+          eventId,
+        },
+      }),
+      providesTags: [TagTypes.NOTIFICATIONS],
     }),
     getRewardByEventId: builder.query<Reward, string>({
       query: (eventId) => ({
@@ -375,4 +386,5 @@ export const {
   useUnparticipateMutation,
   useGetRewardByEventIdQuery,
   useAddRewardMutation,
+  useGetNotificationStatisticsQuery,
 } = placesApi;

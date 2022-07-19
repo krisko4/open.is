@@ -9,3 +9,9 @@ export enum RewardDrawingOptions {
   NO_REWARD_DRAWINGS,
   REWARD_DRAWINGS_LIST,
 }
+
+export enum EventManagementOptions {
+  OVERVIEW,
+  STATISTICS,
+  REWARDS,
+}

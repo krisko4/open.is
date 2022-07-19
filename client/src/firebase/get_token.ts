@@ -4,9 +4,6 @@ import { setNotificationToken } from 'requests/NotificationRequests';
 import messaging from './firebase';
 export const requestToken = async () => {
   try {
-    // onMessage(messaging, (payload) => {
-    //   console.log('Received message ', payload);
-    // });
     const currentToken = await getToken(messaging, {
       vapidKey: 'BGJr-IKnxZi4jszj0i_gXwanmABe7_fQHDvto8cXXnHR1AFWIk9wA06u_79K9zW86bzeUkVo-zdfe7n1zejwyAU',
     });

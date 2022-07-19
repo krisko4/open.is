@@ -42,7 +42,7 @@ export const PlaceBoard: FC = () => {
     if (isError) {
       enqueueErrorSnackbar();
     }
-  }, [isError]);
+  }, [isError, enqueueErrorSnackbar]);
 
   const tabs = useMemo(() => {
     const key = place?._id as string;

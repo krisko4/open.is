@@ -110,6 +110,18 @@ export interface AddOpinionProps {
   note: number;
 }
 
+export enum NotificationType {
+  EVENT = 'event',
+  REWARD = 'reward',
+}
+
+export type NotificationStatistics = {
+  all: number;
+  received: number;
+  clicked: number;
+  type: NotificationType;
+};
+
 export interface VisitLocationProps {
   name: string;
   visits: VisitCount[];

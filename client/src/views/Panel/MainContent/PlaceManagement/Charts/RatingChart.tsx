@@ -58,7 +58,6 @@ export const RatingChart: FC<Props> = ({ averageNote }) => {
 
   const { ones, twos, threes, fours, fives } = averageNote || defaultOptions;
   const ratingSeries = [ones, twos, threes, fours, fives];
-  console.log(ratingSeries);
 
   return (
     <>

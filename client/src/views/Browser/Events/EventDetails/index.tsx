@@ -103,7 +103,7 @@ export const EventDetails: FC = () => {
                             severity="info"
                             variant="outlined"
                           >
-                            Press the participate button participate in the event
+                            Press the participate button to participate in the event
                           </Alert>
                         </Grid>
                       </Grid>

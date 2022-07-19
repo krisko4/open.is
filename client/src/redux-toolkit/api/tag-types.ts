@@ -16,4 +16,5 @@ export enum TagTypes {
   EVENTS = 'Events',
   EVENT = 'Event',
   REWARDS = 'Rewards',
+  NOTIFICATIONS = 'Notifications',
 }
