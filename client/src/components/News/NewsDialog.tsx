@@ -1,21 +1,21 @@
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import {
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
+  DialogTitle,
   Grid,
-  TextField,
-  InputAdornment,
   IconButton,
-  DialogActions,
+  InputAdornment,
+  TextField,
 } from '@mui/material';
+import { DialogTransition } from 'components/Transitions';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { FC, useRef, useState } from 'react';
-import { useCustomSnackbar } from 'utils/snackbars';
-import { LoadingButton } from '../Buttons/LoadingButton';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import { useAddNewsMutation } from 'redux-toolkit/api';
-import { DialogTransition } from 'components/Transitions';
+import { useCustomSnackbar } from 'utils/snackbars';
+import { LoadingButton } from '../buttons/LoadingButton';
 
 interface Props {
   dialogOpen: boolean;

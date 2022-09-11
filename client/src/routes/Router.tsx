@@ -1,17 +1,18 @@
 import { CssBaseline } from '@mui/material';
+import { EmailChangeConfirmation } from 'components/auth/Confirmation/EmailChangeConfirmation';
+import { HomeLayout } from 'layouts';
+import { Browser } from 'layouts/browser';
+import { Panel } from 'layouts/panel';
 import React, { FC } from 'react';
-import { BrowserRouter, Link, Route, Outlet, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom';
+import { About } from 'views/homePage/about';
+import { Contact } from 'views/homePage/contact';
+import HomePage from 'views/homePage/home';
+import { Confirmation } from '../components/auth/Confirmation/Confirmation';
 import { Notification } from '../components/Notifications/Notification';
-import { Confirmation } from '../components/Auth/Confirmation/Confirmation';
-import { Panel } from '../views/Panel';
 import { ColorModeContextProvider } from '../contexts/ColorModeContext';
 import { BrowserTheme } from '../themes/BrowserTheme';
 import { PanelTheme } from '../themes/PanelTheme';
-import { EmailChangeConfirmation } from 'components/Auth/Confirmation/EmailChangeConfirmation';
-import { About } from 'views/HomePage/About/About';
-import { Contact } from 'views/HomePage/Contact';
-import HomePage from 'views/HomePage/MainPage/HomePage';
-import { Browser } from 'views/Browser';
 
 export function NoMatch() {
   return (
@@ -38,9 +39,11 @@ export const Router: FC = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<PageLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route element={<HomeLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Route>
           <Route
             path="/panel/*"
             element={

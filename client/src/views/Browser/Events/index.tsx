@@ -1,11 +1,11 @@
 import { Grid } from '@mui/material';
 import { NavigationTabs } from 'components/NavigationTabs';
 import React, { FC } from 'react';
-import { Events } from './Events';
-import { Navigate, Routes, Route } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 import { useSelectedEventsSelector } from 'redux-toolkit/slices/eventSlice';
-import { EventDetails } from './EventDetails';
-import { FilteredEvents } from './FilteredEvents';
+import { EventDetails } from '../eventDetails';
+import { Events } from './components/Events';
+import { FilteredEvents } from './components/FilteredEvents';
 
 enum EventFilters {
   POPULAR = '/events/search/popular',

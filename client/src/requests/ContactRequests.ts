@@ -1,4 +1,4 @@
-import { initialValues } from 'views/HomePage/Contact/ContactForm';
+import { initialValues } from 'views/homePage/contact/components/Form';
 import myAxios from '../axios/axios';
 
 export interface ContactFormValues {

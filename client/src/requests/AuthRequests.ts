@@ -1,6 +1,6 @@
 import myAxios from '../axios/axios';
-import { LoginInputs } from '../components/Auth/Login/LoginForm';
-import { RegistrationInputs } from '../components/Auth/Registration/RegistrationForm';
+import { LoginInputs } from '../components/auth/Login/LoginForm';
+import { RegistrationInputs } from '../components/auth/Registration/RegistrationForm';
 
 export const confirmRegistrationToken = (token: string) => myAxios.get(`/confirmation/${token}`);
 

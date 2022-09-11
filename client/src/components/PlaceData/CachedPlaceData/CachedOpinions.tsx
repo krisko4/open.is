@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,16 +17,15 @@ import {
 } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
+import { DialogTransition } from 'components/Transitions';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAddOpinionMutation, useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api';
 import { useLoginContext } from '../../../contexts/LoginContext';
 import { useCustomSnackbar } from '../../../utils/snackbars';
-import { LoadingButton } from '../../Buttons/LoadingButton';
+import { LoadingButton } from '../../buttons/LoadingButton';
 import { OpinionCard } from '../../Opinions/OpinionCard';
-import { CircularProgress } from '@mui/material';
-import { DialogTransition } from 'components/Transitions';
 
 interface Props {
   isUserOwner?: boolean;

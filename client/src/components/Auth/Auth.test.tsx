@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { TestMockWrapper } from 'test-utils/TestMockWrapper';
-import { Auth } from 'components/Auth';
+import { Auth } from 'components/auth';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { TestMockWrapper } from 'test-utils/TestMockWrapper';
 
 describe('Auth', () => {
   const server = setupServer(

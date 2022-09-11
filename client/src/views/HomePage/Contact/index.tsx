@@ -1,10 +1,7 @@
 import { Card, CardContent, CardMedia, Grid, IconButton, Slide, Typography } from '@mui/material';
-import { Auth } from 'components/Auth';
 import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { AuthContextProvider } from '../../../contexts/AuthContext';
-import Header from '../MainPage/Header';
-import { ContactForm } from './ContactForm';
+import { ContactForm } from './components/Form';
 
 const icons = [
   { url: 'http://facebook.com' },
@@ -16,9 +13,7 @@ const icons = [
 
 export const Contact: FC = () => {
   return (
-    <AuthContextProvider>
-      <Header />
-      <Auth />
+    <>
       <Grid
         container
         alignItems="center"
@@ -83,6 +78,6 @@ export const Contact: FC = () => {
           </Slide>
         </Grid>
       </Grid>
-    </AuthContextProvider>
+    </>
   );
 };
