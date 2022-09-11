@@ -1,8 +1,8 @@
 import { Card, CircularProgress, Fade, Grid, Rating, Typography } from '@mui/material';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetAverageNoteForSelectedLocationQuery } from 'redux-toolkit/api';
-import { AverageNoteProps } from 'redux-toolkit/slices/PlaceProps';
+import { useGetAverageNoteForSelectedLocationQuery } from 'store/api';
+import { AverageNoteProps } from 'store/slices/PlaceProps';
 import { RatingChart } from './RatingChart';
 
 export const RatingCard: FC = () => {

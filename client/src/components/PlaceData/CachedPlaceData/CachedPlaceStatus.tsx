@@ -1,6 +1,6 @@
-import { CircularProgress, Alert, Tooltip } from '@mui/material';
+import { Alert, CircularProgress, Tooltip } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { useGetStatusForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetStatusForSelectedLocationQuery } from 'store/api';
 
 export const CachedPlaceStatus = () => {
   const { locationId } = useParams();

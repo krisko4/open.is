@@ -1,17 +1,17 @@
 import KeyboardReturn from '@mui/icons-material/KeyboardReturn';
-import { LoadingButton } from '@mui/lab';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Toolbar, IconButton, Grid, Button, Tooltip } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Button, Grid, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { useLoginContext } from 'contexts/LoginContext';
 import { FC, useEffect, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'store/api';
+import { useAppDispatch } from 'store/hooks';
+import { closePopup, setMapCoords } from 'store/slices/mapSlice';
+import { CurrentPlaceProps } from 'store/slices/PlaceProps';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { SubscribeDialog } from './SubscribeDialog';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useLoginContext } from 'contexts/LoginContext';
-import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
-import { setMapCoords, closePopup } from 'redux-toolkit/slices/mapSlice';
-import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'redux-toolkit/api';
-import { skipToken } from '@reduxjs/toolkit/query';
 
 interface Props {
   place: CurrentPlaceProps;

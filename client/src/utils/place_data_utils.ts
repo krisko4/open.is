@@ -1,4 +1,4 @@
-import { RawPlaceDataProps, Image } from '../redux-toolkit/slices/PlaceProps';
+import { Image, RawPlaceDataProps } from '../store/slices/PlaceProps';
 
 export const convertToCurrentPlace = (place: RawPlaceDataProps) => {
   const { locations } = place;

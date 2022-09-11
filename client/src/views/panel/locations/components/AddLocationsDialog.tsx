@@ -1,12 +1,12 @@
 import { Grid } from '@mui/material';
 import { FullHeightDialog } from 'components/dialogs';
 import { FC, useEffect } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { useLogoSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
-import { resetMap } from 'redux-toolkit/slices/mapSlice';
-import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
-import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { useLogoSelector } from 'store/slices/businessChainSlice';
+import { resetFormLocations } from 'store/slices/formLocationsSlice';
+import { resetMap } from 'store/slices/mapSlice';
+import { resetSelectedAddress } from 'store/slices/selectedAddressSlice';
+import { resetSelectedLocations } from 'store/slices/selectedLocationsSlice';
 import { LocationSelection } from 'views/panel/newBusinessChain/components/LocationSelection';
 import { LocationDetails } from '../../newBusinessChain/components/LocationDetails';
 

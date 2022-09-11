@@ -1,6 +1,6 @@
+import { setNotificationToken } from 'api/notifications';
 import { getToken, onMessage } from 'firebase/messaging';
 import Cookies from 'js-cookie';
-import { setNotificationToken } from 'requests/NotificationRequests';
 import messaging from './firebase';
 export const requestToken = async () => {
   try {

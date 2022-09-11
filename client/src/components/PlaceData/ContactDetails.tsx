@@ -1,10 +1,9 @@
-import { Grid, Card, CardContent } from '@mui/material';
-import React from 'react';
 import LanguageIcon from '@mui/icons-material/Language';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { FC } from 'react';
-import { usePhoneSelector, useWebsiteSelector, useEmailSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { Card, CardContent, Grid } from '@mui/material';
+import React, { FC } from 'react';
+import { useEmailSelector, usePhoneSelector, useWebsiteSelector } from 'store/slices/currentPlaceSlice';
 
 interface SocialBoxProps {
   value: string;

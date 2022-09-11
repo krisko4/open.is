@@ -1,17 +1,17 @@
 import { CircularProgress, Fade, Grid, ListItem, Typography } from '@mui/material';
+import { getPaginatedPlaces } from 'api/places';
 import { FC, useEffect, useRef, useState } from 'react';
 import Scrollbars, { positionValues } from 'react-custom-scrollbars';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setPopup } from 'redux-toolkit/slices/mapSlice';
-import { useSearcherOptionsSelector } from 'redux-toolkit/slices/searcherOptionsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setPopup } from 'store/slices/mapSlice';
+import { useSearcherOptionsSelector } from 'store/slices/searcherOptionsSlice';
 import {
   addLocations,
   SelectedLocationProps,
   setSelectedLocations,
   useSelectedLocationsSelector,
-} from 'redux-toolkit/slices/selectedLocationsSlice';
-import { getPaginatedPlaces } from 'requests/PlaceRequests';
+} from 'store/slices/selectedLocationsSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { PlaceCard } from './PlaceCard';
 

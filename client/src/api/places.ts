@@ -1,5 +1,5 @@
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
-import { SearcherOptionsProps } from 'redux-toolkit/slices/searcherOptionsSlice';
+import { SearcherOptionsProps } from 'store/slices/searcherOptionsSlice';
 import myAxios from '../axios/axios';
 
 export interface ContactData {

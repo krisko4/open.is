@@ -1,15 +1,15 @@
 import { LoadingButton } from '@mui/lab';
 import { Alert, Fade, Grid, Typography } from '@mui/material';
+import { getPlaceByLatLng } from 'api';
 import { AddressSearcher } from 'components/AddressSearcher';
 import { MapBox } from 'components/MapBox';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { useNameSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { useLogoSelector, useTypeSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { addFormLocation, useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
-import { useSelectedAddressSelector } from 'redux-toolkit/slices/selectedAddressSlice';
-import { SelectedLocationProps, setSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { getPlaceByLatLng } from 'requests';
+import { useAppDispatch } from 'store/hooks';
+import { useNameSelector } from 'store/slices/businessChainSlice';
+import { useLogoSelector, useTypeSelector } from 'store/slices/currentPlaceSlice';
+import { addFormLocation, useFormLocationsSelector } from 'store/slices/formLocationsSlice';
+import { useSelectedAddressSelector } from 'store/slices/selectedAddressSlice';
+import { SelectedLocationProps, setSelectedLocations } from 'store/slices/selectedLocationsSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {

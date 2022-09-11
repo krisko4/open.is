@@ -3,8 +3,8 @@ import { LoadingButton } from '@mui/lab';
 import { Alert, AppBar, Dialog, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import { DialogTransition } from 'components/Transitions';
 import React, { FC } from 'react';
-import { useChangeOpeningHoursForSelectedLocationsMutation } from 'redux-toolkit/api';
-import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useChangeOpeningHoursForSelectedLocationsMutation } from 'store/api';
+import { useBusinessChainIdSelector } from 'store/slices/businessChainSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { OpeningHoursCard } from './OpeningHoursCard';
 

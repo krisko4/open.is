@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Rating from '@mui/material/Rating';
 import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
+import { CurrentPlaceProps } from 'store/slices/PlaceProps';
 interface Props {
   place: CurrentPlaceProps;
 }

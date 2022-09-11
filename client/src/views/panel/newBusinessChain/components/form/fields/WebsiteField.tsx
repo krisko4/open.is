@@ -2,7 +2,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import { InputAdornment, TextField } from '@mui/material';
 import React, { FC, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useWebsiteSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useWebsiteSelector } from 'store/slices/currentPlaceSlice';
 
 export const WebsiteField: FC = () => {
   // const isFirstRender = useRef(true);

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useAppSelector } from 'redux-toolkit/hooks';
-import { ContactData } from 'requests/PlaceRequests';
-import { LocationProps, RawPlaceDataProps, Status } from './PlaceProps';
+import { ContactData } from 'api/places';
+import { useAppSelector } from 'store/hooks';
 import { defaultImages } from 'utils/defaults';
+import { LocationProps, RawPlaceDataProps, Status } from './PlaceProps';
 
 export const clearBusinessChain = {
   name: '',

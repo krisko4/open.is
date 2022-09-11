@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LocalizationProvider, DatePicker, LoadingButton } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -9,11 +9,11 @@ import { differenceInYears } from 'date-fns';
 import * as React from 'react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setEmail } from 'redux-toolkit/slices/emailSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setEmail } from 'store/slices/emailSlice';
 import * as Yup from 'yup';
+import { signUp } from '../../../api/auth';
 import { useAuthContext } from '../../../contexts/AuthContext';
-import { signUp } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';
 
 const isLetter = (e: React.KeyboardEvent) => {

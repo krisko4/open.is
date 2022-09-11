@@ -1,9 +1,9 @@
 import { Autocomplete, TextField } from '@mui/material';
-import { FC, useState, useEffect, useRef } from 'react';
-import { useWatch, Controller, useFormContext } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setType, useTypeSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { getBusinessTypes } from 'requests/BusinessTypeRequests';
+import { getBusinessTypes } from 'api/businessTypes';
+import { FC, useEffect, useRef, useState } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useAppDispatch } from 'store/hooks';
+import { setType, useTypeSelector } from 'store/slices/currentPlaceSlice';
 
 export const BusinessType: FC = () => {
   const [businessTypes, setBusinessTypes] = useState<any>([]);

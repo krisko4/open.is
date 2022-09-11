@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import { CachedEvent } from 'components/Event/CachedEvent';
 import { FC } from 'react';
-import { EventData } from 'redux-toolkit/api/types';
+import { EventData } from 'store/api/types';
 
 interface Props {
   event: EventData;

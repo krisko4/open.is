@@ -1,9 +1,9 @@
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FC } from 'react';
-import { useAddLocationsMutation } from 'redux-toolkit/api';
-import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { FormLocationProps, useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
+import { useAddLocationsMutation } from 'store/api';
+import { useBusinessChainIdSelector } from 'store/slices/businessChainSlice';
+import { FormLocationProps, useFormLocationsSelector } from 'store/slices/formLocationsSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {

@@ -7,7 +7,7 @@ import { Alert, Card, CardContent, CardMedia, Fade, Grid, Slide, Toolbar, Typogr
 import * as React from 'react';
 import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useLogoSelector, useNameSelector, useSubtitleSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useLogoSelector, useNameSelector, useSubtitleSelector } from 'store/slices/businessChainSlice';
 import { BusinessChainTable } from './components/BusinessChainTable';
 
 export const Locations: FC = () => {

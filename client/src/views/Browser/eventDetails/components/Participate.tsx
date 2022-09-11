@@ -1,12 +1,12 @@
-import { Alert, Tooltip, Typography, Grid, IconButton } from '@mui/material';
-import { FC, useMemo, useState } from 'react';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import { useUnparticipateMutation, useParticipateMutation } from 'redux-toolkit/api';
-import { useCustomSnackbar } from 'utils/snackbars';
-import { useParams } from 'react-router';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
-import { EventDetails } from 'redux-toolkit/api/types';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { Alert, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { FC, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
+import { useParticipateMutation, useUnparticipateMutation } from 'store/api';
+import { EventDetails } from 'store/api/types';
+import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {
   event: EventDetails;

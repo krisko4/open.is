@@ -1,7 +1,6 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import React from 'react';
-import { FC } from 'react';
-import { useDescriptionSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import React, { FC } from 'react';
+import { useDescriptionSelector } from 'store/slices/currentPlaceSlice';
 
 export const PlaceDescription: FC = () => {
   const description = useDescriptionSelector();

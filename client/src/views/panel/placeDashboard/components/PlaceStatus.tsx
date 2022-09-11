@@ -3,8 +3,8 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import { Card, CardContent, CircularProgress, Fade, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetStatusForSelectedLocationQuery, useSetStatusForSelectedLocationMutation } from 'redux-toolkit/api';
-import { Status } from 'redux-toolkit/slices/PlaceProps';
+import { useGetStatusForSelectedLocationQuery, useSetStatusForSelectedLocationMutation } from 'store/api';
+import { Status } from 'store/slices/PlaceProps';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 export const PlaceStatus: FC = () => {

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { AverageNoteProps } from 'redux-toolkit/slices/PlaceProps';
+import { AverageNoteProps } from 'store/slices/PlaceProps';
 import { StatisticChart } from 'views/panel/dashboard/components/StatisticChart';
 
 const defaultOptions = {

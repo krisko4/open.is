@@ -1,10 +1,9 @@
 import { TextField } from '@mui/material';
-import React, { useRef } from 'react';
-import { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-material-ui';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { usePhoneSelector, setPhone } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setPhone, usePhoneSelector } from 'store/slices/currentPlaceSlice';
 // import "react-phone-input-material-ui/lib/style.css";
 
 export const PhoneNumber: FC = () => {

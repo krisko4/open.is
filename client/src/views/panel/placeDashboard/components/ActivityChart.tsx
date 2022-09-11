@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material';
 import { FC, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetVisitsForSelectedLocationQuery } from 'store/api';
 import { StatisticChart } from 'views/panel/dashboard/components/StatisticChart';
 
 export const ActivityChart: FC = () => {

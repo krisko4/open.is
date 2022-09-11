@@ -3,8 +3,8 @@ import { Alert, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextFie
 import { DialogTransition } from 'components/Transitions';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDeleteSelectedLocationsMutation } from 'redux-toolkit/api';
-import { useBusinessChainSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useDeleteSelectedLocationsMutation } from 'store/api';
+import { useBusinessChainSelector } from 'store/slices/businessChainSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {

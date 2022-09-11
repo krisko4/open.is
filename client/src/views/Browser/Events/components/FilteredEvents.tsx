@@ -1,14 +1,14 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { AppBar, CircularProgress, Dialog, Fade, Grid, IconButton, Toolbar, Typography } from '@mui/material';
+import { getPaginatedEvents } from 'api/events';
 import { FullHeightDialog } from 'components/dialogs';
 import { Event } from 'components/Event';
 import { CachedEvent } from 'components/Event/CachedEvent';
 import { FC, useEffect, useRef, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { addEvents, setSelectedEvents, useSelectedEventsSelector } from 'redux-toolkit/slices/eventSlice';
-import { getPaginatedEvents } from 'requests/EventRequests';
+import { useAppDispatch } from 'store/hooks';
+import { addEvents, setSelectedEvents, useSelectedEventsSelector } from 'store/slices/eventSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { EventDetails } from '../../eventDetails';
 

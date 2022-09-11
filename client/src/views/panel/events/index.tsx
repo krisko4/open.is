@@ -1,7 +1,7 @@
 import { Alert, Button, Card, CardContent, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { useGetEventsByLocationIdQuery } from 'redux-toolkit/api';
+import { useGetEventsByLocationIdQuery } from 'store/api';
 import { EventList } from './components/EventList';
 import { NewEvent } from './components/NewEvent';
 import { NoEvents } from './components/NoEvents';

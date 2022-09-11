@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Image, OpeningHoursProps } from '../redux-toolkit/slices/PlaceProps';
+import { Image, OpeningHoursProps } from '../store/slices/PlaceProps';
 
 export const defaultNews = [
   {

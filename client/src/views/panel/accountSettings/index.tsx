@@ -20,11 +20,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { removeProfilePicture, updateProfilePicture, updateUserData } from 'api';
 import { ImageUpload } from 'components/ImageUpload/ImageUpload';
 import { useLoginContext } from 'contexts';
 import { FastField, Form, Formik } from 'formik';
 import { FC, useEffect, useRef, useState } from 'react';
-import { removeProfilePicture, updateProfilePicture, updateUserData } from 'requests';
 import { useCustomSnackbar } from 'utils/snackbars';
 import * as Yup from 'yup';
 import { PasswordChange } from './components/PasswordChange';

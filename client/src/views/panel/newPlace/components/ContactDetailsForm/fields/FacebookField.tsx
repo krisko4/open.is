@@ -2,8 +2,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import { InputAdornment, TextField } from '@mui/material';
 import React, { FC, useEffect, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setFacebook, useFacebookSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setFacebook, useFacebookSelector } from 'store/slices/currentPlaceSlice';
 
 export const FacebookField: FC = () => {
   const isFirstRender = useRef(true);

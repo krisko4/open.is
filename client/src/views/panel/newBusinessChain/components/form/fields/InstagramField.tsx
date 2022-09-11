@@ -1,9 +1,9 @@
 import InstagramIcon from '@mui/icons-material/Instagram';
 
 import { InputAdornment, TextField } from '@mui/material';
-import React, { FC, useRef, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useInstagramSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useInstagramSelector } from 'store/slices/currentPlaceSlice';
 
 export const InstagramField: FC = () => {
   //   const isFirstRender = useRef(true);

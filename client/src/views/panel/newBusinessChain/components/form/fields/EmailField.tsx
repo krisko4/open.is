@@ -1,8 +1,8 @@
 import MailIcon from '@mui/icons-material/Mail';
-import { TextField, InputAdornment } from '@mui/material';
-import { FC, useRef, useEffect } from 'react';
+import { InputAdornment, TextField } from '@mui/material';
+import { FC, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useEmailSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useEmailSelector } from 'store/slices/currentPlaceSlice';
 export const EmailField: FC = () => {
   const { formState, register, setValue, getValues } = useFormContext();
   const email = useEmailSelector();

@@ -5,9 +5,9 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { DialogTransition } from 'components/Transitions';
 import React, { FC, useState } from 'react';
-import { useEmailSelector } from 'redux-toolkit/slices/emailSlice';
+import { useEmailSelector } from 'store/slices/emailSlice';
+import { resendConfirmationEmail } from '../../../api/auth';
 import { useAuthContext } from '../../../contexts/AuthContext';
-import { resendConfirmationEmail } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';
 
 export const EmailConfirmation: FC = () => {

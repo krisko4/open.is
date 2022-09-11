@@ -1,16 +1,16 @@
 import {
   Button,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
   DialogTitle,
   Grid,
   Typography,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
 } from '@mui/material';
-import { NewsProps } from 'redux-toolkit/slices/PlaceProps';
-import { FC } from 'react';
 import { DialogTransition } from 'components/Transitions';
+import { FC } from 'react';
+import { NewsProps } from 'store/slices/PlaceProps';
 
 interface Props {
   dialogOpen: boolean;

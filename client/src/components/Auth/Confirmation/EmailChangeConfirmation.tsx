@@ -1,6 +1,6 @@
+import { confirmEmailChange } from 'api/auth';
 import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { confirmEmailChange } from 'requests/AuthRequests';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 export const EmailChangeConfirmation: FC = () => {

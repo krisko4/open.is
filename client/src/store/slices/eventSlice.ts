@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { EventData } from 'redux-toolkit/api/types';
-import { useAppSelector } from 'redux-toolkit/hooks';
+import { EventData } from 'store/api/types';
+import { useAppSelector } from 'store/hooks';
 import { ImageType } from './PlaceProps';
 
 export interface EventProps {

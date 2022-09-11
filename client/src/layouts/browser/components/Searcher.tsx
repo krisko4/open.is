@@ -11,15 +11,15 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
+import { useAppDispatch } from 'store/hooks';
 import {
   resetSearcherOptions,
   SearcherOptionsProps,
   setSearcherOptions,
   useSearcherOptionsSelector,
-} from 'redux-toolkit/slices/searcherOptionsSlice';
-import { SelectedLocationProps, setSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
-import { getFoundPlaceNamesOrTypes, getPlacesBySearchParams } from '../../../requests/PlaceRequests';
+} from 'store/slices/searcherOptionsSlice';
+import { SelectedLocationProps, setSelectedLocations } from 'store/slices/selectedLocationsSlice';
+import { getFoundPlaceNamesOrTypes, getPlacesBySearchParams } from '../../../api/places';
 
 const provider = new OpenStreetMapProvider({});
 

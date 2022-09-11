@@ -1,8 +1,8 @@
 import { Button, CircularProgress, Grid, Typography } from '@mui/material';
 import { FC, useMemo, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useGetNotificationStatisticsQuery } from 'redux-toolkit/api';
-import { NotificationStatistics, NotificationType } from 'redux-toolkit/api/types';
+import { useGetNotificationStatisticsQuery } from 'store/api';
+import { NotificationStatistics, NotificationType } from 'store/api/types';
 import StatsChart from './StatsChart';
 
 interface Props {
@@ -24,7 +24,10 @@ const renderStatistics = (selectedOption: Options, stats?: NotificationStatistic
         {
           text:
             selectedOption === Options.EVENT
-              ? `A notification about your event has been sent to ${stats.all} ${formatString(stats.all, 'subscriber')}`
+              ? `A notification about your event has been sent to ${stats.all} ${formatString(
+                  stats.all,
+                  'participator'
+                )}`
               : `A notification about your reward has been sent to ${stats.all} ${formatString(
                   stats.all,
                   'participator'
@@ -33,26 +36,16 @@ const renderStatistics = (selectedOption: Options, stats?: NotificationStatistic
           series: [stats.all],
         },
         {
-          text:
-            selectedOption === Options.EVENT
-              ? `${stats.received} ${formatString(stats.received, 'subscriber')} ${formatHave(
-                  stats.received
-                )} received a notification`
-              : `${stats.received} ${formatString(stats.received, 'participator')} ${formatHave(
-                  stats.received
-                )} received a notification`,
+          text: `${stats.received} ${formatString(stats.received, 'participator')} ${formatHave(
+            stats.received
+          )} received a notification`,
           series: [stats.received, stats.all],
           chartFirst: true,
         },
         {
-          text:
-            selectedOption === Options.EVENT
-              ? `${stats.clicked} ${formatString(stats.clicked, 'subscriber')} ${formatHave(
-                  stats.clicked
-                )} clicked on a notification`
-              : `${stats.clicked} ${formatString(stats.clicked, 'participator')} ${formatHave(
-                  stats.clicked
-                )} clicked on a notification`,
+          text: `${stats.clicked} ${formatString(stats.clicked, 'participator')} ${formatHave(
+            stats.clicked
+          )} clicked on a notification`,
           series: [stats.clicked, stats.all],
         },
       ];
@@ -91,7 +84,7 @@ const Statistics: FC<Props> = ({ eventId }) => {
                   onClick={() => setSelectedOption(Options.REWARD)}
                   color="success"
                 >
-                  Reward
+                  Rewards
                 </Button>
                 <Button sx={{ ml: 1 }} variant="contained" onClick={() => setSelectedOption(Options.EVENT)}>
                   Event

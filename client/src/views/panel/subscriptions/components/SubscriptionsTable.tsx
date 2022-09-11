@@ -1,10 +1,10 @@
-import { Typography, Button, CircularProgress, Grid, IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, CircularProgress, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { CustomTable, TableData } from 'components/Table';
+import { format } from 'date-fns';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetSubscribersForSelectedLocationQuery } from 'redux-toolkit/api';
-import { format } from 'date-fns';
-import { CustomTable, TableData } from 'components/Table';
+import { useGetSubscribersForSelectedLocationQuery } from 'store/api';
 
 interface ToolbarProps {
   selectedRows: TableData[];

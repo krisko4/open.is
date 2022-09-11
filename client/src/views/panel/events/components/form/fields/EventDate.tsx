@@ -1,11 +1,11 @@
-import { LocalizationProvider, DateTimePicker, MobileDateTimePicker } from '@mui/lab';
+import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Typography, Grid, TextField } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setStartDate, setEndDate } from 'redux-toolkit/slices/eventSlice';
+import { Grid, TextField, Typography } from '@mui/material';
 import { format, isBefore } from 'date-fns';
+import { FC, useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useAppDispatch } from 'store/hooks';
+import { setEndDate, setStartDate } from 'store/slices/eventSlice';
 import { Fields } from '..';
 
 export const EventDate: FC = () => {

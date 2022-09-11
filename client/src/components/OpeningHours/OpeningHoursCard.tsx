@@ -1,7 +1,7 @@
-import { Card, CardContent, Typography, Divider, Grid } from '@mui/material';
+import { Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { FC } from 'react';
-import { OpeningHoursProps } from 'redux-toolkit/slices/PlaceProps';
+import { OpeningHoursProps } from 'store/slices/PlaceProps';
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 

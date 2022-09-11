@@ -1,7 +1,7 @@
-import { EventProps } from 'redux-toolkit/slices/eventSlice';
-import { FormLocationProps } from 'redux-toolkit/slices/formLocationsSlice';
-import { OpinionProps, VisitProps, VisitCount, Opinion, RawPlaceDataProps } from 'redux-toolkit/slices/PlaceProps';
-import { ContactData } from 'requests';
+import { ContactData } from 'api';
+import { EventProps } from 'store/slices/eventSlice';
+import { FormLocationProps } from 'store/slices/formLocationsSlice';
+import { Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'store/slices/PlaceProps';
 
 export interface SelectedLocationsProps {
   locationIds: string[];
@@ -68,6 +68,10 @@ export interface ChangeOpeningHoursProps {
   locationIds: string[];
 }
 
+export interface Code {
+  _id: string;
+}
+
 export interface PlaceAndLocationProps {
   placeId: string;
   locationId: string;
@@ -78,12 +82,16 @@ export interface AddLocationsProps {
   locations: FormLocationProps[];
 }
 
-export interface Reward {
+export interface RewardPayload {
   scheduledFor?: Date;
   date?: Date;
   description: string;
   eventId: string;
   rewardPercentage: number;
+}
+
+export interface Reward extends RewardPayload {
+  _id: string;
 }
 
 export interface GetSelectedLocationsProps {

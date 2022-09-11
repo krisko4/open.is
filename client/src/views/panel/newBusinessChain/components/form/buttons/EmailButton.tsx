@@ -1,8 +1,8 @@
+import { Button, Tooltip } from '@mui/material';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Tooltip, Button } from '@mui/material';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setEmail } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setEmail } from 'store/slices/currentPlaceSlice';
 
 export const EmailButton: FC = () => {
   const {

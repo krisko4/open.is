@@ -1,7 +1,7 @@
-import { ListItemButton, ListItemAvatar, Avatar, ListItemText } from '@mui/material';
-import { RawPlaceDataProps } from 'redux-toolkit/slices/PlaceProps';
+import { Avatar, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import React, { FC, useMemo } from 'react';
-import { LinkProps, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, LinkProps } from 'react-router-dom';
+import { RawPlaceDataProps } from 'store/slices/PlaceProps';
 
 interface ListItemLinkProps {
   to: string;

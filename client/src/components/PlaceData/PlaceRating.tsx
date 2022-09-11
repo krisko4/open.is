@@ -1,6 +1,6 @@
 import { Rating } from '@mui/material';
 import { FC } from 'react';
-import { useAverageNoteSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAverageNoteSelector } from 'store/slices/currentPlaceSlice';
 
 export const PlaceRating: FC = () => {
   const averageNote = useAverageNoteSelector();

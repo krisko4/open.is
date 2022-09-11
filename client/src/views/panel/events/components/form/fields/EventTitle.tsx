@@ -1,8 +1,8 @@
 import { TextField } from '@mui/material';
-import { FC, useRef, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setTitle, useTitleSelector } from 'redux-toolkit/slices/eventSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setTitle, useTitleSelector } from 'store/slices/eventSlice';
 import { Fields } from '..';
 
 export const EventTitle: FC = () => {

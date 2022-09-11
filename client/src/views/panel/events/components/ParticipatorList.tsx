@@ -1,8 +1,8 @@
-import { Button, List, ListItemButton, Grid, Avatar, Typography } from '@mui/material';
-import { FC } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import { Participator } from 'redux-toolkit/api/types';
+import { Avatar, Button, Grid, List, ListItemButton, Typography } from '@mui/material';
+import { FC } from 'react';
+import { Participator } from 'store/api/types';
 
 interface Props {
   participators: Participator[];

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ContactData } from 'requests/PlaceRequests';
-import { LocationProps, RawPlaceDataProps } from './PlaceProps';
+import { ContactData } from 'api/places';
 import { useAppSelector } from '../hooks';
+import { LocationProps, RawPlaceDataProps } from './PlaceProps';
 
 const initialState: RawPlaceDataProps[] = [];
 

@@ -1,10 +1,10 @@
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { CardMedia, Slide, Grid, IconButton } from '@mui/material';
+import { CardMedia, Grid, IconButton, Slide } from '@mui/material';
 import { ImageUpload } from 'components/ImageUpload/ImageUpload';
-import { FC, useState, useRef, useEffect } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setLogo, useLogoSelector } from 'redux-toolkit/slices/currentPlaceSlice';
 import { UploadCardMedia } from 'components/ImageUpload/UploadCardMedia';
+import { FC, useEffect, useRef, useState } from 'react';
+import { useAppDispatch } from 'store/hooks';
+import { setLogo, useLogoSelector } from 'store/slices/currentPlaceSlice';
 
 interface Props {
   isEditable?: boolean;

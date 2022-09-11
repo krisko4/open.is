@@ -1,8 +1,8 @@
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import { Slide, CircularProgress, Card, CardContent, Typography, Grid } from '@mui/material';
-import { FC, useState, useEffect } from 'react';
-import { useGetAllOpinionsByUserIdQuery } from 'redux-toolkit/api';
+import { Card, CardContent, CircularProgress, Grid, Slide, Typography } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+import { useGetAllOpinionsByUserIdQuery } from 'store/api';
 export const TotalOpinionsCard: FC = () => {
   const [totalOpinionsDiff, setTotalOpinionsDiff] = useState(0);
   const { data: totalOpinionsData, isFetching } = useGetAllOpinionsByUserIdQuery();

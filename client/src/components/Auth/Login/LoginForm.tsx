@@ -7,9 +7,9 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+import { login } from '../../../api/auth';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { useLoginContext } from '../../../contexts/LoginContext';
-import { login } from '../../../requests/AuthRequests';
 import { useCustomSnackbar } from '../../../utils/snackbars';
 
 const LoginSchema = Yup.object().shape({

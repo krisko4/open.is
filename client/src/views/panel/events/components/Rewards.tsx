@@ -1,7 +1,7 @@
 import { CircularProgress, Grid, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { FC, useState } from 'react';
-import { useGetRewardByEventIdQuery } from 'redux-toolkit/api';
+import { useGetEventByIdQuery, useGetRewardByEventIdQuery } from 'store/api';
 import { RewardDrawingOptions } from '../enums';
 import { NewReward } from './NewReward';
 import { NoRewards } from './NoRewards';
@@ -16,6 +16,7 @@ export const Rewards: FC<Props> = ({ eventId }) => {
     RewardDrawingOptions.NO_REWARD_DRAWINGS
   );
   const { data: reward, isFetching } = useGetRewardByEventIdQuery(eventId);
+  const { data: event } = useGetEventByIdQuery(eventId);
 
   return (
     <Grid container sx={{ height: '100%' }}>
@@ -23,8 +24,8 @@ export const Rewards: FC<Props> = ({ eventId }) => {
         <Grid container sx={{ height: '100%' }} alignItems="center" justifyContent="center">
           <CircularProgress />
         </Grid>
-      ) : reward ? (
-        <RewardDetails reward={reward} />
+      ) : reward && event ? (
+        <RewardDetails event={event} reward={reward} />
       ) : (
         <>
           {selectedOption === RewardDrawingOptions.NEW_REWARD_DRAWING ? (

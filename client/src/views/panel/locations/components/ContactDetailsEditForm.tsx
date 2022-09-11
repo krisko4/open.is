@@ -5,12 +5,12 @@ import LanguageIcon from '@mui/icons-material/Language';
 import MailIcon from '@mui/icons-material/Mail';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid, InputAdornment, SxProps, TextField, Theme, Typography } from '@mui/material';
+import { ContactData } from 'api';
 import { FC, useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form';
 import ReactPhoneInput from 'react-phone-input-material-ui';
-import { useChangeContactDetailsForSelectedLocationsMutation } from 'redux-toolkit/api';
-import { useBusinessChainIdSelector } from 'redux-toolkit/slices/businessChainSlice';
-import { ContactData } from 'requests';
+import { useChangeContactDetailsForSelectedLocationsMutation } from 'store/api';
+import { useBusinessChainIdSelector } from 'store/slices/businessChainSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import * as yup from 'yup';
 

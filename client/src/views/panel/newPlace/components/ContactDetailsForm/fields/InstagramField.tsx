@@ -3,8 +3,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import { InputAdornment, TextField } from '@mui/material';
 import React, { FC, useEffect, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setInstagram, useInstagramSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setInstagram, useInstagramSelector } from 'store/slices/currentPlaceSlice';
 
 export const InstagramField: FC = () => {
   const isFirstRender = useRef(true);

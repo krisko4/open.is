@@ -4,9 +4,9 @@ import { PanelTabNavigator } from 'components/PanelTabNavigator';
 import * as React from 'react';
 import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdQuery } from 'redux-toolkit/api';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setBusinessChain } from 'redux-toolkit/slices/businessChainSlice';
+import { useGetPlaceByIdQuery } from 'store/api';
+import { useAppDispatch } from 'store/hooks';
+import { setBusinessChain } from 'store/slices/businessChainSlice';
 import { Locations } from 'views/panel/locations';
 import { BusinessChainSettings } from '../views/panel/businessChainSettings';
 

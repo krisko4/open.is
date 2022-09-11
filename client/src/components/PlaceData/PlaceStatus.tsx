@@ -1,5 +1,5 @@
 import { Alert, Tooltip } from '@mui/material';
-import { useStatusSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useStatusSelector } from 'store/slices/currentPlaceSlice';
 
 export const PlaceStatus = () => {
   const status = useStatusSelector();

@@ -3,7 +3,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { Card, CardContent, CircularProgress, Fade, Grid, Typography } from '@mui/material';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetVisitsForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetVisitsForSelectedLocationQuery } from 'store/api';
 
 export const TotalVisits: FC = () => {
   const { locationId } = useParams();

@@ -2,7 +2,7 @@ import { ListSubheader } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { ListItemLink } from 'components/ListItemLink';
 import { FC, useMemo } from 'react';
-import { useGetPlacesByUserId } from 'redux-toolkit/api';
+import { useGetPlacesByUserId } from 'store/api';
 
 interface Props {
   drawerOpen: boolean;

@@ -1,8 +1,8 @@
-import { Card, Typography, CardContent } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { FC } from 'react';
 
 interface Props {
-  value: string | number;
+  value: any;
   title?: string;
   elevation?: number;
   width?: number;

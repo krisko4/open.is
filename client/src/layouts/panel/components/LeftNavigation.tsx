@@ -18,8 +18,8 @@ import * as React from 'react';
 import { FC } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useNavigate } from 'react-router-dom';
-import { useGetPlacesByUserId } from 'redux-toolkit/api';
-import { RawPlaceDataProps } from 'redux-toolkit/slices/PlaceProps';
+import { useGetPlacesByUserId } from 'store/api';
+import { RawPlaceDataProps } from 'store/slices/PlaceProps';
 import { MyBusinessChains } from './MyBusinessChains';
 import { MyPlaces } from './MyPlaces';
 
@@ -163,9 +163,6 @@ export const LeftNavigation: FC<Props> = ({ drawerOpen, setDrawerOpen }) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: '70%' },
         }}
       >
-        {/* <IconButton onClick={() => setDrawerOpen(false)}>
-          {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton> */}
         <Divider />
         <DrawerContent drawerOpen={drawerOpen} />
       </MuiDrawer>

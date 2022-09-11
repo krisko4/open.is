@@ -1,8 +1,8 @@
 import { Fade, Grid, Slide, Typography } from '@mui/material';
 import { Event } from 'components/Event';
 import { FC, useEffect, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { reset } from 'redux-toolkit/slices/eventSlice';
+import { useAppDispatch } from 'store/hooks';
+import { reset } from 'store/slices/eventSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { EventForm } from './form';
 
@@ -14,7 +14,7 @@ export const NewEvent: FC = () => {
     return () => {
       dispatch(reset());
     };
-  });
+  }, []);
 
   return (
     <Grid container alignItems="center" sx={{ flexGrow: 1 }} justifyContent="space-evenly">

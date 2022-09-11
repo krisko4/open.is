@@ -1,7 +1,7 @@
-import { ListSubheader, List } from '@mui/material';
+import { List, ListSubheader } from '@mui/material';
 import { ListItemLink } from 'components/ListItemLink';
 import React, { FC, useMemo } from 'react';
-import { useGetPlacesByUserId } from 'redux-toolkit/api';
+import { useGetPlacesByUserId } from 'store/api';
 interface Props {
   drawerOpen: boolean;
 }

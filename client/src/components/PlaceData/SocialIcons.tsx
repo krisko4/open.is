@@ -1,8 +1,7 @@
 import { IconButton } from '@mui/material';
-import React from 'react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { useFacebookSelector, useInstagramSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useFacebookSelector, useInstagramSelector } from 'store/slices/currentPlaceSlice';
 
 interface SocialProps {
   url: string;

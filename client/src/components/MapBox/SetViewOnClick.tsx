@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
-import { useMapDataSelector } from 'redux-toolkit/slices/mapSlice';
+import { useMapDataSelector } from 'store/slices/mapSlice';
 
 export const SetViewOnClick: FC = () => {
   const mapData = useMapDataSelector();

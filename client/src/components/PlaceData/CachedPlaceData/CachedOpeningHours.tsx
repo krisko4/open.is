@@ -4,7 +4,7 @@ import { OpeningHoursCard } from 'components/OpeningHours/OpeningHoursCard';
 import { Destinations } from 'layouts/PlaceManagement';
 import React, { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetOpeningHoursForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetOpeningHoursForSelectedLocationQuery } from 'store/api';
 import { useColorMode } from '../../../contexts/ColorModeContext';
 
 export const CachedOpeningHours: FC = () => {

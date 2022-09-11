@@ -19,9 +19,9 @@ import { useStepContext } from 'contexts';
 import _ from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAddPlaceMutation, useEditPlaceDataMutation } from 'redux-toolkit/api';
-import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
+import { useAddPlaceMutation, useEditPlaceDataMutation } from 'store/api';
+import { useCurrentPlaceSelector } from 'store/slices/currentPlaceSlice';
+import { CurrentPlaceProps } from 'store/slices/PlaceProps';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { NewPlaceStepper } from './NewPlaceStepper';
 

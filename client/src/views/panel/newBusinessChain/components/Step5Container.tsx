@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
-import { useCurrentPlaceSelector } from 'redux-toolkit/slices/currentPlaceSlice';
-import { useFormLocationsSelector } from 'redux-toolkit/slices/formLocationsSlice';
-import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
+import { useCurrentPlaceSelector } from 'store/slices/currentPlaceSlice';
+import { useFormLocationsSelector } from 'store/slices/formLocationsSlice';
+import { CurrentPlaceProps } from 'store/slices/PlaceProps';
 import { Step5 } from '../../newPlace/components/Step5';
 
 interface Props {

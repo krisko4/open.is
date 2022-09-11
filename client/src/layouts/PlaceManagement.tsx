@@ -3,7 +3,7 @@ import { NotReady } from 'components/NotReady';
 import { PanelTabNavigator } from 'components/PanelTabNavigator';
 import { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'store/api';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { OpeningHoursWrapper } from 'views/panel/openingHours/components/OpeningHoursWrapper';
 import { PlaceDashboard } from 'views/panel/placeDashboard';

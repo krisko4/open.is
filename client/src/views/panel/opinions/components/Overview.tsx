@@ -6,7 +6,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useParams } from 'react-router-dom';
-import { useGetAverageNoteForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetAverageNoteForSelectedLocationQuery } from 'store/api';
 
 const StyledRating = styled(Rating)({
   marginTop: 20,

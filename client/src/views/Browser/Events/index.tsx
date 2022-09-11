@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { NavigationTabs } from 'components/NavigationTabs';
 import React, { FC } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
-import { useSelectedEventsSelector } from 'redux-toolkit/slices/eventSlice';
+import { useSelectedEventsSelector } from 'store/slices/eventSlice';
 import { EventDetails } from '../eventDetails';
 import { Events } from './components/Events';
 import { FilteredEvents } from './components/FilteredEvents';

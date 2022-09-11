@@ -21,7 +21,7 @@ import { DialogTransition } from 'components/Transitions';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import React, { FC, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAddOpinionMutation, useGetOpinionsForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useAddOpinionMutation, useGetOpinionsForSelectedLocationQuery } from 'store/api';
 import { useLoginContext } from '../../../contexts/LoginContext';
 import { useCustomSnackbar } from '../../../utils/snackbars';
 import { LoadingButton } from '../../buttons/LoadingButton';

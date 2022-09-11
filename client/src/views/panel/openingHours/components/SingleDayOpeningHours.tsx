@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { getHours } from 'date-fns';
 import frLocale from 'date-fns/locale/fr';
 import { FC, useEffect, useState } from 'react';
-import { OpeningHoursKeys, OpeningHoursProps } from 'redux-toolkit/slices/PlaceProps';
+import { OpeningHoursKeys, OpeningHoursProps } from 'store/slices/PlaceProps';
 
 interface Props {
   day: OpeningHoursKeys;

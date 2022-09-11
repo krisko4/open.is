@@ -3,8 +3,8 @@ import { LoadingButton } from '@mui/lab';
 import { Fade, Grid, InputAdornment, TextField, Typography } from '@mui/material';
 import { useStepContext } from 'contexts';
 import React, { FC, useEffect, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setName, useNameSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setName, useNameSelector } from 'store/slices/currentPlaceSlice';
 
 export const Step1: FC = () => {
   const { setCurrentStep, setActiveStep } = useStepContext();

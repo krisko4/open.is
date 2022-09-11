@@ -1,30 +1,32 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { EventProps } from 'redux-toolkit/slices/eventSlice';
-import { AverageNoteProps, CurrentPlaceProps, NewsProps, RawPlaceDataProps } from 'redux-toolkit/slices/PlaceProps';
-import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { EventProps } from 'store/slices/eventSlice';
+import { AverageNoteProps, CurrentPlaceProps, NewsProps, RawPlaceDataProps } from 'store/slices/PlaceProps';
+import { SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
 import { convertToCurrentPlace } from 'utils/place_data_utils';
 import { TagTypes } from './tag-types';
 import {
+  AddLocationsProps,
   AddNewsProps,
   AddOpinionProps,
-  PlaceAndLocationProps,
-  GetSelectedLocationsProps,
+  AllOpinionsProps,
+  AllVisitsProps,
   ChangeContactDetailsProps,
   ChangeOpeningHoursProps,
-  AddLocationsProps,
-  OpinionData,
-  AllOpinionsProps,
-  VisitData,
-  AllVisitsProps,
-  OpeningHoursResponse,
-  StatusProps,
-  SelectedLocationsProps,
-  Subscription,
-  Subscriber,
+  Code,
   EventData,
   EventDetails,
-  Reward,
+  GetSelectedLocationsProps,
   NotificationStatistics,
+  OpeningHoursResponse,
+  OpinionData,
+  PlaceAndLocationProps,
+  Reward,
+  RewardPayload,
+  SelectedLocationsProps,
+  StatusProps,
+  Subscriber,
+  Subscription,
+  VisitData,
 } from './types';
 
 export const placesApi = createApi({
@@ -314,13 +316,22 @@ export const placesApi = createApi({
       }),
       providesTags: [TagTypes.REWARDS],
     }),
-    addReward: builder.mutation<void, Reward>({
+    addReward: builder.mutation<void, RewardPayload>({
       query: (rewardPayload) => ({
         url: `/rewards`,
         method: 'POST',
         body: rewardPayload,
       }),
       invalidatesTags: [TagTypes.REWARDS],
+    }),
+    getCodesByRewardId: builder.query<Code[], string>({
+      query: (rewardId) => ({
+        url: '/codes',
+        params: {
+          rewardId,
+        },
+      }),
+      providesTags: [TagTypes.CODES],
     }),
     deletePlace: builder.mutation<void, string>({
       query: (id) => ({
@@ -387,4 +398,5 @@ export const {
   useGetRewardByEventIdQuery,
   useAddRewardMutation,
   useGetNotificationStatisticsQuery,
+  useGetCodesByRewardIdQuery,
 } = placesApi;

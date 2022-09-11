@@ -1,9 +1,9 @@
-import { useState, FC } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { SnackbarProvider } from 'notistack';
-import { LoginContext, UserData } from 'contexts/LoginContext';
 import { AuthContext } from 'contexts/AuthContext';
-import { StoreProvider } from 'redux-toolkit/store';
+import { LoginContext, UserData } from 'contexts/LoginContext';
+import { SnackbarProvider } from 'notistack';
+import { FC, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { StoreProvider } from 'store';
 
 const useMockedLoginProviderValue = (isLoggedIn: boolean) => {
   const value: UserData = {

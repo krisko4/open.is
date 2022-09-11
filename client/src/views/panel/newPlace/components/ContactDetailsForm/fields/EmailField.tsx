@@ -2,8 +2,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import { InputAdornment, TextField } from '@mui/material';
 import React, { FC, useEffect, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setEmail, useEmailSelector } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setEmail, useEmailSelector } from 'store/slices/currentPlaceSlice';
 
 export const EmailField: FC = () => {
   const isFirstRender = useRef(true);

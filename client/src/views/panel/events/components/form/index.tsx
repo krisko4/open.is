@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { useAddEventMutation } from 'redux-toolkit/api';
+import { useAddEventMutation } from 'store/api';
 import { useCustomSnackbar } from 'utils/snackbars';
 import * as yup from 'yup';
 import { EventContent, EventDate, EventTitle } from './fields';

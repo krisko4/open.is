@@ -1,4 +1,8 @@
 import { createDraftSafeSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from 'store';
+import { Image } from 'store/slices/PlaceProps';
+import { defaultImages, defaultNews } from '../../utils/defaults';
+import { useAppSelector } from '../hooks';
 import {
   AddressDataProps,
   AverageNoteProps,
@@ -8,10 +12,6 @@ import {
   OpinionProps,
   Status,
 } from './PlaceProps';
-import { defaultImages, defaultNews } from '../../utils/defaults';
-import { useAppSelector } from '../hooks';
-import { Image } from 'redux-toolkit/slices/PlaceProps';
-import { RootState } from 'redux-toolkit/store';
 
 const initialState: CurrentPlaceProps = {
   name: '',

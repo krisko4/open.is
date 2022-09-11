@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useContentSelector } from 'redux-toolkit/slices/eventSlice';
+import { useContentSelector } from 'store/slices/eventSlice';
 
 export const EventContent: FC = () => {
   const content = useContentSelector();

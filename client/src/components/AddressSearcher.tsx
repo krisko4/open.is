@@ -1,11 +1,11 @@
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import { findByAddress } from 'api';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setMapCoords } from 'redux-toolkit/slices/mapSlice';
-import { setSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
-import { findByAddress } from 'requests';
+import { useAppDispatch } from 'store/hooks';
+import { setMapCoords } from 'store/slices/mapSlice';
+import { setSelectedAddress } from 'store/slices/selectedAddressSlice';
 
 interface Props {
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;

@@ -1,17 +1,17 @@
-import React, { FC, useState } from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import { Collapse, Fade, Slider, Switch, Button, TextField, Grid, Divider } from '@mui/material';
-import { LocalizationProvider, DateTimePicker, MobileDateTimePicker } from '@mui/lab';
+import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { Button, Collapse, Divider, Fade, Grid, Slider, Switch, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { useAddRewardMutation } from 'redux-toolkit/api';
-import { Reward } from 'redux-toolkit/api/types';
+import Paper from '@mui/material/Paper';
+import Step from '@mui/material/Step';
+import StepContent from '@mui/material/StepContent';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
+import React, { FC, useState } from 'react';
+import { useAddRewardMutation } from 'store/api';
+import { Reward, RewardPayload } from 'store/api/types';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 const marks = [
@@ -59,7 +59,7 @@ export const NewReward: FC<Props> = ({ eventId }) => {
   };
 
   const handleFinish = async () => {
-    const reward: Reward = {
+    const reward: RewardPayload = {
       description,
       rewardPercentage,
       eventId,

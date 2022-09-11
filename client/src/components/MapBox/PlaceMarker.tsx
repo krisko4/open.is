@@ -7,10 +7,10 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import React, { FC, useEffect, useRef } from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setPopup, usePopupSelector } from 'redux-toolkit/slices/mapSlice';
-import { setSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
-import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setPopup, usePopupSelector } from 'store/slices/mapSlice';
+import { setSelectedAddress } from 'store/slices/selectedAddressSlice';
+import { SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
 
 const useStyles = makeStyles({
   icon: {

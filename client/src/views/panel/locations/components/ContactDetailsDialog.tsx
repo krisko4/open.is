@@ -2,7 +2,7 @@ import { Card, CardContent, Divider, Grid, List, ListItem, ListItemText, Typogra
 import { FullHeightDialog } from 'components/dialogs';
 import { FC } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useLocationsSelector } from 'redux-toolkit/slices/businessChainSlice';
+import { useLocationsSelector } from 'store/slices/businessChainSlice';
 import { ContactDetailsEditForm } from './ContactDetailsEditForm';
 
 interface Props {

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
+import { signOut } from 'api';
 import { useLoginContext } from 'contexts';
 import React, { FC } from 'react';
-import { signOut } from 'requests';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 export const SignOutButton: FC<any> = (props) => {

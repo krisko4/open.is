@@ -2,9 +2,9 @@ import { ExpandMore } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Accordion, AccordionDetails, AccordionSummary, Grid, Grow, IconButton, Typography } from '@mui/material';
 import { FC } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { removeFormLocationByAddressId } from 'redux-toolkit/slices/formLocationsSlice';
-import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { removeFormLocationByAddressId } from 'store/slices/formLocationsSlice';
+import { SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
 import { LocationDetailsForm } from './form';
 
 interface Props {

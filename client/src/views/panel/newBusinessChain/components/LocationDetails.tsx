@@ -2,14 +2,14 @@ import { Button, Fade, Grid, Paper, Slide, Typography } from '@mui/material';
 import { useColorMode } from 'contexts';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setLogo } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setLogo } from 'store/slices/currentPlaceSlice';
 import {
   saveForm,
   useFormLocationsSelector,
   useFormSaveTriggerSelector,
   useInvalidFormsSelector,
-} from 'redux-toolkit/slices/formLocationsSlice';
+} from 'store/slices/formLocationsSlice';
 import { Location } from './Location';
 import { LocationsConfirmDialog } from './LocationsConfirmDialog';
 

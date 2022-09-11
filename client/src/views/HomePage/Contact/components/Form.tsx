@@ -3,7 +3,7 @@ import { Grid, TextField } from '@mui/material';
 import { FastField, Form, Formik } from 'formik';
 import React, { FC, useState } from 'react';
 import * as Yup from 'yup';
-import { ContactFormValues, sendContactMessage } from '../../../../requests/ContactRequests';
+import { ContactFormValues, sendContactMessage } from '../../../../api/contact';
 import { useCustomSnackbar } from '../../../../utils/snackbars';
 
 const ContactSchema = Yup.object().shape({

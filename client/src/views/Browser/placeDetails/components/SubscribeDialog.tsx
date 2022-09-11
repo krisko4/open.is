@@ -3,8 +3,8 @@ import { Alert, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Gr
 import { DialogTransition } from 'components/Transitions';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSubscribeLocationMutation } from 'redux-toolkit/api';
-import { CurrentPlaceProps } from 'redux-toolkit/slices/PlaceProps';
+import { useSubscribeLocationMutation } from 'store/api';
+import { CurrentPlaceProps } from 'store/slices/PlaceProps';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {

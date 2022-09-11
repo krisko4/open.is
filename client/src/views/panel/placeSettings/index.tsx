@@ -3,9 +3,9 @@ import { StepContextProvider } from 'contexts';
 import _ from 'lodash';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPlaceByIdAndSelectedLocationQuery } from 'redux-toolkit/api';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
+import { useGetPlaceByIdAndSelectedLocationQuery } from 'store/api';
+import { useAppDispatch } from 'store/hooks';
+import { setSelectedAddress } from 'store/slices/selectedAddressSlice';
 import { NewPlace } from 'views/panel/newPlace';
 import newPlaceSteps from 'views/panel/newPlace/utils/steps';
 

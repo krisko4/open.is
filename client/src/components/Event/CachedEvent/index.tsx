@@ -1,19 +1,19 @@
 import {
-  Tooltip,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Avatar,
   Card,
   CardContent,
   Grid,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { UploadCardMedia } from 'components/ImageUpload/UploadCardMedia';
 import { FC, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useNavigate } from 'react-router';
-import { EventData } from 'redux-toolkit/api/types';
+import { EventData } from 'store/api/types';
 
 interface Props {
   eventData: EventData;

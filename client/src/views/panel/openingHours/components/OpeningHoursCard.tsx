@@ -1,7 +1,7 @@
-import { Card, Toolbar, Grid, Typography, Divider, CardContent, Button } from '@mui/material';
+import { Button, Card, CardContent, Divider, Grid, Toolbar, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { FC } from 'react';
-import { OpeningHoursKeys, OpeningHoursProps } from 'redux-toolkit/slices/PlaceProps';
+import { OpeningHoursKeys, OpeningHoursProps } from 'store/slices/PlaceProps';
 
 interface Props {
   openingHours: OpeningHoursProps;

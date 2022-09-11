@@ -4,7 +4,7 @@ import { Button, Fade, Grid, IconButton, Tooltip, Typography } from '@mui/materi
 import { FullHeightDialog } from 'components/dialogs';
 import { CachedEvent } from 'components/Event/CachedEvent';
 import { FC, useState } from 'react';
-import { EventData } from 'redux-toolkit/api/types';
+import { EventData } from 'store/api/types';
 import { EventManagementOptions, EventOptions } from '../enums';
 import { EventManagement } from './EventManagement';
 
@@ -52,7 +52,7 @@ export const EventList: FC<Props> = ({ events, setSelectedOption }) => {
           </div>
         }
       >
-        {selectedEvent && <EventManagement selectedOption={managementOption} event={selectedEvent} />}
+        {selectedEvent && <EventManagement selectedOption={managementOption} eventId={selectedEvent._id} />}
       </FullHeightDialog>
       <Grid sx={{ mb: 1 }} container justifyContent="flex-end">
         <Grid item>

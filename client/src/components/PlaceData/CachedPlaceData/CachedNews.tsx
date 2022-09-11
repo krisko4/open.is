@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import React, { FC, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useParams } from 'react-router-dom';
-import { useGetNewsByLocationIdQuery } from 'redux-toolkit/api';
+import { useGetNewsByLocationIdQuery } from 'store/api';
 import { useLoginContext } from '../../../contexts/LoginContext';
 import { NewsDialog } from '../../News/NewsDialog';
 import { NewsItem } from '../../News/NewsItem';

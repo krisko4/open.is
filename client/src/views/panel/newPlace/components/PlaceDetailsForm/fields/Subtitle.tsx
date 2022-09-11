@@ -1,8 +1,8 @@
 import { TextField } from '@mui/material';
-import { FC, useRef, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { useSubtitleSelector, setSubtitle } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setSubtitle, useSubtitleSelector } from 'store/slices/currentPlaceSlice';
 
 export const Subtitle: FC = () => {
   const {

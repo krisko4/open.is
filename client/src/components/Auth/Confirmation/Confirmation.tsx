@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import { confirmRegistrationToken } from '../../../requests/AuthRequests';
+import { confirmRegistrationToken } from '../../../api/auth';
 import { useCustomSnackbar } from '../../../utils/snackbars';
 
 export const Confirmation: FC = () => {

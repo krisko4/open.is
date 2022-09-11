@@ -1,7 +1,7 @@
 import { CircularProgress, Grid } from '@mui/material';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetOpeningHoursForSelectedLocationQuery } from 'redux-toolkit/api';
+import { useGetOpeningHoursForSelectedLocationQuery } from 'store/api';
 import { OpeningHours } from '..';
 
 export const OpeningHoursWrapper: FC = () => {

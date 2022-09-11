@@ -1,9 +1,9 @@
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { CardMedia, Grid, IconButton, Slide, Typography } from '@mui/material';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { setConcreteImage } from 'redux-toolkit/slices/currentPlaceSlice';
+import { useAppDispatch } from 'store/hooks';
+import { setConcreteImage } from 'store/slices/currentPlaceSlice';
 import { ImageUpload } from '../../ImageUpload/ImageUpload';
 
 interface Image {

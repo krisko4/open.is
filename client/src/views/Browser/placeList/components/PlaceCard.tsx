@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { Rating, Card, CardContent, Grid, Avatar, Typography, Tooltip, Button } from '@mui/material';
+import { Avatar, Button, Card, CardContent, Grid, Rating, Tooltip, Typography } from '@mui/material';
 import Cookies from 'js-cookie';
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { removeLocation, SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { removeLocation, SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
 
 // const useStyles = makeStyles({
 //     card: {

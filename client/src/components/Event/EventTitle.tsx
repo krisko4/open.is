@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { FC } from 'react';
-import { useTitleSelector } from 'redux-toolkit/slices/eventSlice';
+import { useTitleSelector } from 'store/slices/eventSlice';
 
 export const EventTitle: FC = () => {
   const title = useTitleSelector();

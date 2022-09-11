@@ -1,9 +1,9 @@
-import { TimelineItem, TimelineSeparator, TimelineDot, TimelineConnector, TimelineContent } from '@mui/lab';
-import { Button, Card, CardContent, Typography, CardActions } from '@mui/material';
-import { NewsProps } from 'redux-toolkit/slices/PlaceProps';
-import { FC, useState } from 'react';
-import { NewsDetailsDialog } from './NewsDetailsDialog';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
+import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from '@mui/lab';
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { FC, useState } from 'react';
+import { NewsProps } from 'store/slices/PlaceProps';
+import { NewsDetailsDialog } from './NewsDetailsDialog';
 
 interface Props {
   item: NewsProps;

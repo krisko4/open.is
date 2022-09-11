@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useAppSelector } from 'redux-toolkit/hooks';
+import { useAppSelector } from 'store/hooks';
 
 export interface SelectedLocationProps {
   _id?: string;

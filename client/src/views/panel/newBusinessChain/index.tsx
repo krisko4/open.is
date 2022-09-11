@@ -2,12 +2,12 @@ import { Button, Card, CardContent, Grid, Paper, Slide, Typography } from '@mui/
 import { useStepContext } from 'contexts';
 import React, { FC, useEffect, useState } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { resetCurrentPlace } from 'redux-toolkit/slices/currentPlaceSlice';
-import { resetFormLocations } from 'redux-toolkit/slices/formLocationsSlice';
-import { resetMap } from 'redux-toolkit/slices/mapSlice';
-import { resetSelectedAddress } from 'redux-toolkit/slices/selectedAddressSlice';
-import { resetSelectedLocations } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { resetCurrentPlace } from 'store/slices/currentPlaceSlice';
+import { resetFormLocations } from 'store/slices/formLocationsSlice';
+import { resetMap } from 'store/slices/mapSlice';
+import { resetSelectedAddress } from 'store/slices/selectedAddressSlice';
+import { resetSelectedLocations } from 'store/slices/selectedLocationsSlice';
 import { PlaceDetailsCard } from '../../../components/PlaceDetailsCard';
 import { NewPlaceStepper } from '../newPlace/components/NewPlaceStepper';
 import { Step1 } from '../newPlace/components/Step1';

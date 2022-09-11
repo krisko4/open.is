@@ -1,18 +1,14 @@
-import { Tooltip, Slide, Divider, Alert, Typography, Grid, IconButton, CircularProgress } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
-import { FC, useEffect, useState } from 'react';
-import { EventDetails } from 'redux-toolkit/api/types';
-import { CachedEvent } from 'components/Event/CachedEvent';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
+import { Alert, CircularProgress, Divider, Grid, IconButton, Slide, Tooltip, Typography } from '@mui/material';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { CachedEvent } from 'components/Event/CachedEvent';
 import { useLoginContext } from 'contexts';
-import {
-  useSubscribeLocationMutation,
-  useUnsubscribeLocationMutation,
-  useIsUserSubscriberQuery,
-} from 'redux-toolkit/api';
+import { FC, useEffect, useState } from 'react';
+import { useIsUserSubscriberQuery, useSubscribeLocationMutation, useUnsubscribeLocationMutation } from 'store/api';
+import { EventDetails } from 'store/api/types';
 import { useCustomSnackbar } from 'utils/snackbars';
 
 interface Props {

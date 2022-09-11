@@ -14,9 +14,9 @@ import { InstagramField } from './fields/InstagramField';
 import { PhoneField } from './fields/PhoneField';
 import { WebsiteField } from './fields/WebsiteField';
 // import { LocationProps } from '../../../../../../redux-toolkit/slices/PlaceProps';
-import { useAppDispatch } from 'redux-toolkit/hooks';
-import { fillFormData, setValid, useFormSaveTriggerSelector } from 'redux-toolkit/slices/formLocationsSlice';
-import { SelectedLocationProps } from 'redux-toolkit/slices/selectedLocationsSlice';
+import { useAppDispatch } from 'store/hooks';
+import { fillFormData, setValid, useFormSaveTriggerSelector } from 'store/slices/formLocationsSlice';
+import { SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
 // import PhoneInput from "react-phone-input-2";
 
 // const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/;

@@ -13,7 +13,7 @@ import {
 import { DialogTransition } from 'components/Transitions';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { FC, useRef, useState } from 'react';
-import { useAddNewsMutation } from 'redux-toolkit/api';
+import { useAddNewsMutation } from 'store/api';
 import { useCustomSnackbar } from 'utils/snackbars';
 import { LoadingButton } from '../buttons/LoadingButton';
 

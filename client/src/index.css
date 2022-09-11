@@ -8,16 +8,13 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 body > #root > div {
   height: 100vh;
 }
-body{
-  padding-right: 0px!important;
+body {
+  padding-right: 0px !important;
+  overflow: auto !important;
 }
-
-
-
