@@ -1,6 +1,6 @@
+import { Chart } from 'components/Chart';
 import { FC, useState } from 'react';
 import { AverageNoteProps } from 'store/slices/PlaceProps';
-import { StatisticChart } from 'views/panel/dashboard/components/StatisticChart';
 
 const defaultOptions = {
   ones: 0,
@@ -62,13 +62,7 @@ export const RatingChart: FC<Props> = ({ averageNote }) => {
   return (
     <>
       {averageNote && (
-        <StatisticChart
-          type="donut"
-          width={380}
-          options={ratingOptions}
-          setOptions={setRatingOptions}
-          series={ratingSeries}
-        />
+        <Chart type="donut" width={380} options={ratingOptions} setOptions={setRatingOptions} series={ratingSeries} />
       )}
     </>
   );

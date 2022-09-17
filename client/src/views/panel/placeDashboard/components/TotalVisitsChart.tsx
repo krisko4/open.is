@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { StatisticChart } from '../../dashboard/components/StatisticChart';
+import { Chart } from '../../../../components/Chart';
 
 export const TotalVisitsChart: FC<any> = ({ visits }) => {
   const [totalVisitsOptions, setTotalVisitsOptions] = useState({
@@ -40,7 +40,7 @@ export const TotalVisitsChart: FC<any> = ({ visits }) => {
   ];
 
   return (
-    <StatisticChart
+    <Chart
       height={100}
       width={150}
       type="area"

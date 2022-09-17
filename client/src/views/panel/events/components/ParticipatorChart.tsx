@@ -1,5 +1,5 @@
+import { Chart } from 'components/Chart';
 import { FC, useMemo } from 'react';
-import ReactApexChart from 'react-apexcharts';
 const options = {
   labels: ['Subscribers', 'Non-subscribers'],
   responsive: [
@@ -25,7 +25,7 @@ const ParticipatorChart: FC<Props> = ({ subscribers, nonSubscribers }) => {
   const series = useMemo(() => {
     return [subscribers, nonSubscribers];
   }, [subscribers, nonSubscribers]);
-  return <ReactApexChart options={options} series={series} type="donut" />;
+  return <Chart options={options} series={series} type="donut" />;
 };
 
 export default ParticipatorChart;

@@ -1,8 +1,8 @@
 import { CircularProgress } from '@mui/material';
+import { Chart } from 'components/Chart';
 import { FC, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetVisitsForSelectedLocationQuery } from 'store/api';
-import { StatisticChart } from 'views/panel/dashboard/components/StatisticChart';
 
 export const ActivityChart: FC = () => {
   const { locationId } = useParams();
@@ -83,7 +83,7 @@ export const ActivityChart: FC = () => {
       {isFetching ? (
         <CircularProgress />
       ) : (
-        <StatisticChart type="area" height={500} options={options} setOptions={setOptions} series={series} />
+        <Chart type="area" height={500} options={options} setOptions={setOptions} series={series} />
       )}
     </>
   );

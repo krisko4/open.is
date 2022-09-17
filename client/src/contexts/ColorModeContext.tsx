@@ -1,24 +1,28 @@
 import { createContext, FC, useContext, useMemo, useState } from 'react';
 
+export enum Mode {
+  LIGHT = 'light',
+  DARK = 'dark',
+}
 interface ColorMode {
   toggleColorMode: () => void;
-  mode: 'dark' | 'light';
+  mode: Mode.DARK | Mode.LIGHT;
 }
 
 export const ColorModeContext = createContext<ColorMode>({
   toggleColorMode: () => ({}),
-  mode: 'light',
+  mode: Mode.LIGHT,
 });
 
 export const ColorModeContextProvider: FC = ({ children }) => {
   // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  const [mode, setMode] = useState<Mode.LIGHT | Mode.DARK>(Mode.DARK);
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => (prevMode === Mode.LIGHT ? Mode.DARK : Mode.LIGHT));
       },
       mode,
     }),

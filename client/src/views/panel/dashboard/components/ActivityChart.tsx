@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { StatisticChart } from './StatisticChart';
+import { Chart } from '../../../../components/Chart';
 
 export const ActivityChart: FC<any> = ({ series }) => {
   const [activityChartOptions, setActivityChartOptions] = useState({
@@ -49,7 +49,5 @@ export const ActivityChart: FC<any> = ({ series }) => {
     },
   });
 
-  return (
-    <StatisticChart type="area" series={series} setOptions={setActivityChartOptions} options={activityChartOptions} />
-  );
+  return <Chart type="area" series={series} setOptions={setActivityChartOptions} options={activityChartOptions} />;
 };

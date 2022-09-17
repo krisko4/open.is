@@ -1,11 +1,11 @@
+import { Chart } from 'components/Chart';
 import { FC, useState } from 'react';
-import { StatisticChart } from 'views/panel/dashboard/components/StatisticChart';
 
 interface Props {
   series: number[];
 }
 
-const Chart: FC<Props> = ({ series }) => {
+const StatsChart: FC<Props> = ({ series }) => {
   const [options, setOptions] = useState({
     chart: {
       type: 'donut',
@@ -47,7 +47,7 @@ const Chart: FC<Props> = ({ series }) => {
       },
     ],
   });
-  return <StatisticChart type="donut" width={400} options={options} setOptions={setOptions} series={series} />;
+  return <Chart type="donut" width={400} options={options} setOptions={setOptions} series={series} />;
 };
 
-export default Chart;
+export default StatsChart;
