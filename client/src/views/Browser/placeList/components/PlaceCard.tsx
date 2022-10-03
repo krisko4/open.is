@@ -7,20 +7,6 @@ import { useLocation } from 'react-router-dom';
 import { useAppDispatch } from 'store/hooks';
 import { removeLocation, SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
 
-// const useStyles = makeStyles({
-//     card: {
-//         backgroundColor: '#2C2C2C',
-//         // borderRadius: 20,
-//         width: '100%',
-//         height: '100%'
-//     },
-//     image: {
-//         height: 80,
-//         width: 80
-//     }
-// }
-// )
-
 interface PlaceProps {
   cardData: SelectedLocationProps;
 }
@@ -89,7 +75,6 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
 
   return (
     <Card
-      // className={classes.card}
       sx={{ flexGrow: 1 }}
       elevation={elevation}
       onMouseEnter={() => setElevation(10)}
@@ -98,19 +83,19 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
       <CardContent>
         <Grid container justifyContent="space-between">
           <Grid item container alignItems="center">
-            <Grid item>
+            <Grid item xs={2}>
               <Avatar
                 imgProps={{
                   style: {
                     objectFit: 'contain',
                   },
                 }}
-                style={{ width: 80, height: 80 }}
+                style={{ width: '100%', height: '100%' }}
                 src={cardData.logo as string}
                 alt={cardData.name}
               />
             </Grid>
-            <Grid item xs={9} style={{ marginLeft: 10 }}>
+            <Grid item xs={8} sx={{ pl: 1, pr: 1 }}>
               <Typography variant="h6">{cardData.name}</Typography>
               <Typography variant="body1" sx={{ color: 'text.secondary' }}>
                 {cardData.subtitle}
@@ -136,22 +121,20 @@ export const PlaceCard: FC<PlaceProps> = ({ cardData }) => {
                 Address: {cardData.address}
               </Typography>
             </Grid>
-            <Grid item style={{ flexGrow: 1 }}>
-              <Grid container justifyContent="flex-end" style={{ height: '100%' }} alignItems="center">
-                {cardData.status === 'open' ? (
-                  <Tooltip title="This place is now open">
-                    <Button variant="contained" color="success" size="small">
-                      Open
-                    </Button>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="This place is now closed">
-                    <Button variant="contained" color="error" size="small">
-                      Closed
-                    </Button>
-                  </Tooltip>
-                )}
-              </Grid>
+            <Grid item xs={2} container sx={{ justifyContent: 'center' }}>
+              {cardData.status === 'open' ? (
+                <Tooltip title="This place is now open">
+                  <Button variant="contained" color="success" size="small">
+                    Open
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Tooltip title="This place is now closed">
+                  <Button variant="contained" color="error" size="small">
+                    Closed
+                  </Button>
+                </Tooltip>
+              )}
             </Grid>
           </Grid>
         </Grid>

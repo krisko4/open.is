@@ -17,7 +17,7 @@ export const NewEvent: FC = () => {
   }, []);
 
   return (
-    <Grid container alignItems="center" sx={{ flexGrow: 1 }} justifyContent="space-evenly">
+    <Grid container alignItems="center" sx={{ flexGrow: 1, pt: 2, pb: 2 }} justifyContent="space-evenly">
       <Grid item xs={4}>
         <Fade in={true} timeout={1000}>
           <div>

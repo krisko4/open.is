@@ -13,8 +13,10 @@ export const OpeningHoursCard: FC<Props> = ({ openingHours }) => {
   return (
     <Card style={{ flexGrow: 1 }} elevation={10}>
       <CardContent>
-        <Typography variant="h5">Opening hours</Typography>
-        <Divider />
+        <Grid container alignItems="center" flexDirection="column">
+          <Typography variant="h5">Opening hours</Typography>
+          <Divider sx={{ width: '100%', mt: 1, mb: 1 }} />
+        </Grid>
         <Grid container justifyContent="center">
           <Grid item lg={6}>
             {days.map((day, index) => (

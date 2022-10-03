@@ -50,13 +50,13 @@ export const Participators: FC<Props> = ({ participators }) => {
                 <Grid container justifyContent="center">
                   <Grid item xs={10}>
                     <Grid container sx={{ mt: 1, mb: 1 }} justifyContent="space-between">
-                      <Grid item xs={3}>
+                      <Grid item xs={4}>
                         <InformationBox title="Participators" value={participators.length} />
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid item xs={4} sx={{ pl: 2 }}>
                         <InformationBox title="Subscribers" value={subscribers.length} />
                       </Grid>
-                      <Grid item xs={3}>
+                      <Grid item xs={4} sx={{ pl: 2 }}>
                         <InformationBox title="Non-subscribers" value={nonSubscribers.length} />
                       </Grid>
                     </Grid>

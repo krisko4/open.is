@@ -27,12 +27,12 @@ export const Locations: FC = () => {
                   image={logo as string}
                 />
               </Grid>
-              <Grid container item lg={6} direction="column">
+              <Grid container item lg={5} direction="column">
                 {' '}
                 <Typography variant="h2">{name}</Typography>
                 <Typography variant="h6">{subtitle}</Typography>
               </Grid>
-              <Grid item lg={4}>
+              <Grid item xs={5}>
                 <Slide timeout={500} in={true} direction="left">
                   <Card>
                     <CardContent>

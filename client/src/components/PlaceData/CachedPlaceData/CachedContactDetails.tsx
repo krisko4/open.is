@@ -7,11 +7,12 @@ import React, { FC } from 'react';
 interface SocialBoxProps {
   value: string;
   icon: any;
+  [key: string]: any;
 }
 
-const SocialBox: FC<SocialBoxProps> = ({ value, icon }) => {
+const SocialBox: FC<SocialBoxProps> = ({ value, icon, ...rest }) => {
   return (
-    <Grid item lg={3}>
+    <Grid item lg={4} {...rest}>
       <Card elevation={10}>
         <CardContent>
           <Grid container justifyContent="center">
@@ -34,10 +35,14 @@ interface Props {
 
 export const CachedContactDetails: FC<Props> = ({ phone, email, website }) => {
   return (
-    <>
+    <Grid container xs={11}>
       <SocialBox value={phone || 'Phone number'} icon={<PhoneIcon color="primary" />} />
-      <SocialBox value={email || 'E-mail address'} icon={<MailOutlineIcon color="primary" />} />
+      <SocialBox
+        value={email || 'E-mail address'}
+        style={{ paddingLeft: 5, paddingRight: 5 }}
+        icon={<MailOutlineIcon color="primary" />}
+      />
       <SocialBox value={website || 'Website address'} icon={<LanguageIcon color="primary" />} />
-    </>
+    </Grid>
   );
 };

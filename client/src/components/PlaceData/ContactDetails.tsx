@@ -12,7 +12,7 @@ interface SocialBoxProps {
 
 const SocialBox: FC<SocialBoxProps> = ({ value, icon }) => {
   return (
-    <Grid item lg={3}>
+    <Grid item lg={4}>
       <Card elevation={10}>
         <CardContent>
           <Grid container justifyContent="center">
