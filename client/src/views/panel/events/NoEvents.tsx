@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { FC } from 'react';
-import { EventOptions } from '../enums';
+import { EventOptions } from './enums';
 
 const STEPS = [
   { title: 'Prepare the content of your event' },

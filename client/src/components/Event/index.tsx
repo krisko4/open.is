@@ -1,9 +1,10 @@
-import { Button, Card, CardMedia, CardContent, Typography, CardActions, Grid } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import { FC, useEffect } from 'react';
 import { EventContent } from './EventContent';
-import { EventTitle } from './EventTitle';
-import { EventImage } from './EventImage';
 import { EventDate } from './EventDate';
+import { EventImage } from './EventImage';
+import { EventTitle } from './EventTitle';
+import { EventAddress } from './EventAddress';
 
 interface Props {
   setImageFile: React.Dispatch<React.SetStateAction<File | null>>;
@@ -21,6 +22,9 @@ export const Event: FC<Props> = ({ setImageFile }) => {
         </Grid>
         <Grid item>
           <EventTitle />
+        </Grid>
+        <Grid item>
+          <EventAddress />
         </Grid>
         <Grid item sx={{ mb: 1 }}>
           <EventDate />

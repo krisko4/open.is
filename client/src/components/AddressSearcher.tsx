@@ -10,9 +10,14 @@ import { setSelectedAddress } from 'store/slices/selectedAddressSlice';
 interface Props {
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   errorMessage: string;
+  placeholder?: string;
+  label?: string;
 }
 
-export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) => {
+const DEFAULT_LABEL = 'Enter the address of your place';
+const DEFAULT_PLACEHOLDER = 'What is the address of your place?';
+
+export const AddressSearcher: FC<Props> = ({ errorMessage, placeholder, label, setErrorMessage }) => {
   const [inputValue, setInputValue] = useState('');
   const isFirstFind = useRef(true);
   const [loading, setLoading] = useState(false);
@@ -65,7 +70,7 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
       setLoading(false);
     }, 500);
     return () => clearTimeout(delaySearch);
-  }, [inputValue]);
+  }, [inputValue, setErrorMessage]);
 
   return (
     <Autocomplete
@@ -79,9 +84,10 @@ export const AddressSearcher: FC<Props> = ({ errorMessage, setErrorMessage }) =>
         <TextField
           {...params}
           error={errorMessage !== ''}
+          helperText={errorMessage}
           variant="outlined"
-          placeholder="Enter the address of your place"
-          label="What is the address of your place?"
+          placeholder={placeholder || DEFAULT_PLACEHOLDER}
+          label={label || DEFAULT_LABEL}
           onChange={(e) => setInputValue(e.target.value)}
           InputProps={{
             ...params.InputProps,

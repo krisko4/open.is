@@ -1,3 +1,3 @@
-export * from './EventContent';
-export * from './EventTitle';
-export * from './EventDate';
+export * from './Content';
+export * from './Date';
+export * from './Title';

@@ -2,7 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { EventProps } from 'store/slices/eventSlice';
 import { AverageNoteProps, CurrentPlaceProps, NewsProps, RawPlaceDataProps } from 'store/slices/PlaceProps';
 import { SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
+import { mapNotificationStatistics } from 'utils/notification_statistics';
 import { convertToCurrentPlace } from 'utils/place_data_utils';
+import { GroupedNotificationStatistics } from './../../utils/notification_statistics';
 import { TagTypes } from './tag-types';
 import {
   AddLocationsProps,
@@ -28,6 +30,8 @@ import {
   Subscription,
   VisitData,
 } from './types';
+
+const invalidate = (tags: TagTypes[]) => (_result: any, error: any, _tag: any) => error ? [] : tags;
 
 export const placesApi = createApi({
   reducerPath: 'placesApi',
@@ -220,7 +224,7 @@ export const placesApi = createApi({
         method: 'POST',
         body: formData,
       }),
-      invalidatesTags: [TagTypes.EVENTS],
+      invalidatesTags: invalidate([TagTypes.EVENT]),
     }),
     participate: builder.mutation<void, string>({
       query: (id) => ({
@@ -297,7 +301,7 @@ export const placesApi = createApi({
       query: (locationId) => `/places/${locationId}/subscribers`,
       providesTags: [TagTypes.SUBSCRIBERS],
     }),
-    getNotificationStatistics: builder.query<NotificationStatistics[], string>({
+    getNotificationStatistics: builder.query<GroupedNotificationStatistics, string>({
       query: (eventId) => ({
         url: `/notifications`,
         method: 'GET',
@@ -306,6 +310,7 @@ export const placesApi = createApi({
         },
       }),
       providesTags: [TagTypes.NOTIFICATIONS],
+      transformResponse: (response: NotificationStatistics[]) => mapNotificationStatistics(response),
     }),
     getRewardByEventId: builder.query<Reward, string>({
       query: (eventId) => ({

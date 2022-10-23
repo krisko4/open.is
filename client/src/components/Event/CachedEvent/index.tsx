@@ -21,7 +21,7 @@ interface Props {
 }
 export const CachedEvent: FC<Props> = ({
   onClick,
-  eventData: { title, content, img, startDate, endDate, participators, place, locationId },
+  eventData: { title, content, img, address, startDate, endDate, participators, place, locationId },
 }) => {
   const [elevation, setElevation] = useState(1);
   const navigate = useNavigate();
@@ -56,6 +56,11 @@ export const CachedEvent: FC<Props> = ({
         <Grid item>
           <Typography gutterBottom variant="h5" component="div">
             {title}
+          </Typography>
+        </Grid>
+        <Grid item sx={{ mb: 1 }}>
+          <Typography variant="body2" color="text.secondary">
+            {address}
           </Typography>
         </Grid>
         <Grid item sx={{ mb: 1 }}>

@@ -44,7 +44,6 @@ export const NewPlace: FC<Props> = ({ isEditionMode, initialPlaceData }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('no kiszka');
     if (isEditionMode)
       enqueueInfoSnackbar(
         'In edition mode you can switch freely between steps. Click on the step label to check it out.'

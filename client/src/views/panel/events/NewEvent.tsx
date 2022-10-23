@@ -3,8 +3,7 @@ import { Event } from 'components/Event';
 import { FC, useEffect, useState } from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { reset } from 'store/slices/eventSlice';
-import { useCustomSnackbar } from 'utils/snackbars';
-import { EventForm } from './form';
+import { EventForm } from './components/form';
 
 export const NewEvent: FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);

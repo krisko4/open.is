@@ -3,9 +3,10 @@ import { FC, useState } from 'react';
 
 interface Props {
   series: number[];
+  legend: string[];
 }
 
-const StatsChart: FC<Props> = ({ series }) => {
+const StatsChart: FC<Props> = ({ series, legend }) => {
   const [options, setOptions] = useState({
     chart: {
       type: 'donut',
@@ -29,7 +30,7 @@ const StatsChart: FC<Props> = ({ series }) => {
         endAngle: 270,
       },
     },
-    labels: ['yes', 'no'],
+    labels: legend,
     fill: {
       type: 'gradient',
     },

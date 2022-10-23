@@ -15,8 +15,9 @@ export const Rewards: FC<Props> = ({ eventId }) => {
   const [selectedOption, setSelectedOption] = useState<RewardDrawingOptions | null>(
     RewardDrawingOptions.NO_REWARD_DRAWINGS
   );
-  const { data: reward, isFetching } = useGetRewardByEventIdQuery(eventId);
+  const { data: reward, isFetching } = useGetRewardByEventIdQuery(eventId, { refetchOnMountOrArgChange: true });
   const { data: event } = useGetEventByIdQuery(eventId);
+  console.log(reward);
 
   return (
     <Grid container sx={{ height: '100%' }}>

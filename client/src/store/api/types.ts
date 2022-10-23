@@ -34,6 +34,7 @@ interface Event {
   img: string;
   startDate: Date;
   endDate: Date;
+  address: string;
   locationId: string;
   place: RawPlaceDataProps;
 }
@@ -121,6 +122,7 @@ export interface AddOpinionProps {
 export enum NotificationType {
   EVENT = 'event',
   REWARD = 'reward',
+  EVENT_TODAY_NEARBY = 'event_today_nearby',
 }
 
 export type NotificationStatistics = {

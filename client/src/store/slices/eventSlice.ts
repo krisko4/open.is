@@ -6,6 +6,7 @@ import { ImageType } from './PlaceProps';
 export interface EventProps {
   title: string;
   content: string;
+  address: string;
   img: ImageType;
   startDate?: string;
   endDate?: string;
@@ -18,6 +19,7 @@ interface StateProps extends EventProps {
 const initialState: StateProps = {
   title: '',
   content: '',
+  address: '',
   img: `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`,
   selectedEvents: [],
 };
@@ -41,6 +43,9 @@ const eventSlice = createSlice({
     setImg: (state, action: PayloadAction<ImageType>) => {
       state.img = action.payload;
     },
+    setAddress: (state, action: PayloadAction<string>) => {
+      state.address = action.payload;
+    },
     setStartDate: (state, action: PayloadAction<string>) => {
       state.startDate = action.payload;
     },
@@ -55,11 +60,21 @@ const eventSlice = createSlice({
 
 export const useTitleSelector = () => useAppSelector((state) => state.event.title);
 export const useContentSelector = () => useAppSelector((state) => state.event.content);
+export const useAddressSelector = () => useAppSelector((state) => state.event.address);
 export const useImageSelector = () => useAppSelector((state) => state.event.img);
 export const useStartDateSelector = () => useAppSelector((state) => state.event.startDate);
 export const useEndDateSelector = () => useAppSelector((state) => state.event.endDate);
 export const useSelectedEventsSelector = () => useAppSelector((state) => state.event.selectedEvents);
 
 export const eventReducer = eventSlice.reducer;
-export const { setTitle, setContent, setSelectedEvents, addEvents, setImg, setStartDate, setEndDate, reset } =
-  eventSlice.actions;
+export const {
+  setTitle,
+  setAddress,
+  setContent,
+  setSelectedEvents,
+  addEvents,
+  setImg,
+  setStartDate,
+  setEndDate,
+  reset,
+} = eventSlice.actions;

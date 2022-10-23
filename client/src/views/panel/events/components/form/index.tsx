@@ -6,9 +6,11 @@ import { FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useAddEventMutation } from 'store/api';
+import { useSelectedAddressSelector } from 'store/slices/selectedAddressSlice';
 import { useCustomSnackbar } from 'utils/snackbars';
 import * as yup from 'yup';
 import { EventContent, EventDate, EventTitle } from './fields';
+import { EventAddress } from './fields/Address';
 
 interface Inputs {
   title: string;
@@ -45,6 +47,7 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
   const [addEvent, { isLoading }] = useAddEventMutation();
   const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
   const { locationId, placeId } = useParams();
+  const selectedAddress = useSelectedAddressSelector();
 
   const methods = useForm<Inputs>({
     resolver: yupResolver(schema),
@@ -59,8 +62,16 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
 
   const handleSubmit = async () => {
     const fieldValues = methods.getValues();
+    const { addressId, label, lat, lng } = selectedAddress;
+    const address = {
+      address: label,
+      addressId,
+      lat,
+      lng,
+    };
     const event = {
       ...fieldValues,
+      ...address,
       startDate: format(fieldValues.startDate as Date, 'yyyy-MM-dd hh:mm'),
       endDate: format(fieldValues.endDate as Date, 'yyyy-MM-dd hh:mm'),
       locationId: locationId as string,
@@ -70,10 +81,11 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
     if (imageFile) {
       form.append('img', imageFile);
     }
+    console.log(event);
     let key: keyof typeof event;
-    for (key in event) form.append(key, event[key]);
+    for (key in event) form.append(key, event[key].toString());
     try {
-      const res = await addEvent(form).unwrap();
+      await addEvent(form).unwrap();
       enqueueSuccessSnackbar('You have successfully created new event');
     } catch (err) {
       enqueueErrorSnackbar();
@@ -86,6 +98,11 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
           <EventTitle />
           <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
             <EventContent />
+          </Grid>
+          <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
+            <Grid item xs={12}>
+              <EventAddress />
+            </Grid>
           </Grid>
           <Grid container style={{ marginTop: 10, marginBottom: 10 }}>
             <EventDate />
