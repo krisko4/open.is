@@ -18,4 +18,5 @@ export enum TagTypes {
   REWARDS = 'Rewards',
   NOTIFICATIONS = 'Notifications',
   CODES = 'Codes',
+  REFERRALS = 'Referrals',
 }

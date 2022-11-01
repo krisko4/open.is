@@ -22,6 +22,8 @@ import {
   OpeningHoursResponse,
   OpinionData,
   PlaceAndLocationProps,
+  Referral,
+  ReferralPayload,
   Reward,
   RewardPayload,
   SelectedLocationsProps,
@@ -345,6 +347,23 @@ export const placesApi = createApi({
       }),
       invalidatesTags: [{ type: 'Places', id: 'LIST' }],
     }),
+    createReferral: builder.mutation<void, ReferralPayload>({
+      query: (referralPayload) => ({
+        url: `/referrals`,
+        method: 'POST',
+        body: referralPayload,
+      }),
+      invalidatesTags: invalidate([TagTypes.REFERRALS]),
+    }),
+    getReferralsByLocationId: builder.query<Referral[], string>({
+      query: (locationId) => ({
+        url: '/referrals',
+        params: {
+          locationId,
+        },
+      }),
+      providesTags: [TagTypes.REFERRALS],
+    }),
     deleteSelectedLocations: builder.mutation<void, SelectedLocationsProps>({
       query: ({ placeId, locationIds }) => ({
         url: `/places/${placeId}/locations`,
@@ -404,4 +423,6 @@ export const {
   useAddRewardMutation,
   useGetNotificationStatisticsQuery,
   useGetCodesByRewardIdQuery,
+  useGetReferralsByLocationIdQuery,
+  useCreateReferralMutation,
 } = placesApi;

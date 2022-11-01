@@ -6,11 +6,12 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useLoginContext } from 'contexts/LoginContext';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'store/api';
+import { useGetReferralsByLocationIdQuery, useIsUserSubscriberQuery, useUnsubscribeLocationMutation } from 'store/api';
 import { useAppDispatch } from 'store/hooks';
 import { closePopup, setMapCoords } from 'store/slices/mapSlice';
 import { CurrentPlaceProps } from 'store/slices/PlaceProps';
 import { useCustomSnackbar } from 'utils/snackbars';
+import { ReferralDialog } from './ReferralDialog';
 import { SubscribeDialog } from './SubscribeDialog';
 
 interface Props {
@@ -19,8 +20,10 @@ interface Props {
 
 export const PlaceToolbar: FC<Props> = ({ place }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isReferralDialogOpen, setReferralDialogOpen] = useState(false);
   const { userData } = useLoginContext();
   const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
+  const { data: referrals } = useGetReferralsByLocationIdQuery(place._id as string);
   const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(
     userData.isLoggedIn ? (place._id as string) : skipToken
   );
@@ -28,6 +31,10 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { placeId, locationId } = useParams();
+
+  const toggleReferralDialog = () => {
+    setReferralDialogOpen((current) => !current);
+  };
 
   useEffect(() => {
     dispatch(
@@ -71,13 +78,24 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
           </Button>
         )}
         {isUserSubscriber ? (
-          <Tooltip title={'Unsubscribe'} arrow>
-            <span>
-              <LoadingButton loading={isFetching || isLoading} color="primary" onClick={() => unsubscribe()}>
-                Subscribed
-              </LoadingButton>
-            </span>
-          </Tooltip>
+          <>
+            {referrals && referrals.length > 0 && (
+              <Tooltip title={'Refer this place'} arrow>
+                <span>
+                  <Button sx={{ mr: 1 }} variant="contained" onClick={toggleReferralDialog} color="primary">
+                    Refer this place
+                  </Button>
+                </span>
+              </Tooltip>
+            )}
+            <Tooltip title={'Unsubscribe'} arrow>
+              <span>
+                <LoadingButton loading={isFetching || isLoading} color="primary" onClick={() => unsubscribe()}>
+                  Subscribed
+                </LoadingButton>
+              </span>
+            </Tooltip>
+          </>
         ) : (
           <Tooltip
             title={
@@ -101,6 +119,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
           </Tooltip>
         )}
       </Grid>
+      <ReferralDialog isDialogOpen={isReferralDialogOpen} referrals={referrals} onClose={toggleReferralDialog} />
       <SubscribeDialog currentPlace={place} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
     </Toolbar>
   );

@@ -2,6 +2,7 @@ import { ContactData } from 'api';
 import { EventProps } from 'store/slices/eventSlice';
 import { FormLocationProps } from 'store/slices/formLocationsSlice';
 import { Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'store/slices/PlaceProps';
+import { string } from 'yup';
 
 export interface SelectedLocationsProps {
   locationIds: string[];
@@ -137,6 +138,21 @@ export interface VisitLocationProps {
   visits: VisitCount[];
 }
 
+export interface Invitation {
+  referrer: string;
+  invitedUsers: string[];
+}
+
+export interface ReferralPayload {
+  locationId: string;
+  description: string;
+  requiredMembersCount: number;
+}
+export interface Referral extends ReferralPayload {
+  _id: string;
+  createdAt: Date;
+  invitations: Invitation[];
+}
 export interface OpinionLocationProps {
   name: string;
   opinions: Opinion[];

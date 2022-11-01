@@ -8,9 +8,9 @@ import { useCustomSnackbar } from 'utils/snackbars';
 import { OpeningHoursWrapper } from 'views/panel/openingHours/components/OpeningHoursWrapper';
 import { PlaceDashboard } from 'views/panel/placeDashboard';
 import { PlaceSettings } from 'views/panel/placeSettings';
+import Referrals from 'views/panel/referrals';
 import { Subscriptions } from 'views/panel/subscriptions';
 import { Events } from '../views/panel/events';
-import { Opinions } from '../views/panel/opinions';
 
 export enum Destinations {
   HOME = 'home',
@@ -22,6 +22,7 @@ export enum Destinations {
   VISITS = 'visits',
   SETTINGS = 'settings',
   SUBSCRIPTIONS = 'subscriptions',
+  REFERRALS = 'referrals',
   NONE = '',
 }
 
@@ -92,6 +93,11 @@ export const PlaceBoard: FC = () => {
         name: 'Subscriptions',
         url: Destinations.SUBSCRIPTIONS,
         content: <Subscriptions />,
+      },
+      {
+        name: 'Referrals',
+        url: Destinations.REFERRALS,
+        content: <Referrals />,
       },
     ];
     if (!place?.isBusinessChain) returnedTabs.push(settingsTab);
