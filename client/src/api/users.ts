@@ -6,6 +6,11 @@ interface UserData {
   password: string;
   email: string;
 }
+export interface User extends UserData {
+  img: string;
+  _id: string;
+  isSubscriber?: boolean;
+}
 
 export const updateUserData = (uid: string, userData: UserData) => myAxios.patch(`/users/${uid}`, userData);
 

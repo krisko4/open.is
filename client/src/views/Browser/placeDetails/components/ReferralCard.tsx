@@ -24,7 +24,7 @@ const ReferralCard = ({ referral, onInvitationsButtonClick }: Props) => {
   return (
     <Card sx={{ backgroundColor: 'transparent', height: '100%' }}>
       <Grid container sx={{ p: 2 }}>
-        <Grid item container xs={6} direction="column">
+        <Grid item container xs={5} direction="column">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {format(new Date(referral.createdAt), 'yyyy-MM-dd HH:mm')}
           </Typography>
@@ -37,11 +37,13 @@ const ReferralCard = ({ referral, onInvitationsButtonClick }: Props) => {
             </Button>
           </div>
         </Grid>
-        <Grid item container xs={3} direction="column" alignItems="center">
+        <Grid item container xs={4} direction="column" alignItems="center">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Invited users
+            Successful invitations
           </Typography>
-          <InvitationsCount>{referral.requiredMembersCount}</InvitationsCount>
+          <InvitationsCount>
+            {referral.invitations.length > 0 ? referral.invitations[0].invitedUsers.length : 0}
+          </InvitationsCount>
         </Grid>
         <Grid item container xs={3} direction="column" alignItems="center">
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -50,11 +52,6 @@ const ReferralCard = ({ referral, onInvitationsButtonClick }: Props) => {
           <InvitationsCount>{referral.requiredMembersCount}</InvitationsCount>
         </Grid>
       </Grid>
-      {/* <CardActions>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>My invitations</AccordionSummary>
-        </Accordion>
-      </CardActions> */}
     </Card>
   );
 };

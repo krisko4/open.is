@@ -15,9 +15,13 @@ import {
   ChangeContactDetailsProps,
   ChangeOpeningHoursProps,
   Code,
+  CreateSubscriptionData,
   EventData,
   EventDetails,
   GetSelectedLocationsProps,
+  Invitation,
+  InvitationPayload,
+  InvitationRequest,
   NotificationStatistics,
   OpeningHoursResponse,
   OpinionData,
@@ -265,13 +269,14 @@ export const placesApi = createApi({
       }),
       invalidatesTags: [{ type: 'Places', id: 'LIST' }],
     }),
-    subscribeLocation: builder.mutation<void, string>({
-      query: (locationId) => ({
+    subscribeLocation: builder.mutation<void, CreateSubscriptionData>({
+      query: ({ locationId, referralCode }) => ({
         url: `/subscriptions`,
         method: 'POST',
         body: {
           userId: localStorage.getItem('uid'),
           locationId: locationId,
+          referralCode,
         },
       }),
       invalidatesTags: ['Subscription'],
@@ -355,6 +360,23 @@ export const placesApi = createApi({
       }),
       invalidatesTags: invalidate([TagTypes.REFERRALS]),
     }),
+    createInvitation: builder.mutation<void, InvitationPayload>({
+      query: ({ referralId, invitedEmail }) => ({
+        url: `/invitations`,
+        method: 'POST',
+        body: { invitedEmail, referralId },
+      }),
+      invalidatesTags: invalidate([TagTypes.REFERRALS]),
+    }),
+    getInvitationsByReferralId: builder.query<Invitation, string>({
+      query: (referralId) => ({
+        url: `/invitations`,
+        params: {
+          referralId,
+        },
+      }),
+      providesTags: [TagTypes.REFERRALS],
+    }),
     getReferralsByLocationId: builder.query<Referral[], string>({
       query: (locationId) => ({
         url: '/referrals',
@@ -424,5 +446,7 @@ export const {
   useGetNotificationStatisticsQuery,
   useGetCodesByRewardIdQuery,
   useGetReferralsByLocationIdQuery,
+  useCreateInvitationMutation,
   useCreateReferralMutation,
+  useGetInvitationsByReferralIdQuery,
 } = placesApi;

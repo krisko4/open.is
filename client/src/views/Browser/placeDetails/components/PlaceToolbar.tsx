@@ -24,6 +24,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
   const { userData } = useLoginContext();
   const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const { data: referrals } = useGetReferralsByLocationIdQuery(place._id as string);
+  console.log(referrals);
   const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(
     userData.isLoggedIn ? (place._id as string) : skipToken
   );

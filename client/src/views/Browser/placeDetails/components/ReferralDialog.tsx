@@ -1,12 +1,7 @@
-import { LoadingButton } from '@mui/lab';
-import { Alert, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogTitle, Grid, Typography } from '@mui/material';
 import { DialogTransition } from 'components/Transitions';
 import React, { FC, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSubscribeLocationMutation } from 'store/api';
 import { Referral } from 'store/api/types';
-import { CurrentPlaceProps } from 'store/slices/PlaceProps';
-import { useCustomSnackbar } from 'utils/snackbars';
 import InvitationsDialog from './InvitationsDialog';
 import ReferralCard from './ReferralCard';
 
@@ -18,17 +13,20 @@ interface Props {
 
 export const ReferralDialog: FC<Props> = ({ referrals, isDialogOpen, onClose }) => {
   const [isInvitationsDialogOpen, setInvitationsDialogOpen] = useState(false);
-  const { enqueueErrorSnackbar, enqueueSuccessSnackbar } = useCustomSnackbar();
-  const [subscribeLocation, { isLoading }] = useSubscribeLocationMutation();
-  const { locationId } = useParams();
+  const [selectedReferral, setSelectedReferral] = useState<Referral | null>(null);
 
-  const toggleInvitationsModal = () => {
+  const toggleInvitationsModal = (referral: Referral | null) => {
+    setSelectedReferral(referral);
     setInvitationsDialogOpen((current) => !current);
   };
 
   return (
-    <Dialog TransitionComponent={DialogTransition} open={isDialogOpen} onClose={onClose}>
-      <InvitationsDialog isDialogOpen={isInvitationsDialogOpen} onClose={toggleInvitationsModal} />
+    <Dialog fullWidth TransitionComponent={DialogTransition} open={isDialogOpen} onClose={onClose}>
+      <InvitationsDialog
+        referral={selectedReferral}
+        isDialogOpen={isInvitationsDialogOpen}
+        onClose={() => toggleInvitationsModal(null)}
+      />
       <DialogTitle>
         <Grid container direction="column">
           <Typography variant="h6">Refer this place</Typography>
@@ -37,12 +35,19 @@ export const ReferralDialog: FC<Props> = ({ referrals, isDialogOpen, onClose }) 
             {referrals &&
               referrals.map((ref) => (
                 <Grid item key={ref._id} sx={{ pb: 1 }} xs={12}>
-                  <ReferralCard onInvitationsButtonClick={toggleInvitationsModal} key={ref._id} referral={ref} />
+                  <ReferralCard
+                    onInvitationsButtonClick={() => toggleInvitationsModal(ref)}
+                    key={ref._id}
+                    referral={ref}
+                  />
                 </Grid>
               ))}
           </Grid>
         </Grid>
       </DialogTitle>
+      <DialogActions>
+        <Button onClick={onClose}>Close</Button>
+      </DialogActions>
     </Dialog>
   );
 };

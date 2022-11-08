@@ -1,4 +1,5 @@
-import { ContactData } from 'api';
+import { ContactData, User } from 'api';
+import { UserData } from 'contexts';
 import { EventProps } from 'store/slices/eventSlice';
 import { FormLocationProps } from 'store/slices/formLocationsSlice';
 import { Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'store/slices/PlaceProps';
@@ -140,7 +141,21 @@ export interface VisitLocationProps {
 
 export interface Invitation {
   referrer: string;
-  invitedUsers: string[];
+  invitedUsers: User[];
+}
+
+export interface CreateSubscriptionData {
+  locationId: string;
+  referralCode?: string;
+}
+
+export interface InvitationRequest {
+  referralId: string;
+  referrerId: string;
+}
+export interface InvitationPayload {
+  invitedEmail: string;
+  referralId: string;
 }
 
 export interface ReferralPayload {

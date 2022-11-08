@@ -32,7 +32,7 @@ export const Subscribe: FC<Props> = ({ event }) => {
   const setSubscription = async (status: boolean) => {
     try {
       if (status) {
-        await subscribeLocation(locationId).unwrap();
+        await subscribeLocation({ locationId }).unwrap();
         enqueueSuccessSnackbar('You have subscribed to a new place');
         return;
       }
