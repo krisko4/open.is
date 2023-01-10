@@ -1,4 +1,4 @@
-import { Grid, Collapse, Typography, Fade } from '@mui/material';
+import { Collapse, Fade, Grid, Typography } from '@mui/material';
 import { FC } from 'react';
 
 interface Props {
@@ -18,11 +18,11 @@ export const PanelSection: FC<Props> = ({ isVisible1, isVisible2 }) => {
           <img
             data-testid="dark-panel"
             alt="dark-panel"
-            src={`${process.env.REACT_APP_BASE_URL}/images/dark_panel.png`}
+            src={`${import.meta.env.VITE_BASE_URL}/images/dark_panel.png`}
             style={{ width: '100%', marginTop: 100, transform: 'translate(20%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
           />
           {/* <CardMedia
-                        image={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
+                        image={`${import.meta.env.VITE_BASE_URL}/images/dashboard.jpg`}
                         style={{ height: 600, marginTop: 100, transform: 'translate(27%, 5%) rotate(-40deg) skew(20deg,10deg)' }}
                     /> */}
         </Fade>
@@ -30,7 +30,7 @@ export const PanelSection: FC<Props> = ({ isVisible1, isVisible2 }) => {
           <img
             data-testid="light-panel"
             alt="light-panel"
-            src={`${process.env.REACT_APP_BASE_URL}/images/light_panel.png`}
+            src={`${import.meta.env.VITE_BASE_URL}/images/light_panel.png`}
             style={{
               width: '100%',
               marginTop: 100,
@@ -38,7 +38,7 @@ export const PanelSection: FC<Props> = ({ isVisible1, isVisible2 }) => {
             }}
           />
           {/* <CardMedia
-                        image={`${process.env.REACT_APP_BASE_URL}/images/dashboard.jpg`}
+                        image={`${import.meta.env.VITE_BASE_URL}/images/dashboard.jpg`}
                         style={{ height: 600, marginTop: 100, transform: 'translate(-27%, -15%) rotate(40deg) skew(10deg,-10deg)' }}
                     /> */}
         </Fade>

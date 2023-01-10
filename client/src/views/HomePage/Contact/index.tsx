@@ -21,7 +21,9 @@ export const Contact: FC = () => {
         justifyContent="center"
         style={{
           height: 600,
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.6)), url(${process.env.REACT_APP_BASE_URL}/images/contact.jpg)`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.6)), url(${
+            import.meta.env.VITE_BASE_URL
+          }/images/contact.jpg)`,
         }}
       >
         <div style={{ color: 'white', textAlign: 'center', marginTop: 200 }}>

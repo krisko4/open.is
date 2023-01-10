@@ -131,6 +131,7 @@ export type NotificationStatistics = {
   all: number;
   received: number;
   clicked: number;
+  averageClickTime: number;
   type: NotificationType;
 };
 

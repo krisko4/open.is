@@ -6,7 +6,9 @@ const StyledContainer = styled(Grid)({
   width: '100vw',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, 0.6)), url(${process.env.REACT_APP_BASE_URL}/images/me.jpg)`,
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1),rgba(0, 0, 0, 0.6)), url(${
+    import.meta.env.VITE_BASE_URL
+  }/images/me.jpg)`,
 });
 
 export const Section1: FC = () => {

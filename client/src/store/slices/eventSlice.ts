@@ -20,7 +20,7 @@ const initialState: StateProps = {
   title: '',
   content: '',
   address: '',
-  img: `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`,
+  img: `${import.meta.env.VITE_BASE_URL}/images/no-preview.jpg`,
   selectedEvents: [],
 };
 

@@ -1,5 +1,6 @@
-import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 import { Grid, TextField, Typography } from '@mui/material';
 import { format, isBefore } from 'date-fns';
 import { FC, useEffect, useState } from 'react';

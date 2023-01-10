@@ -1,4 +1,4 @@
-import { Fade, Slide, Grid, Typography, styled } from '@mui/material';
+import { Fade, Grid, Slide, styled, Typography } from '@mui/material';
 import React, { FC } from 'react';
 
 const StyledContainer = styled(Grid)({
@@ -6,7 +6,9 @@ const StyledContainer = styled(Grid)({
   width: '100vw',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.6)), url(${process.env.REACT_APP_BASE_URL}/images/office.jpg)`,
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.6)), url(${
+    import.meta.env.VITE_BASE_URL
+  }/images/office.jpg)`,
 });
 export const Section2: FC = () => {
   return (

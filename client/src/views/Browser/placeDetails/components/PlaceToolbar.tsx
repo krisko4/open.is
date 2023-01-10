@@ -24,7 +24,6 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
   const { userData } = useLoginContext();
   const { enqueueInfoSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const { data: referrals } = useGetReferralsByLocationIdQuery(place._id as string);
-  console.log(referrals);
   const { data: isUserSubscriber, isFetching } = useIsUserSubscriberQuery(
     userData.isLoggedIn ? (place._id as string) : skipToken
   );
@@ -120,7 +119,7 @@ export const PlaceToolbar: FC<Props> = ({ place }) => {
           </Tooltip>
         )}
       </Grid>
-      <ReferralDialog isDialogOpen={isReferralDialogOpen} referrals={referrals} onClose={toggleReferralDialog} />
+      <ReferralDialog isDialogOpen={isReferralDialogOpen} onClose={toggleReferralDialog} />
       <SubscribeDialog currentPlace={place} isDialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} />
     </Toolbar>
   );

@@ -7,10 +7,10 @@ import Header from './Header';
 
 describe('Header', () => {
   const server = setupServer(
-    rest.get(`${process.env.REACT_APP_BASE_URL}/logout`, (req, res, ctx) => {
+    rest.get(`${import.meta.env.VITE_BASE_URL}/logout`, (req, res, ctx) => {
       console.log('logged out!');
       return res(ctx.status(200));
-    })
+    }),
   );
 
   beforeAll(() => {
@@ -25,7 +25,7 @@ describe('Header', () => {
     render(
       <TestMockWrapper isLoggedIn={true}>
         <Header />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     expect(screen.getByTestId('signout-button')).toBeInTheDocument();
     expect(screen.getByTestId('panel-navigate-button')).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('Header', () => {
     render(
       <TestMockWrapper isLoggedIn={false}>
         <Header />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     expect(screen.getByTestId('login-button')).toBeInTheDocument();
     expect(screen.queryByTestId('signout-button')).not.toBeInTheDocument();
@@ -46,7 +46,7 @@ describe('Header', () => {
     render(
       <TestMockWrapper isLoggedIn={true}>
         <Header />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const signoutButton = screen.getByTestId('signout-button');
     expect(signoutButton).toBeInTheDocument();
@@ -65,7 +65,7 @@ describe('Header', () => {
       <TestMockWrapper isLoggedIn={false}>
         <Auth />
         <Header />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const loginButton = screen.getByTestId('login-button');
     expect(loginButton).toBeInTheDocument();

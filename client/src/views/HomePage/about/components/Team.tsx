@@ -1,4 +1,4 @@
-import { Avatar, CardMedia, Fade, Slide, Grid, Typography } from '@mui/material';
+import { Avatar, CardMedia, Fade, Grid, Slide, Typography } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 
 export const Team: FC = () => {
@@ -47,7 +47,7 @@ export const Team: FC = () => {
         <Slide in={isVisible1} timeout={1000} direction="left">
           <CardMedia
             data-testid="member-1-img"
-            image={`${process.env.REACT_APP_BASE_URL}/images/ja.jpg`}
+            image={`${import.meta.env.VITE_BASE_URL}/images/ja.jpg`}
             style={{ height: 600, width: 500, backgroundSize: 'contain ' }}
           />
         </Slide>

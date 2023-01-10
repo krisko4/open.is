@@ -20,7 +20,7 @@ export const NoReferrals: FC<Props> = ({ setSelectedOption }) => {
           <Typography variant="h2">New referral</Typography>
           <Grid justifyContent="center" container>
             <Grid item lg={9} xs={12}>
-              <img style={{ width: '100%' }} src={`${process.env.REACT_APP_BASE_URL}/images/referral.gif`} />
+              <img style={{ width: '100%' }} src={`${import.meta.env.VITE_BASE_URL}/images/referral.gif`} />
               <Button
                 onClick={() => setSelectedOption(SelectedOption.NEW_REFERRAL)}
                 fullWidth

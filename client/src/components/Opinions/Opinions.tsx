@@ -1,9 +1,9 @@
 import { Fade } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
+import { format } from 'date-fns';
 import React, { FC } from 'react';
 import { OpinionCard } from './OpinionCard';
-import { format } from 'date-fns';
 
 export const opinions = [
   {
@@ -12,7 +12,7 @@ export const opinions = [
     content: 'This is just an example of what opinions will look like in the browser once your place is created.',
     note: 5,
     averageNote: 0,
-    authorImg: `${[process.env.REACT_APP_BASE_URL]}/images/admin.png`,
+    authorImg: `${[import.meta.env.VITE_BASE_URL]}/images/admin.png`,
   },
   {
     date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
@@ -20,7 +20,7 @@ export const opinions = [
     content: 'This is a lovely place!',
     note: 5,
     averageNote: 0,
-    authorImg: `${[process.env.REACT_APP_BASE_URL]}/images/client.jpg`,
+    authorImg: `${[import.meta.env.VITE_BASE_URL]}/images/client.jpg`,
   },
   {
     date: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
@@ -28,7 +28,7 @@ export const opinions = [
     content: 'Thank you for using our services💌',
     note: 5,
     averageNote: 0,
-    authorImg: `${[process.env.REACT_APP_BASE_URL]}/images/admin.png`,
+    authorImg: `${[import.meta.env.VITE_BASE_URL]}/images/admin.png`,
   },
 ];
 

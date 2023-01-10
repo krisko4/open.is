@@ -11,7 +11,7 @@ const WingsSection: FC = () => {
   const { setLoginOpen } = useAuthContext();
   const { userData } = useLoginContext();
   return (
-    <VideoSection isVisible={true} videoSource={`${process.env.REACT_APP_BASE_URL}/images/wings.mp4`}>
+    <VideoSection isVisible={true} videoSource={`${import.meta.env.VITE_BASE_URL}/images/wings.mp4`}>
       <Grid
         container
         sx={{ background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3))', height: '100%' }}

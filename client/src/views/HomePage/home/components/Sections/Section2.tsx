@@ -1,4 +1,4 @@
-import { Collapse, Grow, Fade } from '@mui/material';
+import { Collapse, Fade, Grow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import React, { FC } from 'react';
@@ -11,7 +11,7 @@ interface Props {
 
 const Section2: FC<Props> = ({ isVisible }) => {
   return (
-    <VideoSection isVisible={isVisible} videoSource={`${process.env.REACT_APP_BASE_URL}/images/section2.mp4`}>
+    <VideoSection isVisible={isVisible} videoSource={`${import.meta.env.VITE_BASE_URL}/images/section2.mp4`}>
       <Grid
         container
         sx={{ background: 'linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6))', height: '100%' }}

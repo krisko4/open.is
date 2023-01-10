@@ -83,7 +83,7 @@ export const LocationDetails: FC<Props> = ({ setActiveStep, isEditionMode, img, 
                   <img
                     src={
                       mode === 'light'
-                        ? `${process.env.REACT_APP_BASE_URL}/images/location.gif`
+                        ? `${import.meta.env.VITE_BASE_URL}/images/location.gif`
                         : 'https://thumbs.gfycat.com/WastefulGiganticClumber-max-1mb.gif'
                     }
                     style={{ width: '100%' }}

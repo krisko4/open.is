@@ -1,14 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { StoreProvider } from './store';
+const container = document.getElementById('root') as HTMLElement;
+const root = createRoot(container);
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
     <StoreProvider>
       <App />
     </StoreProvider>
   </React.StrictMode>,
-  document.getElementById('root')
 );

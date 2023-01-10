@@ -33,8 +33,8 @@ export const CachedOpeningHours: FC = () => {
                         style={{ width: '100%' }}
                         src={
                           mode === 'light'
-                            ? `${process.env.REACT_APP_BASE_URL}/images/open24light.png`
-                            : `${process.env.REACT_APP_BASE_URL}/images/open24dark.gif`
+                            ? `${import.meta.env.VITE_BASE_URL}/images/open24light.png`
+                            : `${import.meta.env.VITE_BASE_URL}/images/open24dark.gif`
                         }
                       />
                     </>

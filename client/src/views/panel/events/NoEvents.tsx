@@ -35,7 +35,7 @@ export const NoEvents: FC<Props> = ({ setSelectedOption }) => {
           <Typography variant="h2">New event</Typography>
           <Grid justifyContent="center" container>
             <Grid item lg={9} xs={12}>
-              <img style={{ width: '100%' }} src={`${process.env.REACT_APP_BASE_URL}/images/event.gif`} />
+              <img style={{ width: '100%' }} src={`${import.meta.env.VITE_BASE_URL}/images/event.gif`} />
               <Button
                 onClick={() => setSelectedOption(EventOptions.NEW_EVENT)}
                 fullWidth

@@ -30,7 +30,7 @@
 //                     disabled={renderProps.disabled}
 //                 >
 //                     <img
-//                          src={`${process.env.REACT_APP_BASE_URL}/images/Google__G__Logo.svg`}
+//                          src={`${import.meta.env.VITE_BASE_URL}/images/Google__G__Logo.svg`}
 //                          alt="GoogleIcon"/>
 //                     <span style={{marginLeft: 10}}>Sign in with Google</span>
 //                 </Button>

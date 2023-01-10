@@ -1,4 +1,4 @@
-import { Slide, Button, Alert, Divider, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Alert, Button, Card, CardContent, Divider, Grid, Slide, Typography } from '@mui/material';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ export const NewPlaceChooser: FC = () => {
                   for you.
                 </Typography>
                 <Grid container direction="column" alignItems="center" sx={{ mt: 1, mb: 1 }}>
-                  <img style={{ height: '400px' }} src={`${process.env.REACT_APP_BASE_URL}/images/new_place.gif`} />
+                  <img style={{ height: '400px' }} src={`${import.meta.env.VITE_BASE_URL}/images/new_place.gif`} />
                   <Alert sx={{ mt: 1, mb: 1, width: '100%' }} variant="outlined" severity="success">
                     <b>Single</b> location registration
                   </Alert>
@@ -55,7 +55,7 @@ export const NewPlaceChooser: FC = () => {
                 you.
               </Typography>
               <Grid container direction="column" alignItems="center" sx={{ mt: 1, mb: 1 }}>
-                <img style={{ height: '400px' }} src={`${process.env.REACT_APP_BASE_URL}/images/chain2.gif`} />
+                <img style={{ height: '400px' }} src={`${import.meta.env.VITE_BASE_URL}/images/chain2.gif`} />
                 <Alert sx={{ mt: 1, mb: 1, width: '100%' }} variant="outlined" severity="success">
                   <b>Multiple</b> locations registration
                 </Alert>

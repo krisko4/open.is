@@ -60,7 +60,7 @@ export const Banner: FC = () => {
     <Fade in={true} timeout={1500}>
       <div style={{ height: '100vh' }}>
         <video className={classes.backgroundVideo} autoPlay muted loop>
-          <source src={`${process.env.REACT_APP_BASE_URL}/images/back.mp4`} type="video/mp4" />
+          <source src={`${import.meta.env.VITE_BASE_URL}/images/back.mp4`} type="video/mp4" />
         </video>
         <Grid container alignItems="center" className={classes.banner}>
           <Grid item container lg={6} justifyContent="center">

@@ -42,7 +42,7 @@ const invalidate = (tags: TagTypes[]) => (_result: any, error: any, _tag: any) =
 export const placesApi = createApi({
   reducerPath: 'placesApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.REACT_APP_BASE_URL}`,
+    baseUrl: `${import.meta.env.VITE_BASE_URL}`,
     credentials: 'include',
   }),
   tagTypes: Object.keys(TagTypes),

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["vite/client", "vite-plugin-svgr/client"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -9,15 +10,33 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "ESNext",
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "./",
+    "paths": {
+      "contexts/*": ["src/contexts/*"],
+      "contexts": ["src/contexts"],
+      "store/*": ["src/store/*"],
+      "store/": ["src/store"],
+      "utils/*": ["src/utils/*"],
+      "utils": ["src/utils"],
+      "routes/*": ["src/routes/*"],
+      "routes": ["src/routes"],
+      "components/*": ["src/components/*"],
+      "components": ["src/components"],
+      "layouts/*": ["src/layouts/*"],
+      "layouts": ["src/layouts"],
+      "views/*": ["src/views/*"],
+      "views": ["src/views"],
+      "api/*": ["src/api/*"],
+      "api": ["src/api"]
+    }
   },
-
-  "include": ["src"],
-  "exclude": ["node_modules", "build", "src/*.test.ts"]
+  "exclude": ["node_modules"],
+  "include": ["src"]
 }

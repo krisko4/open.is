@@ -45,7 +45,7 @@ export const PlaceLogo: FC<Props> = ({ isEditable, setLogoFile }) => {
     //     borderRadius: 20,
     //     backgroundSize: 'contain',
     //   }}
-    //   image={(currentLogo as string) || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`}
+    //   image={(currentLogo as string) || `${import.meta.env.VITE_BASE_URL}/images/no-preview.jpg`}
     // >
     //   {isEditable && (
     //     <Slide direction="up" in={isHover} appear>

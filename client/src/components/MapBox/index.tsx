@@ -48,7 +48,7 @@ export const MapBox: FC<Props> = ({ isMarkerDraggable }) => {
           location={location}
         />
       ))}
-      <SetViewOnClick />
+      {/* <SetViewOnClick /> */}
     </MapContainer>
   );
 };

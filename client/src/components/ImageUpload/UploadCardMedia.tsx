@@ -1,5 +1,5 @@
 import { PhotoCamera } from '@mui/icons-material';
-import { CardMedia, Slide, Grid, IconButton } from '@mui/material';
+import { CardMedia, Grid, IconButton, Slide } from '@mui/material';
 import { FC, useState } from 'react';
 import { ImageUpload } from './ImageUpload';
 
@@ -24,7 +24,7 @@ export const UploadCardMedia: FC<Props> = ({ currentImg, setCurrentImg, style, i
         // borderRadius: 20,
         // backgroundSize: 'contain',
       }}
-      image={(currentImg as string) || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`}
+      image={(currentImg as string) || `${import.meta.env.VITE_BASE_URL}/images/no-preview.jpg`}
     >
       {isEditable && (
         <Slide direction="up" in={isHover} appear>

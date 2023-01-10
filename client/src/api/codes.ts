@@ -5,7 +5,7 @@ export type CodeDetails = {
 };
 
 export const getCodeByValueAndLocationId = (value: string, locationId: string) =>
-  myAxios.get('/referrals', {
+  myAxios.get('/codes', {
     params: {
       codeValue: value,
       locationId,

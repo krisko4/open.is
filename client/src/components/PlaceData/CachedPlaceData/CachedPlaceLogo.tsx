@@ -19,7 +19,7 @@ export const CachedPlaceLogo: FC = () => {
         borderRadius: 20,
         backgroundSize: 'contain',
       }}
-      image={(place && (place.logo as string)) || `${process.env.REACT_APP_BASE_URL}/images/no-preview.jpg`}
+      image={(place && (place.logo as string)) || `${import.meta.env.VITE_BASE_URL}/images/no-preview.jpg`}
     ></CardMedia>
   );
 };

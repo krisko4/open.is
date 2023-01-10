@@ -1,5 +1,5 @@
-import { Card, CardContent, CardMedia, Divider, Grid, IconButton, Slide, styled, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Card, CardContent, CardMedia, Divider, Grid, IconButton, Slide, styled, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 
@@ -7,7 +7,7 @@ const items = [
   {
     name: 'Krzysztof Wyszyński',
     role: 'CEO',
-    image: `${process.env.REACT_APP_BASE_URL}/images/ja.jpg`,
+    image: `${import.meta.env.VITE_BASE_URL}/images/ja.jpg`,
   },
   {
     name: 'Christopher Cononovitz',
@@ -27,7 +27,9 @@ const StyledContainer = styled(Grid)({
   width: '100vw',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.6)),url(${process.env.REACT_APP_BASE_URL}/images/team.jpg)`,
+  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.6)),url(${
+    import.meta.env.VITE_BASE_URL
+  }/images/team.jpg)`,
 });
 
 const StyledArrow = styled(KeyboardArrowDownIcon)({

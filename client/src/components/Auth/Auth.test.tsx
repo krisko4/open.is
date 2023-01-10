@@ -6,16 +6,16 @@ import { TestMockWrapper } from 'test-utils/TestMockWrapper';
 
 describe('Auth', () => {
   const server = setupServer(
-    rest.post(`${process.env.REACT_APP_BASE_URL}/login`, (req, res, ctx) => {
+    rest.post(`${import.meta.env.VITE_BASE_URL}/login`, (req, res, ctx) => {
       console.log('logged in!');
       return res(
         ctx.json({
           uid: 'test_uid',
           email: 'test_email',
           img: 'test_img',
-        })
+        }),
       );
-    })
+    }),
   );
 
   beforeAll(() => {
@@ -30,7 +30,7 @@ describe('Auth', () => {
     render(
       <TestMockWrapper isLoggedIn={false} logOpen={true}>
         <Auth />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const signupLink = screen.getByTestId('signup-link');
     expect(signupLink).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('Auth', () => {
     render(
       <TestMockWrapper isLoggedIn={false} regOpen={true}>
         <Auth />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const signinLink = screen.getByTestId('signin-link');
     expect(signinLink).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('Auth', () => {
     render(
       <TestMockWrapper isLoggedIn={false} logOpen={true}>
         <Auth />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const signupLink = screen.getByTestId('signup-link');
     fireEvent.click(signupLink);
@@ -61,7 +61,7 @@ describe('Auth', () => {
     render(
       <TestMockWrapper isLoggedIn={false} regOpen={true}>
         <Auth />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const signinLink = screen.getByTestId('signin-link');
     fireEvent.click(signinLink);
@@ -72,7 +72,7 @@ describe('Auth', () => {
     render(
       <TestMockWrapper isLoggedIn={false} logOpen={true}>
         <Auth />
-      </TestMockWrapper>
+      </TestMockWrapper>,
     );
     const emailInput = screen.getByLabelText('E-mail');
     const passwordInput = screen.getByLabelText('Password');

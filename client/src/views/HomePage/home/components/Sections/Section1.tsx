@@ -1,8 +1,8 @@
+import { CardMedia, Fade, Grow } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import React, { useRef, FC, useEffect, useState } from 'react';
-import { CardMedia, Fade, Grow } from '@mui/material';
 import { styled } from '@mui/styles';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { VideoSection } from './VideoSection';
 
 interface Props {
@@ -32,7 +32,7 @@ export const StyledSection = styled('div')({
 
 const Section1: FC<Props> = ({ isVisible }) => {
   return (
-    <VideoSection isVisible={isVisible} videoSource={`${process.env.REACT_APP_BASE_URL}/images/section1vid.mp4`}>
+    <VideoSection isVisible={isVisible} videoSource={`${import.meta.env.VITE_BASE_URL}/images/section1vid.mp4`}>
       <Grid
         container
         sx={{ background: 'linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3))', height: '100%' }}

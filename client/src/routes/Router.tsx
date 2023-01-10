@@ -1,7 +1,7 @@
 import { CssBaseline } from '@mui/material';
 import { EmailChangeConfirmation } from 'components/auth/Confirmation/EmailChangeConfirmation';
-import { HomeLayout } from 'layouts';
 import { Browser } from 'layouts/browser';
+import { HomeLayout } from 'layouts/index';
 import { Panel } from 'layouts/panel';
 import React, { FC } from 'react';
 import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom';

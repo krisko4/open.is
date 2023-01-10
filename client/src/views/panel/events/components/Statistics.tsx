@@ -1,8 +1,8 @@
 import { Button, CircularProgress, Grid, Typography } from '@mui/material';
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useGetNotificationStatisticsQuery } from 'store/api';
-import { NotificationStatistics, NotificationType } from 'store/api/types';
+import { NotificationStatistics } from 'store/api/types';
 import { GroupedNotificationStatistics } from 'utils/notification_statistics';
 import StatsChart from './StatsChart';
 
@@ -33,51 +33,72 @@ const getStatistics = (selectedOption: Options, statistics: GroupedNotificationS
   }
 };
 
-const renderStatistics = (selectedOption: Options, stats?: NotificationStatistics) =>
-  !stats
+const renderStatistics = (selectedOption: Options, stats?: NotificationStatistics) => {
+  const receiver = selectedOption === Options.EVENT ? 'subscriber' : 'participator';
+  return !stats
     ? null
     : [
         {
+          id: 'sent',
           text:
             selectedOption === Options.EVENT || selectedOption === Options.GEOLOCATION
               ? `A notification about your event has been sent to ${stats.all} ${formatString(
                   stats.all,
-                  selectedOption === Options.EVENT ? 'subscriber' : 'participator'
+                  selectedOption === Options.EVENT ? 'subscriber' : 'participator',
                 )}`
               : `A notification about your reward has been sent to ${stats.all} ${formatString(
                   stats.all,
-                  'participator'
+                  'participator',
                 )}`,
 
           series: [stats.all],
           legend: ['Sent', 'Not sent'],
         },
         {
-          text: `${stats.received} ${formatString(
-            stats.received,
-            selectedOption === Options.EVENT ? 'subscriber' : 'participator'
-          )} ${formatHave(stats.received)} received a notification`,
+          id: 'received',
+          text: (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div>
+                {`${stats.received} ${formatString(stats.received, receiver)} ${formatHave(stats.received)} received a
+                notification`}
+              </div>
+              <Typography variant="caption">
+                {`${stats.all - stats.received} ${formatString(stats.received, receiver)} ${formatHave(
+                  stats.received,
+                )} not
+                received a notification`}
+              </Typography>
+            </div>
+          ),
           series: [stats.received, stats.all - stats.received],
           chartFirst: true,
           legend: ['Received', 'Not received'],
         },
         {
-          text: `${stats.clicked} ${formatString(
-            stats.clicked,
-            selectedOption === Options.EVENT ? 'subscriber' : 'participator'
-          )} ${formatHave(stats.clicked)} clicked on a notification`,
+          id: 'clicked',
+          text: (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div>
+                {`${stats.clicked} ${formatString(stats.clicked, receiver)} ${formatHave(
+                  stats.clicked,
+                )} clicked on a notification`}
+              </div>
+              <Typography variant="caption">
+                In average, a {receiver} clicks on a notification after {stats.averageClickTime} seconds
+              </Typography>
+            </div>
+          ),
           series: [stats.clicked, stats.all - stats.clicked],
           legend: ['Clicked', 'Not clicked'],
         },
       ];
+};
 
 const Statistics: FC<Props> = ({ eventId }) => {
   const { data: statistics, isFetching } = useGetNotificationStatisticsQuery(eventId, {
     refetchOnMountOrArgChange: true,
   });
   const [selectedOption, setSelectedOption] = useState<Options>(Options.EVENT);
-
-  console.log(statistics);
 
   return (
     <>
@@ -113,7 +134,7 @@ const Statistics: FC<Props> = ({ eventId }) => {
                 </Button>
               </Grid>
               {renderStatistics(selectedOption, getStatistics(selectedOption, statistics))?.map((stat) => (
-                <Grid key={stat.text} container sx={{ pt: 3 }} alignItems="center" justifyContent="space-evenly">
+                <Grid key={stat.id} container sx={{ pt: 3 }} alignItems="center" justifyContent="space-evenly">
                   {stat.chartFirst ? (
                     <>
                       <Grid item xs={5}>
