@@ -18,110 +18,148 @@ const AverageNoteSchema = new mongoose.Schema({
 
 const OpeningHoursSchema = new mongoose.Schema({
     monday: {
-        startHour: ReqDate,
-        endHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        end: ReqDate,
+        open: {
             type: Boolean,
             default: true
         }
     },
     tuesday: {
-        startHour: ReqDate,
-        endHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        end: ReqDate,
+        open: {
             type: Boolean,
             default: true
         }
     },
     wednesday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     thursday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     friday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     saturday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     },
     sunday: {
-        startHour: ReqDate,
-        isOpen: {
+        start: ReqDate,
+        open: {
             type: Boolean,
             default: true
         },
-        endHour: ReqDate
+        end: ReqDate
     }
 })
 
 const PlaceSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: ReqString,
-    address: String,
-    phone: ReqString,
-    email: String,
-    facebook: String,
-    instagram: String,
     type: ReqString,
-    lat: ReqNumber,
-    lng: ReqNumber,
-    img: ReqString,
+    logo: ReqString,
+    images: [ReqString],
+    isBusinessChain: {
+        type: Boolean,
+        default: false
+    },
     description: ReqString,
     createdAt: {
         type: Date,
         default: new Date()
     },
     subtitle: String,
-    status: {
-        type: String,
-        enum: ['open', 'closed'],
-        default: 'closed'
-    },
-    website: String,
-    openingHours: {
-        type: OpeningHoursSchema
-    },
     userId: ReqId,
-    visitCount: {
-        type: Number,
-        default: 0
-    },
-    averageNote: {
-        type: AverageNoteSchema,
-        default: {
-            ones: 0,
-            twos: 0,
-            threes: 0,
-            fours: 0,
-            fives: 0,
-            average: 0
+    locations: [
+        {
+            address: ReqString,
+            addressId: ReqString,
+            lat: ReqNumber,
+            lng: ReqNumber,
+            facebook: String,
+            instagram: String,
+            phone: ReqString,
+            email: String,
+            website: String,
+            alwaysOpen: {
+                type: Boolean,
+                default: false
+            },
+            status: {
+                type: String,
+                enum: ['open', 'closed'],
+                default: 'closed'
+            },
+            openingHours: {
+                type: OpeningHoursSchema
+            },
+            visitCount: {
+                type: Number,
+                default: 0
+            },
+            averageNote: {
+                type: AverageNoteSchema,
+                default: {
+                    ones: 0,
+                    twos: 0,
+                    threes: 0,
+                    fours: 0,
+                    fives: 0,
+                    average: 0
+                }
+            },
+            isActive: {
+                type: Boolean,
+                default: false
+            },
+            visits: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: "Visit"
+                }
+            ],
+            news: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: "News"
+
+                }
+            ],
+            opinions: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: "Opinions"
+
+                }
+
+            ]
         }
-    },
-    isActive: {
-        type: Boolean,
-        default: false
-    }
+    ],
 }
 )
 

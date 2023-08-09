@@ -1,217 +1,236 @@
-import { Button, Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import TextField from "@material-ui/core/TextField";
-import { Field, Form, Formik } from "formik";
-import { useSnackbar } from "notistack";
-import * as React from "react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import * as Yup from "yup";
-import myAxios, { authAxios } from "../../../axios/axios";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { setEmail } from "../../../store/actions/setEmail";
-import { LoadingButton } from "../../reusable/LoadingButton";
-import { FacebookLoginButton } from "../FacebookLoginButton";
-import { GoogleLoginButton } from "../GoogleLoginButton";
-
-const registrationFields = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    confirmEmail: '',
-    confirmPassword: '',
-    password: '',
-
-}
+import { yupResolver } from '@hookform/resolvers/yup';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import { differenceInYears } from 'date-fns';
+import * as React from 'react';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useAppDispatch } from 'store/hooks';
+import { setEmail } from 'store/slices/emailSlice';
+import * as Yup from 'yup';
+import { signUp } from '../../../api/auth';
+import { useAuthContext } from '../../../contexts/AuthContext';
+import { useCustomSnackbar } from '../../../utils/snackbars';
 
 const isLetter = (e: React.KeyboardEvent) => {
-    // let char = String.fromCharCode(e.keyCode);
-    const char = e.key
-    if (/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\b]+$/.test(char)) return true;
-    else e.preventDefault();
-}
+  // let char = String.fromCharCode(e.keyCode);
+  const char = e.key;
+  if (/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\b]+$/.test(char)) return true;
+  else e.preventDefault();
+};
 
 const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-        .required('This field is required'),
-    lastName: Yup.string()
-        .required('This field is required'),
-    email: Yup.string()
-        .email()
-        .required('This field is required'),
-    confirmEmail: Yup.string()
-        .required('This field is required')
-        .oneOf([Yup.ref('email'), null], 'E-mails must match'),
-    password: Yup.string()
-        .required('This field is required')
-        .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-            "Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character"
-        ),
-    confirmPassword: Yup.string()
-        .required('This field is required')
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+  firstName: Yup.string().required('This field is required'),
+  lastName: Yup.string().required('This field is required'),
+  email: Yup.string().email('This is not a valid e-mail address').required('This field is required'),
+  confirmEmail: Yup.string()
+    .required('This field is required')
+    .oneOf([Yup.ref('email'), null], 'E-mail addresses must match'),
+  password: Yup.string()
+    .required('This field is required')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character'
+    ),
+  confirmPassword: Yup.string()
+    .required('This field is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  birthdate: Yup.string()
+    .nullable()
+    .test('birthdate', 'You should be at least 18 years old', function (birthdate) {
+      const yearDiff = differenceInYears(new Date(), new Date(birthdate as string));
+      return yearDiff >= 18;
+    })
+    .required('Please enter your date of birth'),
+});
 
-})
-
+export interface RegistrationInputs {
+  firstName: string;
+  lastName: string;
+  email: string;
+  confirmEmail: string;
+  confirmPassword: string;
+  password: string;
+  birthdate: Date | null;
+}
 
 export const RegistrationForm = () => {
+  const { setLoginOpen, setRegistrationOpen, setConfirmationOpen } = useAuthContext();
+  const [errorMessage, setErrorMessage] = useState('');
+  const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
-    const { setLoginOpen, setRegistrationOpen, setConfirmationOpen} = useAuthContext()
-    const [errorMessage, setErrorMessage] = useState('')
-    const { enqueueSnackbar } = useSnackbar()
-    const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
+  const {
+    register,
+    getValues,
+    control,
+    formState: { isValid, errors },
+  } = useForm<RegistrationInputs>({
+    resolver: yupResolver(SignupSchema),
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      confirmEmail: '',
+      confirmPassword: '',
+      password: '',
+      birthdate: new Date(),
+    },
+  });
 
-    const signInWithFacebook = () => {
-        console.log('witam')
-        authAxios.get('/auth/facebook')
+  const registerUser = async () => {
+    const userData = getValues();
+    setLoading(true);
+    setErrorMessage('');
+    console.log(userData);
+    try {
+      await signUp(userData);
+      setRegistrationOpen(false);
+      setConfirmationOpen(true);
+      dispatch(setEmail(userData.email));
+      enqueueSuccessSnackbar('You have successfully registered your account');
+    } catch (err: any) {
+      console.error(err);
+      enqueueErrorSnackbar();
+      setErrorMessage(err.response.data);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const signUp = async (userData: typeof registrationFields) => {
-        setLoading(true)
-        setErrorMessage('')
-        console.log(userData)
-        try {
-            await myAxios.post('/registration', { ...userData })
-            // setEmail(userData['email'])
-            dispatch(setEmail(userData['email']))
-            setRegistrationOpen(false)
-            setConfirmationOpen(true)
-            enqueueSnackbar('You have successfully registered', {
-                variant: 'success'
-            })
-        } catch (err : any) {
-            console.error(err)
-            enqueueSnackbar('Registration failed', {
-                variant: 'error'
-            })
-            setErrorMessage(err.response.data)
-        } finally {
-            setLoading(false)
-        }
-
-    }
-
-    return (
-        <Formik
-            initialValues={{ ...registrationFields }}
-            onSubmit={(values) => signUp(values)}
-            validationSchema={SignupSchema}
-        >
-            {({ isValid, dirty, errors, touched }) => (
-                <Form>
-                    <DialogContent>
-                        <Card elevation={6} style={{ marginBottom: 10 }}>
-                            <CardContent>
-                                <Grid container justify="center" style={{ marginBottom: 10 }}>
-                                    <Grid item lg={10} style={{ marginBottom: 10 }}>
-                                        <Typography variant="h6" style={{ fontWeight: 'bold' }}>Hello!</Typography>
-                                        <Typography variant="body2" style={{ color: 'grey' }}>Please sign up to
-                                            continue</Typography>
-                                    </Grid>
-                                    {errorMessage && <Typography variant="caption" style={{textAlign: 'center'}} color="secondary">{errorMessage}</Typography>}
-                                    <Grid item container justify="space-between" lg={10} style={{ textAlign: 'center' }}>
-                                        <Grid item lg={5} style={{ marginBottom: 10 }}>
-                                            <Field as={TextField} onKeyDown={isLetter} fullWidth={true}
-                                                label="First name *"
-                                                name="firstName" />
-                                            {errors.firstName && touched.firstName ? (
-                                                <Typography variant="caption"
-                                                    color="secondary">{errors.firstName}</Typography>
-                                            ) : null}
-                                        </Grid>
-                                        <Grid item lg={5} style={{ marginBottom: 10 }}>
-                                            <Field as={TextField} onKeyDown={isLetter} fullWidth={true} name="lastName"
-                                                label="Last name *" />
-                                            {errors.lastName && touched.lastName ? (
-                                                <Typography variant="caption"
-                                                    color="secondary">{errors.lastName}</Typography>
-                                            ) : null}
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
-                                        <Field as={TextField} fullWidth={true} label="E-mail *"
-                                            type="email" name="email" />
-                                        {errors.email && touched.email ? (
-                                            <Typography variant="caption"
-                                                color="secondary">{errors.email}</Typography>
-                                        ) : null}
-                                    </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
-                                        <Field as={TextField} fullWidth={true}
-                                            label="Confirm E-mail *"
-                                            type="email" name="confirmEmail" />
-                                        {errors.confirmEmail && touched.confirmEmail ? (
-                                            <Typography variant="caption"
-                                                color="secondary">{errors.confirmEmail}</Typography>
-                                        ) : null}
-                                    </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }} >
-                                        <Field as={TextField} fullWidth={true} label="Password *"
-                                            type="password" name="password" />
-                                        {errors.password && touched.password ? (
-                                            <Typography variant="caption"
-                                                color="secondary">{errors.password}</Typography>
-                                        ) : null}
-                                    </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
-                                        <Field as={TextField} fullWidth={true}
-                                            label="Confirm password *"
-                                            type="password" name="confirmPassword" />
-                                        {errors.confirmPassword && touched.confirmPassword ? (
-                                            <Typography variant="caption"
-                                                color="secondary">{errors.confirmPassword}</Typography>
-                                        ) : null}
-                                    </Grid>
-                                    <Grid item lg={10}>
-                                        <LoadingButton
-                                            disabled={(!(isValid && dirty) || loading)}
-                                            fullWidth={true}
-                                            type="submit"
-                                            size="large"
-                                            loading={loading}
-                                            color="secondary"
-                                            variant="contained"
-                                        >
-                                            Sign up
-                                        </LoadingButton>
-                                    </Grid>
-                                    {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
+  return (
+    <form data-testid="registration-form" style={{ flexGrow: 1 }}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid container item xs={10} lg={8} alignItems="center" direction="column">
+          <Typography variant="h1">Hello!</Typography>
+          <Typography variant="h6" sx={{ color: 'grey' }}>
+            Please sign up to continue
+          </Typography>
+          {errorMessage && (
+            <Typography variant="caption" style={{ textAlign: 'center' }} color="error">
+              {errorMessage}
+            </Typography>
+          )}
+          <Grid container justifyContent="space-evenly" sx={{ mb: 1, mt: 5 }}>
+            <TextField
+              onKeyDown={isLetter}
+              sx={{ flexGrow: 1, mr: { lg: 1, xs: 0 }, mb: { lg: 0, xs: 1 } }}
+              label="First name"
+              helperText={errors.firstName?.message}
+              {...register('firstName')}
+              error={errors.firstName?.message ? true : false}
+              name="firstName"
+            />
+            <TextField
+              sx={{ flexGrow: 1 }}
+              onKeyDown={isLetter}
+              {...register('lastName')}
+              helperText={errors.lastName?.message}
+              error={errors.lastName?.message ? true : false}
+              label="Last name"
+            />
+          </Grid>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Controller
+              name="birthdate"
+              control={control}
+              defaultValue={null}
+              render={({ field, fieldState: { error, invalid } }) => (
+                <DatePicker
+                  label="Date of birth"
+                  inputFormat="MM/dd/yyyy"
+                  {...field}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      error={invalid}
+                      helperText={error ? error.message : null}
+                      sx={{ mb: 1, width: '100%' }}
+                    />
+                  )}
+                />
+              )}
+            />
+          </LocalizationProvider>
+          <TextField
+            fullWidth
+            sx={{ mb: 1 }}
+            label="E-mail"
+            helperText={errors.email?.message}
+            {...register('email')}
+            error={errors.email?.message ? true : false}
+            type="email"
+            name="email"
+          />
+          <TextField
+            sx={{ mb: 1 }}
+            fullWidth
+            {...register('confirmEmail')}
+            helperText={errors.confirmEmail?.message}
+            error={errors.confirmEmail?.message ? true : false}
+            label="Confirm E-mail"
+            type="email"
+            name="confirmEmail"
+          />
+          <TextField
+            fullWidth={true}
+            label="Password"
+            sx={{ mb: 1 }}
+            helperText={errors.password?.message}
+            error={errors.password?.message ? true : false}
+            type="password"
+            {...register('password')}
+          />
+          <TextField
+            fullWidth
+            {...register('confirmPassword')}
+            label="Confirm password"
+            sx={{ mb: 1 }}
+            helperText={errors.confirmPassword?.message}
+            error={errors.confirmPassword?.message ? true : false}
+            type="password"
+          />
+          <LoadingButton
+            disabled={!isValid || loading}
+            fullWidth={true}
+            onClick={registerUser}
+            size="large"
+            loading={loading}
+            color="primary"
+            variant="contained"
+          >
+            Sign up
+          </LoadingButton>
+          {/* <Grid item xs={10} style={{ textAlign: 'center' }}>
                                         <h4>OR</h4>
                                     </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10 }}>
+                                    <Grid item xs={10} style={{ marginBottom: 10 }}>
                                         <GoogleLoginButton />
                                     </Grid>
-                                    <Grid item lg={10}>
+                                    <Grid item xs={10}>
                                         <FacebookLoginButton />
                                          <Button color="primary" onClick={() => signInWithFacebook()}>Sign in with facebook</Button>
                                     </Grid> */}
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <Typography variant="caption">
-                                            Already have an account?&nbsp;
-                                            <Link
-                                                onClick={() => {
-                                                    setLoginOpen(true);
-                                                    setRegistrationOpen(false)
-                                                }}
-                                            >
-                                                Click here to sign in
-                                            </Link>
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                        </Card>
-                    </DialogContent>
-                </Form>
-            )
-            }
-        </Formik >
-    )
-}
-
+          <Typography sx={{ mt: 1 }} variant="caption">
+            Already have an account?&nbsp;
+            <Link
+              data-testid="signin-link"
+              onClick={() => {
+                setLoginOpen(true);
+                setRegistrationOpen(false);
+              }}
+            >
+              Click here to sign in
+            </Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </form>
+  );
+};

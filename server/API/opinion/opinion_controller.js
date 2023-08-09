@@ -1,18 +1,55 @@
 const opinionService = require('./opinion_service')
 const placeService = require('../place/place_service')
-const opinionDto = require('./model/opinion_dto')
+const {opinionDto, allOpinionsDto} = require('./model/opinion_dto')
 const mongoose = require('mongoose')
 const ApiError = require('../../errors/ApiError')
 
 const opinionController = {
+
+
+    getOpinionsByLocationId: async (req, res, next) => {
+        const { locationId } = req.query
+        try {
+            const opinions = await opinionService.getOpinionsBy({ locationId: locationId })
+            if (opinions.length === 0) return res.status(200).json(null)
+            return res.status(200).json(opinionDto(opinions))
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getAllOpinionsByUserId(req, res, next) {
+        const { uid } = req.query
+        try {
+            const locationIds = await placeService.getLocationIdsByUserId(uid)
+            const opinionsData = await opinionService.getOpinionsByLocationIds(locationIds)
+            return res.status(200).json(allOpinionsDto(opinionsData))
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getOpinions(req, res, next) {
+        const queryLength = Object.keys(req.query).length
+        if (queryLength !== 1) return next(ApiError.badRequest('Invalid parameters count'))
+        const param = Object.keys(req.query)[0]
+        switch (param) {
+            case 'locationId':
+                return this.getOpinionsByLocationId(req, res, next)
+            case 'uid':
+                return this.getAllOpinionsByUserId(req, res, next)
+            default:
+                return next(ApiError.badRequest('Invalid request'))
+        }
+    },
+
     getOpinionsBy: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
-        console.log(queryLength)
         switch (queryLength) {
             case 1:
                 let param = Object.keys(req.query)[0]
                 let value = req.query[param]
-                if (param === 'authorId' || param === 'placeId') {
+                if (param === 'authorId' || param === 'locationId') {
                     if (param === 'authorId') param = param.substring(0, param.length - 2)
                     value = mongoose.Types.ObjectId(value)
                 }
@@ -27,7 +64,6 @@ const opinionController = {
             case 0:
                 try {
                     const opinions = await opinionService.getOpinions()
-                    //  const opinionsDto = opinions.map(opinion => opinionDto(opinion))
                     return res.status(200).json(opinions)
                 } catch (err) {
                     return next(err)
@@ -39,14 +75,22 @@ const opinionController = {
 
     },
     addNewOpinion: async (req, res, next) => {
-        const {authorId, note, placeId } = req.body
-        if (!authorId || !placeId || !note || note > 5 || note < 1) return res.status(400).json({ error: 'Invalid request' })
+        const { authorId, note, locationId } = req.body
+        if (!authorId || !locationId || !note || note > 5 || note < 1) return next(ApiError.badRequest('Invalid request'))
+        const session = await mongoose.startSession()
+        session.startTransaction()
         try {
-            const opinion = opinionDto(await opinionService.addNewOpinion(req.body))
-            const updatedPlace = await placeService.updateNote(note, placeId)
-            return res.status(200).json({ message: 'New opinion added successfully!', opinion, averageNote: updatedPlace.averageNote})
+            const [opinion, averageNote] = await Promise.all([
+                opinionService.addNewOpinion(req.body, session),
+                placeService.updateNote(note, locationId, session)
+            ])
+            res.status(200).json(opinionDto([opinion]))
+            await session.commitTransaction()
         } catch (err) {
+            await session.abortTransaction()
             return next(err)
+        } finally {
+            await session.endSession()
         }
     },
 

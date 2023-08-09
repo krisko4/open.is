@@ -1,21 +1,23 @@
 const News = require('./model/news')
 const mongoose = require('mongoose')
 const placeService = require('../place/place_service')
+const ApiError = require('../../errors/ApiError')
 
 
 const newsService = {
     addNews : async (news) => {
         let {userId} = news
-        const place = await placeService.getPlaceById(news.placeId)
-        if(!place) throw new Error('Invalid placeId.')
-        if(place.userId != userId) throw new Error('Invalid uid.')
-        console.log(place._id)
+        console.log(news)
+        const place = await placeService.findByLocationId(news.locationId)
+        if(!place) throw ApiError.internal('Invalid location id.')
+       
+        if(place.userId != userId) throw ApiError.internal('Invalid uid.')
         return new News({
             _id: new mongoose.Types.ObjectId,
             title: news.title,
             date: new Date(),
             content: news.content,
-            placeId: place._id
+            locationId: news.locationId
         }).save()
    
     },

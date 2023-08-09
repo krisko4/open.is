@@ -5,9 +5,82 @@ const placeService = require('../place/place_service')
 const newsService = require('../news/news_service')
 const visitService = require('../visit/visit_service')
 const opinionService = require('../opinion/opinion_service')
-const userDto = require('./model/user_dto')
+const userDto = require('./dto/user_dto')
+const greet = require('../../firebase/notifications/greet')
 
 const userController = {
+
+    updateProfilePicture: async (req, res, next) => {
+        const { uid } = req.cookies
+        const { id } = req.params
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        const newImage = req.file
+        try {
+            const updatedUser = await userService.updateProfilePicture(uid, newImage)
+            return res.status(200).json(updatedUser)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+    async checkIfUserIsSubscriber(req, res, next) {
+        const { uid } = req.cookies
+        const { id, locationId } = req.params
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        try{
+            const isUserSubscriber = await userService.checkIfUserIsSubscriber(uid, locationId)
+            return res.status(200).json(isUserSubscriber)
+        }catch(err){
+            return next(err)
+        }
+
+    },
+
+    removeProfilePicture: async (req, res, next) => {
+        const { uid } = req.cookies
+        const { id } = req.params
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        try {
+            const updatedUser = await userService.removeProfilePicture(uid)
+            return res.status(200).json(updatedUser)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+    removeSubscription: async (req, res, next) => {
+        const { locationId, id } = req.params
+        const { uid } = req.cookies
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        try {
+            const place = await placeService.findByLocationId(locationId)
+            if (!place) throw ApiError.badRequest('Invalid placeId')
+            const updatedUser = await userService.removeSubscription(locationId, place, uid)
+            return res.status(200).json(updatedUser)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+    addSubscription: async (req, res, next) => {
+        const { id } = req.params
+        const { locationId } = req.body
+        const { uid, notificationToken } = req.cookies
+        if (uid !== id) return next(ApiError.badRequest('Invalid uid'))
+        try {
+            const place = await placeService.findByLocationId(locationId)
+            if (!place) throw ApiError.badRequest('Invalid placeId')
+            if (place.userId === uid) throw ApiError.internal('You cannot subscribe to your own place')
+            const updatedUser = await userService.addSubscription(locationId, place._id, uid)
+            greet(notificationToken);
+            return res.status(200).json(updatedUser)
+        } catch (err) {
+            return next(err)
+        }
+    },
 
     getUsers: (req, res, next) => {
         userService.getUsers()
@@ -45,16 +118,9 @@ const userController = {
             const { uid } = req.cookies
             const { id } = req.params
             if (uid !== id) throw new Error('Uids are different')
-            const img = req.files && req.files.img
-            const userData = {...req.body}
-            if(img){
-                userData.img = img
-            }
-            else{
-                delete userData.img
-            }
+            const userData = { ...req.body }
             const result = await userService.changeUserData(userData, id)
-            return res.status(200).json({emailChanged: result.emailChanged, user: userDto(result.user)})
+            return res.status(200).json({ emailChanged: result.emailChanged, user: userDto(result.user) })
         } catch (err) {
             return next(err)
         }
@@ -75,7 +141,7 @@ const userController = {
 
     getUserById: async (req, res, next) => {
         try {
-            const { id } = req.params 
+            const { id } = req.params
             console.log(id)
             const user = await userService.getUserById(id)
             return res.status(200).json(userDto(user))

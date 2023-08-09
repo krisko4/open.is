@@ -2,78 +2,276 @@ const placeService = require('./place_service')
 const userService = require('../user/user_service')
 const placeDto = require('./model/place_dto')
 const ApiError = require('../../errors/ApiError')
-const visitService = require('../visit/visit_service')
-const visitDto = require('../visit/model/visit_dto')
-const opinionService = require('../opinion/opinion_service')
-const opinionDto = require('../opinion/model/opinion_dto')
-const newsService = require('../news/news_service')
-const newsDto = require('../news/model/news_dto')
-const mongoose = require('mongoose')
 
 const placeController = {
 
-
-    getActivePlaces: async (req, res, next) => {
-        const queryLength = Object.keys(req.query).length
-        const { cookies } = req
-        const { uid } = cookies
-        switch (queryLength) {
-            case 2:
-                const { name, address } = req.query
-                console.log(name, address)
-                if (!name || !address) return next(ApiError.badRequest('Invalid request parameters. Required parameters: name, address'))
-                const nameRegExp = new RegExp(name, 'i')
-                const addressRegExp = new RegExp(address, 'i')
-                try {
-                    const places = await placeService.getActivePlacesByAddressesAndNames(addressRegExp, nameRegExp)
-                    return res.status(200).json(places)
-                } catch (err) {
-                    return next(err)
-                }
-
-            case 1:
-                const param = Object.keys(req.query)[0]
-                let searchObj = {}
-                searchObj[param] = new RegExp(req.query[param], 'i')
-                console.log(searchObj)
-                try {
-                    let places
-                    param === 'uid' ? places = await placeService.getActivePlacesByUserId(req.query['uid']) : places = await placeService.getActivePlacesBy(searchObj)
-                    return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
-                } catch (err) {
-                    return next(err)
-                }
-            case 0:
-                return placeService.getActivePlaces()
-                    .then(places => res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid))))
-                    .catch(err => next(err))
-            default:
-                return next(ApiError.badRequest('Invalid request'))
-        }
-    },
-
-    findPlaceNames: async (req, res, next) => {
-        const { name } = req.query
-        if (!name) return next(ApiError.badRequest('Name is required'))
+    async addLocations(req, res, next) {
         try {
-            const nameRegex = new RegExp(name, 'i')
-            const places = await placeService.getPlaceNames(nameRegex)
-            return res.status(200).json(places.map(place => {
-                return {
-                    name: place.name,
-                    foundBy: 'name'
-                }
-            }))
+            const { id } = req.params
+            const { locations } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            const place = await placeService.addLocations(user, id, locations)
+            return res.status(200).json(placeDto({ ...place._doc }, uid))
+
+
         } catch (err) {
             return next(err)
         }
 
     },
 
+    async getSubscribersForSelectedLocation(req, res, next) {
+        try {
+            const {locationId} = req.params
+            const { uid } = req.cookies
+            const selectedLocation = await placeService.getLocationByIdAndUserId(locationId, uid);
+            if(!selectedLocation) throw ApiError.internal('Location not found for provided user id');
+            const subscribers  = await userService.getSubscribersForSelectedLocation(locationId);
+            return res.status(200).json(subscribers);
+        }
+        catch(err){
+            return next(err)
+        }
+    },
+
+    async setSelectedLocationsAlwaysOpen(req, res, next) {
+        try {
+            const { id } = req.params
+            const { locationIds } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.setSelectedLocationsAlwaysOpen(user, id, locationIds)
+            return res.status(200).json()
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getPlacesWithUnwindedLocations(req, res, next) {
+        try {
+            const { start, limit } = req.query
+            const places = await placeService.getPlacesWithUnwindedLocations(parseInt(start), parseInt(limit))
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async changeOpeningHoursForSelectedLocations(req, res, next) {
+        try {
+            const { id } = req.params
+            const { locationIds, openingHours } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.changeOpeningHoursForSelectedLocations(user, id, locationIds, openingHours)
+            return res.status(200).json()
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+    async changeContactDetailsForLocations(req, res, next) {
+        try {
+            const { id } = req.params
+            const { locationIds, contactDetails } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.changeContactDetailsForLocations(user, id, locationIds, contactDetails)
+            return res.status(200).json()
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+
+
+    deleteLocations: async (req, res, next) => {
+        try {
+            const { placeId } = req.params
+            const { locationIds } = req.body
+            const { uid } = req.cookies
+            const user = await userService.getUserById(uid)
+            if (!user) throw ApiError.internal('Invalid uid')
+            await placeService.deleteLocations(user, placeId, locationIds)
+            return res.status(200).json()
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    setAlwaysOpen: async (req, res, next) => {
+        try {
+            const { alwaysOpen } = req.body
+            const { id } = req.params
+            await placeService.setAlwaysOpen(alwaysOpen, id)
+            return res.status(200).json()
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getActivePlacesByAddressAndName(req, res, next) {
+        const { name, address } = req.query
+        if (!name || !address) return next(ApiError.badRequest('Invalid request parameters. Required parameters: name, address'))
+        const nameRegExp = new RegExp(name, 'i')
+        const addressRegExp = new RegExp(address, 'i')
+        try {
+            const places = await placeService.getActivePlacesByAddressesAndNames(addressRegExp, nameRegExp)
+            return res.status(200).json(places)
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getActivePlacesBySingleProperty(req, res, next) {
+        const { start, limit } = req.query
+        let param = Object.keys(req.query)[0]
+        const paramValue = req.query[param].trim()
+        if (param == 'address') param = 'locations.address'
+        let searchObj = {}
+        searchObj[param] = new RegExp(paramValue, 'i')
+        try {
+            let places
+            param === 'uid' ?
+                places = await placeService.getActivePlacesByUserId(req.query['uid'])
+                :
+                places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getAllActivePlaces(req, res, next) {
+        const { start, limit } = req.query
+        try {
+            const places = await placeService.getActivePlaces(start, limit)
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getActivePlacesByParams(req, res, next, paramCount) {
+        const { start, limit } = req.query
+        const searchObj = {}
+        console.log(paramCount)
+        for (let i = 0; i < paramCount; i++) {
+            let param = Object.keys(req.query)[i]
+            if (param === 'start' || param === 'limit') continue
+            const paramValue = req.query[param].trim()
+            if (param == 'address') param = 'locations.address'
+            searchObj[param] = new RegExp(paramValue, 'i')
+        }
+        try {
+            places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    async getActivePlacesPaginated(req, res, next) {
+        const queryLength = Object.keys(req.query).length
+        if (queryLength > 5) throw ApiError.badRequest('Invalid query param count')
+        return this.getActivePlacesByParams(req, res, next, queryLength)
+    },
+
+    async getActivePlaces(req, res, next) {
+        const queryLength = Object.keys(req.query).length
+        switch (queryLength) {
+            //when looking for places with two params 
+            case 2:
+                return this.getActivePlacesByAddressAndName(req, res, next)
+            //when looking for places with single param
+            case 1:
+                return this.getActivePlacesBySingleProperty(req, res, next)
+            case 0:
+                return this.getAllActivePlaces(req, res, next)
+            default:
+                return next(ApiError.badRequest('Invalid request'))
+        }
+    },
+
+    findPlaceNamesOrTypes: async (req, res, next) => {
+        const { inputValue } = req.query
+        if (!inputValue) throw ApiError.badRequest('Input value is required')
+        const searchParam = new RegExp(inputValue, 'i')
+        try {
+            let places = []
+            const foundNames = await placeService.getPlaceNames(searchParam)
+            if (foundNames.length > 0) {
+                for (const name of foundNames) {
+                    places.push({
+                        name: name,
+                        foundBy: 'name'
+                    })
+                }
+            }
+            const foundTypes = await placeService.getPlaceTypes(searchParam)
+            if (foundTypes.length > 0) {
+                for (const type of foundTypes) {
+                    places.push({
+                        name: type,
+                        foundBy: 'type'
+                    })
+                }
+            }
+            return res.status(200).json(places)
+        } catch (err) {
+            return next(err)
+        }
+
+    },
+    getSubscribedPlaces: async (req, res, next) => {
+        const { uid } = req.cookies
+        const { start, limit } = req.query
+        try {
+            let subscribedLocations = await userService.getSubscribedLocationIds(uid)
+            const locationIds = subscribedLocations.map(loc => loc._id)
+            const searchObj = { 'locations._id': { $in: locationIds } }
+            const places = await placeService.getActivePlacesBy(searchObj, start, limit)
+            console.log(places)
+            return res.status(200).json(places[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+
+    async getStatus(req, res, next) {
+        try {
+            const { locationId } = req.params
+            const statusData = await placeService.getStatus(locationId)
+            return res.status(200).json(statusData.status[0])
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+
+    async getPlaceByIdAndSelectedLocation(req, res, next) {
+        try {
+            const { uid } = req.cookies
+            const { placeId, locationId } = req.params
+            let place = await placeService.getPlaceByIdAndSelectedLocation(placeId, locationId)
+            return res.status(200).json(placeDto(place, uid))
+        } catch (err) {
+            return next(err)
+        }
+    },
+
     getPlaces: async (req, res, next) => {
         const queryLength = Object.keys(req.query).length
         const { cookies } = req
         const { uid } = cookies
+        console.log(uid)
         switch (queryLength) {
             case 2:
                 const { lat, lng } = req.query
@@ -88,19 +286,6 @@ const placeController = {
                     let places
                     if (param === 'uid') {
                         places = await placeService.getPlacesByUserId(req.query['uid'])
-                        const objPlaces = await Promise.all(places.map(async (place) => {
-                            const placeObject = { ...place._doc }
-                            const [visits, opinions, news] = await Promise.all([
-                                visitService.getVisitsByPlaceId(placeObject._id),
-                                opinionService.getOpinionsBy({ placeId: placeObject._id }),
-                                newsService.getNewsBy({ placeId: placeObject._id })
-                            ])
-                            placeObject.visits = visits.map(visit => visitDto(visit))
-                            placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
-                            placeObject.news = news.map(news => newsDto(news))
-                            return placeObject
-                        }))
-                        places = objPlaces
                         return res.status(200).json(places.map(place => placeDto(place, uid)))
                     } else {
                         places = await placeService.getPlacesBy(searchObj)
@@ -119,72 +304,6 @@ const placeController = {
         }
     },
 
-
-
-    editPlace: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
-        const reqBody = req.body
-        try {
-            const user = await userService.getUserById(uid)
-            if (!user) throw ApiError.internal('User with provided uid not found')
-            const placeData = {
-                _id: reqBody._id,
-                name: reqBody.name,
-                address: reqBody.address,
-                type: reqBody.type,
-                lat: reqBody.lat,
-                lng: reqBody.lng,
-                description: reqBody.description,
-                subtitle: reqBody.subtitle,
-                phone: reqBody.phone,
-                email: reqBody.email,
-                website: reqBody.website,
-                userId: user._id,
-                facebook: reqBody.facebook,
-                instagram: reqBody.instagram
-            }
-            const img = req.files && req.files.img
-            if (img) placeData.img = img
-            const place = await placeService.editPlace(placeData, user)
-            const placeObject = { ...place._doc }
-            const [visits, opinions, news] = await Promise.all([
-                visitService.getVisitsByPlaceId(placeObject._id),
-                opinionService.getOpinionsBy({ placeId: placeObject._id }),
-                newsService.getNewsBy({ placeId: placeObject._id })
-            ])
-            placeObject.visits = visits.map(visit => visitDto(visit))
-            placeObject.opinions = opinions.map(opinion => opinionDto(opinion))
-            placeObject.news = news.map(news => newsDto(news))
-            return res.status(200).json({ message: 'Place updated successfully.', place: placeDto(placeObject, uid) })
-        }
-        catch (err) {
-            return next(err)
-        }
-
-
-    },
-
-    deletePlace: async (req, res, next) => {
-        const { placeId } = req.params
-        try {
-            const session = await mongoose.startSession()
-            await session.withTransaction(async () => {
-                await Promise.all([
-                    placeService.deletePlace(placeId),
-                    opinionService.deleteOpinionsByPlaceId(placeId),
-                    visitService.deleteVisitsByPlaceId(placeId),
-                    newsService.deleteNewsByPlaceId(placeId)
-                ])
-            })
-            await session.endSession()
-            return res.sendStatus(200)
-        } catch (err) {
-            return next(err)
-        }
-
-    },
-
     addPlace: async (req, res, next) => {
         const { cookies } = req
         const { uid } = cookies
@@ -192,29 +311,31 @@ const placeController = {
         try {
             const user = await userService.getUserById(uid)
             if (!user) throw ApiError.internal('User with provided uid not found')
-            const { img } = req.files
-            if (!img) throw ApiError.badRequest('Image file is required')
-            console.log(img)
+            const { logo, images } = req.files
+            if (!reqBody.editionMode) {
+                if (!logo) throw ApiError.badRequest('Request is missing necessary upload files')
+                if (logo.length !== 1) throw ApiError.badRequest('Exactly one logo file is required')
+            }
             const placeData = {
                 name: reqBody.name,
-                address: reqBody.address,
                 type: reqBody.type,
-                lat: reqBody.lat,
-                lng: reqBody.lng,
                 description: reqBody.description,
                 subtitle: reqBody.subtitle,
-                phone: reqBody.phone,
-                img: img,
-                email: reqBody.email,
-                website: reqBody.website,
+                logo: logo ? logo[0] : null,
+                images: images,
+                locations: reqBody.locations,
                 userId: user._id,
-                facebook: reqBody.facebook,
-                instagram: reqBody.instagram
             }
-            const place = await placeService.addPlace(placeData)
-            return res.status(201).json({ message: 'New place added successfully.', place: placeDto({ ...place._doc }, uid) })
-        }
-        catch (err) {
+            placeData.isBusinessChain = JSON.parse(reqBody.isBusinessChain)
+            let place
+            if (reqBody.editionMode) {
+                placeData['_id'] = reqBody._id
+                place = await placeService.editPlace(placeData, user)
+            } else {
+                place = await placeService.addPlace(placeData)
+            }
+            return res.status(201).json(placeDto({ ...place._doc }, uid))
+        } catch (err) {
             return next(err)
         }
 
@@ -241,56 +362,96 @@ const placeController = {
         }
     },
 
+    getMatchParams(req) {
+        const { type, name, address } = req.query
+        const matchParams = {}
+        if (name) matchParams['name'] = new RegExp(name, 'i')
+        if (address) matchParams['locations.address'] = new RegExp(address, 'i')
+        if (type) matchParams['type'] = new RegExp(type, 'i')
+        return matchParams
+    },
 
-    getRecentlyAddedPlaces: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
+
+    async getPlacesBySortParam(req, res, next, sortParam) {
+        const { start, limit } = req.query
+        const matchParams = this.getMatchParams(req)
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ createdAt: -1 })
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            let places = await placeService.getPlacesPaginatedSortedBy(
+                parseInt(start),
+                parseInt(limit),
+                sortParam,
+                matchParams
+            )
+            return res.status(200).json(places[0])
         } catch (err) {
             next(err)
         }
 
     },
 
-    getFavoritePlaces: async (req, res, next) => {
-        const { cookies } = req
-        let { uid, favIds } = cookies
-        if(!favIds) return res.status(200).json([])
+    async getRecentlyAddedPlaces(req, res, next) {
+        const sortParam = { createdAt: -1 }
+        this.getPlacesBySortParam(req, res, next, sortParam)
+    },
+
+    async getFavoritePlaces(req, res, next) {
+        const matchParams = this.getMatchParams(req)
+        const { start, limit } = req.query
+        let { favIds } = req.cookies
+        if (!favIds) return res.status(200).json([])
         favIds = favIds.split(',')
         try {
-            const places = await placeService.getFavoritePlaces(favIds)
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
-        } catch (err) {
-            next(err)
-        }
-
-
-    },
-
-
-    getTopRatedPlaces: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
-        try {
-            const places = await placeService.getTop20PlacesSortedBy({ 'averageNote.average': -1 })
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            const places = await placeService.getFavoritePlaces(
+                parseInt(start),
+                parseInt(limit),
+                favIds,
+                matchParams
+            )
+            return res.status(200).json(places[0])
         } catch (err) {
             next(err)
         }
     },
 
+    async getTopRatedPlaces(req, res, next) {
+        const sortParam = { 'locations.averageNote.average': -1 }
+        this.getPlacesBySortParam(req, res, next, sortParam)
+    },
 
-    getPopularPlaces: async (req, res, next) => {
-        const { cookies } = req
-        const { uid } = cookies
+
+    async getPopularPlaces(req, res, next) {
+        const sortParam = { 'locations.visitCount': -1 }
+        this.getPlacesBySortParam(req, res, next, sortParam)
+    },
+
+    getOpeningHours: async (req, res, next) => {
         try {
-            const places = await placeService.getTop20PlacesSortedBy({ visitCount: -1 })
-            return res.status(200).json(places.map(place => placeDto({ ...place._doc }, uid)))
+            const { locationId } = req.params
+            const data = await placeService.getOpeningHours(locationId)
+            if (data.openingHours.length > 0) {
+                delete data.openingHours[0]['_id']
+            }
+
+            return res.status(200).json({
+                openingHours: data.openingHours[0],
+                alwaysOpen: data.alwaysOpen[0],
+                isActive: data.isActive[0]
+            })
         } catch (err) {
-            next(err)
+            return next(err)
         }
+    },
+
+    getAverageNote: async (req, res, next) => {
+        try {
+            const { locationId } = req.params
+            const data = await placeService.getAverageNote(locationId)
+
+            return res.status(200).json(data.averageNote[0])
+        } catch (err) {
+            return next(err)
+        }
+
     },
 
     setStatus: async (req, res, next) => {
@@ -298,7 +459,7 @@ const placeController = {
             const { id } = req.params
             const { status } = req.body
             await placeService.setStatus(id, status)
-            res.sendStatus(200)
+            return res.status(200).json()
         } catch (err) {
             next(err)
         }
@@ -306,9 +467,10 @@ const placeController = {
 
     setOpeningHours: async (req, res, next) => {
         const { id } = req.params
+        const { openingHours } = req.body
         try {
-            if (Object.keys(req.body).length === 0) throw ApiError.badRequest('Request body is missing')
-            const place = await placeService.setOpeningHours(id, req.body)
+
+            const place = await placeService.setOpeningHours(id, openingHours)
             return res.status(200).json(place)
         } catch (err) {
             next(err)

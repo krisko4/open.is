@@ -1,140 +1,149 @@
-import { Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import DialogContent from "@material-ui/core/DialogContent";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import TextField from "@material-ui/core/TextField";
-import { Field, Form, Formik } from "formik";
-import { useSnackbar } from "notistack";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import * as Yup from "yup";
-import { authAxios } from "../../../axios/axios";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { login } from "../../../store/actions/login";
-import { LoadingButton } from "../../reusable/LoadingButton";
-import {setEmail} from "../../../store/actions/setEmail"
-import { useLoginContext } from "../../../contexts/LoginContext";
-
-interface UserData {
-    email: string,
-    password: string
-}
-
-const loginFields = {
-    email: '',
-    password: ''
-}
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoadingButton } from '@mui/lab';
+import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { login } from '../../../api/auth';
+import { useAuthContext } from '../../../contexts/AuthContext';
+import { useLoginContext } from '../../../contexts/LoginContext';
+import { useCustomSnackbar } from '../../../utils/snackbars';
 
 const LoginSchema = Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string()
-        .required()
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/)
-})
-export const LoginForm = () => {
+  email: Yup.string().email('This is not a valid e-mail').required('This field is required'),
+  password: Yup.string()
+    .required('This field is required')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character'
+    ),
+});
 
-
-    const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext()
-    const [loading, setLoading] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
-    const { enqueueSnackbar } = useSnackbar()
-    const dispatch = useDispatch()
-    const {setUserLoggedIn} = useLoginContext()
-
-    const signIn = async (userData: UserData) => {
-        setErrorMessage('')
-        setLoading(true)
-        dispatch(setEmail(userData.email))
-        try {
-            const response = await authAxios.post('/login', { ...userData }, { withCredentials: true })
-            console.log(response.data)
-            localStorage.setItem('uid', response.data.uid)
-            localStorage.setItem('fullName', response.data.fullName)
-            localStorage.setItem('email', userData.email)
-            response.data.img && localStorage.setItem('img', response.data.img)
-            setLoginOpen(false)
-            // dispatch(login())
-            setUserLoggedIn(true)
-            enqueueSnackbar('You have signed in.', {
-                variant: 'success'
-            })
-        } catch (err: any) {
-            console.log(err)
-            console.log(err.response.data)
-            if (err.response.data === `User is inactive`) {
-                setLoginOpen(false)
-                setConfirmationOpen(true)
-                return
-            }
-            setErrorMessage('Invalid credentials')
-
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    return (
-        <Formik
-            initialValues={loginFields}
-            validationSchema={LoginSchema}
-            onSubmit={(values => signIn(values))}
-        >
-            {({ dirty, isValid }) => (
-                <Form>
-                    <DialogContent>
-                        <Card elevation={6} style={{ marginBottom: 10 }}>
-                            <CardContent>
-                                <Grid container justify="center" style={{ marginBottom: 10 }}>
-                                    <Grid item lg={10} style={{ marginBottom: 10 }}>
-                                        <Typography variant="h6" style={{ fontWeight: 'bold' }}>Hello!</Typography>
-                                        <Typography variant="body2" style={{ color: 'grey' }}>Please sign in to continue</Typography>
-                                        {errorMessage && <Typography variant="body2" style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>{errorMessage}</Typography>}
-                                    </Grid>
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <Field as={TextField} name="email" type="email" fullWidth={true} style={{ marginBottom: 10 }}
-                                            label="E-mail" />
-                                    </Grid>
-                                    <Grid item lg={10} style={{ marginBottom: 10, textAlign: 'center' }}>
-                                        <Field as={TextField} name="password" type="password" fullWidth={true}
-                                            label="Password" />
-                                        <Link variant="caption">I forgot my password</Link>
-                                    </Grid>
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <LoadingButton
-                                            loading={loading}
-                                            fullWidth={true}
-
-                                            type="submit"
-                                            color="secondary"
-                                            variant="contained"
-                                            disabled={(!(isValid && dirty) || loading)}
-                                        >
-                                            Sign in
-                                        </LoadingButton>
-                                    </Grid>
-                                    {/* <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <h4>OR</h4>
-                                    </Grid> */}
-                                    {/*<Grid item lg={10} style={{marginBottom: 10}}>*/}
-                                    {/*    <GoogleLoginButton/>*/}
-                                    {/*</Grid>*/}
-                                    {/*<Grid item lg={10}>*/}
-                                    {/*    <FacebookLoginButton/>*/}
-                                    {/*</Grid>*/}
-                                    <Grid item lg={10} style={{ textAlign: 'center' }}>
-                                        <Typography variant="caption">Don't have an account? <Link onClick={() => {
-                                            setRegistrationOpen(true);
-                                            setLoginOpen(false)
-                                        }}>Click here to sign up</Link></Typography>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                        </Card>
-                    </DialogContent>
-                </Form>
-            )}
-        </Formik>
-    )
+export interface LoginInputs {
+  email: string;
+  password: string | null;
 }
+export const LoginForm = () => {
+  const {
+    register,
+    getValues,
+    formState: { isValid, errors },
+  } = useForm<LoginInputs>({
+    resolver: yupResolver(LoginSchema),
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+  const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { enqueueSuccessSnackbar } = useCustomSnackbar();
+  const { setUserData } = useLoginContext();
+
+  const signIn = async () => {
+    const loginData = getValues();
+    setErrorMessage('');
+    setLoading(true);
+    try {
+      const response = await login({ ...loginData });
+      console.log(response.data);
+      localStorage.setItem('uid', response.data.uid);
+      localStorage.setItem('fullName', response.data.fullName);
+      localStorage.setItem('email', loginData.email);
+      if (response.data.img) {
+        localStorage.setItem('img', response.data.img);
+      }
+      setLoginOpen(false);
+      setUserData({
+        fullName: response.data.fullName,
+        email: loginData.email,
+        img: response.data.img,
+        isLoggedIn: true,
+      });
+      enqueueSuccessSnackbar('You have signed in.');
+    } catch (err: any) {
+      console.log(err);
+      console.log(err.response.data);
+      if (err.response.data === 'User is inactive') {
+        setLoginOpen(false);
+        setConfirmationOpen(true);
+        return;
+      }
+      setLoading(false);
+      setErrorMessage('Invalid credentials');
+    }
+  };
+
+  return (
+    <form data-testid="login-form" style={{ flexGrow: 1 }}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid
+          container
+          item
+          xs={8}
+          justifyContent="center"
+          alignItems="center"
+          direction="column"
+          style={{ marginBottom: 10 }}
+        >
+          <Typography variant="h1">Hello!</Typography>
+          <Typography variant="h6">Please sign in to continue</Typography>
+          {errorMessage && (
+            <Typography variant="body2" style={{ textAlign: 'center', color: 'red', marginTop: 10 }}>
+              {errorMessage}
+            </Typography>
+          )}
+          <TextField
+            type="email"
+            {...register('email')}
+            fullWidth
+            error={errors.email?.message ? true : false}
+            helperText={errors.email?.message}
+            sx={{ mb: 1, mt: 3 }}
+            label="E-mail"
+          />
+          <TextField
+            type="password"
+            {...register('password')}
+            fullWidth
+            error={errors.password?.message ? true : false}
+            helperText={errors.password?.message}
+            label="Password"
+          />
+          <Link sx={{ mb: 1 }} variant="caption">
+            I forgot my password
+          </Link>
+          <LoadingButton
+            loading={loading}
+            data-cy="login-button"
+            fullWidth={true}
+            size="large"
+            color="primary"
+            onClick={signIn}
+            variant="contained"
+            disabled={!isValid || loading}
+          >
+            Sign in
+          </LoadingButton>
+          <Typography sx={{ mt: 1 }} variant="caption">
+            Don&quot;t have an account?{' '}
+            <Link
+              data-testid="signup-link"
+              onClick={() => {
+                setRegistrationOpen(true);
+                setLoginOpen(false);
+              }}
+            >
+              Click here to sign up
+            </Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    </form>
+  );
+};

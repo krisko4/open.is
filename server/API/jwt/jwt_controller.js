@@ -23,7 +23,7 @@ const jwtController = {
         const { cookies } = req
         const accessToken = cookies['access_token']
         const refreshToken = cookies['refresh_token']
-        if (!accessToken || !refreshToken) return next(ApiError.forbidden('accessToken and refreshToken are required'))
+        if (!accessToken || !refreshToken) return next(ApiError.forbidden('Illegal operation'))
         try {
             jwtService.authenticateAccessToken(accessToken)
             return next()

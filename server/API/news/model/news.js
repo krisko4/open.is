@@ -6,7 +6,7 @@ const NewsSchema = new mongoose.Schema({
     title: ReqString,
     date: ReqDate,
     content: ReqString,
-    placeId: mongoose.Schema.Types.ObjectId
+    locationId: mongoose.Schema.Types.ObjectId
 })
 
 module.exports = mongoose.model('News', NewsSchema)

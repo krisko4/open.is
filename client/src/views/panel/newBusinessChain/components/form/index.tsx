@@ -1,0 +1,161 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Grid } from '@mui/material';
+import { FC, useEffect, useRef } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { EmailButton } from './buttons/EmailButton';
+import { FacebookButton } from './buttons/FacebookButton';
+import { InstagramButton } from './buttons/InstagramButton';
+import { PhoneButton } from './buttons/PhoneButton';
+import { WebsiteButton } from './buttons/WebsiteButton';
+import { EmailField } from './fields/EmailField';
+import { FacebookField } from './fields/FacebookField';
+import { InstagramField } from './fields/InstagramField';
+import { PhoneField } from './fields/PhoneField';
+import { WebsiteField } from './fields/WebsiteField';
+// import { LocationProps } from '../../../../../../redux-toolkit/slices/PlaceProps';
+import { useAppDispatch } from 'store/hooks';
+import { fillFormData, setValid, useFormSaveTriggerSelector } from 'store/slices/formLocationsSlice';
+import { SelectedLocationProps } from 'store/slices/selectedLocationsSlice';
+// import PhoneInput from "react-phone-input-2";
+
+// const phoneRegExp = /(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/;
+const facebookRegExp = /^$|(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w-]*\/)*?(\/)?([\w\-.]{5,})/;
+const instagramRegExp = /^$|^([A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)$/;
+const urlRegExp =
+  /^$|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/;
+
+type Inputs = {
+  example: string;
+  exampleRequired: string;
+  website: string;
+  phone: string;
+  email: string;
+  facebook: string;
+  instagram: string;
+};
+
+interface Props {
+  location: SelectedLocationProps;
+}
+
+const schema = yup.object({
+  phone: yup.string().required('Phone number is required').min(8).max(15),
+  email: yup.string().email('This is not a valid e-mail address'),
+  website: yup.string().matches(urlRegExp, 'This is not a valid URL'),
+  facebook: yup.string().matches(facebookRegExp, 'This is not a valid facebook URL'),
+  instagram: yup
+    .string()
+    .matches(instagramRegExp, 'This is not a valid instagram URL. Please provide just your profile name'),
+});
+
+export const LocationDetailsForm: FC<Props> = ({ location }) => {
+  const isFirstRender = useRef(true);
+
+  const dispatch = useAppDispatch();
+  const formSaveTrigger = useFormSaveTriggerSelector();
+
+  const methods = useForm<Inputs>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+    defaultValues: {
+      phone: location.phone,
+      email: location.email,
+      website: location.website,
+      facebook: location.facebook,
+      instagram: location.instagram,
+    },
+  });
+
+  useEffect(() => {
+    dispatch(
+      setValid({
+        addressId: location.addressId as string,
+        isValid: methods.formState.isValid,
+      })
+    );
+  }, [methods.formState.isValid]);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    dispatch(
+      fillFormData({
+        addressId: location.addressId as string,
+        ...methods.getValues(),
+      })
+    );
+  }, [formSaveTrigger]);
+
+  //   useEffect(() => {
+  //     if (isFirstFieldForAllRender.current) {
+  //       isFirstFieldForAllRender.current = false;
+  //       return;
+  //     }
+  //     //@ts-ignore
+  //     if (fieldForAll.field) setValue(fieldForAll.field, fieldForAll.value, { shouldValidate: true });
+  //   }, [fieldForAll]);
+
+  //   useEffect(() => {
+  //     location.isValid = isValid;
+  //     setValidationStateChanged(state => !state);
+  //   }, [isValid]);
+
+  //   useEffect(() => {
+  //     if (isFirstRender.current) {
+  //       isFirstRender.current = false;
+  //       return;
+  //     }
+  //     console.log(getValues());
+  //     location = Object.assign(location, getValues());
+  //   }, [saveButtonClicked]);
+
+  return (
+    <FormProvider {...methods}>
+      <form style={{ flexGrow: 1 }}>
+        <Grid container justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
+          <Grid item lg={5}>
+            <PhoneButton />
+          </Grid>
+          <Grid item lg={6}>
+            <PhoneField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+          <Grid item lg={5}>
+            <EmailButton />
+          </Grid>
+          <Grid item lg={6}>
+            <EmailField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+          <Grid item lg={5}>
+            <WebsiteButton />
+          </Grid>
+          <Grid item lg={6}>
+            <WebsiteField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" sx={{ mb: 1 }} alignItems="center">
+          <Grid item lg={5}>
+            <FacebookButton />
+          </Grid>
+          <Grid item lg={6}>
+            <FacebookField />
+          </Grid>
+        </Grid>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item lg={5}>
+            <InstagramButton />
+          </Grid>
+          <Grid item lg={6}>
+            <InstagramField />
+          </Grid>
+        </Grid>
+      </form>
+    </FormProvider>
+  );
+};
