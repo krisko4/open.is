@@ -31,13 +31,25 @@ const Section2: FC<Props> = ({ isVisible }) => {
               </Typography>
               <Grid container style={{ marginTop: 20 }} justifyContent="center">
                 <Grid item xs={4}>
-                  <img alt="uber" src="/images/ubereats.png" style={{ width: '100%' }} />
+                  <img
+                    alt="uber"
+                    src={`${import.meta.env.VITE_BASE_URL}/images/ubereats.png`}
+                    style={{ width: '100%' }}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <img alt="bolt" src="/images/bolt.jpg" style={{ width: '100%', marginLeft: 10 }} />
+                  <img
+                    alt="bolt"
+                    src={`${import.meta.env.VITE_BASE_URL}/images/bolt.jpg`}
+                    style={{ width: '100%', marginLeft: 10 }}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  <img alt="moment" src="/images/moment.png" style={{ width: '100%', marginLeft: 15 }} />
+                  <img
+                    alt="moment"
+                    src={`${import.meta.env.VITE_BASE_URL}/images/moment.png`}
+                    style={{ width: '100%', marginLeft: 15 }}
+                  />
                 </Grid>
               </Grid>
             </div>

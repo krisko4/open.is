@@ -33,9 +33,7 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
     setLoading(true);
     if (start.current < total.current) {
       try {
-        console.log(fetchUrl);
         const res = await getPaginatedEvents(fetchUrl, start.current, limit.current);
-        console.log(res);
         const newEvents = res.data.data;
         if (start.current === 0) {
           dispatch(setSelectedEvents(newEvents));
@@ -51,7 +49,6 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
           }
         }
       } catch (err) {
-        console.log(err);
         enqueueErrorSnackbar();
       }
     } else {
@@ -60,6 +57,10 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    console.log('rendetrin');
+  }, []);
+
   //   const handleScroll = (values: positionValues) => {
   //     if (values.top === 1 && hasMore) {
   //       fetchPlaces();
@@ -67,11 +68,12 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
   //   };
 
   useEffect(() => {
+    console.log(total.current);
     (async () => {
       await fetchEvents();
       setFirstLoading(false);
     })();
-  }, [total]);
+  }, [total.current]);
 
   return (
     <Grid container sx={{ flexGrow: 1 }}>
@@ -87,13 +89,17 @@ export const FilteredEvents: FC<Props> = ({ fetchUrl }) => {
               <Typography>No events</Typography>
             </Grid>
           ) : (
-            selectedEvents.map((event) => (
-              <Fade in={true} key={event._id} timeout={1000}>
-                <Grid item xs={4} sx={{ p: 1 }}>
-                  <CachedEvent onClick={() => navigate(`/search/events/${event._id}`)} eventData={event} />
-                </Grid>
-              </Fade>
-            ))
+            <div>
+              <Grid item container>
+                {selectedEvents.map((event) => (
+                  <Fade in={true} key={event._id} timeout={1000}>
+                    <Grid item xs={4} sx={{ p: 1 }}>
+                      <CachedEvent onClick={() => navigate(`/search/events/${event._id}`)} eventData={event} />
+                    </Grid>
+                  </Fade>
+                ))}
+              </Grid>
+            </div>
           )}
         </Grid>
       </Scrollbars>

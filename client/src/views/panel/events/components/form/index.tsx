@@ -36,7 +36,7 @@ const schema = yup.object({
     .typeError('End date is required')
     .required()
     .when('startDate', (startDate) =>
-      isNaN(startDate) ? yup.date() : yup.date().min(startDate).typeError('End date is required')
+      isNaN(startDate) ? yup.date() : yup.date().min(startDate).typeError('End date is required'),
     ),
 });
 interface Props {
@@ -69,11 +69,12 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
       lat,
       lng,
     };
+    console.log(fieldValues);
     const event = {
       ...fieldValues,
       ...address,
-      startDate: format(fieldValues.startDate as Date, 'yyyy-MM-dd hh:mm'),
-      endDate: format(fieldValues.endDate as Date, 'yyyy-MM-dd hh:mm'),
+      startDate: fieldValues.startDate as Date,
+      endDate: fieldValues.endDate as Date,
       locationId: locationId as string,
       placeId: placeId as string,
     };
@@ -81,7 +82,6 @@ export const EventForm: FC<Props> = ({ imageFile }) => {
     if (imageFile) {
       form.append('img', imageFile);
     }
-    console.log(event);
     let key: keyof typeof event;
     for (key in event) form.append(key, event[key].toString());
     try {

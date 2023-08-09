@@ -25,13 +25,13 @@ export const EventDate: FC = () => {
 
   useEffect(() => {
     if (start) {
-      dispatch(setStartDate(format(start, 'yyyy-MM-dd hh:mm')));
+      dispatch(setStartDate(format(start, 'yyyy-MM-dd HH:mm')));
     }
   }, [start, dispatch]);
 
   useEffect(() => {
     if (end) {
-      dispatch(setEndDate(format(end, 'yyyy-MM-dd hh:mm')));
+      dispatch(setEndDate(format(end, 'yyyy-MM-dd HH:mm')));
     }
   }, [end, dispatch]);
 
@@ -53,6 +53,7 @@ export const EventDate: FC = () => {
             <MobileDateTimePicker
               renderInput={(props) => <TextField sx={{ flexGrow: 1, pr: 1 }} {...props} />}
               label="Start date"
+              ampm={false}
               minDate={new Date()}
               {...field}
             />
@@ -65,6 +66,7 @@ export const EventDate: FC = () => {
             <MobileDateTimePicker
               renderInput={(props) => <TextField sx={{ flexGrow: 1 }} {...props} />}
               label="End date"
+              ampm={false}
               minDate={new Date()}
               {...field}
             />

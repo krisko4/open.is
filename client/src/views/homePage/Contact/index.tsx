@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Grid, IconButton, Slide, Typography } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { ContactForm } from './components/Form';
 
@@ -12,6 +12,9 @@ const icons = [
 ];
 
 export const Contact: FC = () => {
+  useEffect(() => {
+    console.log('render');
+  }, []);
   return (
     <>
       <Grid

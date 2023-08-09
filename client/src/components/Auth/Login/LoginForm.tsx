@@ -18,7 +18,7 @@ const LoginSchema = Yup.object().shape({
     .required('This field is required')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character'
+      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character',
     ),
 });
 
@@ -42,7 +42,7 @@ export const LoginForm = () => {
   const { setLoginOpen, setConfirmationOpen, setRegistrationOpen } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const { enqueueSuccessSnackbar } = useCustomSnackbar();
+  const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const { setUserData } = useLoginContext();
 
   const signIn = async () => {
@@ -67,15 +67,15 @@ export const LoginForm = () => {
       });
       enqueueSuccessSnackbar('You have signed in.');
     } catch (err: any) {
-      console.log(err);
-      console.log(err.response.data);
       if (err.response.data === 'User is inactive') {
         setLoginOpen(false);
         setConfirmationOpen(true);
         return;
       }
-      setLoading(false);
+      enqueueErrorSnackbar();
       setErrorMessage('Invalid credentials');
+    } finally {
+      setLoading(false);
     }
   };
 

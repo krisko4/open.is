@@ -12,7 +12,7 @@ interface Props {
   eventId: string;
 }
 
-export const Rewards: FC<Props> = ({ eventId }) => {
+export const Rating: FC<Props> = ({ eventId }) => {
   const [selectedOption, setSelectedOption] = useState<RewardDrawingOptions | null>(
     RewardDrawingOptions.NO_REWARD_DRAWINGS,
   );

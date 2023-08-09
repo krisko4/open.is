@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { NavigationTabs } from 'components/NavigationTabs';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import { useSelectedEventsSelector } from 'store/slices/eventSlice';
 import { EventDetails } from '../eventDetails';

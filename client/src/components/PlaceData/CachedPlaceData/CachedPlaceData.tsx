@@ -14,7 +14,6 @@ export const CachedPlaceData: FC = () => {
     placeId: placeId as string,
     locationId: locationId as string,
   });
-  console.log(place);
 
   return (
     <>

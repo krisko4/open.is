@@ -1,6 +1,5 @@
-import { LoadingButton, LocalizationProvider, MobileDateTimePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Button, Divider, Fade, Grid, Slide, Slider, Switch, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Button, Divider, Fade, Grid, InputAdornment, Slide, Slider, Switch, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Step from '@mui/material/Step';
@@ -8,6 +7,8 @@ import StepContent from '@mui/material/StepContent';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
+import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import React, { FC, useState } from 'react';
 import { useAddRewardMutation } from 'store/api';
 import { RewardPayload } from 'store/api/types';

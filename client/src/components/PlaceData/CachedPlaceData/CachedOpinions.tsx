@@ -32,7 +32,6 @@ interface Props {
 }
 
 export const CachedOpinions: FC<Props> = ({ isUserOwner }) => {
-  console.log(isUserOwner);
   const { userData } = useLoginContext();
   const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -42,6 +41,8 @@ export const CachedOpinions: FC<Props> = ({ isUserOwner }) => {
   const { data: opinionData, isFetching } = useGetOpinionsForSelectedLocationQuery(locationId as string);
   const [addOpinion, { isLoading }] = useAddOpinionMutation();
   const [isEmojiPickerOpen, setEmojiPickerOpen] = useState(false);
+
+  console.log(opinionData);
 
   const handleEmoji = (emoji: IEmojiData) => {
     setOpinionText((text) => text + emoji.emoji);

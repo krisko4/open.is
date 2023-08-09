@@ -54,7 +54,7 @@ export const EventDetails: FC = () => {
               </Grid>
               <Grid item container alignItems="center" justifyContent="center" xs={5}>
                 <Slide in={true} direction="left" timeout={1000}>
-                  <Grid item xs={8}>
+                  <Grid item xs={9}>
                     <CachedEvent eventData={event} />
                   </Grid>
                 </Slide>

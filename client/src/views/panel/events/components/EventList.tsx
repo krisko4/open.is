@@ -1,4 +1,4 @@
-import { Add } from '@mui/icons-material';
+import { Add, Leaderboard } from '@mui/icons-material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { Button, Fade, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { FullHeightDialog } from 'components/dialogs';
@@ -56,7 +56,20 @@ export const EventList: FC<Props> = ({ events, setSelectedOption }) => {
       </FullHeightDialog>
       <Grid sx={{ mb: 1 }} container justifyContent="flex-end">
         <Grid item>
-          <Button startIcon={<Add />} variant="contained" onClick={() => setSelectedOption(EventOptions.NEW_EVENT)}>
+          <Button
+            startIcon={<Leaderboard />}
+            variant="contained"
+            color="secondary"
+            onClick={() => setSelectedOption(EventOptions.EVENTS_STATISTICS)}
+          >
+            Statistics
+          </Button>
+          <Button
+            sx={{ ml: 1 }}
+            startIcon={<Add />}
+            variant="contained"
+            onClick={() => setSelectedOption(EventOptions.NEW_EVENT)}
+          >
             New event
           </Button>
           <Tooltip title="Filter events">

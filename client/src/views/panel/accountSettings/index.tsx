@@ -35,7 +35,7 @@ const AccountDetailsSchema = Yup.object().shape({
   lastName: Yup.string().required('Last name is required'),
   password: Yup.string().matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-    'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character'
+    'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character',
   ),
   confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
 });
@@ -119,6 +119,10 @@ export const AccountSettings: FC = () => {
   };
 
   useEffect(() => {
+    console.log('renderin');
+  }, []);
+
+  useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
@@ -134,7 +138,6 @@ export const AccountSettings: FC = () => {
   }, [img]);
 
   const handleSubmit = async (values: typeof initialValues) => {
-    console.log(values);
     setLoading(true);
     try {
       const updatedUserData = {
@@ -198,39 +201,48 @@ export const AccountSettings: FC = () => {
                 <Grid container justifyContent="center">
                   <Grid container item rowSpacing={2} xs={10} lg={8}>
                     <Grid item container>
-                      <FastField
-                        fullWidth
-                        as={TextField}
-                        error={errors.firstName}
-                        helperText={errors.firstName}
-                        variant="outlined"
-                        name="firstName"
-                        onKeyDown={isLetter}
-                        label="First name"
-                      />
+                      {
+                        //@ts-ignore
+                        <FastField
+                          fullWidth
+                          as={TextField}
+                          error={errors.firstName}
+                          helperText={errors.firstName}
+                          variant="outlined"
+                          name="firstName"
+                          onKeyDown={isLetter}
+                          label="First name"
+                        />
+                      }
                     </Grid>
                     <Grid container item>
-                      <FastField
-                        fullWidth
-                        as={TextField}
-                        error={errors.lastName}
-                        helperText={errors.lastName}
-                        variant="outlined"
-                        name="lastName"
-                        onKeyDown={isLetter}
-                        label="Last name"
-                      />
+                      {
+                        //@ts-ignore
+                        <FastField
+                          fullWidth
+                          as={TextField}
+                          error={errors.lastName}
+                          helperText={errors.lastName}
+                          variant="outlined"
+                          name="lastName"
+                          onKeyDown={isLetter}
+                          label="Last name"
+                        />
+                      }
                     </Grid>
                     <Grid container item>
-                      <FastField
-                        fullWidth
-                        as={TextField}
-                        error={errors.email}
-                        helperText={errors.email}
-                        variant="outlined"
-                        name="email"
-                        label="E-mail address"
-                      />
+                      {
+                        //@ts-ignore
+                        <FastField
+                          fullWidth
+                          as={TextField}
+                          error={errors.email}
+                          helperText={errors.email}
+                          variant="outlined"
+                          name="email"
+                          label="E-mail address"
+                        />
+                      }
                     </Grid>
                     <Grid container item>
                       <Button color="primary" onClick={() => setPasswordChangeOpen(true)} variant="outlined">

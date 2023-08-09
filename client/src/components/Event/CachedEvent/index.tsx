@@ -31,6 +31,7 @@ export const CachedEvent: FC<Props> = ({
   };
   return (
     <Card
+      style={{ height: '100%' }}
       onClick={onClick}
       elevation={elevation}
       onMouseEnter={() => setElevation(3)}

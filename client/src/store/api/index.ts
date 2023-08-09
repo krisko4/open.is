@@ -21,16 +21,21 @@ import {
   GetSelectedLocationsProps,
   Invitation,
   InvitationPayload,
-  InvitationRequest,
   NotificationStatistics,
+  NotificationType,
   OpeningHoursResponse,
   OpinionData,
+  ParticipatorsStatistics,
   PlaceAndLocationProps,
+  RatingsStatistics,
   Referral,
   ReferralPayload,
   Reward,
   RewardPayload,
+  RewardsStatistics,
   SelectedLocationsProps,
+  StatisticsParams,
+  StatisticsType,
   StatusProps,
   Subscriber,
   Subscription,
@@ -234,17 +239,17 @@ export const placesApi = createApi({
     }),
     participate: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/events/${id}`,
-        method: 'PATCH',
+        url: `/events/${id}/participators`,
+        method: 'POST',
       }),
-      invalidatesTags: [TagTypes.EVENT],
+      invalidatesTags: invalidate([TagTypes.EVENT]),
     }),
     unparticipate: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/events/${id}`,
+        url: `/events/${id}/participators`,
         method: 'DELETE',
       }),
-      invalidatesTags: [TagTypes.EVENT],
+      invalidatesTags: invalidate([TagTypes.EVENT]),
     }),
     getEventById: builder.query<EventDetails, string>({
       query: (id) => ({
@@ -377,6 +382,57 @@ export const placesApi = createApi({
       }),
       providesTags: [TagTypes.REFERRALS],
     }),
+    getParticipatorsStatistics: builder.query<ParticipatorsStatistics[], StatisticsParams>({
+      query: ({ locationId }) => ({
+        url: '/events/statistics',
+        params: {
+          locationId,
+          type: StatisticsType.PARTICIPATORS,
+        },
+      }),
+      providesTags: [TagTypes.PARTICIPATORS_STATISTICS],
+    }),
+    getParticipatorsNotificationsStatistics: builder.query<NotificationStatistics[], StatisticsParams>({
+      query: ({ locationId }) => ({
+        url: '/events/statistics',
+        params: {
+          locationId,
+          type: StatisticsType.NOTIFICATIONS,
+        },
+      }),
+      providesTags: [TagTypes.PARTICIPATORS_STATISTICS],
+    }),
+    getRatingsNotificationsStatistics: builder.query<NotificationStatistics[], StatisticsParams>({
+      query: ({ locationId }) => ({
+        url: '/events/statistics',
+        params: {
+          locationId,
+          type: StatisticsType.NOTIFICATIONS,
+        },
+      }),
+      providesTags: [TagTypes.RATINGS_STATISTICS],
+      transformResponse: (response: NotificationStatistics[]) =>
+        response.filter((s) => s.type === NotificationType.RATING_REQUEST),
+    }),
+    getRatingsStatistics: builder.query<RatingsStatistics[], StatisticsParams>({
+      query: ({ locationId }) => ({
+        url: '/events/statistics',
+        params: {
+          locationId,
+          type: StatisticsType.RATINGS,
+        },
+      }),
+      providesTags: [TagTypes.RATINGS_STATISTICS],
+    }),
+    getRewardsStatistics: builder.query<RewardsStatistics[], StatisticsParams>({
+      query: ({ locationId }) => ({
+        url: '/rewards/statistics',
+        params: {
+          locationId,
+        },
+      }),
+      providesTags: [TagTypes.REWARDS_STATISTICS],
+    }),
     getReferralsByLocationId: builder.query<Referral[], string>({
       query: (locationId) => ({
         url: '/referrals',
@@ -447,6 +503,11 @@ export const {
   useGetCodesByRewardIdQuery,
   useGetReferralsByLocationIdQuery,
   useCreateInvitationMutation,
+  useGetParticipatorsNotificationsStatisticsQuery,
   useCreateReferralMutation,
   useGetInvitationsByReferralIdQuery,
+  useGetRatingsStatisticsQuery,
+  useGetParticipatorsStatisticsQuery,
+  useGetRewardsStatisticsQuery,
+  useGetRatingsNotificationsStatisticsQuery,
 } = placesApi;

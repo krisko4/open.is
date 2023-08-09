@@ -2,6 +2,7 @@ export enum EventOptions {
   NEW_EVENT,
   NO_EVENTS,
   EVENT_LIST,
+  EVENTS_STATISTICS,
 }
 
 export enum RewardDrawingOptions {
@@ -14,4 +15,5 @@ export enum EventManagementOptions {
   OVERVIEW,
   STATISTICS,
   REWARDS,
+  RATING,
 }

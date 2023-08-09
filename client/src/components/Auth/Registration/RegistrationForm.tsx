@@ -1,10 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { LoadingButton } from '@mui/lab';
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { differenceInYears } from 'date-fns';
 import * as React from 'react';
 import { useState } from 'react';
@@ -34,7 +35,7 @@ const SignupSchema = Yup.object().shape({
     .required('This field is required')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character'
+      'Password should contain  at least 8 characters, one Uppercase, one lowercase, one number and one special case character',
     ),
   confirmPassword: Yup.string()
     .required('This field is required')
@@ -103,6 +104,8 @@ export const RegistrationForm = () => {
       setLoading(false);
     }
   };
+
+  console.log(isValid, errors);
 
   return (
     <form data-testid="registration-form" style={{ flexGrow: 1 }}>

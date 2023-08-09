@@ -11,10 +11,13 @@ import { PlaceToolbar } from './components/PlaceToolbar';
 
 export const PlaceDetails: FC = () => {
   const { placeId, locationId } = useParams();
-  const { data: place, isFetching } = useGetPlaceByIdAndSelectedLocationQuery({
-    placeId: placeId as string,
-    locationId: locationId as string,
-  });
+  const { data: place, isFetching } = useGetPlaceByIdAndSelectedLocationQuery(
+    {
+      placeId: placeId as string,
+      locationId: locationId as string,
+    },
+    { refetchOnMountOrArgChange: true },
+  );
 
   useEffect(() => {
     (async () => {

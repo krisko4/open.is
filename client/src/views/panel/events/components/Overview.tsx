@@ -1,6 +1,7 @@
 import { Grid, Slide, Typography } from '@mui/material';
 import { CachedEvent } from 'components/Event/CachedEvent';
 import { FC } from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { EventData } from 'store/api/types';
 
 interface Props {

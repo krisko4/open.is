@@ -19,4 +19,7 @@ export enum TagTypes {
   NOTIFICATIONS = 'Notifications',
   CODES = 'Codes',
   REFERRALS = 'Referrals',
+  PARTICIPATORS_STATISTICS = 'ParticipatorsStatistics',
+  REWARDS_STATISTICS = 'RewardsStatistics',
+  RATINGS_STATISTICS = 'RatingsStatistics',
 }
