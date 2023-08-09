@@ -23,6 +23,10 @@ export const Dashboard: FC = () => {
   const { data: totalVisitsData, isFetching, refetch } = useGetAllVisitsByUserIdQuery();
 
   useEffect(() => {
+    console.log('renderrr');
+  }, []);
+
+  useEffect(() => {
     if (totalVisitsData) {
       console.log(totalVisitsData);
       const { locations } = totalVisitsData;
@@ -32,7 +36,7 @@ export const Dashboard: FC = () => {
             name: loc.name,
             data: generateVisitsData(loc.visits),
           };
-        })
+        }),
       );
       // //@ts-ignore
       // const mostPopularPlace = [...places].sort((a, b) => a.locations[0].visits.reduce((c, d) => c + d.visitCount, 0) - b.locations[0].visits.reduce((e, f) => e + f.visitCount, 0))[places.length - 1]

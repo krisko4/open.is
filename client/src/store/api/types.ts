@@ -1,9 +1,6 @@
 import { ContactData, User } from 'api';
-import { UserData } from 'contexts';
-import { EventProps } from 'store/slices/eventSlice';
 import { FormLocationProps } from 'store/slices/formLocationsSlice';
 import { Opinion, OpinionProps, RawPlaceDataProps, VisitCount, VisitProps } from 'store/slices/PlaceProps';
-import { string } from 'yup';
 
 export interface SelectedLocationsProps {
   locationIds: string[];
@@ -42,13 +39,16 @@ interface Event {
 }
 
 export interface Participator {
-  _id: string;
-  img: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  birthdate: Date;
+  didReallyParticipate: boolean;
   isSubscriber: boolean;
+  user: {
+    _id: string;
+    img: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthdate: Date;
+  };
 }
 
 export interface EventData extends Event {
@@ -90,6 +90,7 @@ export interface RewardPayload {
   date?: Date;
   description: string;
   eventId: string;
+  participators: string[];
   rewardPercentage: number;
 }
 
@@ -122,6 +123,7 @@ export interface AddOpinionProps {
 }
 
 export enum NotificationType {
+  RATING_REQUEST = 'rating_request',
   EVENT = 'event',
   REWARD = 'reward',
   EVENT_TODAY_NEARBY = 'event_today_nearby',
@@ -133,6 +135,7 @@ export type NotificationStatistics = {
   clicked: number;
   averageClickTime: number;
   type: NotificationType;
+  eventName?: string;
 };
 
 export interface VisitLocationProps {
@@ -200,4 +203,36 @@ export interface Subscription {
   user: string;
   locationId: string;
   subscribedAt: Date;
+}
+
+export interface ParticipatorsStatistics {
+  eventName: string;
+  participators: number;
+  realParticipators: number;
+  subscribers: number;
+}
+
+export interface RewardsStatistics {
+  eventName: string;
+  allCodes: number;
+  participatorsCount: number;
+  usedCodes: number;
+}
+
+export interface RatingsStatistics {
+  eventName: string;
+  ones: number;
+  twos: number;
+  threes: number;
+  fours: number;
+  fives: number;
+}
+export enum StatisticsType {
+  PARTICIPATORS = 'PARTICIPATORS',
+  NOTIFICATIONS = 'NOTIFICATIONS',
+  RATINGS = 'RATINGS',
+}
+
+export interface StatisticsParams {
+  locationId: string;
 }

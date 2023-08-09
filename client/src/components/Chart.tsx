@@ -22,6 +22,5 @@ export const Chart: FC<Props> = ({ series, options, type, height, width }) => {
       },
     };
   }, [mode, options]);
-  console.log(chartOptions);
   return <ApexChart options={chartOptions} series={series} type={type} height={height} width={width} />;
 };

@@ -3,7 +3,7 @@ import { EmailChangeConfirmation } from 'components/auth/Confirmation/EmailChang
 import { Browser } from 'layouts/browser';
 import { HomeLayout } from 'layouts/index';
 import { Panel } from 'layouts/panel';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom';
 import { About } from 'views/homePage/about';
 import { Contact } from 'views/homePage/contact';
@@ -35,6 +35,9 @@ const PageLayout = () => {
 };
 
 export const Router: FC = () => {
+  useEffect(() => {
+    console.log('render');
+  }, []);
   return (
     <BrowserRouter>
       <Routes>

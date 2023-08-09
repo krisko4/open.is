@@ -1,8 +1,6 @@
 import { CircularProgress, Grid } from '@mui/material';
 import { FC } from 'react';
-import Scrollbars from 'react-custom-scrollbars';
 import { useGetEventByIdQuery } from 'store/api';
-import { EventData } from 'store/api/types';
 import { EventManagementOptions } from '../enums';
 import Overview from './Overview';
 import { Participators } from './Participators';
@@ -26,6 +24,7 @@ export const EventManagement: FC<Props> = ({ eventId, selectedOption }) => {
         event && (
           <>
             <Grid item xs={6}>
+              {selectedOption === EventManagementOptions.RATING && <Rewards eventId={event._id} />}
               {selectedOption === EventManagementOptions.REWARDS && <Rewards eventId={event._id} />}
               {selectedOption === EventManagementOptions.OVERVIEW && <Overview event={event} />}
               {selectedOption === EventManagementOptions.STATISTICS && <Statistics eventId={event._id} />}

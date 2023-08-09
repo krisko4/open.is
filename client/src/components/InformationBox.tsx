@@ -1,9 +1,9 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface Props {
   value: any;
-  title?: string;
+  title?: string | ReactNode;
   elevation?: number;
   width?: number;
 }

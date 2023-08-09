@@ -4,6 +4,7 @@ export const mapNotificationStatistics = (data: NotificationStatistics[]) => {
   return {
     eventStatistics: data.find((s) => s.type === NotificationType.EVENT),
     rewardStatistics: data.find((s) => s.type === NotificationType.REWARD),
+    ratingStatistics: data.find((s) => s.type === NotificationType.RATING_REQUEST),
     geolocationStatistics: data.find((s) => s.type === NotificationType.EVENT_TODAY_NEARBY),
   };
 };
