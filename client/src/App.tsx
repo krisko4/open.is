@@ -5,6 +5,7 @@ import { LoginContextProvider } from './contexts/LoginContext';
 import mainTheme from './themes/MainTheme';
 
 function App() {
+  console.log('test');
   return (
     <StyledEngineProvider injectFirst>
       <SnackbarProvider
